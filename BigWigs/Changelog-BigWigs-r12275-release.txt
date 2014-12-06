@@ -1,9 +1,74 @@
 ------------------------------------------------------------------------
-r12265 | funkydude | 2014-12-04 15:57:36 +0000 (Thu, 04 Dec 2014) | 1 line
+r12275 | funkydude | 2014-12-05 14:24:30 +0000 (Fri, 05 Dec 2014) | 1 line
 Changed paths:
-   A /tags/r12265-release (from /trunk:12264)
+   A /tags/r12275-release (from /trunk:12274)
 
-Tagging as r12265-release
+Tagging as r12275-release
+------------------------------------------------------------------------
+r12274 | nebula169 | 2014-12-05 13:30:19 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Tectus.lua
+
+Tectus: limit Accretion to your target
+------------------------------------------------------------------------
+r12273 | funkydude | 2014-12-05 13:28:35 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: cleanup options.
+------------------------------------------------------------------------
+r12272 | nebula169 | 2014-12-05 11:54:43 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: fix Phemos times for mythic (assumed)
+------------------------------------------------------------------------
+r12271 | nebula169 | 2014-12-05 11:51:48 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: use Branded instead of Arcane Wrath when on you and add a say
+------------------------------------------------------------------------
+r12270 | funkydude | 2014-12-05 11:48:58 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core/BossPrototype.lua
+
+BossPrototype: Add :Normal()
+------------------------------------------------------------------------
+r12269 | nebula169 | 2014-12-05 11:31:29 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: fix Phemos times for normal
+------------------------------------------------------------------------
+r12268 | ananhaid | 2014-12-05 11:26:23 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Draenor/Drov.lua
+
+Drov id fix.
+------------------------------------------------------------------------
+r12267 | funkydude | 2014-12-05 10:26:48 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/BigWigs_BlackrockFoundry.toc
+   M /trunk/Draenor/BigWigs_Draenor.toc
+   M /trunk/EndlessSpring/BigWigs_EndlessSpring.toc
+   M /trunk/HeartOfFear/BigWigs_HeartOfFear.toc
+   M /trunk/Highmaul/BigWigs_Highmaul.toc
+   M /trunk/Mogushan/BigWigs_Mogushan.toc
+   M /trunk/Pandaria/BigWigs_Pandaria.toc
+   M /trunk/SiegeOfOrgrimmar/BigWigs_SiegeOfOrgrimmar.toc
+   M /trunk/ThroneOfThunder/BigWigs_ThroneOfThunder.toc
+   M /trunk/modules.xml
+
+Load module locale files after the modules.
+------------------------------------------------------------------------
+r12266 | nebula169 | 2014-12-05 04:52:10 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Draenor/Tarlna.lua
+
+Tarlna: Genesis is now channeled for 15s
 ------------------------------------------------------------------------
 r12264 | funkydude | 2014-12-04 15:39:50 +0000 (Thu, 04 Dec 2014) | 1 line
 Changed paths:
@@ -743,43 +808,4 @@ Changed paths:
    M /trunk/Core/Core.lua
 
 Core: add shadowmoon burial grounds cinematic.
-------------------------------------------------------------------------
-r12156 | funkydude | 2014-11-03 22:13:32 +0000 (Mon, 03 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core/BossPrototype.lua
-   M /trunk/Core/Core.lua
-   M /trunk/Loader.lua
-
-Stop returning 1 for invalid mobIds in certain areas.
-------------------------------------------------------------------------
-r12155 | funkydude | 2014-11-03 19:39:37 +0000 (Mon, 03 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Options/Options.lua
-
-Options: support instance chat for ability print.
-------------------------------------------------------------------------
-r12154 | funkydude | 2014-11-03 14:18:21 +0000 (Mon, 03 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/BigWigs.toc
-   M /trunk/Core/BossPrototype.lua
-
-bump version
-------------------------------------------------------------------------
-r12153 | funkydude | 2014-11-03 12:41:57 +0000 (Mon, 03 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core/BossPrototype.lua
-
-BossPrototype: also remove pointless parentheses.
-------------------------------------------------------------------------
-r12152 | funkydude | 2014-11-03 12:34:38 +0000 (Mon, 03 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core/BossPrototype.lua
-
-BossPrototype: Use a closure in the iterator to prevent any possible headaches.
-------------------------------------------------------------------------
-r12151 | funkydude | 2014-11-02 23:29:26 +0000 (Sun, 02 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Options/Options.lua
-
-Options: tweak
 ------------------------------------------------------------------------

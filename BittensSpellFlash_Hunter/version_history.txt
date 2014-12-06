@@ -1,3 +1,6 @@
+== Version 60000.12
+Really, really fix the damn lua error.
+
 == Version 60000.11
 Mark as 6.0 compatible.
 

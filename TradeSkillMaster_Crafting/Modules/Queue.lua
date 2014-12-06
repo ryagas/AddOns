@@ -62,7 +62,7 @@ function Queue:CreateRestockQueue(groupInfo)
 
 						local craft = TSM.db.factionrealm.crafts[spellID]
 						craft.queued = floor(numToQueue / craft.numResult)
-						craft.queued = craft.queued >= opSettings.minRestock and craft.queued or 0
+						craft.queued = craft.queued >= floor(opSettings.minRestock / craft.numResult) and craft.queued or 0
 						if craft.queued > 0 then
 							numItems = numItems + 1
 						end

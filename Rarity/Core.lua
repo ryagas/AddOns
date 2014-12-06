@@ -1,5 +1,5 @@
 Rarity = LibStub("AceAddon-3.0"):NewAddon("Rarity", "AceConsole-3.0", "AceEvent-3.0", "AceTimer-3.0", "LibSink-2.0", "AceBucket-3.0", "LibBars-1.0")
-Rarity.MINOR_VERSION = tonumber(("$Revision: 394 $"):match("%d+"))
+Rarity.MINOR_VERSION = tonumber(("$Revision: 397 $"):match("%d+"))
 local FORCE_PROFILE_RESET_BEFORE_REVISION = 1 -- Set this to one higher than the Revision on the line above this
 local L = LibStub("AceLocale-3.0"):GetLocale("Rarity")
 local R = Rarity
@@ -2776,6 +2776,23 @@ function R:ShowFoundAlert(itemId, attempts)
 
  PlaySoundFile("Sound\\Spells\\AchievmentSound1.ogg")
 end
+
+
+hooksecurefunc("BonusRollFrame_StartBonusRoll", function(spellID, text, duration, currencyID)
+	local self = Rarity
+	if self.lastCoinItem and self.lastCoinItem.enableCoin and self.lastCoinItem.enabled ~= false then
+		if self.lastCoinItem.itemId then
+			if not currencyID then currencyID = BONUS_ROLL_REQUIRED_CURRENCY end
+			local _, count, icon = GetCurrencyInfo(currencyID)
+			if count == 0 then return end
+			local name, link, quality, iLevel, reqLevel, class, subclass, maxStack, equipSlot, texture, vendorPrice = GetItemInfo(self.lastCoinItem.itemId)
+			local _, _, _, fontString = StorePurchaseAlertFrame:GetRegions()
+			fontString:SetText(L["Use your bonus roll for a chance at this item"])
+			self:ScheduleTimer(function() fontString:SetText(BLIZZARD_STORE_PURCHASE_COMPLETE_DESC) end, duration + 2)
+			StorePurchaseAlertFrame_ShowAlert(texture, link, self.lastCoinItem.itemId)
+		end
+	end
+end)
 
 
 function R:OutputAttempts(item, skipTimeUpdate)

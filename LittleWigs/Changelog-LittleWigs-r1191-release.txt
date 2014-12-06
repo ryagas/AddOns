@@ -1,9 +1,73 @@
 ------------------------------------------------------------------------
-r1185 | funkydude | 2014-12-02 09:56:21 +0000 (Tue, 02 Dec 2014) | 1 line
+r1191 | funkydude | 2014-12-05 14:23:18 +0000 (Fri, 05 Dec 2014) | 1 line
 Changed paths:
-   A /tags/r1185-release (from /trunk:1184)
+   A /tags/r1191-release (from /trunk:1190)
 
-Tagging as r1185-release
+Tagging as r1191-release
+------------------------------------------------------------------------
+r1190 | funkydude | 2014-12-05 14:11:20 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   A /trunk/WoD/Auchindoun/Locales
+   A /trunk/WoD/Auchindoun/Locales/deDE.lua
+   A /trunk/WoD/Auchindoun/Locales/esES.lua
+   A /trunk/WoD/Auchindoun/Locales/frFR.lua
+   A /trunk/WoD/Auchindoun/Locales/itIT.lua
+   A /trunk/WoD/Auchindoun/Locales/koKR.lua
+   A /trunk/WoD/Auchindoun/Locales/ptBR.lua
+   A /trunk/WoD/Auchindoun/Locales/ruRU.lua
+   A /trunk/WoD/Auchindoun/Locales/zhCN.lua
+   A /trunk/WoD/Auchindoun/Locales/zhTW.lua
+   A /trunk/WoD/Auchindoun/locales.xml
+   M /trunk/WoD/UpperBlackrockSpire/Kyrak.lua
+   A /trunk/WoD/UpperBlackrockSpire/Locales
+   A /trunk/WoD/UpperBlackrockSpire/Locales/deDE.lua
+   A /trunk/WoD/UpperBlackrockSpire/Locales/esES.lua
+   A /trunk/WoD/UpperBlackrockSpire/Locales/frFR.lua
+   A /trunk/WoD/UpperBlackrockSpire/Locales/itIT.lua
+   A /trunk/WoD/UpperBlackrockSpire/Locales/koKR.lua
+   A /trunk/WoD/UpperBlackrockSpire/Locales/ptBR.lua
+   A /trunk/WoD/UpperBlackrockSpire/Locales/ruRU.lua
+   A /trunk/WoD/UpperBlackrockSpire/Locales/zhCN.lua
+   A /trunk/WoD/UpperBlackrockSpire/Locales/zhTW.lua
+   M /trunk/WoD/UpperBlackrockSpire/Ragewing.lua
+   M /trunk/WoD/UpperBlackrockSpire/Zaela.lua
+   A /trunk/WoD/UpperBlackrockSpire/locales.xml
+   M /trunk/modules.xml
+
+add localization for Auchindoun and UBRS.
+------------------------------------------------------------------------
+r1189 | funkydude | 2014-12-05 13:59:55 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/WoD/Auchindoun/Azzakel.lua
+   M /trunk/WoD/Auchindoun/Kaathar.lua
+   M /trunk/WoD/Auchindoun/Nyami.lua
+   M /trunk/WoD/Auchindoun/Terongor.lua
+   M /trunk/modules.xml
+
+Locale cleanups
+------------------------------------------------------------------------
+r1188 | funkydude | 2014-12-05 11:51:30 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/WoD/Auchindoun/Azzakel.lua
+   M /trunk/WoD/Auchindoun/Kaathar.lua
+   M /trunk/WoD/UpperBlackrockSpire/Gorashan.lua
+   M /trunk/WoD/UpperBlackrockSpire/Ragewing.lua
+
+Use :Normal()
+------------------------------------------------------------------------
+r1187 | funkydude | 2014-12-04 15:55:08 +0000 (Thu, 04 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/WoD/GrimrailDepot/NitroggThundertower.lua
+   M /trunk/WoD/TheEverbloom/Xeritac.lua
+   M /trunk/WoD/UpperBlackrockSpire/Zaela.lua
+
+NitroggThundertower: Add Slag Blast.
+------------------------------------------------------------------------
+r1186 | funkydude | 2014-12-04 02:37:51 +0000 (Thu, 04 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/WoD/IronDocks/Skulloc.lua
+
+Skulloc: Add Gronn Smash timer.
 ------------------------------------------------------------------------
 r1184 | funkydude | 2014-12-01 04:16:24 +0000 (Mon, 01 Dec 2014) | 1 line
 Changed paths:
@@ -344,17 +408,4 @@ Changed paths:
    M /trunk/WoD/TheEverbloom/Witherbark.lua
 
 various fixes
-------------------------------------------------------------------------
-r1130 | funkydude | 2014-11-03 21:18:29 +0000 (Mon, 03 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/MoP/MogushanPalace/TrialOfTheKing.lua
-   A /trunk/WoD/TheEverbloom/AncientProtectors.lua
-   A /trunk/WoD/TheEverbloom/ArchmageSol.lua
-   A /trunk/WoD/TheEverbloom/Witherbark.lua
-   A /trunk/WoD/TheEverbloom/Xeritac.lua
-   A /trunk/WoD/TheEverbloom/Yalnu.lua
-   A /trunk/WoD/TheEverbloom/modules.xml
-   M /trunk/modules.xml
-
-TheEverbloom: Import
 ------------------------------------------------------------------------

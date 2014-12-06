@@ -164,16 +164,17 @@ function TSM:GetTooltip(itemString)
 				if TSM.db.global.matsInTooltip and TSM.db.factionrealm.crafts[spellID] then
 					for matItemString, matQuantity in pairs(TSM.db.factionrealm.crafts[spellID].mats) do
 						local name, _, quality = TSMAPI:GetSafeItemInfo(matItemString)
+						local numResult = TSM.db.factionrealm.crafts[spellID].numResult
 						if name then
 							local mat = TSM.db.factionrealm.mats[matItemString]
 							if mat then
 								local cost = TSM:GetCustomPrice(mat.customValue or TSM.db.global.defaultMatCostMethod, matItemString)
 								if cost then
-									local colorName = format("|c%s%s%s%s|r",select(4,GetItemQualityColor(quality)),name, " x ", matQuantity)
+									local colorName = format("|c%s%s%s%s|r",select(4,GetItemQualityColor(quality)),name, " x ", matQuantity / numResult)
 									if moneyCoinsTooltip then
-										tinsert(text, { left = "    " .. colorName, right = TSMAPI:FormatTextMoneyIcon(cost*matQuantity, "|cffffffff", true) })
+										tinsert(text, { left = "    " .. colorName, right = TSMAPI:FormatTextMoneyIcon((cost*matQuantity)/numResult, "|cffffffff", true) })
 									else
-										tinsert(text, { left = "    " .. colorName, right = TSMAPI:FormatTextMoney(cost*matQuantity, "|cffffffff", true) })
+										tinsert(text, { left = "    " .. colorName, right = TSMAPI:FormatTextMoney((cost*matQuantity)/numResult, "|cffffffff", true) })
 									end
 								end
 							end

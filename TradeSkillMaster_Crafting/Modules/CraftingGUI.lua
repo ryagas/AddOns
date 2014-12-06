@@ -191,7 +191,7 @@ function GUI:EventHandler(event, ...)
 		if unit ~= "player" or not craft then return end
 
 		-- decrements the number of this craft that are queued to be crafted
-		craft.queued = craft.queued - 1
+		craft.queued = max(craft.queued - 1, 0)
 		if GUI.isCrafting and GUI.isCrafting.quantity > 0 then
 			GUI.isCrafting.quantity = GUI.isCrafting.quantity - 1
 			if GUI.isCrafting.quantity == 0 then

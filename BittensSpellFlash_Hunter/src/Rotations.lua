@@ -17,8 +17,8 @@ local warning = "|cFFFF0000WARNING: The Hunter %s rotation works to level 90, bu
 
 local printedOnce = {}
 local function printOnce(msg, ...)
-   if a.printedOnce[msg] then return end
-   a.printedOnce[msg] = true
+   if printedOnce[msg] then return end
+   printedOnce[msg] = true
    print(format(msg, ...))
 end
 

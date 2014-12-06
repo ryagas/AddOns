@@ -1,9 +1,22 @@
 ------------------------------------------------------------------------
-r395 | allara | 2014-12-02 17:07:14 +0000 (Tue, 02 Dec 2014) | 1 line
+r398 | allara | 2014-12-05 17:43:56 +0000 (Fri, 05 Dec 2014) | 1 line
 Changed paths:
-   A /tags/r394-release (from /trunk:394)
+   A /tags/r397-release (from /trunk:397)
 
-Tagging as r394-release
+Tagging as r397-release
+------------------------------------------------------------------------
+r397 | allara | 2014-12-04 22:15:34 +0000 (Thu, 04 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- Bonus roll notification will not appear if you don't have any of the currency required
+------------------------------------------------------------------------
+r396 | allara | 2014-12-04 19:55:41 +0000 (Thu, 04 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+
+- Rarity will now notify you with an alert if a bonus roll pops up and you could obtain something Rarity tracks via the bonus roll
 ------------------------------------------------------------------------
 r394 | allara | 2014-12-02 00:01:25 +0000 (Tue, 02 Dec 2014) | 1 line
 Changed paths:
@@ -245,66 +258,4 @@ Changed paths:
    M /trunk/Core.lua
 
 - This should hopefully correct an issue where Rarity doesn't appear to update its count (in the LDB feed or the bar) when repeatedly farming an item
-------------------------------------------------------------------------
-r345 | allara | 2014-11-03 17:07:47 +0000 (Mon, 03 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-   M /trunk/Options_Defaults.lua
-
-- Time-Locked Box: Set Repeatable to TRUE by default
-------------------------------------------------------------------------
-r344 | allara | 2014-11-03 05:26:56 +0000 (Mon, 03 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-   M /trunk/Options_Defaults.lua
-
-- WoD rare list update
-------------------------------------------------------------------------
-r343 | allara | 2014-11-03 00:26:38 +0000 (Mon, 03 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-
-- This is a performance improvement to reduce framerate stutter when Rarity logs a new attempt
-------------------------------------------------------------------------
-r342 | allara | 2014-11-03 00:02:54 +0000 (Mon, 03 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-   M /trunk/Options_Defaults.lua
-
-- Time-Locked Box: Update list of NPCs (tons of them were missing)
-------------------------------------------------------------------------
-r341 | allara | 2014-11-02 23:26:29 +0000 (Sun, 02 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-
-- Updated fishing timer to 22 seconds (up from 19 seconds)
-------------------------------------------------------------------------
-r339 | allara | 2014-11-02 18:37:26 +0000 (Sun, 02 Nov 2014) | 3 lines
-Changed paths:
-   M /trunk/Core.lua
-   M /trunk/Locales.lua
-   M /trunk/Modules/Options/Options.lua
-   M /trunk/Options_Defaults.lua
-
-- Added the ability to turn off holiday reminders on an item-by-item basis
-- Added Syd the Squid
-- Darkmoon Eye, Syd the Squid: Changed type to holiday; added defeat detection, holiday reminders, and additional tooltip information
-------------------------------------------------------------------------
-r338 | allara | 2014-11-02 01:11:48 +0000 (Sun, 02 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-
-- Bucket the UPDATE_INSTANCE_INFO, LFG_UPDATE_RANDOM_INFO, and CALENDAR_UPDATE_EVENT_LIST events. Sometimes the server calls these repeatedly.
-------------------------------------------------------------------------
-r336 | allara | 2014-11-01 20:37:35 +0000 (Sat, 01 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-
-- This is an attempt to fix a performance issue reported by several users. Rarity is now much less aggressive about when it asks for instance lock detail, and how much scanning it does when it receives updated instance/dungeon information from the server.
-------------------------------------------------------------------------
-r333 | allara | 2014-10-31 16:50:47 +0000 (Fri, 31 Oct 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-
-- Bug fix
 ------------------------------------------------------------------------
