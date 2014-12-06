@@ -1,0 +1,9 @@
+## Interface: 60000
+## Title: WIM Skin - Flat Panel
+## Version: 2.1.2
+## Author: Riimu
+## Notes: A plain WIM Skin designed for efficiency
+## Dependencies: WIM
+skin.xml
+abbreviations.lua
+skin.lua

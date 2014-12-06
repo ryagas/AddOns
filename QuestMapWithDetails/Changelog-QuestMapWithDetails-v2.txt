@@ -1,0 +1,8 @@
+2014-10-29  ovolkov  <ovolkov>
+
+[d719195f5249] [v2]
+* QuestMapWithDetails.toc, QuestMapWithDetails.txt:
+
+v2 toc + txt
+
+

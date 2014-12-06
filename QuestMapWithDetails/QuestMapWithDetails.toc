@@ -1,0 +1,16 @@
+## Interface: 60000
+## X-Curse-Packaged-Version: v2
+## X-Curse-Project-Name: Quest Map with Details
+## X-Curse-Project-ID: quest-map-details
+## X-Curse-Repository-ID: wow/quest-map-details/mainline
+
+## Title: Quest Map with Details
+## Version: v2
+## Notes: Combines best of new merged quest log + map and old quest log + details windows
+## Author: Oleg "Rowaa[SR13]" Volkov
+
+## OptionalDeps: Aurora, FreeUI
+
+## SavedVariables: SavedVariable_QuestMapWithDetails
+
+QuestMapWithDetails.lua

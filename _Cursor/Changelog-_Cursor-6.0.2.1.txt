@@ -1,0 +1,11 @@
+tag 6.0.2.1
+b643de3433347f77a9091abf4126b6c3e31ed2f9
+James D. Callahan III <jcallahan@curse.com>
+2014-10-14 21:26:59 -0500
+
+
+
+--------------------
+
+James D. Callahan III:
+	- Updated ToC Interface to 60000

@@ -1,0 +1,310 @@
+------------------------------------------------------------------------
+r395 | allara | 2014-12-02 17:07:14 +0000 (Tue, 02 Dec 2014) | 1 line
+Changed paths:
+   A /tags/r394-release (from /trunk:394)
+
+Tagging as r394-release
+------------------------------------------------------------------------
+r394 | allara | 2014-12-02 00:01:25 +0000 (Tue, 02 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- Moved the secondary tooltip 20 pixels further away to account for the possibility of a scrollbar
+------------------------------------------------------------------------
+r393 | allara | 2014-12-01 22:39:23 +0000 (Mon, 01 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Lil' Bling and Sky Bo: Add defeat detection
+------------------------------------------------------------------------
+r391 | allara | 2014-11-26 17:12:34 +0000 (Wed, 26 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Updated drop chance for the new Pilgrim's Bounty items
+------------------------------------------------------------------------
+r390 | allara | 2014-11-24 23:41:55 +0000 (Mon, 24 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- World tooltips will now take group size into account
+------------------------------------------------------------------------
+r388 | allara | 2014-11-24 23:04:36 +0000 (Mon, 24 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Options_Defaults.lua
+
+- Add new rewards from Pilgrim's Bounty: Frightened Bush Chicken and Silver-Plated Turkey Shooter
+------------------------------------------------------------------------
+r386 | allara | 2014-11-20 17:09:14 +0000 (Thu, 20 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Rarity will no longer ever try to detect that the tooltip is visible in order to update it when things change. Players will have to hide/show the tooltip to see the changes. This was causing performance issues for a small percentage of players. The tooltip will also never allow updating during combat. (That last change was made in a prior build.)
+------------------------------------------------------------------------
+r384 | allara | 2014-11-19 17:00:40 +0000 (Wed, 19 Nov 2014) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Bosses in MoP aren't very easily soloable yet with current gear, so I reverted all those items back to requiring a group
+
+------------------------------------------------------------------------
+r382 | allara | 2014-11-18 19:11:18 +0000 (Tue, 18 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Options_Defaults.lua
+
+- Add battle pets: Nightshade Sproutling, Red Goren Egg
+------------------------------------------------------------------------
+r380 | allara | 2014-11-18 17:52:21 +0000 (Tue, 18 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- WoD rare list updates
+------------------------------------------------------------------------
+r378 | allara | 2014-11-16 23:28:25 +0000 (Sun, 16 Nov 2014) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Garn Nighthowl: Changed recommended group size to 25 (up from 5)
+- Sea Turtle: Remove Draenor zones
+------------------------------------------------------------------------
+r376 | allara | 2014-11-12 19:35:34 +0000 (Wed, 12 Nov 2014) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Modules/Options/Options.lua
+
+- Secondary tooltip now shows whether the item can be obtained with a bonus roll
+- Updated translations for fishing nodes
+------------------------------------------------------------------------
+r375 | allara | 2014-11-12 19:05:15 +0000 (Wed, 12 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- Fix some issues with group header display
+------------------------------------------------------------------------
+r374 | allara | 2014-11-12 18:56:37 +0000 (Wed, 12 Nov 2014) | 8 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+At level 100, players gain a 25x multiplier to damage done versus MoP bosses; as a result, I believe the following items are very likely to be soloable, so I've preemptively moved them to the solo section:
+
+- Mounts: Clutch of Ji-Kun, Son of Galleon's Saddle, Spawn of Horridon, Reins of the Astral Cloud Serpent, Reins of the Cobalt Primordial Direhorn, Reins of the Heavenly Onyx Cloud Serpent, Reins of the Thundering Cobalt Cloud Serpent
+- Pets: Dark Quivering Blob, Pygmy Direhorn, Quivering Blob, Droplet of Y'Shaarj, Gooey Sha-ling, Kovok
+
+Kor'kron Juggernaut is a Mythic drop, and I'm not sure if it will be soloable at 100, so I've modified its group size to 2.
+
+Added defeat detection for the following pets. Note that Rarity doesn't check that you defeated it on the right difficulty; that's up to you to ensure: Ji-Kun Hatchling, Dark Quivering Blob, Pygmy Direhorn, Quivering Blob, Blackfuse Bombling, Droplet of Y'Shaarj, Gooey Sha-ling, Kovok, Son of Animus
+------------------------------------------------------------------------
+r372 | allara | 2014-11-12 18:03:06 +0000 (Wed, 12 Nov 2014) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- NPC tooltips now respect the Requires Horde/Alliance flags
+- Reins of the Grand Black War Mammoth: Removed the "doNotUpdateToHighestStat" flag; previously, Blizzard had a bug where killing one boss in VoA counted 2 kills on your statistics. This appears to have been fixed at some point. This change will cause players who attempted VoA during Blizzard's bug (Cataclysm-era), to have their attempts jump way up to match their statistics (if they don't already know the mount). Going forward, the attempts should be correct, assuming no further bugs in VoA statistics.
+------------------------------------------------------------------------
+r370 | allara | 2014-11-11 17:37:35 +0000 (Tue, 11 Nov 2014) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+
+- Collapsed group headers will no longer disappear
+- Rarity's primary tooltip will no longer be allowed to update or appear during combat; it will update itself if necessary when you leave combat
+------------------------------------------------------------------------
+r369 | allara | 2014-11-11 05:12:25 +0000 (Tue, 11 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Fix a syntax error
+------------------------------------------------------------------------
+r368 | allara | 2014-11-10 18:21:47 +0000 (Mon, 10 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Performance improvements to trailing combat scanning
+------------------------------------------------------------------------
+r366 | allara | 2014-11-09 21:51:07 +0000 (Sun, 09 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- Empty group headers will no longer show up in the primary tooltip
+------------------------------------------------------------------------
+r365 | allara | 2014-11-09 20:29:39 +0000 (Sun, 09 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- Cosmetic fix
+------------------------------------------------------------------------
+r364 | allara | 2014-11-09 20:16:54 +0000 (Sun, 09 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Modules/Options/Options.lua
+   M /trunk/Options_Defaults.lua
+
+- This should fix the issue where Rarity took progressively longer and longer to say that it had detected an attempt; eventually this could climb into the seconds if you farmed a lot of attempts without reloading on a relatively slow system
+------------------------------------------------------------------------
+r362 | allara | 2014-11-09 09:14:34 +0000 (Sun, 09 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Darkmoon Eye and Syd the Squid should no longer tell you a holiday event is available when Darkmoon Faire is not in session
+------------------------------------------------------------------------
+r360 | allara | 2014-11-07 21:31:00 +0000 (Fri, 07 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Tooltip updates
+------------------------------------------------------------------------
+r359 | allara | 2014-11-07 18:04:07 +0000 (Fri, 07 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Options_Defaults.lua
+
+- Rarity now tracks the achievements Bloody Rare, Frostbitten, Glorious!, and Gorgrond Monster Hunter. When you mouseover a rare NPC in the world, Rarity will tell you if you need to kill it for an achievement, or if you've already killed it.
+------------------------------------------------------------------------
+r357 | allara | 2014-11-07 04:41:17 +0000 (Fri, 07 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Initialization tweak
+------------------------------------------------------------------------
+r356 | allara | 2014-11-06 20:38:41 +0000 (Thu, 06 Nov 2014) | 7 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Icons/wod.blp
+   M /trunk/Locales.lua
+   M /trunk/Options_Defaults.lua
+
+- Toys! Rarity now supports toys. It will check your toy box to see if you already have the item, and will show you the game's source information for where to obtain the toy. 
+- World drops (i.e. Super Simian Sphere, Orb of Deception) will not be implemented in Rarity since they can drop from every single thing across multiple continents and instances, and it would be far too disruptive to track them. (Plus they're crazy rare.)
+- I'm also not putting Archaeology toys in, as quite a few of them come from Archaeology and it's kind of silly to count an attempt for 10 things every time you complete an archaeology project.
+- If I missed a toy that you think is rare, feel free to let me know. Note that all the upcoming 100% drop toys in WoD are already supported. In order to be considered, the toy probably needs to drop from something (with less than 100% drop rate) or come from a container (with less than 100% rate).
+- Rarity has the tech necessary to support the pickpocketed dice toys, but I don't have a full list of NPC IDs that can drop those items, so they are not implemented yet.
+- The following toys were added with this build: The Heartbreaker, Moonfang Shroud, Moonfang's Paw, Orb of the Sin'dorei, Time-Lost Figurine, Frenzyheart Brew, Unusual Compass, Ai-Li's Skymirror, Blackflame Daggers, Chalice of Secrets, Eternal Kiln, Farwater Conch, Gastropod Shell, Hozen Beach Ball, Kang's Bindstone, Mr. Smite's Brass Compass, Odd Polished Stone, Pandaren Firework Launcher, Panflute of Pandaria, Rime of the Time-Lost Mariner, Warning Sign
+- Updated the WoD icon
+------------------------------------------------------------------------
+r354 | allara | 2014-11-06 01:12:00 +0000 (Thu, 06 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Removed the pickpocketed dice items since I've been told the list of NPCs is wrong and WowHead does not have the list. If a rogue wants to help provide a full list of NPCs that can be used to obtain the dice, I can add them back. In the meantime, pickpocketing support now exists and works, so you can add your own items if you want.
+------------------------------------------------------------------------
+r353 | allara | 2014-11-05 22:09:30 +0000 (Wed, 05 Nov 2014) | 7 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Modules/Options/Options.lua
+   M /trunk/Options_Defaults.lua
+
+- Add support for pickpocketing
+- All players will see pickpocketed items in world tooltips, but it will show "Requires Pickpocketing" in red for non-rogues
+- Pickpocketed items will be marked Unavailable for non-rogues, so if you have "Hide unavailable items" turned on, they will be hidden from the primary tooltip
+- Add: Decahedral Dwarven Dice, Loaded Gnomish Dice, Worn Troll Dice
+- Renamed "Items" to "Toys & Items"
+- Renamed "Companions" to "Battle Pets"
+- The expansion pack name in the secondary tooltip is now shown as the icon
+------------------------------------------------------------------------
+r351 | allara | 2014-11-05 17:31:27 +0000 (Wed, 05 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- WoD rare list update
+------------------------------------------------------------------------
+r349 | allara | 2014-11-05 00:32:08 +0000 (Wed, 05 Nov 2014) | 3 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Modules/Options/Options.lua
+   M /trunk/Options_Defaults.lua
+
+- New option: Primary tooltip scale (lets you scale Rarity's primary tooltip up or down)
+- Options reorganization
+- WoD tooltip updates
+------------------------------------------------------------------------
+r347 | allara | 2014-11-04 05:54:10 +0000 (Tue, 04 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- This should hopefully correct an issue where Rarity doesn't appear to update its count (in the LDB feed or the bar) when repeatedly farming an item
+------------------------------------------------------------------------
+r345 | allara | 2014-11-03 17:07:47 +0000 (Mon, 03 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Time-Locked Box: Set Repeatable to TRUE by default
+------------------------------------------------------------------------
+r344 | allara | 2014-11-03 05:26:56 +0000 (Mon, 03 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- WoD rare list update
+------------------------------------------------------------------------
+r343 | allara | 2014-11-03 00:26:38 +0000 (Mon, 03 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- This is a performance improvement to reduce framerate stutter when Rarity logs a new attempt
+------------------------------------------------------------------------
+r342 | allara | 2014-11-03 00:02:54 +0000 (Mon, 03 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Time-Locked Box: Update list of NPCs (tons of them were missing)
+------------------------------------------------------------------------
+r341 | allara | 2014-11-02 23:26:29 +0000 (Sun, 02 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- Updated fishing timer to 22 seconds (up from 19 seconds)
+------------------------------------------------------------------------
+r339 | allara | 2014-11-02 18:37:26 +0000 (Sun, 02 Nov 2014) | 3 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Modules/Options/Options.lua
+   M /trunk/Options_Defaults.lua
+
+- Added the ability to turn off holiday reminders on an item-by-item basis
+- Added Syd the Squid
+- Darkmoon Eye, Syd the Squid: Changed type to holiday; added defeat detection, holiday reminders, and additional tooltip information
+------------------------------------------------------------------------
+r338 | allara | 2014-11-02 01:11:48 +0000 (Sun, 02 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- Bucket the UPDATE_INSTANCE_INFO, LFG_UPDATE_RANDOM_INFO, and CALENDAR_UPDATE_EVENT_LIST events. Sometimes the server calls these repeatedly.
+------------------------------------------------------------------------
+r336 | allara | 2014-11-01 20:37:35 +0000 (Sat, 01 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- This is an attempt to fix a performance issue reported by several users. Rarity is now much less aggressive about when it asks for instance lock detail, and how much scanning it does when it receives updated instance/dungeon information from the server.
+------------------------------------------------------------------------
+r333 | allara | 2014-10-31 16:50:47 +0000 (Fri, 31 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- Bug fix
+------------------------------------------------------------------------

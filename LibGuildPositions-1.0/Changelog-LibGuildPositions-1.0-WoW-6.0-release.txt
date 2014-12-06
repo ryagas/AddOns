@@ -1,0 +1,19 @@
+------------------------------------------------------------------------
+r54 | nevcairiel | 2014-10-15 07:52:52 +0000 (Wed, 15 Oct 2014) | 1 line
+Changed paths:
+   A /tags/WoW-6.0-release (from /trunk:53)
+
+Tagging as WoW-6.0-release
+------------------------------------------------------------------------
+r53 | nevcairiel | 2014-10-15 07:51:41 +0000 (Wed, 15 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/LibGuildPositions-1.0.toc
+
+Update TOC
+------------------------------------------------------------------------
+r52 | nevcairiel | 2014-10-11 07:39:06 +0000 (Sat, 11 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/LibGuildPositions-1.0.lua
+
+Use Ambiguate to make this work in connected realm guilds
+------------------------------------------------------------------------

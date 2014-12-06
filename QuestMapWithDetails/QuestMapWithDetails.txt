@@ -1,0 +1,16 @@
+Quest Map with Details
+
+I liked new quest log combined with map in WoD. I didn't like that I could no longer see quest details and quest list at the same time.
+
+With old two-panels quest log you could quickly click through several quests and see their details at a glance, but in WoD when details "overwrite" quest list it was no longer possible - you have to drag mouse all the way to "back" button and then back to quest list where you've stopped previously.
+
+This addon fixes just that and combines best of two logs: quest details now appear in separate panel just like in old quest log, but entire log is still combined with map providing you all new WoD improvements.
+
+May require a wide screen or lower UI scale to see all of map + quest list + quest details + quest NPC.
+
+Change log:
+2014-10-29 v2
+* Support Aurora and style quest details frame with its backdrop so it isn't completely transparent.
+
+2014-10-23 v1
+* Initial implementation: quest details and quest NPC portrait are now anchored to the right of quest list, quest list is no longer hidden when you check quest details.
