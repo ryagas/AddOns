@@ -18,7 +18,7 @@ local listError = L["You have reached the maximum number of friends, please remo
 
 local db, options
 local defaults = {
-	profile = {
+	global = {
 		level = 2,
 		dkLevel = 60,
 		respond = true,
@@ -211,8 +211,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(Module.namespace, defaults)
-	db = self.db.profile
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:GetDefaults()

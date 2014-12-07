@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------
 local debug = false
 --[===[@debug@
---debug = true
+debug = true
 --@end-debug@]===]
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI_ChatTweaks", "enUS", true, debug)

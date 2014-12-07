@@ -12,7 +12,7 @@ Module.namespace = string.gsub(Module.name, " ", "")
 local abbrev = {}
 local db, options
 local defaults = {
-	profile = {
+	global = {
 		abbreviations = "",
 		prefixChar = "@"
 	}
@@ -46,9 +46,9 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(Module.namespace, defaults)
-	db = self.db.profile
+	db = self.db.global
 	updateAbbreviations()
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:GetOptions()

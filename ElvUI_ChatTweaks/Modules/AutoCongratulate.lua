@@ -11,7 +11,7 @@ local gsub = string.gsub
 
 local db, options
 local defaults = {
-	profile = {
+	global = {
 		dontAlways = true,
 		chance = 50,
 		minDelay = 1,
@@ -140,8 +140,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(Module.namespace, defaults)
-	db = self.db.profile
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:Info()
@@ -213,7 +213,7 @@ function Module:GetOptions()
 						name = L["Busy"],
 						desc = L["Disable while you're DND flagged."],
 						get = function() return db.dnd end,
-						set = function(_, value) db.dbd = value end,
+						set = function(_, value) db.dnd = value end,
 					},
 					player = {
 						type = "toggle",

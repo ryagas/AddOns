@@ -13,7 +13,7 @@ local hasPrinted = false
 
 local db, options
 local defaults = {
-	profile = {
+	global = {
 		notify = false,
 	},
 }
@@ -75,8 +75,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(self.namespace, defaults)
-	db = self.db.profile
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 	self.hex = "|cffffffff"
 end
 

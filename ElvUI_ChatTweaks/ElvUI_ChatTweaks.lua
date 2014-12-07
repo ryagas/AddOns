@@ -142,9 +142,9 @@ function ElvUI_ChatTweaks:OnEnable()
 			width = "double",
 			desc = v:Info() and v:Info() or (L["Enable "] .. (v.name or k)),
 			order = 11,
-			get = function() return self.db.profile.modules[k] ~= false or false end,
+			get = function() return self.db.global.modules[k] ~= false or false end,
 			set = function(_, value)
-				self.db.profile.modules[k] = value
+				self.db.global.modules[k] = value
 				if value then
 					self:EnableModule(k)
 					self:Print((L["Enabled %s%s|r module."]):format(self.hexColor, k))
@@ -182,15 +182,15 @@ function ElvUI_ChatTweaks:OnEnable()
 	end
 
 	for k, v in self:IterateModules() do
-		if self.db.profile.modules[k] ~= false then v:Enable() end
+		if self.db.global.modules[k] ~= false then v:Enable() end
 	end
 	
 	AceConfig:RegisterOptionsTable(self.addonName, self.options)
 	AceConfigDialog:SetDefaultSize(self.addonName, DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
-	self.options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
-	AceConfig:RegisterOptionsTable(self.addonName .. "Profiles", self.options.args.profiles)
-	self.options.args.profiles.order = -10
+	--self.options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+	--AceConfig:RegisterOptionsTable(self.addonName .. "Profiles", self.options.args.profiles)
+	--self.options.args.profiles.order = -10
 	
 	self.options.args.about = {
 		type = "group",
@@ -382,7 +382,7 @@ function ElvUI_ChatTweaks:SetUpdateConfig(dummy)
 	self.db.RegisterCallback(self, "OnProfileReset", "SetUpdateConfig")
 	for k, v in self:IterateModules() do
 		v:OnInitialize()
-		if self.db.profile.modules[k] ~= false then 
+		if self.db.global.modules[k] ~= false then 
 			v:Enable()
 		else
 			v:Disable()
@@ -432,7 +432,7 @@ end
 
 function ElvUI_ChatTweaks:EnableAllModules()
 	for name, module in self:IterateModules() do
-		if self.db.profile.debugging then
+		if self.db.global.debugging then
 			self:Print((L["Enabled %s%s|r module."]):format(self.hexColor, name))
 		end
 		module:Enable()
@@ -441,7 +441,7 @@ end
 
 function ElvUI_ChatTweaks:DisableAllModules()
 	for name, module in self:IterateModules() do
-		if self.db.profile.debugging then
+		if self.db.global.debugging then
 			self:Print((L["Disabled %s%s|r module."]):format(self.hexColor, name))
 		end
 		module:Disable()
@@ -449,8 +449,8 @@ function ElvUI_ChatTweaks:DisableAllModules()
 end
 
 function ElvUI_ChatTweaks:PLAYER_ENTERING_WORLD(event, ...)
-	self.abbrev = self.db.profile.shorten and L["ElvUI_CT"] or L["ElvUI_ChatTweaks"]
-	if self.db.profile.welcome == true then
+	self.abbrev = self.db.global.shorten and L["ElvUI_CT"] or L["ElvUI_ChatTweaks"]
+	if self.db.global.welcome == true then
 		self:Print((L["Version %s%s|r is loaded. Type %s/ct|r if you need help."]):format(self.hexColor, self.version, self.hexColor))
 	end
 	
@@ -471,7 +471,7 @@ ElvUI_ChatTweaks:RegisterEvent("PLAYER_ENTERING_WORLD")
 function ElvUI_ChatTweaks:SendMessage()
 	local inInstance, instanceType = IsInInstance()
 	
-	if self.db.profile.debugging then
+	if self.db.global.debugging then
 		self:Print((L["Addon Version Sent, Version: |cffffff00%s|r"]):format(tostring(self.version)))
 	end
 	
@@ -494,12 +494,12 @@ function ElvUI_ChatTweaks:SendMessage()
 end
 
 function ElvUI_ChatTweaks:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
-	if not self.db.profile.notify then return end
+	if not self.db.global.notify then return end
 	if sender == UnitName("player") then return end
 	
 	if prefix == "self" and not self.receivedOutOfDateMessage then
 		if tonumber(message) ~= nil and tonumber(message) > tonumber(self.version) then
-			if self.db.profile.debugging then self:Print((L["Your Version: |cffffff00%d|r, Latest Version: |cffffff00%d|r"]):format(tonumber(self.version), tonumber(message))) end
+			if self.db.global.debugging then self:Print((L["Your Version: |cffffff00%d|r, Latest Version: |cffffff00%d|r"]):format(tonumber(self.version), tonumber(message))) end
 			self:Print((L["Your version of %s is out of date.  Latest version is |cff1784d1%d|r."]):format(self.addon, message))
 			self.receivedOutOfDateMessage = true	-- to prevent receiving this message more than once
 		end
@@ -531,17 +531,17 @@ ElvUI_ChatTweaks.options.args = {
 		order = 3,
 		name = L["Welcome Message"],
 		desc = L["Show welcome message when logging in."],
-		get = function() return ElvUI_ChatTweaks.db.profile.welcome end,
-		set = function(_, value) ElvUI_ChatTweaks.db.profile.welcome = value end,
+		get = function() return ElvUI_ChatTweaks.db.global.welcome end,
+		set = function(_, value) ElvUI_ChatTweaks.db.global.welcome = value end,
 	},
 	shorten = {
 		type = "toggle",
 		order = 4,
 		name = L["Use Short Name"],
 		desc = (L["Use %sElvUI_CT|r instead of %sElvUI_ChatTweaks|r in messages printed by the addon."]):format(ElvUI_ChatTweaks.hexColor, ElvUI_ChatTweaks.hexColor),
-		get = function() return ElvUI_ChatTweaks.db.profile.shorten end,
+		get = function() return ElvUI_ChatTweaks.db.global.shorten end,
 		set = function(_, value)
-			ElvUI_ChatTweaks.db.profile.shorten = value
+			ElvUI_ChatTweaks.db.global.shorten = value
 			ElvUI_ChatTweaks.abbrev = value and L["ElvUI_CT"] or L["ElvUI_ChatTweaks"]
 		end,
 	},
@@ -550,16 +550,16 @@ ElvUI_ChatTweaks.options.args = {
 		order = 5,
 		name = L["New Version Notify"],
 		desc = L["Notify on new release?"],
-		get = function() return ElvUI_ChatTweaks.db.profile.notify end,
-		set = function(_, value) ElvUI_ChatTweaks.db.profile.notify = value end,
+		get = function() return ElvUI_ChatTweaks.db.global.notify end,
+		set = function(_, value) ElvUI_ChatTweaks.db.global.notify = value end,
 	},
 	debugging = {
 		type = "toggle",
 		order = 6,
 		name = L["Enable Debugging"],
 		desc = L["Enable various debugging messages to help with errors or undesired functioning."],
-		get = function() return ElvUI_ChatTweaks.db.profile.debugging end,
-		set = function(_, value) ElvUI_ChatTweaks.db.profile.debugging = value; StaticPopup_Show("ECT_RLUI"); end,
+		get = function() return ElvUI_ChatTweaks.db.global.debugging end,
+		set = function(_, value) ElvUI_ChatTweaks.db.global.debugging = value; StaticPopup_Show("ECT_RLUI"); end,
 	},
 	toggleEC = {
 		type = "execute",
@@ -571,7 +571,7 @@ ElvUI_ChatTweaks.options.args = {
 }
 
 ElvUI_ChatTweaks.defaults = {
-	profile = {
+	global = {
 		welcome = true,
 		notify = true,
 		debugging = false,

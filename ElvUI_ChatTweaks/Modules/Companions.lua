@@ -8,7 +8,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("ElvUI_ChatTweaks", false)
 Module.name = L["Companions"]
 
 local db, defaults = {}, {
-	profile = {
+	global = {
 		ppm = 25,
 		zone = {
 			enable = true,
@@ -154,9 +154,9 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace("Companions", defaults)
-	db = self.db.profile
+	db = self.db.global
 	db.global = self.db.global
-	Module.debug = ElvUI_ChatTweaks.db.profile.debugging
+	Module.debug = ElvUI_ChatTweaks.db.global.debugging
 	
 	-- fill in the pet families w/ the localized strings
 	for i = 1, 10 do

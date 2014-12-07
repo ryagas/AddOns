@@ -9,7 +9,7 @@ Module.namespace = string.gsub(Module.name, " ", "")
 
 local db, options
 local defaults = {
-	profile = {
+	global = {
 		gains = true,
 		throttle = 5,
 		completed = false,
@@ -79,8 +79,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(self.namespace, defaults)
-	db = self.db.profile
-	self.debug = ElvUI_ChatTweaks.db.profile.debugginga
+	db = self.db.global
+	self.debug = ElvUI_ChatTweaks.db.global.debugginga
 end
 
 function Module:GetOptions()

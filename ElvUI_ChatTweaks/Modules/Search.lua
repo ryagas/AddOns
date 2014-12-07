@@ -9,7 +9,7 @@ Module.namespace = string.gsub(Module.name, " ", "")
 
 local db, options
 local defaults = {
-	profile = {
+	global = {
 		scrape = 30,
 		highlight = true,
 		color = {r = 0, g = 1.0, b = 0.59},
@@ -118,8 +118,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(Module.namespace, defaults)
-	db = self.db.profile
-	self.debugging = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	self.debugging = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:GetOptions()

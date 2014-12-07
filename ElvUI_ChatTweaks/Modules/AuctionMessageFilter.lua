@@ -13,7 +13,7 @@ local format = string.format
 local db
 local options
 local defaults = {
-	profile = {
+	global = {
 		auctionStarted = true,
 		auctionRemoved = true,
 		auctionSold = true,
@@ -58,8 +58,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(Module.namespace, defaults)
-	db = self.db.profile
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:Info()

@@ -13,7 +13,7 @@ Module.namespace = string.gsub(Module.name, " ", "")
 
 local db, options
 local defaults = {
-	profile = {
+	global = {
 		sound = "ChatTweaks Alert",
 		master = true,
 		ignoreYours = true,
@@ -77,8 +77,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(self.namespace, defaults)
-	db = self.db.profile
-	Module.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	Module.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:RefreshChannels()

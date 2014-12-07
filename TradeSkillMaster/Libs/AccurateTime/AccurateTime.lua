@@ -20,7 +20,7 @@ Website: http://www.wowace.com/addons/accuratetime/
 --]]
 
 local _G = _G
-local AT_VERSION = 6
+local AT_VERSION = 7
 
 
 -- Check if we're already loaded
@@ -34,10 +34,6 @@ if _G.AccurateTime then
 	-- undo hook so we can re-hook
 	debugprofilestart = _G.AccurateTime._debugprofilestart
 	debugprofilestop = _G.AccurateTime._debugprofilestop
-else
-	-- reset timer in the back-end so we avoid potential (unlikely) overflows
-	-- only do this the first time we're loaded
-	debugprofilestart()
 end
 
 
@@ -94,7 +90,7 @@ end
 
 
 -- apply hooks
-debugprofilestart = function() error("You should never use debugprofilestart()!", 1) end
+debugprofilestart = function() error("You should never use debugprofilestart()!", 2) end
 debugprofilestop = function() return AccurateTime._currentDebugprofilestop() end
 
 

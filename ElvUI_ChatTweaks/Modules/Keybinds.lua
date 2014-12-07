@@ -31,7 +31,7 @@ BINDING_NAME_ECTNINE = (L["Channel %d"]):format(9)
 BINDING_NAME_ECTSMARTGROUP = L["Smart Group Channel"]
 
 function Module:OnInitialize()
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:GetOptions()

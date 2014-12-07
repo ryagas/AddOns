@@ -56,7 +56,7 @@ local defaults = {
 		names = {},
 		levels = {},
 	},
-	profile = {
+	global = {
 		saveData = false,
 		nameColoring = "CLASS",
 		leftBracket = "[",
@@ -70,8 +70,6 @@ local defaults = {
 		nickColor = {r = 0.627, g = 0.627, b = 0.627},
 		emphasizeSelfInText = true,
 		noRealNames = false,
-	},
-	global = {
 		classes = {	
 			DRUID = L["Druid"],
 			MAGE = L["Mage"],
@@ -258,9 +256,9 @@ end
 
 local function fixLogin(head, id, misc, who, extra, colon)
 	local left, right = "", ""
-	if not Module.db.profile.bnetBrackets then
-		left = Module.db.profile.leftBracket or "["
-		right = Module.db.profile.rightBracket or "]"
+	if not Module.db.global.bnetBrackets then
+		left = Module.db.global.leftBracket or "["
+		right = Module.db.global.rightBracket or "]"
 	end
 	return head .. id .. misc .. left .. who .. right .. extra .. (misc:match("BN_INLINE_TOAST_ALERT")) and "" or colon
 end
@@ -270,9 +268,9 @@ local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 	local left, right = "", ""
 	if chatName and charName ~= "" then
 		if storedName then storedName[id] = charName end
-		fakeName = Module.db.profile.noRealNames and charName or fakeName
+		fakeName = Module.db.global.noRealNames and charName or fakeName
 	else
-		if Module.db.profile.noRealNames and storedName and storedName[id] then
+		if Module.db.global.noRealNames and storedName and storedName[id] then
 			fakeName = storedName[id]
 			storedName[id] = nil
 		end
@@ -282,16 +280,16 @@ local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 		misc = misc:sub(1, -2)
 	end
 	
-	if not Module.db.profile.bnetBrackets then
-		left = Module.db.profile.leftBracket
-		right = Module.db.profile.rightBracket
+	if not Module.db.global.bnetBrackets then
+		left = Module.db.global.leftBracket
+		right = Module.db.global.rightBracket
 	end
 	
 	if english and english ~= "" then
 		if not fakeName:match("|cff") then
-			if Module.db.profile.nameColoring == "CLASS" then
+			if Module.db.global.nameColoring == "CLASS" then
 				fakeName = "|cff" .. Module:GetColor(english) .. fakeName .. "|r"
-			elseif Module.db.profile.nameColoring == "NAME" then
+			elseif Module.db.global.nameColoring == "NAME" then
 				fakeName = Module:ColorName(fakeName)
 			end
 		end
@@ -318,22 +316,22 @@ local function changeName(header, name, extra, count, display, body)
 	local level
 	local tab = Module.db.realm.names[name] or localNames[name]
 	if tab then
-		level = Module.db.profile.includeLevel and tab.level or nil
+		level = Module.db.global.includeLevel and tab.level or nil
 	end
 	
-	if level and (level ~= MAX_PLAYER_LEVEL or not Module.db.profile.excludeMaxLevel) then
-		if Module.db.profile.levelColor == "DIFF" then
+	if level and (level ~= MAX_PLAYER_LEVEL or not Module.db.global.excludeMaxLevel) then
+		if Module.db.global.levelColor == "DIFF" then
 			local color = GetQuestDifficultyColor(level)
 			level = ("|cff%02x%02x%02x%s|r"):format(color.r * 255, color.g * 255, color.b * 255, level)
-		elseif Module.db.profile.levelColor == "CLASS" and display:match("|cff......") then
+		elseif Module.db.global.levelColor == "CLASS" and display:match("|cff......") then
 			level = gsub(display, "((|cff......).-|r)", function(string, color)
 				return format("%s%s|r", color, level)
 			end)
 		end
-		display = ("%s%s%s"):format(Module.db.profile.levelLocation == "BEFORE" and level or display, Module.db.profile.separator, Module.db.profile.levelLocation == "AFTER" and level or display)
+		display = ("%s%s%s"):format(Module.db.global.levelLocation == "BEFORE" and level or display, Module.db.global.separator, Module.db.global.levelLocation == "AFTER" and level or display)
 	end
 	
-	return ("|Hplayer:%s%s%s|h%s%s%s|h%s"):format(name, extra, count, Module.db.profile.leftBracket, display, Module.db.profile.rightBracket, body)
+	return ("|Hplayer:%s%s%s|h%s%s%s|h%s"):format(name, extra, count, Module.db.global.leftBracket, display, Module.db.global.rightBracket, body)
 end
 
 local function capitalize(str)
@@ -348,10 +346,10 @@ function Module:ColorName(name)
 	if cache[name] then
 		name = cache[name]
 	else
-		if Module.db.profile.nameColoring ~= "NONE" then
-			local color = Module.db.profile.nickColor
-			if Module.db.profile.nameColoring == "CLASS" then
-				color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class:upper()] or (class and RAID_CLASS_COLORS[class:upper()] or Module.db.profile.nickColor)
+		if Module.db.global.nameColoring ~= "NONE" then
+			local color = Module.db.global.nickColor
+			if Module.db.global.nameColoring == "CLASS" then
+				color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class:upper()] or (class and RAID_CLASS_COLORS[class:upper()] or Module.db.global.nickColor)
 			elseif coloring == "NAME" then
 				color = getNameColor(name)
 			end
@@ -374,7 +372,7 @@ function Module:FRIENDLIST_UPDATE(event)
 	for i = 1, GetNumFriends() do
 		local name, level, class = GetFriendInfo(i)
 		if class then
-			self:AddPlayer(name, localClass[class], level, Module.db.profile.saveFriends)
+			self:AddPlayer(name, localClass[class], level, Module.db.global.saveFriends)
 		end
 	end
 end
@@ -387,7 +385,7 @@ function Module:GUILD_ROSTER_UPDATE(event)
 		if online and not isMobile then
 			channels.GUILD[name] = name
 		end
-		if not isMobile then self:AddPlayer(name, class, level, Module.db.profile.saveGuild) end
+		if not isMobile then self:AddPlayer(name, class, level, Module.db.global.saveGuild) end
 	end
 end
 
@@ -400,7 +398,7 @@ function Module:GROUP_ROSTER_UPDATE(event)
 			local name, _, _, level, _, class = GetRaidRosterInfo(i)
 			if name and level and class then
 				channels.RAID[name] = true
-				self:AddPlayer(name, class, level, Module.db.profile.saveGroup)
+				self:AddPlayer(name, class, level, Module.db.global.saveGroup)
 			end
 		end
 	elseif IsInGroup() then
@@ -410,7 +408,7 @@ function Module:GROUP_ROSTER_UPDATE(event)
 			local _, class = UnitClass(unit)
 			local level = UnitLevel(unit)
 			channels.PARTY[name] = true
-			self:AddPlayer(name, class, level, Module.db.profile.saveGroup)
+			self:AddPlayer(name, class, level, Module.db.global.saveGroup)
 		end
 	end
 end
@@ -419,22 +417,22 @@ function Module:PLAYER_TARGET_CHANGED(event)
 	if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") then return end
 	local _, class = UnitClass("target")
 	local name, level = UnitName("target"), UnitLevel("target")
-	self:AddPlayer(name, class, level, Module.db.profile.saveTarget)
+	self:AddPlayer(name, class, level, Module.db.global.saveTarget)
 end
 
 function Module:UPDATE_MOUSEOVER_UNIT(event)
 	if not UnitExists("mouseover") or not UnitIsPlayer("mouseover") or not UnitIsFriend("player", "mouseover") then return end
 	local _, class = UnitClass("mouseover")
 	local name, level = UnitName("mouseover"), UnitLevel("mouseover")
-	self:AddPlayer(name, class, level, Module.db.profile.saveTarget)
+	self:AddPlayer(name, class, level, Module.db.global.saveTarget)
 end
 
 function Module:WHO_LIST_UPDATE(event)
-	if GetNumWhoResults() <= 3 or Module.db.profile.saveAllWho then
+	if GetNumWhoResults() <= 3 or Module.db.global.saveAllWho then
 		for i =1, GetNumWhoResults() do
 			local name, _, level, _, _, _, class = GetWhoInfo(i)
 			if class then
-				self:AddPlayer(name, class, level, Module.db.profile.saveWho)
+				self:AddPlayer(name, class, level, Module.db.global.saveWho)
 			end
 		end
 	end
@@ -499,7 +497,7 @@ function Module:OnEnable()
 		self:RawHook(cf, "AddMessage", true)
 	end
 	
-	if Module.db.profile.useTabComplete then
+	if Module.db.global.useTabComplete then
 		AceTab:RegisterTabCompletion("ElvUI_ChatTweaks", nil, tabComplete)
 	end
 	
@@ -507,7 +505,7 @@ function Module:OnEnable()
 		CUSTOM_CLASS_COLORS:RegisterCallback(wipeCache)
 	end
 	
-	if Module.db.profile.noRealNames then
+	if Module.db.global.noRealNames then
 		local _, n = BNGetNumFriends()
 		for i = 1, n do
 			local _, _, _, toon, id = BNGetFriendInfo(i)
@@ -546,7 +544,7 @@ function Module:OnInitialize()
 			self.db.realm.names[index] = {class = v}
 		end
 	end
-	--db = self.Module.db.profile.profile
+	--db = self.Module.db.global.profile
 	--Module.db.realm = self.Module.db.realm
 	--Module.db.global = self.Module.db.global
 	
@@ -554,7 +552,7 @@ function Module:OnInitialize()
 		localClass[value] = index
 	end
 	
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:Info()
@@ -574,10 +572,10 @@ function Module:GetOptions()
 						name = L["Guild"],
 						desc = L["Save class data from guild between sessions."],
 						get = function()
-							return Module.db.profile.saveGuild
+							return Module.db.global.saveGuild
 						end,
 						set = function(_,  v)
-							Module.db.profile.saveGuild = v
+							Module.db.global.saveGuild = v
 							Module:UpdateSaveData(v)
 						end
 					},
@@ -586,10 +584,10 @@ function Module:GetOptions()
 						name = L["Group"],
 						desc = L["Save class data from groups between sessions."],
 						get = function()
-							return Module.db.profile.saveGroup
+							return Module.db.global.saveGroup
 						end,
 						set = function(_,  v)
-							Module.db.profile.saveGroup = v
+							Module.db.global.saveGroup = v
 							Module:UpdateSaveData(v)
 						end
 					},
@@ -598,10 +596,10 @@ function Module:GetOptions()
 						name = L["Friends"],
 						desc = L["Save class data from friends between sessions."],
 						get = function()
-							return Module.db.profile.saveFriends
+							return Module.db.global.saveFriends
 						end,
 						set = function(_,  v)
-							Module.db.profile.saveFriends = v
+							Module.db.global.saveFriends = v
 							Module:UpdateSaveData(v)
 						end
 					},
@@ -610,10 +608,10 @@ function Module:GetOptions()
 						name = L["Target/Mouseover"],
 						desc = L["Save class data from target/mouseover between sessions."],
 						get = function()
-							return Module.db.profile.saveTarget
+							return Module.db.global.saveTarget
 						end,
 						set = function(_,  v)
-							Module.db.profile.saveTarget = v
+							Module.db.global.saveTarget = v
 							Module:UpdateSaveData(v)
 						end
 					},
@@ -623,10 +621,10 @@ function Module:GetOptions()
 						desc = L["Save class data from /who queries between sessions."],
 						order = 104,
 						get = function()
-							return Module.db.profile.saveWho
+							return Module.db.global.saveWho
 						end,
 						set = function(_,  v)
-							Module.db.profile.saveWho = v
+							Module.db.global.saveWho = v
 							Module:UpdateSaveData(v)
 						end
 					},
@@ -634,13 +632,13 @@ function Module:GetOptions()
 						type = "toggle",
 						name = L["Save all /who data"],
 						desc = L["Will save all data for large /who queries"],
-						disabled = function() return not Module.db.profile.saveWho end,
+						disabled = function() return not Module.db.global.saveWho end,
 						order = 105,
 						get = function()
-							return Module.db.profile.saveAllWho
+							return Module.db.global.saveAllWho
 						end,
 						set = function(_,  v)
-							Module.db.profile.saveAllWho = v
+							Module.db.global.saveAllWho = v
 						end
 					},
 					resetDB = {
@@ -668,9 +666,9 @@ function Module:GetOptions()
 						name = L["Include level"],
 						desc = L["Include the player's level"],
 						order = 1,
-						get = function() return Module.db.profile.includeLevel end,
+						get = function() return Module.db.global.includeLevel end,
 						set = function(_,  val)
-							Module.db.profile.includeLevel = val
+							Module.db.global.includeLevel = val
 							Module:WipeCache()
 						end
 					},
@@ -679,10 +677,10 @@ function Module:GetOptions()
 						order = 2,
 						name = L["Separator"],
 						desc = L["Character to use between the name and level"],
-						disabled = function() return not Module.db.profile.includeLevel end,
-						get = function() return Module.db.profile.separator end,
+						disabled = function() return not Module.db.global.includeLevel end,
+						get = function() return Module.db.global.separator end,
 						set = function(i, v)
-							Module.db.profile.separator = v
+							Module.db.global.separator = v
 						end
 					},
 					colorLevelByDifficulty = {
@@ -695,10 +693,10 @@ function Module:GetOptions()
 							["CLASS"] = L["Player Class"],
 							["NONE"] = L["None"],
 						},
-						disabled = function() return not Module.db.profile.includeLevel end,
-						get = function() return Module.db.profile.levelColor end,
+						disabled = function() return not Module.db.global.includeLevel end,
+						get = function() return Module.db.global.levelColor end,
 						set = function(_,  v)
-							Module.db.profile.levelColor = v
+							Module.db.global.levelColor = v
 							Module:WipeCache()
 						end,
 					},
@@ -707,10 +705,10 @@ function Module:GetOptions()
 						name = L["Exclude max levels"],
 						desc = L["Exclude level display for max level characters"],
 						order = 4,
-						disabled = function() return not Module.db.profile.includeLevel end,
-						get = function() return Module.db.profile.excludeMaxLevel end,
+						disabled = function() return not Module.db.global.includeLevel end,
+						get = function() return Module.db.global.excludeMaxLevel end,
 						set = function(_,  val)
-							Module.db.profile.excludeMaxLevel = val
+							Module.db.global.excludeMaxLevel = val
 							Module:WipeCache()
 						end,
 					},
@@ -722,9 +720,9 @@ function Module:GetOptions()
 							["BEFORE"] = L["Before"],
 							["AFTER"] = L["After"],
 						},
-						disabled = function() return not Module.db.profile.includeLevel end,
-						get = function() return Module.db.profile.levelLocation end,
-						set = function(_, value) Module.db.profile.levelLocation = value end,
+						disabled = function() return not Module.db.global.includeLevel end,
+						get = function() return Module.db.global.levelLocation end,
+						set = function(_, value) Module.db.global.levelLocation = value end,
 					}
 				}
 			},
@@ -733,9 +731,9 @@ function Module:GetOptions()
 				order = 14,
 				name = L["Left Bracket"],
 				desc = L["Character to use for the left bracket"],
-				get = function() return Module.db.profile.leftBracket end,
+				get = function() return Module.db.global.leftBracket end,
 				set = function(i, v)
-					Module.db.profile.leftBracket = v
+					Module.db.global.leftBracket = v
 					leftBracket = v
 				end
 			},
@@ -744,9 +742,9 @@ function Module:GetOptions()
 				order = 14,
 				name = L["Right Bracket"],
 				desc = L["Character to use for the right bracket"],
-				get = function() return Module.db.profile.rightBracket end,
+				get = function() return Module.db.global.rightBracket end,
 				set = function(i, v)
-					Module.db.profile.rightBracket = v
+					Module.db.global.rightBracket = v
 					rightBracket = v
 				end
 			},
@@ -760,9 +758,9 @@ function Module:GetOptions()
 				order = 21,
 				name = L["RealID Brackets"],
 				desc = L["Strip RealID brackets"],
-				get = function() return Module.db.profile.bnetBrackets end,
+				get = function() return Module.db.global.bnetBrackets end,
 				set = function(_, v)
-					Module.db.profile.bnetBrackets = v
+					Module.db.global.bnetBrackets = v
 				end,
 			},
 			bnetRealNames = {
@@ -770,9 +768,9 @@ function Module:GetOptions()
 				order = 22,
 				name = L["No RealNames"],
 				desc = L["Show toon names instead of real names"],
-				get = function() return Module.db.profile.noRealNames end,
+				get = function() return Module.db.global.noRealNames end,
 				set = function(_, v)
-					Module.db.profile.noRealNames = v
+					Module.db.global.noRealNames = v
 				end,
 			},
 			useTabComplete = {
@@ -780,9 +778,9 @@ function Module:GetOptions()
 				order = 19,
 				name = L["Use Tab Complete"],
 				desc = L["Use tab key to automatically complete character names."],
-				get = function() return Module.db.profile.useTabComplete end,
+				get = function() return Module.db.global.useTabComplete end,
 				set = function(_,  v)
-					Module.db.profile.useTabComplete = v
+					Module.db.global.useTabComplete = v
 					if v and not AceTab:IsTabCompletionRegistered("ElvUI_ChatTweaks") then
 						AceTab:RegisterTabCompletion("ElvUI_ChatTweaks", nil, tabComplete)
 					elseif not v and AceTab:IsTabCompletionRegistered("ElvUI_ChatTweaks") then
@@ -795,9 +793,9 @@ function Module:GetOptions()
 				order = 17,
 				name = L["Color self in messages"],
 				desc = L["Color own charname in messages."],
-				get = function() return Module.db.profile.colorSelfInText end,
+				get = function() return Module.db.global.colorSelfInText end,
 				set = function(i, v)
-					Module.db.profile.colorSelfInText = v
+					Module.db.global.colorSelfInText = v
 					colorSelfInText = v
 				end
 			},
@@ -806,9 +804,9 @@ function Module:GetOptions()
 				order = 18,
 				name = L["Emphasize Self"],
 				desc = L["Add surrounding brackets to own charname in messages."],
-				get = function() return Module.db.profile.emphasizeSelfInText end,
+				get = function() return Module.db.global.emphasizeSelfInText end,
 				set = function(i, v)
-					Module.db.profile.emphasizeSelfInText = v
+					Module.db.global.emphasizeSelfInText = v
 					emphasizeSelfInText = v
 				end
 			},
@@ -822,9 +820,9 @@ function Module:GetOptions()
 					NAME = L["Name"],
 					NONE = L["None"],
 				},
-				get = function() return Module.db.profile.nameColoring end,
+				get = function() return Module.db.global.nameColoring end,
 				set = function(_,  val)
-					Module.db.profile.nameColoring = val
+					Module.db.global.nameColoring = val
 					Module:WipeCache()
 				end
 			},
@@ -833,11 +831,11 @@ function Module:GetOptions()
 				order = 16,
 				name = L["Default Name Color"],
 				desc = L["The default color to use to color names."],
-				get = function() return Module.db.profile.nickColor.r, Module.db.profile.nickColor.g, Module.db.profile.nickColor.b end,
+				get = function() return Module.db.global.nickColor.r, Module.db.global.nickColor.g, Module.db.global.nickColor.b end,
 				set = function(_, r, g, b)
-					Module.db.profile.nickColor.r = r
-					Module.db.profile.nickColor.g = g
-					Module.db.profile.nickColor.b = b
+					Module.db.global.nickColor.r = r
+					Module.db.global.nickColor.g = g
+					Module.db.global.nickColor.b = b
 				end
 			},
 		}

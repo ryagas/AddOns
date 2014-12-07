@@ -1,12 +1,12 @@
 ## Interface: 60000
 ## Author: Lockslap
 ## Title: |cff1784d1ElvUI|r Chat Tweaks
-## Version: 6.51
+## Version: 7.0
 ## Notes: Provides various tweaks to ElvUI's chat frames.
 ## RequiredDeps: ElvUI
 ## OptionalDeps: SharedMedia
 ## SavedVariables: ElvUI_ChatTweaksDB
-## X-Curse-Packaged-Version: 6.51
+## X-Curse-Packaged-Version: 7.0
 ## X-Curse-Project-Name: ElvUI Chat Tweaks
 ## X-Curse-Project-ID: elvui_chattweaks
 ## X-Curse-Repository-ID: wow/elvui_chattweaks/mainline

@@ -9,7 +9,7 @@ Module.namespace = string.gsub(Module.name, " ", "")
 
 local db, options
 local defaults = {
-	profile = {
+	global = {
 		trigger = "!8ball",
 		whisper = true,
 		throttle = 5,
@@ -130,8 +130,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(self.namespace, defaults)
-	db = self.db.profile
-	Module.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	Module.debug = ElvUI_ChatTweaks.db.global.debugging
 	self.waiting = false	-- for our throttle
 end
 

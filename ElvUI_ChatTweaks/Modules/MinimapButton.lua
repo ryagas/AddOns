@@ -9,7 +9,7 @@ Module.namespace = string.gsub(Module.name, " ", "")
 
 local db
 local defaults = {
-	profile = {
+	global = {
 		minimap = {
 			hide = false,
 		}
@@ -72,8 +72,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(Module.namespace, defaults)
-	db = self.db.profile
-	Module.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	Module.debug = ElvUI_ChatTweaks.db.global.debugging
 	LDBI:Register(ElvUI_ChatTweaks.addonName, LDB, db.minimap)
 end
 
