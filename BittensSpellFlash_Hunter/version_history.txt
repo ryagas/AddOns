@@ -1,3 +1,8 @@
+== Version 60000.13
+Make Barrage and Powershot optional, since both have consequences beyond just
+doing damage that you might need to avoid triggering.  Glaive Toss is still
+mandatory because it is a more or less single target spell.
+
 == Version 60000.12
 Really, really fix the damn lua error.
 

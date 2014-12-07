@@ -102,7 +102,7 @@ addOptionalSpell("A Murder of Crows", nil, {
    MyDebuff = "A Murder of Crows",
 })
 
-addSpell("Powershot", nil, {
+addOptionalSpell("Powershot", nil, {
    Cooldown = 45,
    CechkFirst = function(z)
       c.MakeOptional(z, s.Moving("player"))
@@ -110,11 +110,11 @@ addSpell("Powershot", nil, {
    end,
 })
 
-addSpell("Barrage", nil, {
+addOptionalSpell("Barrage", nil, {
    Cooldown = 30,
 })
 
-addSpell("Barrage", "for BM", {
+addOptionalSpell("Barrage", "for BM", {
    Cooldown = 30,
    CheckFirst = function()
       local frenzy = s.BuffStack(c.GetID("Frenzy"), "pet")
@@ -126,7 +126,7 @@ addSpell("Barrage", "for BM", {
    end,
 })
 
-addSpell("Barrage", "for AoE", {
+addOptionalSpell("Barrage", "for AoE", {
    Cooldown = 30,
    CheckFirst = function()
       return c.EstimatedHarmTargets > 1
