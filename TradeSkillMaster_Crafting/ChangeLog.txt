@@ -1,3 +1,10 @@
+v2.6.15
+*Fixed an issue where the cost per mat was displayed incorrectly if more than one item was made per craft.
+
+v2.6.14
+*Fixed an issue with restock queue and crafts that produce multiple items.
+*Fixed an issue where crafting tab would show negative amount queued.
+
 v2.6.13
 *Ink must be in your bags to use for vendor trade so gather from bank if needed.
 
