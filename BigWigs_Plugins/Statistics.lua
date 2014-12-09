@@ -49,12 +49,10 @@ plugin.defaultDB = {
 	showBar = true,
 }
 
-local function checkDisabled() return not plugin.db.profile.enabled end
-plugin.subPanelOptions = {
-	key = "Big Wigs: Boss Statistics",
-	name = L.bossStatistics,
-	options = {
-		name = L.bossStatistics,
+do
+	local function checkDisabled() return not plugin.db.profile.enabled end
+	plugin.pluginOptions = {
+		name = LibStub("AceLocale-3.0"):GetLocale("Big Wigs").statistics,
 		type = "group",
 		childGroups = "tab",
 		get = function(i) return plugin.db.profile[i[#i]] end,
@@ -132,8 +130,8 @@ plugin.subPanelOptions = {
 				width = "full",
 			},
 		},
-	},
-}
+	}
+end
 
 -------------------------------------------------------------------------------
 -- Initialization
