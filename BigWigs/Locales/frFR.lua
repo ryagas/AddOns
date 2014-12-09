@@ -29,13 +29,8 @@ L["chatMessages"] = "Messages de la fenêtre de discussion"
 L["chatMessagesDesc"] = "Affiche tous les messages de BigWigs dans la fenêtre de discussion par défaut, en plus de son affichage normal."
 L["colors"] = "Couleurs"
 L["configure"] = "Configuration"
-L["configureBtnDesc"] = [=[Ferme la fenêtre des options de l'interface et vous permet de configurer l'affichage des barres et des messages.
-
-Si vous voulez personnaliser plus en profondeur le reste de Big Wigs, étendez l'arbre de configuration sur la gauche et cliquez sur "Personnaliser...".]=]
-L["configureBtnName"] = "Déplacer & Configurer >>> Barres/Messages/..."
 L["contact"] = "Contact"
 L["coreAddonDisabled"] = "Big Wigs ne fonctionnera pas correctement car l'addon %s est désactivé. Vous pouvez l'activer via le panneau de contrôle des addons à l'écran de sélection du personnage."
-L["customizeBtn"] = "Personnaliser..."
 L["dbmFaker"] = "Prétendre d'utiliser DBM"
 L["dbmFakerDesc"] = "Si un utilisateur de DBM effectue une vérification des versions pour voir qui utilise DBM, il vous verra sur la liste. Utile pour les guildes qui forcent l'utilisation de DBM."
 L["dbmUsers"] = "Utilisateurs de DBM :"
@@ -86,7 +81,6 @@ L["normal"] = "Normal"
 L["officialRelease"] = "Vous utilisez une version FINALISÉE de Big Wigs %s (r%d)."
 L["oldVersionsInGroup"] = "Certains joueurs de votre groupe ont d'anciennes versions ou n'ont pas Big Wigs. Tapez /bwv pour plus de détails."
 L["outOfDate"] = "Périmé :"
-L["profiles"] = "Profils"
 L["PROXIMITY"] = "Affichage de proximité"
 L["PROXIMITY_desc"] = "Certaines techniques nécessitent que vous vous espaciez. L'affichage de proximité sera paramétré spécifiquement pour cette technique afin que vous puissiez voir d'un coup d'oeil si vous êtes en sécurité."
 L["PULSE"] = "Pulse"
@@ -128,11 +122,17 @@ L["tankhealer"] = "|cFFFF0000Alertes pour tank & soigneur uniquement.|r "
 L["TANK_HEALER"] = "Tank & soigneur uniquement"
 L["TANK_HEALER_desc"] = "Certaines techniques sont importantes uniquement pour les tanks et les soigneurs. Si vous souhaitez voir des alertes pour cette technique quelque soit votre rôle, désactivez cette option."
 L["test"] = "Test"
+L["testBarsBtn"] = "Créer une barre de test" -- Needs review
+L["testBarsBtn_desc"] = "Créée une barre pour que vous puissiez tester vos paramètres d'affichage actuels." -- Needs review
 L["thanks"] = "Merci aux personnes suivantes pour leur aide :"
+L["toggleAnchorsBtn"] = "Afficher/cacher ancres" -- Needs review
+L["toggleAnchorsBtn_desc"] = "Affiche ou cache toutes les ancres." -- Needs review
 L["tooltipHint"] = [=[|cffeda55fClic gauche|r pour redémarrer les modules actifs.
 |cffeda55fAlt-Clic gauche|r pour les désactiver.
 |cffeda55fClic droit|r pour accéder aux options.]=]
 L["upToDate"] = "À jour :"
+L["VOICE"] = "Voix" -- Needs review
+L["VOICE_desc"] = "Si vous avez un plugin vocal installé, cette option l'activera afin qu'il puisse jouer un fichier son qui dira cette alerte à voix haute pour vous." -- Needs review
 L["warmup"] = "Préparation"
 L["warmup_desc"] = "Temps avant que le combat face au boss ne commence."
 L["website"] = "Site web"

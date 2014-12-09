@@ -14,6 +14,7 @@ mod.engageId = 1705
 
 local phase = 1
 local mineCount = 1
+local markOfChaosTarget, brandedOnMe = nil, nil
 local fixateList = {}
 
 --------------------------------------------------------------------------------
@@ -22,12 +23,10 @@ local fixateList = {}
 
 local L = mod:NewLocale("enUS", true)
 if L then
+	L.branded_say = "%s (%d) %dy"
+
 	L.volatile_anomaly = -9919 -- Volatile Anomaly
 	L.volatile_anomaly_icon = "spell_arcane_arcane04"
-	
-	L.arcane_wrath = "{156238} ({156225})" -- Arcane Wrath (Branded)
-	L.arcane_wrath_desc = 156238
-	L.arcane_wrath_icon = 156238
 
 	L.custom_off_fixate_marker = "Fixate Marker"
 	L.custom_off_fixate_marker_desc = "Mark Gorian Warmage's Fixate targets with {rt1}{rt2}, requires promoted or leader.\n|cFFFF0000Only 1 person in the raid should have this enabled to prevent marking conflicts.|r"
@@ -41,16 +40,31 @@ L = mod:GetLocale()
 
 function mod:GetOptions()
 	return {
-		{159515, "TANK"}, {"arcane_wrath", "ICON", "SAY"}, 156467, 156471, {158605, "ICON", "PROXIMITY", "FLASH", "SAY"}, 157349,
+		--[[ Imperator Mar'gok ]]--
+		{159515, "TANK"}, -- Accelerated Assault
+		156238, -- Arcane Wrath
+		{156225, "ICON", "PROXIMITY", "SAY", "ME_ONLY"}, -- Branded
+		156467, -- Destructive Resonance
+		156471, -- Summon Arcane Aberration
+		{158605, "ICON", "PROXIMITY", "FLASH", "SAY"}, -- Mark of Chaos
+		157349, -- Force Nova
+		--[[ Intermission ]]--
 		"volatile_anomaly",
-		{157801, "DISPEL"}, {157763, "FLASH"}, "custom_off_fixate_marker",
-		{158553, "TANK"}, {158563, "TANK"},
-		"stages", "bosskill"
+		--[[ Gorian Warmage ]]--
+		{157801, "DISPEL"}, -- Slow
+		{157763, "FLASH"}, -- Fixate
+		"custom_off_fixate_marker",
+		--[[ Gorian Reaver ]]--
+		{158553, "TANK"}, -- Crush Armor
+		{158563, "TANK"}, -- Kick to the Face
+		--[[ General ]]--
+		"stages",
+		"bosskill"
 	}, {
 		[159515] = mod.displayName,
 		["volatile_anomaly"] = "intermission",
-		[157801] = -9922,
-		[158553] = -9921,
+		[157801] = -9922, -- Gorian Warmage
+		[158553] = -9921, -- Gorian Reaver
 		["stages"] = "general",
 	}
 end
@@ -71,15 +85,16 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "Slow", 157801)
 	self:Log("SPELL_AURA_APPLIED", "FixateApplied", 157763)
 	self:Log("SPELL_AURA_REMOVED", "FixateRemoved", 157763)
-	self:Log("SPELL_AURA_APPLIED_DOSE", "CrushArmor", 158553)
+	self:Log("SPELL_AURA_APPLIED_DOSE", "CrushArmor", 158553) -- XXX 10s cast, 4s debuff?
 	self:Log("SPELL_CAST_SUCCESS", "KickToTheFace", 158563)
 end
 
 function mod:OnEngage()
 	phase = 1
 	mineCount = 1
+	markOfChaosTarget, brandedOnMe = nil, nil
 	wipe(fixateList)
-	self:Bar("arcane_wrath", 6, 156238) -- Arcane Wrath
+	self:Bar(156238, 6)  -- Arcane Wrath
 	self:Bar(156467, 15) -- Destructive Resonance
 	self:Bar(156471, 25) -- Arcane Aberration
 	self:Bar(158605, 35) -- Mark of Chaos
@@ -120,10 +135,10 @@ function mod:Phases(unit, spellName, _, _, spellId)
 			self:StopBar(157349) -- Force Nova
 		end
 	elseif spellId == 158012 or spellId == 157964 then -- Power of Fortification, Replication (Phase start)
-		self:CDBar("arcane_wrath", 8, 156238) -- Arcane Wrath
+		self:CDBar(156238, 8) -- Arcane Wrath
 		self:CDBar(156467, 18) -- Destructive Resonance
-		self:CDBar(158605, 28) -- Arcane Aberration
-		self:CDBar(156471, 38) -- Mark of Chaos
+		self:CDBar(156471, 28) -- Arcane Aberration
+		self:CDBar(158605, 38) -- Mark of Chaos
 		self:CDBar(157349, 48) -- Force Nova
 		if spellId ~= 157964 then -- Replication is the last phase
 			self:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", nil, "boss1")
@@ -138,20 +153,57 @@ function mod:AcceleratedAssault(args)
 end
 
 function mod:ArcaneWrath(args)
-	self:Message("arcane_wrath", "Urgent", self:Healer() and "Alert", 156238)
-	self:Bar("arcane_wrath", 50, 156238) -- XXX first transform messes with the timer (+5-10s)
+	self:Message(156238, "Urgent", self:Healer() and "Alert")
+	self:Bar(156238, 50) -- XXX first transform messes with the timer (+5-10s)
 end
 
-function mod:Branded(args)
-	-- custom marking? replication makes it geometric so after three jumps we'd be capped
-	-- also might be worth doing a proximity at some point as the jump range lowers (200->100->50->25->13)
-	if args.spellId ~= 164006 then -- Replication
-		self:SecondaryIcon("arcane_wrath", args.destName)
+do
+	local function printTarget(self, amount, option, spellId, destName, spellName, destGUID)
+		if not amount then
+			local _
+			_, _, _, amount = UnitDebuff(self:Me(destGUID) and "player" or destName, spellName)
+		end
+		if not amount then BigWigs:Print("Not enough delay for Branded scan, tell a dev!") return end
+
+		local jumpDistance = (spellId == 164005 and 0.75 or 0.5)^(amount - 1) * 200 -- Fortification takes longer to get rid of
+
+		if self:Me(destGUID) then
+			brandedOnMe = spellId
+			local text = self:SpellName(option)
+			if jumpDistance < 50 then
+				text = L.branded_say:format(text, amount, jumpDistance)
+			elseif amount > 1 then
+				text = CL.count:format(text, amount)
+			end
+			self:Say(option, text)
+			if jumpDistance < 50 and not markOfChaosTarget then
+				self:OpenProximity(option, jumpDistance)
+			end
+		end
+		self:TargetMessage(option, destName, "Attention", nil, L.branded_say:format(self:SpellName(option), amount, jumpDistance))
 	end
+	function mod:Branded(args)
+		-- custom marking? need two marks (the first jump replicates)
+		if args.spellId ~= 164006 then -- Replication
+			self:SecondaryIcon(156225, args.destName)
+		end
+
+		local _, _, _, amount = UnitDebuff(self:Me(args.destGUID) and "player" or args.destName, args.spellName)
+		if not amount then
+			self:ScheduleTimer(printTarget, 0.4, self, nil, 156225, args.spellId, args.destName, args.spellName, args.destGUID)
+			BigWigs:Print("Branded was nil, tell a dev!")
+		else
+			printTarget(self, amount, 156225, args.spellId, args.destName, args.spellName, args.destGUID)
+		end
+	end
+end
+
+function mod:BrandedRemoved(args)
 	if self:Me(args.destGUID) then
-		local text = CL.count:format(self:SpellName(156225), args.amount or 1) -- Branded
-		self:Message("arcane_wrath", "Personal", "Alarm", CL.you:format(text), 156238)
-		self:Say(text)
+		brandedOnMe = nil
+		if not markOfChaosTarget then
+			self:CloseProximity(156225)
+		end
 	end
 end
 
@@ -173,6 +225,7 @@ function mod:ArcaneAberration(args)
 end
 
 function mod:MarkOfChaosApplied(args)
+	markOfChaosTarget = args.destName
 	self:PrimaryIcon(158605, args.destName)
 	self:TargetBar(158605, 8, args.destName)
 	self:Bar(158605, 50)
@@ -191,9 +244,38 @@ function mod:MarkOfChaosApplied(args)
 	self:TargetMessage(158605, args.destName, "Urgent", "Alarm", nil, nil, true)
 end
 
-function mod:MarkOfChaosRemoved(args)
-	self:PrimaryIcon(158605)
-	self:CloseProximity(158605)
+do
+	local function delayOpen(self)
+		if brandedOnMe then
+			local _, _, _, amount = UnitDebuff("player", self:SpellName(brandedOnMe))
+			if not amount then
+				BigWigs:Print("Not enough delay for opening proximity, tell a dev!")
+				return
+			end
+
+			local jumpDistance = (brandedOnMe == 164005 and 0.75 or 0.5)^(amount - 1) * 200
+			if jumpDistance < 50 then
+				self:OpenProximity(156225, jumpDistance)
+			end
+		end
+	end
+	function mod:MarkOfChaosRemoved(args)
+		markOfChaosTarget = nil
+		self:PrimaryIcon(158605)
+		self:CloseProximity(158605)
+		if brandedOnMe then
+			local _, _, _, amount = UnitDebuff("player", self:SpellName(brandedOnMe))
+			if not amount then
+				self:ScheduleTimer(delayOpen, 0.4, self)
+				return
+			end
+
+			local jumpDistance = (brandedOnMe == 164005 and 0.75 or 0.5)^(amount - 1) * 200
+			if jumpDistance < 50 then
+				self:OpenProximity(156225, jumpDistance)
+			end
+		end
+	end
 end
 
 function mod:ForceNova(args)
@@ -230,7 +312,7 @@ end
 
 function mod:Slow(args)
 	if self:Dispeller("magic", nil, args.spellId) then
-		self:TargetMessage(args.spellId, args.destName, "Attention", "Alert", nil, true)
+		self:TargetMessage(args.spellId, args.destName, "Attention", "Alert", nil, nil, true)
 	end
 end
 
@@ -241,7 +323,7 @@ function mod:FixateApplied(args)
 		self:Flash(args.spellId)
 	end
 	if self.db.profile.custom_off_fixate_marker then
-		local index = next(fixateList) == 1 and 2 or 1
+		local index = next(fixateList) and 2 or 1
 		fixateList[args.destName] = index
 		SetRaidTarget(args.destName, index)
 	end
