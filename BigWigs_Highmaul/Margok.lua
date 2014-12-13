@@ -13,9 +13,9 @@ mod.engageId = 1705
 --
 
 local phase = 1
-local mineCount = 1
-local markOfChaosTarget, brandedOnMe = nil, nil
-local fixateList = {}
+local mineCount, novaCount, aberrationCount = 1, 1, 1
+local markOfChaosTarget, brandedOnMe, fixateOnMe, replicatingNova = nil, nil, nil, nil
+local fixateMarks, brandedMarks = {}, {}
 
 --------------------------------------------------------------------------------
 -- Localization
@@ -31,6 +31,10 @@ if L then
 	L.custom_off_fixate_marker = "Fixate Marker"
 	L.custom_off_fixate_marker_desc = "Mark Gorian Warmage's Fixate targets with {rt1}{rt2}, requires promoted or leader.\n|cFFFF0000Only 1 person in the raid should have this enabled to prevent marking conflicts.|r"
 	L.custom_off_fixate_marker_icon = 1
+
+	L.custom_off_branded_marker = "Branded Marker"
+	L.custom_off_branded_marker_desc = "Mark Branded targets with {rt3}{rt4}, requires promoted or leader."
+	L.custom_off_branded_marker_icon = 3
 end
 L = mod:GetLocale()
 
@@ -43,16 +47,17 @@ function mod:GetOptions()
 		--[[ Imperator Mar'gok ]]--
 		{159515, "TANK"}, -- Accelerated Assault
 		156238, -- Arcane Wrath
-		{156225, "ICON", "PROXIMITY", "SAY", "ME_ONLY"}, -- Branded
+		{156225, "PROXIMITY", "SAY", "ME_ONLY"}, -- Branded
+		"custom_off_branded_marker",
 		156467, -- Destructive Resonance
 		156471, -- Summon Arcane Aberration
 		{158605, "ICON", "PROXIMITY", "FLASH", "SAY"}, -- Mark of Chaos
-		157349, -- Force Nova
+		{157349, "PROXIMITY"}, -- Force Nova
 		--[[ Intermission ]]--
 		"volatile_anomaly",
 		--[[ Gorian Warmage ]]--
 		{157801, "DISPEL"}, -- Slow
-		{157763, "FLASH"}, -- Fixate
+		{157763, "PROXIMITY", "FLASH", "SAY"}, -- Fixate
 		"custom_off_fixate_marker",
 		--[[ Gorian Reaver ]]--
 		{158553, "TANK"}, -- Crush Armor
@@ -72,16 +77,19 @@ end
 function mod:OnBossEnable()
 	self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "Phases", "boss1")
 	self:Log("SPELL_AURA_APPLIED_DOSE", "AcceleratedAssault", 159515)
-	self:Log("SPELL_CAST_START", "ArcaneWrath", 156238, 163988, 163989, 163990) -- Arcane Wrath, Displacement, Fortification, Replication
-	self:Log("SPELL_AURA_APPLIED", "Branded", 156225, 164004, 164005, 164006) -- Branded
+	-- Spell, Spell: Displacement, Spell: Fortification, Spell: Replication
+	self:Log("SPELL_CAST_START", "ArcaneWrath", 156238, 163988, 163989, 163990)
+	self:Log("SPELL_AURA_APPLIED", "Branded", 156225, 164004, 164005, 164006)
+	self:Log("SPELL_AURA_REMOVED", "BrandedRemoved", 156225, 164004, 164005, 164006)
 	self:Log("SPELL_CAST_START", "DestructiveResonance", 156467, 164075, 164076, 164077)
 	self:Log("SPELL_CAST_START", "ArcaneAberration", 156471, 164299, 164301, 164303)
+	self:Log("SPELL_CAST_START", "MarkOfChaos", 158605, 164176, 164178, 164191)
 	self:Log("SPELL_AURA_APPLIED", "MarkOfChaosApplied", 158605, 164176, 164178, 164191)
 	self:Log("SPELL_AURA_REMOVED", "MarkOfChaosRemoved", 158605, 164176, 164178, 164191)
 	self:Log("SPELL_CAST_START", "ForceNova", 157349, 164232, 164235, 164240)
 	-- Intermission
-	self:Log("SPELL_AURA_APPLIED", "IntermissionStart", 174057) -- Arcane Power
-	self:Log("SPELL_AURA_REMOVED", "IntermissionEnd", 174057)
+	self:Log("SPELL_AURA_APPLIED", "IntermissionStart", 174057, 157289) -- Arcane Protection
+	self:Log("SPELL_AURA_REMOVED", "IntermissionEnd", 174057, 157289)
 	self:Log("SPELL_AURA_APPLIED", "Slow", 157801)
 	self:Log("SPELL_AURA_APPLIED", "FixateApplied", 157763)
 	self:Log("SPELL_AURA_REMOVED", "FixateRemoved", 157763)
@@ -91,13 +99,14 @@ end
 
 function mod:OnEngage()
 	phase = 1
-	mineCount = 1
-	markOfChaosTarget, brandedOnMe = nil, nil
-	wipe(fixateList)
+	mineCount, novaCount, aberrationCount = 1, 1, 1
+	markOfChaosTarget, brandedOnMe, fixateOnMe, replicatingNova = nil, nil, nil, nil
+	wipe(fixateMarks)
+	wipe(brandedMarks)
 	self:Bar(156238, 6)  -- Arcane Wrath
 	self:Bar(156467, 15) -- Destructive Resonance
 	self:Bar(156471, 25) -- Arcane Aberration
-	self:Bar(158605, 35) -- Mark of Chaos
+	self:Bar(158605, 34) -- Mark of Chaos
 	self:Bar(157349, 45) -- Force Nova
 	self:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", nil, "boss1")
 end
@@ -105,6 +114,32 @@ end
 --------------------------------------------------------------------------------
 -- Event Handlers
 --
+
+local function updateProximity()
+	-- mark of chaos > fixate > branded > nova
+	-- open in reverse order so if you disable one it doesn't block others from showing
+	if replicatingNova then
+		mod:OpenProximity(157349, 4)
+	end
+	if brandedOnMe then
+		local _, _, _, amount = UnitDebuff("player", mod:SpellName(brandedOnMe))
+		if not amount then amount = 1 end
+		local jumpDistance = (brandedOnMe == 164005 and 0.75 or 0.5)^(amount - 1) * 200
+		if jumpDistance < 50 then
+			mod:OpenProximity(156225, jumpDistance)
+		end
+	end
+	if fixateOnMe then
+		mod:OpenProximity(157763, 8)
+	end
+	if markOfChaosTarget then
+		if UnitIsUnit("player", markOfChaosTarget) then
+			mod:OpenProximity(158605, 35)
+		else
+			mod:OpenProximity(158605, 35, markOfChaosTarget)
+		end
+	end
+end
 
 function mod:UNIT_HEALTH_FREQUENT(unit)
 	local hp = UnitHealth(unit) / UnitHealthMax(unit) * 100
@@ -122,9 +157,10 @@ end
 function mod:Phases(unit, spellName, _, _, spellId)
 	if spellId == 164336 or spellId == 164751 or spellId == 164810 then -- Teleport to Displacement, Fortification, Replication (Phase end)
 		phase = phase + 1
-		mineCount = 1
+		mineCount, novaCount, aberrationCount = 1, 1, 1
 
 		if spellId == 164336 then -- no intermission for Displacement
+			 -- XXX first transform messes with timers, typically adding ~10s
 			self:Message("stages", "Neutral", "Long", CL.phase:format(phase), false)
 			self:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", nil, "boss1")
 		else
@@ -135,7 +171,7 @@ function mod:Phases(unit, spellName, _, _, spellId)
 			self:StopBar(157349) -- Force Nova
 		end
 	elseif spellId == 158012 or spellId == 157964 then -- Power of Fortification, Replication (Phase start)
-		self:CDBar(156238, 8) -- Arcane Wrath
+		self:CDBar(156238, 8)  -- Arcane Wrath
 		self:CDBar(156467, 18) -- Destructive Resonance
 		self:CDBar(156471, 28) -- Arcane Aberration
 		self:CDBar(158605, 38) -- Mark of Chaos
@@ -154,152 +190,157 @@ end
 
 function mod:ArcaneWrath(args)
 	self:Message(156238, "Urgent", self:Healer() and "Alert")
-	self:Bar(156238, 50) -- XXX first transform messes with the timer (+5-10s)
+	self:Bar(156238, 50)
+	wipe(brandedMarks)
 end
 
 do
-	local function printTarget(self, amount, option, spellId, destName, spellName, destGUID)
-		if not amount then
-			local _
-			_, _, _, amount = UnitDebuff(self:Me(destGUID) and "player" or destName, spellName)
+	local scheduled = nil
+	local function mark()
+		-- custom_on so try and keep the marks in the same order (just in case)
+		sort(brandedMarks)
+		for index, name in ipairs(brandedMarks) do
+			SetRaidTarget(name, index + 2)
 		end
-		if not amount then BigWigs:Print("Not enough delay for Branded scan, tell a dev!") return end
+		scheduled = nil
+	end
 
-		local jumpDistance = (spellId == 164005 and 0.75 or 0.5)^(amount - 1) * 200 -- Fortification takes longer to get rid of
+	function mod:Branded(args)
+		brandedMarks[#brandedMarks+1] = args.destName
 
-		if self:Me(destGUID) then
-			brandedOnMe = spellId
-			local text = self:SpellName(option)
+		local _, _, _, amount = UnitDebuff(args.destName, args.spellName)
+		if not amount then amount = 1 end
+		local jumpDistance = (args.spellId == 164005 and 0.75 or 0.5)^(amount - 1) * 200 -- Fortification takes longer to get rid of
+
+		if self:Me(args.destGUID) and not self:LFR() then
+			brandedOnMe = args.spellId
+			local text = self:SpellName(156225)
 			if jumpDistance < 50 then
 				text = L.branded_say:format(text, amount, jumpDistance)
 			elseif amount > 1 then
 				text = CL.count:format(text, amount)
 			end
-			self:Say(option, text)
-			if jumpDistance < 50 and not markOfChaosTarget then
-				self:OpenProximity(option, jumpDistance)
-			end
+			self:Say(156225, text)
+			updateProximity()
 		end
-		self:TargetMessage(option, destName, "Attention", nil, L.branded_say:format(self:SpellName(option), amount, jumpDistance))
-	end
-	function mod:Branded(args)
-		-- custom marking? need two marks (the first jump replicates)
-		if args.spellId ~= 164006 then -- Replication
-			self:SecondaryIcon(156225, args.destName)
-		end
+		self:TargetMessage(156225, args.destName, "Attention", nil, L.branded_say:format(self:SpellName(156225), amount, jumpDistance))
 
-		local _, _, _, amount = UnitDebuff(self:Me(args.destGUID) and "player" or args.destName, args.spellName)
-		if not amount then
-			self:ScheduleTimer(printTarget, 0.4, self, nil, 156225, args.spellId, args.destName, args.spellName, args.destGUID)
-			BigWigs:Print("Branded was nil, tell a dev!")
-		else
-			printTarget(self, amount, 156225, args.spellId, args.destName, args.spellName, args.destGUID)
+		if self.db.profile.custom_off_branded_marker and not scheduled then
+			scheduled = self:ScheduleTimer(mark, 0.2)
 		end
 	end
 end
 
 function mod:BrandedRemoved(args)
+	tDeleteItem(brandedMarks, args.destName)
 	if self:Me(args.destGUID) then
 		brandedOnMe = nil
-		if not markOfChaosTarget then
-			self:CloseProximity(156225)
-		end
+		self:CloseProximity(156225)
+		updateProximity()
+	end
+	if self.db.profile.custom_off_branded_marker then
+		SetRaidTarget(args.destName, 0)
 	end
 end
 
 do
-	local mineTimes = { 15, 19, 15 } -- patterns!
+	local mineTimes = {
+		[3] = { 24, 15.8, 24, 19.4, 28, 23 },
+		[4] = { 24, },
+	}
+	-- 24.3
+	-- 20.7 19.4 20.6 15.8 15.8 20.7
+	-- 24.2 15.8 24.3 19.4 27.9 23.1
+	-- 24.3 24.3 15.8
+
+	-- 24.3
+	-- 15.9 15.8 15.8 20.6 15.8 24.3 15.8
+	-- 24.3 15.8 24.2 19.4 28.0 23.1
+	-- 24.3 15.8 24.2 19.5
 	function mod:DestructiveResonance(args)
-		self:Message(156467, "Urgent")
-		self:CDBar(156467, phase == 1 and 24 or mineTimes[mineCount]) -- XXX rp during first transform seems to add 3s to the timer (second cd being 27 pretty consistently)
-		if phase > 1 then
-			mineCount = mineCount + 1
-			if mineCount > 3 then mineCount = 1 end
-		end
+		local sound = self:Healer() or self:Damager() == "RANGED"
+		self:Message(156467, "Urgent", sound and "Warning")
+		local t = not self:Mythic() and mineTimes[phase] and mineTimes[phase][mineCount] or 15
+		self:CDBar(156467, phase == 1 and 24 or t)
+		mineCount = mineCount + 1
 	end
 end
 
 function mod:ArcaneAberration(args)
-	self:Message(156471, "Urgent", self:Tank() and "Info")
-	self:CDBar(156471, 50)
+	self:Message(156471, "Urgent", not self:Healer() and "Info")
+	self:CDBar(156471, aberrationCount == 1 and 46 or 51)
+	aberrationCount = aberrationCount + 1
+end
+
+do
+	local function printTarget(self, name, guid)
+		self:TargetMessage(158605, name, "Urgent", "Alarm", nil, nil, true)
+	end
+	function mod:MarkOfChaos(args)
+		self:Bar(158605, 51) -- 51-52 with some random cases of 55
+		self:GetBossTarget(printTarget, 0.1, args.sourceGUID)
+	end
 end
 
 function mod:MarkOfChaosApplied(args)
 	markOfChaosTarget = args.destName
 	self:PrimaryIcon(158605, args.destName)
 	self:TargetBar(158605, 8, args.destName)
-	self:Bar(158605, 50)
 	if self:Me(args.destGUID) then
 		self:Flash(158605)
-		self:OpenProximity(158605, 35)
 		if args.spellId == 164178 then -- Fortification (you're rooted)
 			self:Say(158605)
 		end
-	else
-		if args.spellId == 164178 and self:Range(args.destName) < 35 then -- Fortification (target rooted)
-			self:Flash(158605)
-		end
-		self:OpenProximity(158605, 35, args.destName)
+	elseif args.spellId == 164178 and self:Range(args.destName) < 35 then -- Fortification (target rooted)
+		self:Flash(158605)
 	end
-	self:TargetMessage(158605, args.destName, "Urgent", "Alarm", nil, nil, true)
+	updateProximity()
+end
+
+function mod:MarkOfChaosRemoved(args)
+	markOfChaosTarget = nil
+	self:PrimaryIcon(158605)
+	self:CloseProximity(158605)
+	updateProximity()
 end
 
 do
-	local function delayOpen(self)
-		if brandedOnMe then
-			local _, _, _, amount = UnitDebuff("player", self:SpellName(brandedOnMe))
-			if not amount then
-				BigWigs:Print("Not enough delay for opening proximity, tell a dev!")
-				return
-			end
-
-			local jumpDistance = (brandedOnMe == 164005 and 0.75 or 0.5)^(amount - 1) * 200
-			if jumpDistance < 50 then
-				self:OpenProximity(156225, jumpDistance)
-			end
-		end
+	local function replicatingNovaStop()
+		replicatingNova = nil
+		mod:CloseProximity(157349)
+		updateProximity()
 	end
-	function mod:MarkOfChaosRemoved(args)
-		markOfChaosTarget = nil
-		self:PrimaryIcon(158605)
-		self:CloseProximity(158605)
-		if brandedOnMe then
-			local _, _, _, amount = UnitDebuff("player", self:SpellName(brandedOnMe))
-			if not amount then
-				self:ScheduleTimer(delayOpen, 0.4, self)
-				return
-			end
-
-			local jumpDistance = (brandedOnMe == 164005 and 0.75 or 0.5)^(amount - 1) * 200
-			if jumpDistance < 50 then
-				self:OpenProximity(156225, jumpDistance)
-			end
+	function mod:ForceNova(args)
+		self:Message(157349, "Urgent")
+		self:CDBar(157349, novaCount == 1 and 46 or 50)
+		if args.spellId == 164235 then -- Fortification (three novas)
+			self:Bar(157349, 10.5, args.spellName)
+			self:ScheduleTimer("Bar", 8, 157349, 10.5, args.spellName)
+		elseif args.spellId == 164240 then -- Replication (aoe damage on hit)
+			replicatingNova = self:ScheduleTimer(replicatingNovaStop, 8) -- XXX how long should the proximity be open?
+			updateProximity()
 		end
-	end
-end
-
-function mod:ForceNova(args)
-	self:Message(157349, "Urgent")
-	self:CDBar(157349, 50) -- sometimes 45 or 54, but usually 50+/-1
-	if args.spellId == 164235 then -- Fortification (three novas)
-		self:Bar(157349, 8, args.spellName)
-		self:ScheduleTimer("Bar", 8, 157349, 8, args.spellName)
+		novaCount = novaCount + 1
 	end
 end
 
 -- Intermission
 
 do
-	local timer = nil
+	local timer, intermissionEnd = nil, 0
 	local function nextAdd(self)
 		self:Message("volatile_anomaly", "Attention", "Info", CL.incoming:format(self:SpellName(L.volatile_anomaly)), L.volatile_anomaly_icon)
 		self:Bar("volatile_anomaly", 12, L.volatile_anomaly, L.volatile_anomaly_icon)
-		timer = self:ScheduleTimer(nextAdd, 12, self)
+		if GetTime() + 12 < intermissionEnd then -- instead of counting
+			timer = self:ScheduleTimer(nextAdd, 12, self)
+		end
 	end
 
 	function mod:IntermissionStart(args)
 		self:Message("stages", "Neutral", nil, CL.intermission, false)
-		self:Bar("stages", 65, CL.intermission, "spell_arcane_blast")
+		local intermissionTime = args.spellId == 174057 and 65 or 60
+		intermissionEnd = GetTime() + intermissionTime
+		self:Bar("stages", intermissionTime, CL.intermission, "spell_arcane_blast")
 		self:Bar("volatile_anomaly", 14, L.volatile_anomaly, L.volatile_anomaly_icon)
 		self:ScheduleTimer(nextAdd, 14, self)
 	end
@@ -318,28 +359,34 @@ end
 
 function mod:FixateApplied(args)
 	if self:Me(args.destGUID) then
+		fixateOnMe = true
 		self:Message(args.spellId, "Personal", "Alarm", CL.you:format(args.spellName))
 		self:TargetBar(args.spellId, 15, args.destName)
 		self:Flash(args.spellId)
+		self:Say(args.spellId)
+		updateProximity()
 	end
 	if self.db.profile.custom_off_fixate_marker then
-		local index = next(fixateList) and 2 or 1
-		fixateList[args.destName] = index
+		local index = next(fixateMarks) and 2 or 1
+		fixateMarks[args.destName] = index
 		SetRaidTarget(args.destName, index)
 	end
 end
 
 function mod:FixateRemoved(args)
+	if self:Me(args.destGUID) then
+		fixateOnMe = nil
+		self:CloseProximity(args.spellId)
+		updateProximity()
+	end
 	if self.db.profile.custom_off_fixate_marker then
+		fixateMarks[args.destName] = nil
 		SetRaidTarget(args.destName, 0)
-		fixateList[args.destName] = nil
 	end
 end
 
 function mod:CrushArmor(args)
-	if args.amount % 2 == 0 then -- XXX no idea how fast this stacks
-		self:StackMessage(args.spellId, args.destName, args.amount, "Attention") -- args.amount > 2 and "Warning"
-	end
+	self:StackMessage(args.spellId, args.destName, args.amount, "Attention", args.amount > 2 and "Warning")
 end
 
 function mod:KickToTheFace(args)

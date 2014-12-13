@@ -122,11 +122,17 @@ L["tankhealer"] = "|cFFFF0000Solo alertas para tanque y sanador.|r "
 L["TANK_HEALER"] = "Sólo Tanques y Sanadores"
 L["TANK_HEALER_desc"] = "Algunas habilidades son importantes solo para tanques y sanadores. Si quieres ver advertencias para este tipo de habilidades independientemente de tu rol, desactiva esta opción."
 L["test"] = "Probar"
+L["testBarsBtn"] = "Crear Barra de prueba"
+L["testBarsBtn_desc"] = "Crea barras para que las pruebes con los ajustes actuales"
 L["thanks"] = "Gracias a las siguientes personas por su ayuda en varias partes del desarrollo"
+L["toggleAnchorsBtn"] = "Ajustar anclajes"
+L["toggleAnchorsBtn_desc"] = "Mostrar/ocultar todos los anclajes."
 L["tooltipHint"] = [=[|cffeda55fClic|r para reiniciar todos los módulos.
 |cffeda55fAlt-Clic|r para desactivarlos.
 |cffeda55fRight-Clic|r para acceder a las opciones.]=]
 L["upToDate"] = "Al día:"
+L["VOICE"] = "Voz"
+L["VOICE_desc"] = "Si tienes un plugin de voz instalado, esta opción le permitirá reproducir un archivo de sonido que hable en este aviso para ti."
 L["warmup"] = "Calentamiento"
 L["warmup_desc"] = "Tiempo hasta que el combate con el jefe comience."
 L["website"] = "Web"

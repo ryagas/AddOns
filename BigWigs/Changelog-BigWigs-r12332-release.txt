@@ -1,9 +1,162 @@
 ------------------------------------------------------------------------
-r12308 | funkydude | 2014-12-08 02:18:58 +0000 (Mon, 08 Dec 2014) | 1 line
+r12332 | funkydude | 2014-12-10 22:59:01 +0000 (Wed, 10 Dec 2014) | 1 line
 Changed paths:
-   A /tags/r12308-release (from /trunk:12307)
+   A /tags/r12332-release (from /trunk:12331)
 
-Tagging as r12308-release
+Tagging as r12332-release
+------------------------------------------------------------------------
+r12331 | funkydude | 2014-12-10 22:54:53 +0000 (Wed, 10 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: add fixate say
+------------------------------------------------------------------------
+r12330 | funkydude | 2014-12-10 22:48:20 +0000 (Wed, 10 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+   M /trunk/Highmaul/TheButcher.lua
+
+TheButcher: Bounding cleave fix.
+------------------------------------------------------------------------
+r12329 | funkydude | 2014-12-10 22:00:50 +0000 (Wed, 10 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TheButcher.lua
+
+TheButcher: Remove warnings for "the cleaver" tank stacking debuff. I just don't see this being useful.
+------------------------------------------------------------------------
+r12328 | funkydude | 2014-12-10 21:27:16 +0000 (Wed, 10 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: Disable marking by default.
+------------------------------------------------------------------------
+r12327 | funkydude | 2014-12-10 20:01:04 +0000 (Wed, 10 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TheButcher.lua
+
+TheButcher: change cleave option id.
+------------------------------------------------------------------------
+r12326 | funkydude | 2014-12-10 19:52:55 +0000 (Wed, 10 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TheButcher.lua
+
+TheButcher: Add extra cleave id.
+------------------------------------------------------------------------
+r12325 | nebula169 | 2014-12-10 14:48:40 +0000 (Wed, 10 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: revert the Accelerated Assault change
+------------------------------------------------------------------------
+r12324 | nebula169 | 2014-12-10 14:09:14 +0000 (Wed, 10 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: fix Force Nova: Fortitude's subsequent casts, add a sound to Destructive Resonance for ranged, timer tweaks
+------------------------------------------------------------------------
+r12323 | nebula169 | 2014-12-10 09:18:46 +0000 (Wed, 10 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Locales/deDE.lua
+   M /trunk/Highmaul/Locales/esES.lua
+   M /trunk/Highmaul/Locales/frFR.lua
+   M /trunk/Highmaul/Locales/itIT.lua
+   M /trunk/Highmaul/Locales/koKR.lua
+   M /trunk/Highmaul/Locales/ptBR.lua
+   M /trunk/Highmaul/Locales/ruRU.lua
+   M /trunk/Highmaul/Locales/zhCN.lua
+   M /trunk/Highmaul/Locales/zhTW.lua
+   M /trunk/Highmaul/Margok.lua
+
+Margok: move Branded to custom marking for the extra target during Replication
+------------------------------------------------------------------------
+r12322 | nebula169 | 2014-12-10 08:38:43 +0000 (Wed, 10 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: remove icon from Branded target when they lose the debuff
+------------------------------------------------------------------------
+r12321 | nebula169 | 2014-12-10 08:29:47 +0000 (Wed, 10 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: nil check Branded stacks (event lag?), sound at a higher stacks for Accelerated Assault, actually close the Force Nova proximity after a delay
+------------------------------------------------------------------------
+r12320 | funkydude | 2014-12-10 04:14:39 +0000 (Wed, 10 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Plugins/Bars.lua
+
+Bars: Fire a "BigWigs_StartPull" callback when a pull timer is started.
+------------------------------------------------------------------------
+r12319 | MysticalOS | 2014-12-09 23:19:12 +0000 (Tue, 09 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+Bump DBM faker
+------------------------------------------------------------------------
+r12318 | funkydude | 2014-12-09 11:55:01 +0000 (Tue, 09 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core/BossPrototype.lua
+
+BossPrototype: I don't think there was any real reason for using UnitIsUnit here, let's find out.
+------------------------------------------------------------------------
+r12317 | funkydude | 2014-12-09 11:51:07 +0000 (Tue, 09 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core/BossPrototype.lua
+   M /trunk/Core/Locales/common.enUS.lua
+
+BossPrototype: Change stack message to show "on you" rather than "on player" when it's on you.
+------------------------------------------------------------------------
+r12316 | nebula169 | 2014-12-09 05:11:03 +0000 (Tue, 09 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/Margok.lua
+
+Margok: add proximity for Force Nova: Replication and clean up proximity code
+------------------------------------------------------------------------
+r12315 | nebula169 | 2014-12-08 17:06:33 +0000 (Mon, 08 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: tweaks
+------------------------------------------------------------------------
+r12314 | nebula169 | 2014-12-08 16:50:07 +0000 (Mon, 08 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: add initial timers for Overwhelming Power and Dominating Mind
+------------------------------------------------------------------------
+r12313 | nebula169 | 2014-12-08 16:14:45 +0000 (Mon, 08 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: add Overwhelming Energy
+------------------------------------------------------------------------
+r12312 | funkydude | 2014-12-08 15:28:30 +0000 (Mon, 08 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+   M /trunk/Highmaul/KargathBladefist.lua
+   M /trunk/Highmaul/Tectus.lua
+   M /trunk/Highmaul/TheButcher.lua
+
+Highmaul: Cleanup boss options.
+------------------------------------------------------------------------
+r12311 | nebula169 | 2014-12-08 09:55:30 +0000 (Mon, 08 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: add Fixate proximity, leave the early cast warning for Mark of Chaos but move everything else back to SPELL_AURA_APPLIED
+------------------------------------------------------------------------
+r12310 | nebula169 | 2014-12-08 04:41:28 +0000 (Mon, 08 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: fix second intermission, warn for Mark of Chaos on cast, don't get fancy with Branded in LFR, timer tweaks
+------------------------------------------------------------------------
+r12309 | nebula169 | 2014-12-08 03:07:47 +0000 (Mon, 08 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: fix Branded, remove debug
 ------------------------------------------------------------------------
 r12307 | funkydude | 2014-12-08 01:55:21 +0000 (Mon, 08 Dec 2014) | 1 line
 Changed paths:

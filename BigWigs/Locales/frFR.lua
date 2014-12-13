@@ -122,17 +122,17 @@ L["tankhealer"] = "|cFFFF0000Alertes pour tank & soigneur uniquement.|r "
 L["TANK_HEALER"] = "Tank & soigneur uniquement"
 L["TANK_HEALER_desc"] = "Certaines techniques sont importantes uniquement pour les tanks et les soigneurs. Si vous souhaitez voir des alertes pour cette technique quelque soit votre rôle, désactivez cette option."
 L["test"] = "Test"
-L["testBarsBtn"] = "Créer une barre de test" -- Needs review
-L["testBarsBtn_desc"] = "Créée une barre pour que vous puissiez tester vos paramètres d'affichage actuels." -- Needs review
+L["testBarsBtn"] = "Créer une barre de test"
+L["testBarsBtn_desc"] = "Créée une barre pour que vous puissiez tester vos paramètres d'affichage actuels."
 L["thanks"] = "Merci aux personnes suivantes pour leur aide :"
-L["toggleAnchorsBtn"] = "Afficher/cacher ancres" -- Needs review
-L["toggleAnchorsBtn_desc"] = "Affiche ou cache toutes les ancres." -- Needs review
+L["toggleAnchorsBtn"] = "Afficher/cacher ancres"
+L["toggleAnchorsBtn_desc"] = "Affiche ou cache toutes les ancres."
 L["tooltipHint"] = [=[|cffeda55fClic gauche|r pour redémarrer les modules actifs.
 |cffeda55fAlt-Clic gauche|r pour les désactiver.
 |cffeda55fClic droit|r pour accéder aux options.]=]
 L["upToDate"] = "À jour :"
-L["VOICE"] = "Voix" -- Needs review
-L["VOICE_desc"] = "Si vous avez un plugin vocal installé, cette option l'activera afin qu'il puisse jouer un fichier son qui dira cette alerte à voix haute pour vous." -- Needs review
+L["VOICE"] = "Voix"
+L["VOICE_desc"] = "Si vous avez un plugin vocal installé, cette option l'activera afin qu'il puisse jouer un fichier son qui dira cette alerte à voix haute pour vous."
 L["warmup"] = "Préparation"
 L["warmup_desc"] = "Temps avant que le combat face au boss ne commence."
 L["website"] = "Site web"
