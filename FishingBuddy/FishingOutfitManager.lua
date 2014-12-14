@@ -97,7 +97,7 @@ end
 FishingBuddy.OutfitManager.HasManager = HasManager;
 
 FishingBuddy.OutfitManager.Switch = function(outfitname)
-	if ( HasManager() ) then
+	if ( not FishingBuddy.CheckCombat() and HasManager() ) then
 		local outfitter = FishingBuddy.GetSetting("OutfitManager");
 		if ( outfitter and OutfitManagers[outfitter] ) then
 			local willBePole = OutfitManagers[outfitter].Switch(outfitname);

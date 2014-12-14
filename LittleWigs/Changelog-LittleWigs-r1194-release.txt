@@ -1,9 +1,21 @@
 ------------------------------------------------------------------------
-r1191 | funkydude | 2014-12-05 14:23:18 +0000 (Fri, 05 Dec 2014) | 1 line
+r1194 | funkydude | 2014-12-13 21:59:21 +0000 (Sat, 13 Dec 2014) | 1 line
 Changed paths:
-   A /tags/r1191-release (from /trunk:1190)
+   A /tags/r1194-release (from /trunk:1193)
 
-Tagging as r1191-release
+Tagging as r1194-release
+------------------------------------------------------------------------
+r1193 | funkydude | 2014-12-06 15:33:40 +0000 (Sat, 06 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/WoD/GrimrailDepot/Rocketspark.lua
+
+Rocketspark: Add slam timer.
+------------------------------------------------------------------------
+r1192 | pettigrow | 2014-12-05 20:34:25 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/WoD/UpperBlackrockSpire/Locales/frFR.lua
+
+frFR Update
 ------------------------------------------------------------------------
 r1190 | funkydude | 2014-12-05 14:11:20 +0000 (Fri, 05 Dec 2014) | 1 line
 Changed paths:
@@ -358,54 +370,4 @@ Changed paths:
    M /trunk/WoD/IronDocks/Enforcers.lua
 
 Enforcers: Fix disabling early
-------------------------------------------------------------------------
-r1133 | funkydude | 2014-11-04 02:16:56 +0000 (Tue, 04 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/WoD/Auchindoun/Azzakel.lua
-   M /trunk/WoD/Auchindoun/Kaathar.lua
-   M /trunk/WoD/Auchindoun/Nyami.lua
-   M /trunk/WoD/Auchindoun/Terongor.lua
-   M /trunk/WoD/Auchindoun/Trash.lua
-   M /trunk/WoD/BloodmaulSlagMines/Crushto.lua
-   M /trunk/WoD/BloodmaulSlagMines/Gugrokk.lua
-   M /trunk/WoD/BloodmaulSlagMines/Magmolatus.lua
-   M /trunk/WoD/BloodmaulSlagMines/Roltall.lua
-   M /trunk/WoD/GrimrailDepot/NitroggThundertower.lua
-   M /trunk/WoD/GrimrailDepot/Rocketspark.lua
-   M /trunk/WoD/GrimrailDepot/SkylordTovra.lua
-   M /trunk/WoD/IronDocks/Enforcers.lua
-   M /trunk/WoD/IronDocks/Nokgar.lua
-   M /trunk/WoD/IronDocks/Oshir.lua
-   M /trunk/WoD/IronDocks/Skulloc.lua
-   M /trunk/WoD/ShadowmoonBurialGrounds/Bonemaw.lua
-   M /trunk/WoD/ShadowmoonBurialGrounds/Nerzhul.lua
-   M /trunk/WoD/ShadowmoonBurialGrounds/Nhallish.lua
-   M /trunk/WoD/ShadowmoonBurialGrounds/Sadana.lua
-   M /trunk/WoD/Skyreach/Araknath.lua
-   M /trunk/WoD/Skyreach/Ranjit.lua
-   M /trunk/WoD/Skyreach/Rukhran.lua
-   M /trunk/WoD/Skyreach/Viryx.lua
-
-remove all compat checks
-------------------------------------------------------------------------
-r1132 | funkydude | 2014-11-04 02:13:16 +0000 (Tue, 04 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/WoD/Skyreach/Araknath.lua
-   M /trunk/WoD/Skyreach/Ranjit.lua
-   M /trunk/WoD/Skyreach/Rukhran.lua
-   M /trunk/WoD/Skyreach/Viryx.lua
-
-Skyreach: Import final WoD zone.
-------------------------------------------------------------------------
-r1131 | funkydude | 2014-11-03 22:45:03 +0000 (Mon, 03 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/WoD/ShadowmoonBurialGrounds/Nhallish.lua
-   M /trunk/WoD/ShadowmoonBurialGrounds/Sadana.lua
-   M /trunk/WoD/Skyreach/Araknath.lua
-   M /trunk/WoD/Skyreach/Ranjit.lua
-   M /trunk/WoD/Skyreach/Rukhran.lua
-   M /trunk/WoD/Skyreach/Viryx.lua
-   M /trunk/WoD/TheEverbloom/Witherbark.lua
-
-various fixes
 ------------------------------------------------------------------------

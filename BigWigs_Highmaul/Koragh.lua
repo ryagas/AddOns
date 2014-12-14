@@ -19,7 +19,8 @@ if L then
 	L.suppression_field_trigger3 = "I will crush you!"
 	L.suppression_field_trigger4 = "Silence!"
 
-	L.fire_bar = "Everyone Explodes!"
+	L.fire_bar = "Everyone explodes!"
+	L.overwhelming_energy_bar = "Balls hit"
 
 	L.custom_off_fel_marker = "Expel Magic: Fel Marker"
 	L.custom_off_fel_marker_desc = "Mark Expel Magic: Fel targets with {rt1}{rt2}{rt3}, requires promoted or leader.\n|cFFFF0000Only 1 person in the raid should have this enabled to prevent marking conflicts.|r"
@@ -64,7 +65,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_REMOVED", "ExpelMagicArcaneRemoved", 162186)
 	self:Log("SPELL_CAST_START", "ExpelMagicFrost", 172747)
 	self:Yell("SuppressionField", L.suppression_field_trigger1, L.suppression_field_trigger2, L.suppression_field_trigger3, L.suppression_field_trigger4)
-	self:Log("SPELL_CAST_SUCCESS", "SuppressionFieldCast", 161328) -- fallback to fire the timer if the triggers are localized
+	self:Log("SPELL_CAST_SUCCESS", "SuppressionFieldCast", 161328) -- fallback to fire the timer if the triggers aren't localized
 	-- Mythic
 	self:Log("SPELL_AURA_APPLIED", "ExpelMagicFelCast", 172895)
 	self:Log("SPELL_AURA_APPLIED", "ExpelMagicFelApplied", 172895)
@@ -73,7 +74,7 @@ function mod:OnBossEnable()
 end
 
 function mod:OnEngage()
-	self:Bar(161612, 36) -- Overwhelming Energy
+	self:Bar(161612, 36, L.overwhelming_energy_bar) -- Overwhelming Energy
 	if self:Mythic() then
 		self:CDBar(172895, 8) -- Expel Magic: Fel
 		self:Bar(163472, 90) -- Dominating Power
@@ -181,9 +182,9 @@ do
 end
 
 function mod:OverwhelmingEnergy(args)
+	self:Bar(args.spellId, 30, L.overwhelming_energy_bar) -- XXX in mythic, don't fire this bar if it's going to cause mcs
 	if self:Me(args.destGUID) and UnitPower("player", 10) > 0 then -- check alternate power, too
-		self:Message(spellId, "Positive", "Warning") -- green to keep it different looking
-		self:Bar(args.spellId, 30) -- XXX in mythic, don't fire this bar if it's going to cause mcs
+		self:Message(args.spellId, "Positive", "Warning") -- green to keep it different looking
 	end
 end
 

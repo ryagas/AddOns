@@ -990,7 +990,7 @@ local function MakeDropDownInitialize(self, level)
 			if (handler.hasdd) then
 				entry.text = tabname;
 				entry.func = self.UncheckHack;
-				entry.hasArrow = 1
+				entry.hasArrow = 1;
 				entry.value = handler.options;
 				UIDropDownMenu_AddButton(entry, level);
 			end

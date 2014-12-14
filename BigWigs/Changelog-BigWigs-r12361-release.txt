@@ -1,9 +1,198 @@
 ------------------------------------------------------------------------
-r12332 | funkydude | 2014-12-10 22:59:01 +0000 (Wed, 10 Dec 2014) | 1 line
+r12361 | funkydude | 2014-12-13 22:00:32 +0000 (Sat, 13 Dec 2014) | 1 line
 Changed paths:
-   A /tags/r12332-release (from /trunk:12331)
+   A /tags/r12361-release (from /trunk:12360)
 
-Tagging as r12332-release
+Tagging as r12361-release
+------------------------------------------------------------------------
+r12360 | funkydude | 2014-12-13 21:58:43 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+
+bump version
+------------------------------------------------------------------------
+r12359 | nebula169 | 2014-12-13 20:08:50 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: typo fix
+------------------------------------------------------------------------
+r12358 | nebula169 | 2014-12-13 18:15:54 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: typo fix
+------------------------------------------------------------------------
+r12357 | jongt23 | 2014-12-13 18:04:08 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Locales/esES.lua
+
+esES update
+------------------------------------------------------------------------
+r12356 | nebula169 | 2014-12-13 13:36:11 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: indicate if Whirlwind or Shield Charge are empowered in mythic, better timers for all difficulties (hopefully)
+------------------------------------------------------------------------
+r12355 | nebula169 | 2014-12-13 11:10:03 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: more Arcane Volatility tweaks: fix proximity, fix cd, revert to a message on cast, remove the target bars
+------------------------------------------------------------------------
+r12354 | dynaletik | 2014-12-13 08:36:05 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Locales/deDE.lua
+
+- deDE update
+------------------------------------------------------------------------
+r12353 | nebula169 | 2014-12-13 07:58:45 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: tweaks
+------------------------------------------------------------------------
+r12352 | nebula169 | 2014-12-13 07:50:49 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: fix Arcane Volatility duration and add target message
+------------------------------------------------------------------------
+r12351 | nebula169 | 2014-12-13 07:07:26 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/Locales/deDE.lua
+   M /trunk/Highmaul/Locales/esES.lua
+   M /trunk/Highmaul/Locales/frFR.lua
+   M /trunk/Highmaul/Locales/itIT.lua
+   M /trunk/Highmaul/Locales/koKR.lua
+   M /trunk/Highmaul/Locales/ptBR.lua
+   M /trunk/Highmaul/Locales/ruRU.lua
+   M /trunk/Highmaul/Locales/zhCN.lua
+   M /trunk/Highmaul/Locales/zhTW.lua
+   M /trunk/Highmaul/TwinOgron.lua
+
+Koragh: change the Overwhelming Energy bar text
+------------------------------------------------------------------------
+r12350 | pettigrow | 2014-12-12 23:14:39 +0000 (Fri, 12 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Locales/frFR.lua
+
+frFR Update
+------------------------------------------------------------------------
+r12349 | elvador | 2014-12-12 19:37:12 +0000 (Fri, 12 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+
+Brackenspore: Added counter for infesting spores
+------------------------------------------------------------------------
+r12348 | dynaletik | 2014-12-12 10:15:37 +0000 (Fri, 12 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Locales/deDE.lua
+
+- deDE update
+------------------------------------------------------------------------
+r12347 | nebula169 | 2014-12-12 08:51:58 +0000 (Fri, 12 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: tweak Pulverize, add say countdown for Arcane Volatility
+------------------------------------------------------------------------
+r12346 | nebula169 | 2014-12-12 08:29:32 +0000 (Fri, 12 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: add Gorian Reaver timers
+------------------------------------------------------------------------
+r12345 | nebula169 | 2014-12-12 07:37:41 +0000 (Fri, 12 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: show the Overwhelming Energy bar for everyone
+------------------------------------------------------------------------
+r12344 | nebula169 | 2014-12-12 06:11:25 +0000 (Fri, 12 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+
+Brackenspore: fix Decay count
+------------------------------------------------------------------------
+r12343 | elvador | 2014-12-11 23:15:38 +0000 (Thu, 11 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+
+Brackenspore: Added counter for decays
+------------------------------------------------------------------------
+r12342 | nebula169 | 2014-12-11 16:06:48 +0000 (Thu, 11 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: add Arcane Twisted, tweaks
+------------------------------------------------------------------------
+r12341 | nebula169 | 2014-12-11 15:00:43 +0000 (Thu, 11 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/KargathBladefist.lua
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: add say to Arcane Volatility
+------------------------------------------------------------------------
+r12340 | nebula169 | 2014-12-11 14:58:43 +0000 (Thu, 11 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: add proximity for first cast of Pulverize, clean up Arcane Volatility
+------------------------------------------------------------------------
+r12339 | nebula169 | 2014-12-11 10:42:16 +0000 (Thu, 11 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/KargathBladefist.lua
+
+KargathBladefist: change Berserker Rush sound to "Long"
+------------------------------------------------------------------------
+r12338 | nebula169 | 2014-12-11 10:35:43 +0000 (Thu, 11 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+   M /trunk/BlackrockFoundry/Kagraz.lua
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+BlackrockFoundry: fix some INSTANCE_ENCOUNTER_ENGAGE_UNIT uses
+------------------------------------------------------------------------
+r12337 | dynaletik | 2014-12-11 08:19:46 +0000 (Thu, 11 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Locales/deDE.lua
+
+- deDE update
+------------------------------------------------------------------------
+r12336 | funkydude | 2014-12-11 07:59:08 +0000 (Thu, 11 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TheButcher.lua
+
+TheButcher: remove sound from frenzy soon warning.
+------------------------------------------------------------------------
+r12335 | nebula169 | 2014-12-11 07:57:06 +0000 (Thu, 11 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Locales/deDE.lua
+   M /trunk/Highmaul/Locales/esES.lua
+   M /trunk/Highmaul/Locales/frFR.lua
+   M /trunk/Highmaul/Locales/itIT.lua
+   M /trunk/Highmaul/Locales/koKR.lua
+   M /trunk/Highmaul/Locales/ptBR.lua
+   M /trunk/Highmaul/Locales/ruRU.lua
+   M /trunk/Highmaul/Locales/zhCN.lua
+   M /trunk/Highmaul/Locales/zhTW.lua
+
+update locales
+------------------------------------------------------------------------
+r12334 | nebula169 | 2014-12-11 07:45:11 +0000 (Thu, 11 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/KargathBladefist.lua
+
+KargathBladefist: add Arena Sweeper, fixed hurled check, tweak Berserker Rush times
+------------------------------------------------------------------------
+r12333 | nebula169 | 2014-12-11 07:40:07 +0000 (Thu, 11 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core/BossPrototype.lua
+
+BossPrototype: register the encounter events before calling OnBossEnable on the module
 ------------------------------------------------------------------------
 r12331 | funkydude | 2014-12-10 22:54:53 +0000 (Wed, 10 Dec 2014) | 1 line
 Changed paths:
@@ -970,121 +1159,4 @@ Changed paths:
    M /trunk/SiegeOfOrgrimmar/Galakras.lua
 
 Galakras: convert shaman marker to a simple skull marker.
-------------------------------------------------------------------------
-r12186 | funkydude | 2014-11-11 03:43:35 +0000 (Tue, 11 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/SiegeOfOrgrimmar/GarroshHellscream.lua
-
-GarroshHellscream: Don't show a 4th MC bar in p2.
-------------------------------------------------------------------------
-r12185 | funkydude | 2014-11-11 01:53:50 +0000 (Tue, 11 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/BigWigs.toc
-   M /trunk/SiegeOfOrgrimmar/ShaOfPride.lua
-
-ShaOfPride: Big add pre-warn should be "soon" and spawn should be "spawning".
-------------------------------------------------------------------------
-r12184 | funkydude | 2014-11-11 00:27:13 +0000 (Tue, 11 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/SiegeOfOrgrimmar/Immerseus.lua
-
-Immerseus: uncomment the swirl cast bar.
-------------------------------------------------------------------------
-r12183 | funkydude | 2014-11-11 00:11:31 +0000 (Tue, 11 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/SiegeOfOrgrimmar/ShaOfPride.lua
-
-ShaOfPride: tweak Unleashed message.
-------------------------------------------------------------------------
-r12182 | funkydude | 2014-11-10 23:44:17 +0000 (Mon, 10 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/SiegeOfOrgrimmar/Galakras.lua
-   M /trunk/SiegeOfOrgrimmar/Immerseus.lua
-
-Immerseus: If he is still under after 35 seconds, assume we're trying to do the "No More Tears" achievement, and show a Reform bar for the remaining 25 seconds (1 minute hard cap of being under).
-------------------------------------------------------------------------
-r12181 | funkydude | 2014-11-10 22:49:12 +0000 (Mon, 10 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Plugins/Proximity.lua
-
-Proximity: Add a mapId check for non-specific proximity modes.
-------------------------------------------------------------------------
-r12180 | funkydude | 2014-11-10 22:15:28 +0000 (Mon, 10 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core/BossPrototype.lua
-
-BossPrototype: Add UnitIsConnected check to solo check.
-------------------------------------------------------------------------
-r12179 | funkydude | 2014-11-10 15:00:25 +0000 (Mon, 10 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/SiegeOfOrgrimmar/GarroshHellscream.lua
-
-GarroshHellscream: Fix math fail.
-------------------------------------------------------------------------
-r12178 | funkydude | 2014-11-10 14:48:52 +0000 (Mon, 10 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/SiegeOfOrgrimmar/GarroshHellscream.lua
-
-GarroshHellscream: Restart the Desecrate timer to arrive after Whirling finishes, if he decides to cast it before Desecrate in p2. Don't show a 4th Whirling bar in p2.
-------------------------------------------------------------------------
-r12177 | funkydude | 2014-11-10 13:13:44 +0000 (Mon, 10 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/BlackrockFoundry/Darmac.lua
-   M /trunk/EndlessSpring/Locales/koKR.lua
-   M /trunk/Highmaul/Brackenspore.lua
-   M /trunk/Highmaul/Margok.lua
-   M /trunk/Plugins/AltPower.lua
-   M /trunk/Plugins/Proximity.lua
-   M /trunk/SiegeOfOrgrimmar/Galakras.lua
-   M /trunk/SiegeOfOrgrimmar/GarroshHellscream.lua
-
-Whitespace cleanup.
-------------------------------------------------------------------------
-r12176 | nevcairiel | 2014-11-10 06:36:37 +0000 (Mon, 10 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/SiegeOfOrgrimmar/TheFallenProtectors.lua
-
-TheFallenProtectors: Fix syntax error
-------------------------------------------------------------------------
-r12175 | funkydude | 2014-11-10 00:25:52 +0000 (Mon, 10 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core/BossPrototype.lua
-
-BossPrototype: Add solo check before firing the proximity callback to the proximity module (which does an IsInGroup check).
-------------------------------------------------------------------------
-r12174 | funkydude | 2014-11-10 00:17:50 +0000 (Mon, 10 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/SiegeOfOrgrimmar/TheFallenProtectors.lua
-
-TheFallenProtectors: Protect all instances of Bane timers firing with :Dispeller, not just the cast.
-------------------------------------------------------------------------
-r12173 | funkydude | 2014-11-09 23:35:44 +0000 (Sun, 09 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/SiegeOfOrgrimmar/GarroshHellscream.lua
-
-GarroshHellscream: No mind control when soloing, cleanup desecrate.
-------------------------------------------------------------------------
-r12172 | funkydude | 2014-11-09 23:27:31 +0000 (Sun, 09 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Mogushan/Garajal.lua
-
-Garajal: No tank banish when soloing.
-------------------------------------------------------------------------
-r12171 | funkydude | 2014-11-09 23:25:38 +0000 (Sun, 09 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core/BossPrototype.lua
-
-BossPrototype: Use the solo check when performing a boss target scan rather than IsInGroup.
-------------------------------------------------------------------------
-r12170 | funkydude | 2014-11-09 23:22:05 +0000 (Sun, 09 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core/BossPrototype.lua
-
-BossPrototype: Add proposed :Solo API for adapting modules to solo situations. Iterates the group to check if there's another unit in the same UnitPosition mapId as you, unless I can think of a better way.
-------------------------------------------------------------------------
-r12169 | funkydude | 2014-11-06 22:28:27 +0000 (Thu, 06 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/SiegeOfOrgrimmar/GarroshHellscream.lua
-
-GarroshHellscream: Fix berserk
 ------------------------------------------------------------------------

@@ -9,6 +9,12 @@ mod:RegisterEnableMob(78491)
 mod.engageId = 1720
 
 --------------------------------------------------------------------------------
+-- Locals
+--
+local decayCount = 1
+local infestingSporesCount = 1
+
+--------------------------------------------------------------------------------
 -- Localization
 --
 
@@ -92,6 +98,8 @@ function mod:OnEngage()
 	self:CDBar("living_mushroom", 18, L.living_mushroom, L.living_mushroom_icon) -- Living Mushroom
 	self:CDBar("rejuvenating_mushroom", 82, L.rejuvenating_mushroom, L.rejuvenating_mushroom_icon) -- Rejuvenating Mushroom
 	self:Berserk(600) -- LFR enrage
+	decayCount = 1
+	infestingSporesCount = 1
 end
 
 --------------------------------------------------------------------------------
@@ -132,13 +140,15 @@ function mod:NecroticBreath(args)
 end
 
 function mod:InfestingSpores(args)
-	self:Message(args.spellId, "Important", "Alarm")
-	self:Bar(args.spellId, 65)
+	self:Message(args.spellId, "Important", "Alarm", CL.casting:format(CL.count:format(args.spellName, infestingSporesCount)))
+	infestingSporesCount = infestingSporesCount + 1
+	self:Bar(args.spellId, 65, CL.count:format(args.spellName, infestingSporesCount))
 end
 
 function mod:Decay(args)
-	self:Message(args.spellId, "Personal", not self:Healer() and "Alert", CL.casting:format(args.spellName))
-	self:Bar(args.spellId, 10)
+	self:Message(args.spellId, "Personal", not self:Healer() and "Alert", CL.casting:format(CL.count:format(args.spellName, decayCount)))
+	decayCount = decayCount + 1
+	self:Bar(args.spellId, 10, CL.count:format(args.spellName, decayCount))
 end
 
 function mod:FungusSpawns(unit, spellName, _, _, spellId)
@@ -157,6 +167,7 @@ function mod:FungusSpawns(unit, spellName, _, _, spellId)
 	elseif spellId == 163142 then -- Evolved Fungus (Fungal Flesh-Eater)
 		self:Message("flesh_eater", "Urgent", self:Tank() and "Long", CL.spawning:format(CL.big_add), L.flesh_eater_icon)
 		self:Bar("flesh_eater", 120, CL.big_add, L.flesh_eater_icon)
+		decayCount = 1
 	elseif spellId == 160022 then -- Living Mushroom
 		self:Message("living_mushroom", "Positive", self:Healer() and "Long", spellId, L.living_mushroom_icon)
 		self:Bar("living_mushroom", 58, spellId, L.living_mushroom_icon)
@@ -168,4 +179,3 @@ function mod:FungusSpawns(unit, spellName, _, _, spellId)
 		self:Bar(spellId, 5)
 	end
 end
-

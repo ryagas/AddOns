@@ -122,11 +122,17 @@ L["tankhealer"] = "|cFFFF0000Warnung nur für Tanks und Heiler.|r "
 L["TANK_HEALER"] = "Nur Tank & Heiler"
 L["TANK_HEALER_desc"] = "Einige Fähigkeiten sind lediglich für Tanks und Heiler wichtig. Wenn Du Warnungen für diese Fähigkeit unabhägig von Deiner Rolle angezeigt bekommen möchtest, deaktiviere diese Option."
 L["test"] = "Testen"
+L["testBarsBtn"] = "Testleiste anzeigen"
+L["testBarsBtn_desc"] = "Zeigt eine Leiste zum Testen der aktuellen Einstellungen an."
 L["thanks"] = "Danke an die folgenden Leute für ihre Hilfe in verschiedenen Entwicklungsbereichen:"
+L["toggleAnchorsBtn"] = "Anker ein/ausblenden"
+L["toggleAnchorsBtn_desc"] = "Blendet die Ankerpunkte ein oder aus."
 L["tooltipHint"] = [=[|cffeda55fKlicken|r, um alle laufenden Module zurückzusetzen.
 |cffeda55fAlt+Klick|r, um alle laufenden Module zu beenden.
 |cffeda55fRechtsklick|r, um auf die Optionen zuzugreifen.]=]
 L["upToDate"] = "Aktuell:"
+L["VOICE"] = "Stimmen"
+L["VOICE_desc"] = "Wenn ein Stimmplugin installiert ist, aktiviert diese Option die Wiedergabe einer Sounddatei, welche die Warnung laut ausspricht."
 L["warmup"] = "Bosskampf beginnt"
 L["warmup_desc"] = "Verbleibende Zeit bis zum Start der Bossbegegnung."
 L["website"] = "Webseite"
