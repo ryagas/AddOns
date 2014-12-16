@@ -58,7 +58,7 @@ function mod:GetOptions()
 		163312, -- Raving Assault
 		--[[ General ]]--
 		{162288, "TANK"}, -- Accretion
-		{162346, "FLASH"}, -- Crystalline Barrage
+		{162346, "FLASH", "SAY"}, -- Crystalline Barrage
 		"custom_off_barrage_marker",
 		162475, -- Tectonic Upheaval
 		"adds",
@@ -119,6 +119,7 @@ function mod:CrystallineBarrage(args)
 	if self:Me(args.destGUID) then
 		self:Message(args.spellId, "Personal", "Alarm", CL.you:format(args.spellName))
 		self:Flash(args.spellId)
+		self:Say(args.spellId, 120361) -- 120361 = "Barrage"
 	end
 	if self.db.profile.custom_off_barrage_marker then
 		for i=1, 5 do
@@ -147,7 +148,7 @@ do
 	function mod:CrystallineBarrageDamage(args)
 		local t = GetTime()
 		if self:Me(args.destGUID) and t-prev > 2 then
-			self:Message(args.spellId, "Personal", "Alarm", CL.underyou:format(args.spellName))
+			self:Message(162346, "Personal", "Alarm", CL.underyou:format(args.spellName))
 			prev = t
 		end
 	end
@@ -161,7 +162,7 @@ do
 		local id = self:MobId(args.sourceGUID)
 		if id ~= 80557 or t-prev > 5 then -- not Mote or first Mote cast in 5s
 			local raidIcon = CombatLog_String_GetIcon(args.sourceRaidFlags)
-			self:Message(args.spellId, "Positive", nil, CL.other:format(raidIcon .. names[id], args.spellName))
+			self:Message(args.spellId, "Positive", "Long", CL.other:format(raidIcon .. names[id], args.spellName))
 			if id == 80557 then prev = t end
 		end
 	end
@@ -178,7 +179,7 @@ end
 -- Adds
 
 function mod:Earthwarper(args)
-	self:Message("adds", "Attention", "Info", -10061, false)
+	self:Message("adds", "Attention", "Info", -10061, false) -- Night-Twisted Earthwarper
 	self:CDBar("adds", 41, -10061, L.earthwarper_icon)
 	self:CDBar(162894, 10) -- Gift of Earth
 	self:CDBar(162968, 15) -- Earthen Flechettes

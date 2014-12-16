@@ -1,9 +1,150 @@
 ------------------------------------------------------------------------
-r12361 | funkydude | 2014-12-13 22:00:32 +0000 (Sat, 13 Dec 2014) | 1 line
+r12385 | funkydude | 2014-12-15 07:01:46 +0000 (Mon, 15 Dec 2014) | 1 line
 Changed paths:
-   A /tags/r12361-release (from /trunk:12360)
+   A /tags/r12385-release (from /trunk:12384)
 
-Tagging as r12361-release
+Tagging as r12385-release
+------------------------------------------------------------------------
+r12384 | funkydude | 2014-12-15 06:51:11 +0000 (Mon, 15 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+
+bump version
+------------------------------------------------------------------------
+r12383 | nebula169 | 2014-12-15 03:08:51 +0000 (Mon, 15 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: tweak options
+------------------------------------------------------------------------
+r12382 | nebula169 | 2014-12-15 02:58:37 +0000 (Mon, 15 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: tweaks
+------------------------------------------------------------------------
+r12381 | nebula169 | 2014-12-15 02:52:42 +0000 (Mon, 15 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: add missing SAY flag to Expel Magic: Fel and add flash
+------------------------------------------------------------------------
+r12380 | nebula169 | 2014-12-15 02:44:52 +0000 (Mon, 15 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: add Volatile Anomalies timer, range check the Suppression Field target, show Expel Magic: Frost duration, add some cd times
+------------------------------------------------------------------------
+r12378 | nebula169 | 2014-12-14 23:13:21 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: fix Expel Magic: Fel timer and add inital cd after gaining barrier
+------------------------------------------------------------------------
+r12377 | funkydude | 2014-12-14 23:08:59 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+
+Brackenspore: Remove unused "flash" option from moss heal.
+------------------------------------------------------------------------
+r12376 | nebula169 | 2014-12-14 22:51:04 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+
+Brackenspore: flag Creeping Moss TANK, only flash for Exploding Fungus
+------------------------------------------------------------------------
+r12375 | funkydude | 2014-12-14 22:11:12 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+
+bump version
+------------------------------------------------------------------------
+r12374 | nebula169 | 2014-12-14 21:18:36 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/ThroneOfThunder/IronQon.lua
+
+IronQon: simple Arcing Lightning proximity
+------------------------------------------------------------------------
+r12373 | funkydude | 2014-12-14 21:06:56 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Tectus.lua
+
+Tectus: add say for barrage
+------------------------------------------------------------------------
+r12372 | funkydude | 2014-12-14 21:02:44 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core/BossPrototype.lua
+
+BossPrototype: Fix :Message always firing a voice callback.
+------------------------------------------------------------------------
+r12371 | nebula169 | 2014-12-14 20:47:12 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: fix Crush Armor error
+------------------------------------------------------------------------
+r12370 | funkydude | 2014-12-14 20:32:29 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Tectus.lua
+
+Tectus: Use correct id for barrage damage message.
+------------------------------------------------------------------------
+r12369 | dynaletik | 2014-12-14 18:36:45 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Locales/deDE.lua
+
+- deDE update
+------------------------------------------------------------------------
+r12368 | nebula169 | 2014-12-14 16:36:36 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+
+Brackenspore: flash on the mythic abilities
+------------------------------------------------------------------------
+r12367 | nebula169 | 2014-12-14 16:29:24 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+
+Brackenspore: add initial mythic ability cd
+------------------------------------------------------------------------
+r12366 | nebula169 | 2014-12-14 16:18:11 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+
+Brackenspore: remove the non-working flamethrower Creeping Moss warning
+------------------------------------------------------------------------
+r12365 | nebula169 | 2014-12-14 16:09:12 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+
+Brackenspore: bump up the time on the Exploding Fungus bar
+------------------------------------------------------------------------
+r12364 | nebula169 | 2014-12-14 16:02:07 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+   M /trunk/Highmaul/Locales/deDE.lua
+   M /trunk/Highmaul/Locales/esES.lua
+   M /trunk/Highmaul/Locales/frFR.lua
+   M /trunk/Highmaul/Locales/itIT.lua
+   M /trunk/Highmaul/Locales/koKR.lua
+   M /trunk/Highmaul/Locales/ptBR.lua
+   M /trunk/Highmaul/Locales/ruRU.lua
+   M /trunk/Highmaul/Locales/zhCN.lua
+   M /trunk/Highmaul/Locales/zhTW.lua
+
+Brackenspore: add timer for Call of the Tides/Exploding Fungus
+------------------------------------------------------------------------
+r12363 | funkydude | 2014-12-14 16:00:24 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Tectus.lua
+
+Tectus: add sound to Tectonic Upheaval.
+------------------------------------------------------------------------
+r12362 | elvador | 2014-12-14 15:40:46 +0000 (Sun, 14 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+
+Brackenspore: updated timers for Infesting Spores, Decay, Mind Fungus and Rejuvenating Mushroom
 ------------------------------------------------------------------------
 r12360 | funkydude | 2014-12-13 21:58:43 +0000 (Sat, 13 Dec 2014) | 1 line
 Changed paths:
@@ -1147,16 +1288,4 @@ Changed paths:
    M /trunk/Options/Options.lua
 
 Remove WoD compat.
-------------------------------------------------------------------------
-r12189 | funkydude | 2014-11-12 22:49:33 +0000 (Wed, 12 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/SiegeOfOrgrimmar/ParagonsOfTheKlaxxi.lua
-
-ParagonsOfTheKlaxxi: cleanups
-------------------------------------------------------------------------
-r12188 | funkydude | 2014-11-12 22:46:08 +0000 (Wed, 12 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/SiegeOfOrgrimmar/Galakras.lua
-
-Galakras: convert shaman marker to a simple skull marker.
 ------------------------------------------------------------------------

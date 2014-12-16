@@ -239,8 +239,10 @@ P['sle'] = {
 		['toes'] = false,
 		['tot'] = false,
 		['soo'] = false,
-		['soof'] = false,
 		['leishen'] = false,
+		['hm'] = false,
+		['hmNormal'] = false,
+		['hmHeroic'] = false,
 	},
 
 	--Loot (Restructured)
@@ -427,7 +429,23 @@ P['sle'] = {
 		['roll'] = {
 			['min'] = "1",
 			['max'] = "50",
-		}
+		},
+		['cfunc'] = {
+			['enabled'] = false,
+			['called'] = "Reload",
+		},
+		['afunc'] = {
+			['enabled'] = false,
+			['called'] = "Manager",
+		},
+		['sfunc'] = {
+			['enabled'] = false,
+			['called'] = "AFK",
+		},
+		['rfunc'] = {
+			['enabled'] = false,
+			['called'] = "Hundred",
+		},
 	},
 	
 	['rumouseover'] = false,
