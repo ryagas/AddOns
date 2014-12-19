@@ -93,6 +93,7 @@ function mod:OnBossEnable()
 	--self:Emote("ArcaneVolatility", "163372")
 	self:Log("SPELL_CAST_SUCCESS", "ArcaneVolatility", 163372)
 	self:Log("SPELL_AURA_APPLIED", "ArcaneVolatilityApplied", 163372)
+	self:Log("SPELL_AURA_REFRESH", "ArcaneVolatilityApplied", 163372)
 	self:Log("SPELL_AURA_REMOVED", "ArcaneVolatilityRemoved", 163372)
 end
 
@@ -250,7 +251,7 @@ do
 end
 
 do
-	local times = { 8.5, 6, 46, 7, 16, 8.5, 6, 40, 131, 9.5, 140, 8.5, 6 } -- good for 7min
+	local times = { 8.5, 6, 46, 7, 16, 8.5, 6, 40, 131, 9.5, 56.5, 8.5, 6 }
 	local scheduled = nil
 	local function delayUpdate()
 		updateProximity()
@@ -273,9 +274,11 @@ do
 			self:Flash("volatility_self", args.spellId)
 			self:Say("volatility_self", args.spellId)
 		end
-		volatilityTargets[#volatilityTargets+1] = args.destName
-		if self.db.profile.custom_off_volatility_marker then
-			SetRaidTarget(args.destName, #volatilityTargets)
+		if not tContains(volatilityTargets, args.destName) then
+			volatilityTargets[#volatilityTargets+1] = args.destName
+			if self.db.profile.custom_off_volatility_marker then
+				SetRaidTarget(args.destName, #volatilityTargets)
+			end
 		end
 	end
 

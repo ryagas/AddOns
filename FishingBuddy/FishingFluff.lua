@@ -548,7 +548,7 @@ local seascorpion = {
 local function UseSeaScorpionBait(info)
 	if (GSB("EasyLures") and GSB("DraenorBait")) then
 		local continent = GetCurrentMapContinent();
-		local zone, subzone = FL:GetZoneInfo();
+		local zone, subzone = FL:GetBaseZoneInfo();
 		if (continent == 7 and seascorpion[zone] and seascorpion[zone][subzone]) then
 			return true;
 		end
@@ -559,11 +559,9 @@ end
 local function UsableDraenorBait(info)
 	if (GSB("EasyLures") and GSB("DraenorBait")) then
 		local continent = GetCurrentMapContinent();
-		local zone, subzone = FL:GetZoneInfo();
-		if (continent == 7) then
-			 if (FL:GetBaseZone(zone) == info.zone) then
-				return not seascorpion[zone][subzone];
-			end
+		local zone, subzone = FL:GetBaseZoneInfo();
+		if (continent == 7 and zone == info.zone) then
+			return not seascorpion[zone][subzone];
 		end
 	end
 end

@@ -1,9 +1,26 @@
 ------------------------------------------------------------------------
-r99 | slippycheeze | 2014-12-15 21:03:54 +0000 (Mon, 15 Dec 2014) | 1 line
+r101 | slippycheeze | 2014-12-18 21:06:57 +0000 (Thu, 18 Dec 2014) | 1 line
 Changed paths:
-   A /tags/60000.16 (from /trunk:98)
+   A /tags/60000.17 (from /trunk:100)
 
-Tagging as 60000.16 to grab updated BSF Library
+Tagging as 60000.17
+------------------------------------------------------------------------
+r100 | slippycheeze | 2014-12-18 21:04:26 +0000 (Thu, 18 Dec 2014) | 10 lines
+Changed paths:
+   M /trunk/src/IDs.lua
+   M /trunk/src/Rotations.lua
+   M /trunk/src/Spells.lua
+
+Work around multiple Kill Shot bugs for MM and BM hunters
+
+Blizzard have several issues, including not accounting for the Enhanced
+Kill Shot perk in their API functions, sometimes returning that KS is
+off cooldown incorrectly, and so on.
+
+See for details:
+
+http://us.battle.net/wow/en/forum/topic/15700039856
+http://us.battle.net/wow/en/forum/topic/15699089759
 ------------------------------------------------------------------------
 r97 | slippycheeze | 2014-12-13 05:13:00 +0000 (Sat, 13 Dec 2014) | 1 line
 Changed paths:

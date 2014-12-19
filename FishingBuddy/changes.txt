@@ -1,4 +1,10 @@
-﻿Version 1.4o
+﻿Version 1.4q
+- Now that the library is right, make sure we check it correctly for non-English clients
+
+Version 1.4p
+- Fix bug in fishing library that was messing up non-English zone lookups
+
+Version 1.4o
 - Add an option to control the application of "Draenor bait"
 - More work on cleaning up all of the old lure code to handle all of the new situations
 

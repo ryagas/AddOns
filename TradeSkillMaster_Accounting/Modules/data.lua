@@ -756,7 +756,7 @@ function Data.GetItemSummarySTData(filters)
 					sortArg = data.buyNum,
 				},
 				{
-					value = data.avgSell > 0 and TSMAPI:FormatTextMoney(data.avgBuy) or "|cff999999---|r",
+					value = data.avgBuy > 0 and TSMAPI:FormatTextMoney(data.avgBuy) or "|cff999999---|r",
 					sortArg = data.avgBuy,
 				},
 			},

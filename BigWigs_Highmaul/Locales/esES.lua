@@ -32,8 +32,8 @@ end
 
 L = BigWigs:NewBossLocale("Brackenspore", "esES") or BigWigs:NewBossLocale("Brackenspore", "esMX")
 if L then
-	--L.mythic_ability = "Next special ability"
-	--L.mythic_ability_desc = "Cooldown timer for the next Call of the Tides or Exploding Fungus"
+	--L.mythic_ability = "Special Ability"
+	--L.mythic_ability_desc = "Show a timer bar for the next Call of the Tides or Exploding Fungus arriving."
 
 	L.creeping_moss_boss_heal = "Musgo debajo del jefe (sanando)"
 	L.creeping_moss_add_heal = "Musgo debajo del ADD GRANDE (sanando)"
@@ -49,13 +49,8 @@ end
 
 L = BigWigs:NewBossLocale("Ko'ragh", "esES") or BigWigs:NewBossLocale("Ko'ragh", "esMX")
 if L then
-	L.suppression_field_trigger1 = "¡Callad!"
-	L.suppression_field_trigger2 = "¡Os partiré en dos!"
-	L.suppression_field_trigger3 = "¡Os aplastaré!"
-	L.suppression_field_trigger4 = "¡Silencio!"
-
 	L.fire_bar = "Todo el mundo explota!"
-	L.overwhelming_energy_bar = "Bolas golpean"
+	L.overwhelming_energy_bar = "Bolas golpean (%d)"
 
 	L.custom_off_fel_marker = "Marcador de Expulsar magia: Vil"
 	L.custom_off_fel_marker_desc = "Marca los jugadores afectados por Expulsar magia: Vil con {rt1}{rt2}{rt3}, requiere ayudante o líder.\n|cFFFF0000Sólo 1 persona en la raid debería tener activada esta opción para prevenir conflictos con las marcas.|r"
@@ -64,6 +59,8 @@ end
 L = BigWigs:NewBossLocale("Imperator Mar'gok", "esES") or BigWigs:NewBossLocale("Imperator Mar'gok", "esMX")
 if L then
 	L.branded_say = "%s (%d) %dm"
+	L.add_death_soon = "Add a punto de morir!"
+	L.slow_fixate = "Lento+Fijado"
 
 	L.custom_off_fixate_marker = "Marcador de Fijar"
 	L.custom_off_fixate_marker_desc = "Marca los objetivos de los Magos de guerra gorianos Fijar con {rt1}{rt2}, requiere ayudante o líder.\n|cFFFF0000Sólo 1 persona en la raid debería tener activada esta opción para prevenir conflictos con las marcas.|r"

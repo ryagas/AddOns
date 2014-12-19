@@ -32,8 +32,8 @@ end
 
 L = BigWigs:NewBossLocale("Brackenspore", "zhCN")
 if L then
-	--L.mythic_ability = "Next special ability"
-	--L.mythic_ability_desc = "Cooldown timer for the next Call of the Tides or Exploding Fungus"
+	--L.mythic_ability = "Special Ability"
+	--L.mythic_ability_desc = "Show a timer bar for the next Call of the Tides or Exploding Fungus arriving."
 
 	--L.creeping_moss_boss_heal = "Moss under BOSS (healing)"
 	--L.creeping_moss_add_heal = "Moss under BIG ADD (healing)"
@@ -49,13 +49,8 @@ end
 
 L = BigWigs:NewBossLocale("Ko'ragh", "zhCN")
 if L then
-	--L.suppression_field_trigger1 = "Quiet!"
-	--L.suppression_field_trigger2 = "I will tear you in half!"
-	--L.suppression_field_trigger3 = "I will crush you!"
-	--L.suppression_field_trigger4 = "Silence!"
-
 	--L.fire_bar = "Everyone explodes!"
-	--L.overwhelming_energy_bar = "Balls hit"
+	--L.overwhelming_energy_bar = "Balls hit (%d)"
 
 	--L.custom_off_fel_marker = "Expel Magic: Fel Marker"
 	--L.custom_off_fel_marker_desc = "Mark Expel Magic: Fel targets with {rt1}{rt2}{rt3}, requires promoted or leader.\n|cFFFF0000Only 1 person in the raid should have this enabled to prevent marking conflicts.|r"

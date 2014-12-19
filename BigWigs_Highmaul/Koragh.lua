@@ -9,18 +9,21 @@ mod:RegisterEnableMob(79015)
 mod.engageId = 1723
 
 --------------------------------------------------------------------------------
+-- Locals
+--
+
+local allowSuppression = false
+local ballCount = 1
+local nextBall, nextMC = 0, 0
+
+--------------------------------------------------------------------------------
 -- Localization
 --
 
 local L = mod:NewLocale("enUS", true)
 if L then
-	L.suppression_field_trigger1 = "Quiet!"
-	L.suppression_field_trigger2 = "I will tear you in half!"
-	L.suppression_field_trigger3 = "I will crush you!"
-	L.suppression_field_trigger4 = "Silence!"
-
 	L.fire_bar = "Everyone explodes!"
-	L.overwhelming_energy_bar = "Balls hit"
+	L.overwhelming_energy_bar = "Balls hit (%d)"
 
 	L.volatile_anomaly = -9629 -- Volatile Anomalies
 	L.volatile_anomaly_icon = "spell_arcane_arcane04"
@@ -50,7 +53,7 @@ function mod:GetOptions()
 		{161328, "FLASH", "SAY"}, -- Suppression Field
 		{162185, "PROXIMITY"}, -- Expel Magic: Fire
 		{162186, "TANK", "ICON", "FLASH", "SAY"}, -- Expel Magic: Arcane
-		172747, -- Expel Magic: Frost
+		{172747, "FLASH", "SAY"}, -- Expel Magic: Frost
 		{162184, "HEALER"}, -- Expel Magic: Shadow
 		"bosskill"
 	}, {
@@ -70,7 +73,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_SUCCESS", "ExpelMagicArcaneApplied", 162186) -- Faster than _APPLIED
 	self:Log("SPELL_AURA_REMOVED", "ExpelMagicArcaneRemoved", 162186)
 	self:Log("SPELL_CAST_START", "ExpelMagicFrost", 172747)
-	self:Yell("SuppressionField", L.suppression_field_trigger1, L.suppression_field_trigger2, L.suppression_field_trigger3, L.suppression_field_trigger4)
+	self:RegisterEvent("CHAT_MSG_MONSTER_YELL", "SuppressionFieldYell")
 	self:Log("SPELL_CAST_SUCCESS", "SuppressionFieldCast", 161328) -- fallback to fire the timer if the triggers aren't localized
 	-- Mythic
 	self:Log("SPELL_CAST_START", "ExpelMagicFelCast", 172895)
@@ -80,9 +83,13 @@ function mod:OnBossEnable()
 end
 
 function mod:OnEngage()
-	self:Bar(161612, 36, L.overwhelming_energy_bar) -- Overwhelming Energy
+	allowSuppression = false
+	ballCount = 1
+	nextBall = GetTime() + 36
+	self:Bar(161612, 36, L.overwhelming_energy_bar:format(ballCount)) -- Overwhelming Energy
 	if self:Mythic() then
 		self:CDBar(172895, 8) -- Expel Magic: Fel
+		nextMC = GetTime() + 90
 		self:Bar(163472, 90) -- Dominating Power
 	end
 	self:RegisterUnitEvent("UNIT_POWER_FREQUENT", nil, "boss1")
@@ -107,7 +114,7 @@ do
 	local count = 0
 	local function nextAdd(self)
 		count = count + 1
-		self:Message("volatile_anomaly", "Attention", "Info", L.volatile_anomaly, L.volatile_anomaly_icon)
+		self:Message("volatile_anomaly", "Attention", "Info", ("%s %d/3"):format(self:SpellName(L.volatile_anomaly), count), L.volatile_anomaly_icon)
 		if count < 3 then
 			self:Bar("volatile_anomaly", 8, L.volatile_anomaly, L.volatile_anomaly_icon)
 			self:ScheduleTimer(nextAdd, 8, self)
@@ -123,7 +130,17 @@ do
 			self:StopBar(172895) -- Expel Magic: Fel
 
 			count = 0
-			self:ScheduleTimer(nextAdd, 1, self) 
+			self:ScheduleTimer(nextAdd, 1, self)
+
+			local t = GetTime()
+			if nextBall-t > 5 then
+				nextBall = nextBall + 20
+				self:CDBar(161612, nextBall-t, L.overwhelming_energy_bar:format(ballCount))
+			end
+			if self:Mythic() and nextMC-t > 5 then -- really need to combine these
+				nextMC = nextMC + 20
+				self:CDBar(163472, nextMC-t)
+			end
 		elseif spellId == 156803 then -- Nullification Barrier
 			self:Message(160734, "Positive", nil, spellName)
 			self:RegisterUnitEvent("UNIT_POWER_FREQUENT", nil, unit)
@@ -164,59 +181,73 @@ function mod:ExpelMagicFire(args)
 	self:ScheduleTimer("CloseProximity", 10.5, args.spellId)
 end
 
-function mod:ExpelMagicFrost(args)
-	self:Message(args.spellId, "Neutral")
-	self:Bar(args.spellId, 21.5, ("<%s>"):format(self:SpellName(84721)), 84721) -- Frozen Orb
-	self:Bar(args.spellId, 60)
+do
+	local function printTarget(self, name, guid)
+		if self:Me(guid) then
+			self:Flash(172747)
+			self:Say(172747)
+		end
+		if self:Range(name) < 30 then
+			self:PlaySound(172747, "Alarm")
+		end
+	end
+	function mod:ExpelMagicFrost(args)
+		self:GetBossTarget(printTarget, 0.5, args.sourceGUID)
+		self:Message(args.spellId, "Neutral")
+		self:Bar(args.spellId, 21.5, ("<%s>"):format(self:SpellName(84721)), 84721) -- Frozen Orb
+		self:Bar(args.spellId, 60)
+	end
 end
 
 do
-	local suppressionTarget = nil
-	local function warn(spellId)
-		if suppressionTarget then
+	function mod:SuppressionFieldCast(args)
+		allowSuppression = true
+		self:CDBar(args.spellId, 15)
+	end
+
+	function mod:SuppressionFieldYell(_, _, _, _, _, suppressionTarget)
+		if allowSuppression then
+			allowSuppression = false
 			if UnitIsUnit("player", suppressionTarget) then
-				mod:Flash(spellId)
-				mod:Say(spellId)
-			elseif mod:Range(suppressionTarget) < 10 then -- actually 8 yards
-				mod:RangeMessage(spellId)
-				mod:Flash(spellId)
+				self:Flash(161328)
+				self:Say(161328)
+			elseif self:Range(suppressionTarget) < 10 then -- actually 8 yards
+				self:RangeMessage(161328)
+				self:Flash(161328)
 				return
 			end
-			mod:TargetMessage(spellId, suppressionTarget, "Attention", "Alarm")
-		else
-			mod:Message(spellId, "Attention")
+			self:TargetMessage(161328, suppressionTarget, "Attention", "Alarm")
 		end
-	end
-
-	function mod:SuppressionFieldCast(args)
-		self:CDBar(args.spellId, 15)
-		suppressionTarget = nil
-		self:ScheduleTimer(warn, 0.1, args.spellId)
-	end
-
-	function mod:SuppressionField(_, _, _, _, target)
-		suppressionTarget = target
 	end
 end
 
 do
 	local list, scheduled = mod:NewTargetList(), nil
-	local function warn(spellId)
-		mod:TargetMessage(spellId, list, "Positive")
+	local function warn(self, spellId)
+		self:TargetMessage(spellId, list, "Positive")
 		scheduled = nil
 	end
 	function mod:CausticEnergy(args)
 		list[#list+1] = args.destName
 		if not scheduled then
-			scheduled = self:ScheduleTimer(warn, 0.2, args.spellId)
+			scheduled = self:ScheduleTimer(warn, 0.2, self, args.spellId)
 		end
 	end
 end
 
-function mod:OverwhelmingEnergy(args)
-	self:Bar(args.spellId, 30, L.overwhelming_energy_bar) -- XXX in mythic, don't fire this bar if it's going to cause mcs
-	if self:Me(args.destGUID) and UnitPower("player", 10) > 0 then -- check alternate power, too
-		self:Message(args.spellId, "Positive", "Warning") -- green to keep it different looking
+do
+	local prev = 0
+	function mod:OverwhelmingEnergy(args)
+		if self:Me(args.destGUID) and UnitPower("player", 10) > 0 then -- check alternate power, too
+			self:Message(args.spellId, "Positive", "Warning") -- green to keep it different looking
+		end
+		local t = GetTime()
+		if t-prev > 10 then
+			ballCount = ballCount + 1
+			nextBall = GetTime() + 30
+			self:Bar(args.spellId, 30, L.overwhelming_energy_bar:format(ballCount)) -- XXX in mythic, don't fire this bar if it's going to cause mcs
+			prev = t
+		end
 	end
 end
 
@@ -226,7 +257,7 @@ do
 	local marks = 0
 	function mod:ExpelMagicFelCast(args)
 		self:Message(args.spellId, "Attention")
-		self:CDBar(args.spellId, 15.7) -- 15-18
+		self:CDBar(args.spellId, 15.7) -- 15-18, mostly 15.7
 		marks = 0
 	end
 
@@ -255,15 +286,16 @@ end
 
 do
 	local list, scheduled = mod:NewTargetList(), nil
-	local function warn(spellId)
-		mod:TargetMessage(spellId, list, "Urgent")
+	local function warn(self, spellId)
+		self:TargetMessage(spellId, list, "Urgent")
 		scheduled = nil
 	end
 	function mod:DominatingPower(args)
 		list[#list+1] = args.destName
 		if not scheduled then
+			nextMC = GetTime() + 60
 			self:Bar(args.spellId, 60)
-			scheduled = self:ScheduleTimer(warn, 0.2, args.spellId)
+			scheduled = self:ScheduleTimer(warn, 0.2, self, args.spellId)
 		end
 	end
 end

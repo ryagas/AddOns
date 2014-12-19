@@ -130,6 +130,7 @@ local roamingParty = CreateFrame("Frame", nil, GarrisonMissionFrameMissions) do
 			end
 			PlaySound(follower and "UI_Garrison_CommandTable_AssignFollower" or "UI_Garrison_CommandTable_UnassignFollower")
 			roamingParty[slot].followerID = follower
+			roamingParty:Update()
 			GarrisonMissionList_UpdateMissions()
 		end
 	end
@@ -426,7 +427,8 @@ do -- Garrison_SortMissions
 		if (not MISSION_PAGE_FRAME.missionInfo.missionID) then
 			return
 		end
-		C_Garrison.StartMission(MISSION_PAGE_FRAME.missionInfo.missionID)
+		G.StartMission(MISSION_PAGE_FRAME.missionInfo.missionID)
+		roamingParty:Clear()
 		PlaySound("UI_Garrison_CommandTable_MissionStart")
 		GarrisonMissionPage_Close()
 		if (not GetCVarBitfield("closedInfoFrames", LE_FRAME_TUTORIAL_GARRISON_LANDING)) then
@@ -536,11 +538,28 @@ local GarrisonFollower_OnDoubleClick do
 			local fi = self.info
 			if fi and fi.followerID and mi and mi.missionID and fi.status == nil then
 				local f = GarrisonMissionFrame.MissionTab.MissionPage.Followers
-				for i=1, #f do
+				for i=1, mi.numFollowers do
 					if not f[i].info then
 						GarrisonMissionPage_SetFollower(f[i], fi)
 						GarrisonFollowerButton_Collapse(self)
-						break
+						return
+					end
+				end
+				if mi.numFollowers == 1 then
+					GarrisonMissionPage_SetFollower(f[1], fi)
+				else
+					local f1, f2, f3 = f[1].info, f[2].info, f[3].info
+					f1, f2, f3 = f1 and f1.followerID, f2 and f2.followerID, f3 and f3.followerID
+					local g = G.GetBackfillMissionGroups(mi, G.GroupFilter.IDLE, G.GetMissionDefaultGroupRank(mi), 1, f1, f2, f3, fi.followerID)
+					if g and g[1] then
+						local p1, p2, p3 = g[1][5], g[1][6], g[1][7]
+						for i=1,mi.numFollowers do
+							if p1 ~= f1 and p2 ~= f1 and p3 ~= f1 then
+								GarrisonMissionPage_SetFollower(f[i], fi)
+								break
+							end
+							f1, f2 = f2, f3
+						end
 					end
 				end
 			elseif fi and fi.status == GARRISON_FOLLOWER_IN_PARTY then
@@ -759,19 +778,31 @@ local lfgButton, GetSuggestedGroups do
 		return out or ""
 	end
 	local function addToMenu(mm, groups, mi, finfo, base)
-		local ml = G.GetFMLevel(mi)
+		local ml, primary = G.GetFMLevel(mi), mi._primaryGoal or select(2, G.GetMissionDefaultGroupRank(mi))
+		mi._primaryGoal = primary
+		
 		for i=1,#groups do
 			local gi, tg = groups[i]
 			for i=1,mi.numFollowers do
 				tg = (i > 1 and tg .. "|n" or "") .. G.GetFollowerLevelDescription(gi[4+i], ml, finfo[gi[4+i]])
 			end
 			G.AnnotateMissionParty(gi, finfo, mi)
-			local text = gi[1] .. "%"
+			local sc, xp, res, text = gi[1] .. "%"
 			if gi.expectedXP and gi.expectedXP > 0 then
 				local exp = BreakUpLargeNumbers(floor(gi.expectedXP))
-				text, tg = text .. "; " .. (L"%s XP"):format(exp), tg .. "|n" .. (L"+%s experience expected"):format(exp)
+				xp = (L"%s XP"):format(exp)
+				tg = tg .. "|n" .. (L"+%s experience expected"):format(exp)
+			end
+			if gi[1] and gi[1] > 0 and gi[3] and gi[3] > 0 then
+				res = floor(gi[1]*gi[3]/100) .. " |TInterface\\Garrison\\GarrisonCurrencyIcons:20:20:0:-2:128:128:12:52:12:52|t"
+			end
+			if (primary == "xp" and xp) or (primary == "resources" and res) then
+				text = (primary == "xp" and xp or res) .. "; " .. sc .. (primary == "resources" and xp and "; " .. xp or "")
+			else
+				text = sc .. (xp and "; " .. xp or "")
 			end
 			text = text .. "; " .. SecondsToTime(gi[4])
+			
 			mm[#mm+1] = { text = text, notCheckable=true, tooltipText=tg, tooltipTitle=NORMAL_FONT_COLOR_CODE .. (L"Group %d"):format((base or 0) + i), tooltipOnButton=true, func=SetGroup, arg1=gi, arg2=mi}
 		end
 	end

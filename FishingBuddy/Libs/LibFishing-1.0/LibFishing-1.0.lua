@@ -7,7 +7,7 @@ Licensed under a Creative Commons "Attribution Non-Commercial Share Alike" Licen
 --]]
 
 local MAJOR_VERSION = "LibFishing-1.0"
-local MINOR_VERSION = 90000 + tonumber(("$Rev: 919 $"):match("%d+"))
+local MINOR_VERSION = 90000 + tonumber(("$Rev: 920 $"):match("%d+"))
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub") end
 
@@ -861,9 +861,6 @@ function FishLib:GetBaseZoneInfo()
 		zone = "Ironforge";
 	end
 	
-	local continent = GetCurrentMapContinent();
-	zone = LT:GetUniqueZoneNameForLookup(zone, continent)
-
 	return self:GetBaseZone(zone), self:GetBaseSubZone(subzone);
 end
 
@@ -874,19 +871,15 @@ function FishLib:GetBaseZone(zname)
 		return FishLib.UNKNOWN;
 	end
 
-	local continent = GetCurrentMapContinent();
-	local uname = LT:GetUniqueZoneNameForLookup(zname, continent)
-
-	if (uname) then
-		return uname;
-	end
-
-	if (zname and not BZ[zname] ) then
+	if (zname and not BZ[zname] and BZR[zname]) then
 		zname = BZR[zname];
 	end
 
 	if (not zname) then
 		zname = FishLib.UNKNOWN;
+	else
+		local continent = GetCurrentMapContinent();
+		zname = LT:GetUniqueZoneNameForLookup(zname, continent)
 	end
 	
 	return zname;
@@ -897,12 +890,14 @@ function FishLib:GetBaseSubZone(sname)
 		return FishLib.UNKNOWN;
 	end
 	
-	if (sname and not BSL[sname] ) then
+	if (sname and not BSL[sname] and BSZR[sname]) then
 		sname = BSZR[sname];
 	end
+	
 	if (not sname) then
 		sname = FishLib.UNKNOWN;
 	end
+	
 	return sname;
 end
 

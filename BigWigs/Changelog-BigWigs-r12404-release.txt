@@ -1,9 +1,145 @@
 ------------------------------------------------------------------------
-r12385 | funkydude | 2014-12-15 07:01:46 +0000 (Mon, 15 Dec 2014) | 1 line
+r12404 | funkydude | 2014-12-17 06:23:31 +0000 (Wed, 17 Dec 2014) | 1 line
 Changed paths:
-   A /tags/r12385-release (from /trunk:12384)
+   A /tags/r12404-release (from /trunk:12403)
 
-Tagging as r12385-release
+Tagging as r12404-release
+------------------------------------------------------------------------
+r12403 | nebula169 | 2014-12-17 06:09:52 +0000 (Wed, 17 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: fix Arcane Volatility cd
+------------------------------------------------------------------------
+r12402 | funkydude | 2014-12-17 06:05:57 +0000 (Wed, 17 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+
+bump version
+------------------------------------------------------------------------
+r12401 | nebula169 | 2014-12-17 05:58:11 +0000 (Wed, 17 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: add mythic phase
+------------------------------------------------------------------------
+r12400 | jongt23 | 2014-12-17 00:40:58 +0000 (Wed, 17 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Locales/esES.lua
+
+esES update
+------------------------------------------------------------------------
+r12399 | nebula169 | 2014-12-16 23:28:16 +0000 (Tue, 16 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: add duration bar for Branded
+------------------------------------------------------------------------
+r12398 | nebula169 | 2014-12-16 20:16:45 +0000 (Tue, 16 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: throttle Overwhelming Energy, fix Expel Magic: Frost target warnings
+------------------------------------------------------------------------
+r12397 | dynaletik | 2014-12-16 15:24:37 +0000 (Tue, 16 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Locales/deDE.lua
+
+- deDE update
+------------------------------------------------------------------------
+r12396 | nebula169 | 2014-12-16 12:41:11 +0000 (Tue, 16 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+   M /trunk/Highmaul/TwinOgron.lua
+
+don't break marking if the debuff is refreshed
+------------------------------------------------------------------------
+r12395 | nebula169 | 2014-12-16 12:07:08 +0000 (Tue, 16 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+   M /trunk/Highmaul/TwinOgron.lua
+
+use SPELL_AURA_REFRESH in a few spots
+------------------------------------------------------------------------
+r12394 | nebula169 | 2014-12-16 11:57:38 +0000 (Tue, 16 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: add a warning for a displacing add dying, warn if someone with Slow is Fixated, tweak Mark of Chaos and intermission messages
+------------------------------------------------------------------------
+r12393 | nebula169 | 2014-12-16 00:09:59 +0000 (Tue, 16 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: add Nether Energy
+------------------------------------------------------------------------
+r12392 | nebula169 | 2014-12-15 23:28:08 +0000 (Mon, 15 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: add range message for Mark of Chaos: Fortitude
+------------------------------------------------------------------------
+r12391 | nebula169 | 2014-12-15 23:17:09 +0000 (Mon, 15 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/Locales/deDE.lua
+   M /trunk/Highmaul/Locales/esES.lua
+   M /trunk/Highmaul/Locales/frFR.lua
+   M /trunk/Highmaul/Locales/itIT.lua
+   M /trunk/Highmaul/Locales/koKR.lua
+   M /trunk/Highmaul/Locales/ptBR.lua
+   M /trunk/Highmaul/Locales/ruRU.lua
+   M /trunk/Highmaul/Locales/zhCN.lua
+   M /trunk/Highmaul/Locales/zhTW.lua
+
+Koragh: count ball drops and try and adjust their timer during charging phase
+------------------------------------------------------------------------
+r12390 | elvador | 2014-12-15 22:56:42 +0000 (Mon, 15 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: Added flash and say for Expel Magic: Frost
+------------------------------------------------------------------------
+r12389 | funkydude | 2014-12-15 22:55:07 +0000 (Mon, 15 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: add some debug
+------------------------------------------------------------------------
+r12388 | funkydude | 2014-12-15 21:49:53 +0000 (Mon, 15 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/Locales/deDE.lua
+   M /trunk/Highmaul/Locales/esES.lua
+   M /trunk/Highmaul/Locales/frFR.lua
+   M /trunk/Highmaul/Locales/itIT.lua
+   M /trunk/Highmaul/Locales/koKR.lua
+   M /trunk/Highmaul/Locales/ptBR.lua
+   M /trunk/Highmaul/Locales/ruRU.lua
+   M /trunk/Highmaul/Locales/zhCN.lua
+   M /trunk/Highmaul/Locales/zhTW.lua
+
+Koragh: Cleanups.
+------------------------------------------------------------------------
+r12387 | funkydude | 2014-12-15 21:08:34 +0000 (Mon, 15 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+   M /trunk/Highmaul/Locales/esES.lua
+   M /trunk/Highmaul/Locales/frFR.lua
+   M /trunk/Highmaul/Locales/itIT.lua
+   M /trunk/Highmaul/Locales/koKR.lua
+   M /trunk/Highmaul/Locales/ptBR.lua
+   M /trunk/Highmaul/Locales/ruRU.lua
+   M /trunk/Highmaul/Locales/zhCN.lua
+   M /trunk/Highmaul/Locales/zhTW.lua
+
+Brackenspore: cleanup ability description.
+------------------------------------------------------------------------
+r12386 | funkydude | 2014-12-15 20:41:15 +0000 (Mon, 15 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: Remove locale dependency for Suppression Field.
 ------------------------------------------------------------------------
 r12384 | funkydude | 2014-12-15 06:51:11 +0000 (Mon, 15 Dec 2014) | 1 line
 Changed paths:
@@ -1248,44 +1384,4 @@ Changed paths:
    M /trunk/Core/Core.lua
 
 Add Bloodmaul Slag Mines cinematic.
-------------------------------------------------------------------------
-r12192 | funkydude | 2014-11-15 11:04:55 +0000 (Sat, 15 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core/BossPrototype.lua
-   M /trunk/Plugins/Statistics.lua
-
-Statistics: We now show the time for defeat/wipe no matter what the difficulty, but restrict the actual saving of said data to specific difficulties.
-------------------------------------------------------------------------
-r12191 | funkydude | 2014-11-14 08:35:08 +0000 (Fri, 14 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/SiegeOfOrgrimmar/Galakras.lua
-
-Galakras: Fix error from previous commit.
-------------------------------------------------------------------------
-r12190 | funkydude | 2014-11-12 22:55:17 +0000 (Wed, 12 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/BlackrockFoundry/Blackhand.lua
-   M /trunk/BlackrockFoundry/Darmac.lua
-   M /trunk/BlackrockFoundry/Gruul.lua
-   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
-   M /trunk/BlackrockFoundry/Kagraz.lua
-   M /trunk/BlackrockFoundry/Kromog.lua
-   M /trunk/BlackrockFoundry/Oregorger.lua
-   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
-   M /trunk/BlackrockFoundry/TheIronMaidens.lua
-   M /trunk/BlackrockFoundry/Thogar.lua
-   M /trunk/Core/Core.lua
-   M /trunk/Draenor/Drov.lua
-   M /trunk/Draenor/Rukhmar.lua
-   M /trunk/Draenor/Tarlna.lua
-   M /trunk/Highmaul/Brackenspore.lua
-   M /trunk/Highmaul/KargathBladefist.lua
-   M /trunk/Highmaul/Koragh.lua
-   M /trunk/Highmaul/Margok.lua
-   M /trunk/Highmaul/Tectus.lua
-   M /trunk/Highmaul/TheButcher.lua
-   M /trunk/Highmaul/TwinOgron.lua
-   M /trunk/Options/Options.lua
-
-Remove WoD compat.
 ------------------------------------------------------------------------

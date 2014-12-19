@@ -32,8 +32,8 @@ end
 
 L = BigWigs:NewBossLocale("Brackenspore", "frFR")
 if L then
-	--L.mythic_ability = "Next special ability"
-	--L.mythic_ability_desc = "Cooldown timer for the next Call of the Tides or Exploding Fungus"
+	--L.mythic_ability = "Special Ability"
+	--L.mythic_ability_desc = "Show a timer bar for the next Call of the Tides or Exploding Fungus arriving."
 
 	L.creeping_moss_boss_heal = "Mousse sous le BOSS (soigne)"
 	L.creeping_moss_add_heal = "Mousse sous le MANGE-CHAIR (soigne)"
@@ -49,13 +49,8 @@ end
 
 L = BigWigs:NewBossLocale("Ko'ragh", "frFR")
 if L then
-	L.suppression_field_trigger1 = "Taisez-vous !" -- à vérifier
-	L.suppression_field_trigger2 = "Je vous réduirai en pièces !" -- à vérifier
-	L.suppression_field_trigger3 = "Je vous écraserai !" -- à vérifier
-	L.suppression_field_trigger4 = "Silence !" -- à vérifier
-
 	L.fire_bar = "Tout le monde explose !"
-	--L.overwhelming_energy_bar = "Balls hit"
+	--L.overwhelming_energy_bar = "Balls hit (%d)"
 
 	L.custom_off_fel_marker = "Marquage Projection de magie : Gangrène"
 	L.custom_off_fel_marker_desc = "Marque les cibles de Projection de magie : Gangrène avec {rt1}{rt2}{rt3}. Nécessite d'être assistant ou chef de raid.\n|cFFFF0000Seule 1 personne du raid doit activer ceci afin d'éviter les conflits de marquage.|r"

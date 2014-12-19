@@ -20,20 +20,20 @@ if L then
 	--L.berserker_trigger2 = "Kral'ach" --Kral'ach.... The darkness speaks.... A VOICE!
 	--L.berserker_trigger3 = "Graaagh!" --Graaagh! KAHL...  AHK... RAAHHHH!
 
-	--L.tectus = "Tectus"
-	L.shard = "Splitter"
-	L.motes = "Partikel"
+	L.adds_desc = "Timer für das Erscheinen von Adds."
 
 	L.custom_off_barrage_marker = "Kristallbeschuss markieren"
 	L.custom_off_barrage_marker_desc = "Markiert die Ziele von Kristallbeschuss mit {rt1}{rt2}{rt3}{rt4}{rt5}, benötigt Leiter oder Assistent."
 
-	L.adds_desc = "Timer für das Erscheinen von Adds."
+	--L.tectus = "Tectus"
+	L.shard = "Splitter"
+	L.motes = "Partikel"
 end
 
 L = BigWigs:NewBossLocale("Brackenspore", "deDE")
 if L then
-	L.mythic_ability = "Nächste Spezialfähigkeit"
-	L.mythic_ability_desc = "Zeigt Timer für die Abklingzeiten des nächsten Rufs der Gezeiten oder Explodierenden Pilzes an."
+	L.mythic_ability = "Spezialfähigkeit"
+	L.mythic_ability_desc = "Zeigt Timer für den nächsten Rufs der Gezeiten oder Explodierenden Pilz an."
 
 	L.creeping_moss_boss_heal = "Moos unter dem BOSS (Heilung)"
 	L.creeping_moss_add_heal = "Moos unter GROSSEM ADD (Heilung)"
@@ -49,13 +49,8 @@ end
 
 L = BigWigs:NewBossLocale("Ko'ragh", "deDE")
 if L then
-	L.suppression_field_trigger1 = "Ruhe!"
-	L.suppression_field_trigger2 = "Ich reiße Euch in Stücke!"
-	L.suppression_field_trigger3 = "Ich werde Euch zermalmen!"
-	L.suppression_field_trigger4 = "Schweigt!"
-
 	L.fire_bar = "Alle explodieren!"
-	L.overwhelming_energy_bar = "Kugeln treffen auf"
+	L.overwhelming_energy_bar = "Kugeln treffen auf (%d)"
 
 	L.custom_off_fel_marker = "Magie ausstoßen: Teufelsenergie markieren"
 	L.custom_off_fel_marker_desc = "Markiert die Ziele von Magie ausstoßen: Teufelsenergie mit {rt1}{rt2}{rt3}, benötigt Leiter oder Assistent.\n|cFFFF0000Um Konflikte beim Markieren zu vermeiden, sollte lediglich 1 Person im Raid diese Option aktivieren.|r"
@@ -64,6 +59,8 @@ end
 L = BigWigs:NewBossLocale("Imperator Mar'gok", "deDE")
 if L then
 	L.branded_say = "%s (%d) %dm"
+	L.add_death_soon = "Add stirbt bald!"
+	L.slow_fixate = "Verlangsamen + Fixieren"
 
 	L.custom_off_fixate_marker = "Fixieren markieren"
 	L.custom_off_fixate_marker_desc = "Markiert die Ziele von Fixieren mit {rt1}{rt2}, benötigt Leiter oder Assistent.\n|cFFFF0000Um Konflikte beim Markieren zu vermeiden, sollte lediglich 1 Person im Raid diese Option aktivieren.|r"
