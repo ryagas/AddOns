@@ -2,6 +2,8 @@ local L = BigWigs:NewBossLocale("Kargath Bladefist", "zhTW")
 if not L then return end
 if L then
 	--L.blade_dance_bar = "Dancing"
+
+	--L.arena_sweeper_desc = "Timer for getting knocked out of the stadium stands after you've been Chain Hurled."
 end
 
 L = BigWigs:NewBossLocale("The Butcher", "zhTW")
@@ -30,24 +32,26 @@ end
 
 L = BigWigs:NewBossLocale("Brackenspore", "zhTW")
 if L then
+	--L.mythic_ability = "Special Ability"
+	--L.mythic_ability_desc = "Show a timer bar for the next Call of the Tides or Exploding Fungus arriving."
+
 	--L.creeping_moss_boss_heal = "Moss under BOSS (healing)"
 	--L.creeping_moss_add_heal = "Moss under BIG ADD (healing)"
 end
 
 L = BigWigs:NewBossLocale("Twin Ogron", "zhTW")
 if L then
+	--L.volatility_self_desc = "Options for when the Arcane Volatility debuff is on you."
+
 	--L.custom_off_volatility_marker = "Arcane Volatility marker"
 	--L.custom_off_volatility_marker_desc = "Marks targets of Arcane Volatility with {rt1}{rt2}{rt3}{rt4}, requires promoted or leader."
 end
 
 L = BigWigs:NewBossLocale("Ko'ragh", "zhTW")
 if L then
-	--L.suppression_field_trigger1 = "Quiet!"
-	--L.suppression_field_trigger2 = "I will tear you in half!"
-	--L.suppression_field_trigger3 = "I will crush you!"
-	--L.suppression_field_trigger4 = "Silence!"
-
-	--L.fire_bar = "Everyone Explodes!"
+	--L.fire_bar = "Everyone explodes!"
+	--L.overwhelming_energy_bar = "Balls hit (%d)"
+	--L.overwhelming_energy_mc_bar = "MC balls hit (%d)"
 
 	--L.custom_off_fel_marker = "Expel Magic: Fel Marker"
 	--L.custom_off_fel_marker_desc = "Mark Expel Magic: Fel targets with {rt1}{rt2}{rt3}, requires promoted or leader.\n|cFFFF0000Only 1 person in the raid should have this enabled to prevent marking conflicts.|r"
@@ -55,7 +59,11 @@ end
 
 L = BigWigs:NewBossLocale("Imperator Mar'gok", "zhTW")
 if L then
+	--L.phase4_trigger = "You know nothing of the power you meddle with"
+
 	--L.branded_say = "%s (%d) %dy"
+	--L.add_death_soon = "Add dying soon!"
+	--L.slow_fixate = "Slow+Fixate"
 
 	--L.custom_off_fixate_marker = "Fixate Marker"
 	--L.custom_off_fixate_marker_desc = "Mark Gorian Warmage's Fixate targets with {rt1}{rt2}, requires promoted or leader.\n|cFFFF0000Only 1 person in the raid should have this enabled to prevent marking conflicts.|r"

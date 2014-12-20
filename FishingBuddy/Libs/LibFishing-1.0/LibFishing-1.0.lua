@@ -7,7 +7,7 @@ Licensed under a Creative Commons "Attribution Non-Commercial Share Alike" Licen
 --]]
 
 local MAJOR_VERSION = "LibFishing-1.0"
-local MINOR_VERSION = 90000 + tonumber(("$Rev: 912 $"):match("%d+"))
+local MINOR_VERSION = 90000 + tonumber(("$Rev: 920 $"):match("%d+"))
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub") end
 
@@ -846,19 +846,42 @@ function FishLib:GetZoneInfo()
 	return zone, subzone;
 end
 
+function FishLib:GetBaseZoneInfo()
+	local zone = GetRealZoneText();
+	local subzone = GetSubZoneText();
+	if ( not zone or zone == "" ) then
+		zone = UNKNOWN;
+	end
+	if ( not subzone or subzone == "" ) then
+		subzone = zone;
+	end
+
+	-- Hack to fix issues with 4.1 and LibBabbleZone and LibTourist
+	if (zone == "City of Ironforge" ) then
+		zone = "Ironforge";
+	end
+	
+	return self:GetBaseZone(zone), self:GetBaseSubZone(subzone);
+end
+
 -- translate zones and subzones
 -- need to handle the fact that French uses "Stormwind" instead of "Stormwind City"
 function FishLib:GetBaseZone(zname)
 	if ( zname == FishLib.UNKNOWN or zname == UNKNOWN ) then
 		return FishLib.UNKNOWN;
 	end
-	
-	if (zname and not BZ[zname] ) then
+
+	if (zname and not BZ[zname] and BZR[zname]) then
 		zname = BZR[zname];
 	end
+
 	if (not zname) then
 		zname = FishLib.UNKNOWN;
+	else
+		local continent = GetCurrentMapContinent();
+		zname = LT:GetUniqueZoneNameForLookup(zname, continent)
 	end
+	
 	return zname;
 end
 
@@ -867,12 +890,14 @@ function FishLib:GetBaseSubZone(sname)
 		return FishLib.UNKNOWN;
 	end
 	
-	if (sname and not BSL[sname] ) then
+	if (sname and not BSL[sname] and BSZR[sname]) then
 		sname = BSZR[sname];
 	end
+	
 	if (not sname) then
 		sname = FishLib.UNKNOWN;
 	end
+	
 	return sname;
 end
 
@@ -884,9 +909,14 @@ function FishLib:GetLocZone(zname)
 	if (zname and BZR[zname]) then
 		zname = BZ[zname];
 	end
+
 	if (not zname) then
 		zname = FishLib.UNKNOWN;
+	else
+		local continent = GetCurrentMapContinent();
+		zname = LT:GetUniqueZoneNameForLookup(zname, continent)
 	end
+
 	return zname;
 end
 
@@ -933,7 +963,8 @@ local subzoneskills = {
 function FishLib:GetFishingLevel(zone, subzone)
 	subzone = self:GetBaseSubZone(subzone);
 
-	if (subzoneskills[subzone]) then
+	local continent = GetCurrentMapContinent();
+	if (continent ~= 7 and subzoneskills[subzone]) then
 		return subzoneskills[subzone];
 	else
 		return LT:GetFishingLevel(zone);

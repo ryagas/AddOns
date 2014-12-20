@@ -476,6 +476,141 @@ FishingItems[116755] = {
 	["enUS"] = "Nat's Hookshot",
 	spell = 171740,
 };
+
+local seascorpion = {
+	["Shadowmoon Valley (Draenor)"] = {
+		["Darktide Strait"] = true,
+		["The Evanescent Sea"] = true,
+		["Karabor Harbor"] = true,
+	},
+	["Gorgrond"] = {
+		["Colossal Depths"] = true,
+		["Barrier Sea"] = true,
+		["Iron Sea"] = true,
+		["Orunai Coast"] = true,
+	},
+	["Talador"] = {
+		["Aarko's Estate"] = true,
+		["Orunai Delta"] = true,
+		["The South Sea"] = true,
+		["Sha'tari Anchorage"] = true,
+		["Shattrath Port Authority"] = true,
+		["Beacon of Sha'tar"] = true,
+		["The Sunset Shore"] = true,
+		["Orunai Bay"] = true,
+		["Orunai Coast"] = true,
+	},
+	["Frostfire Ridge"] = {
+		["Colossal Depths"] = true,
+		["Frostboar Point"] = true,
+		["Frostbite Deep"] = true,
+		["Southwind Inlet"] = true,
+		["Ata'gar Promontory"] = true,
+		["Tor'goroth's Tooth"] = true,
+		["Cold Snap Coast"] = true,
+		["Zangar Sea"] = true,
+		["Frostangler Bay"] = true,
+		["Southwind Cliffs"] = true,
+		["The Pale Cove"] = true,
+		["Throm'var Landing"] = true,
+		["Glacier Bay"] = true,
+		["Ozgor's Launch"] = true,
+		["Iron Sea"] = true,
+	},
+	["Nagrand (Draenor)"] = {
+		["The Colossal's Fist"] = true,
+		["Lernaen Shore"] = true,
+		["Zangar Shore"] = true,
+		["Cerulean Lagoon"] = true,
+		["Ironfist Harbor"] = true,
+		["Zangar Sea"] = true,
+		["Windroc Bay"] = true,
+		["The South Sea"] = true,
+		["The Cliffs of Highmaul"] = true,
+		["Highmaul Harbor"] = true,
+	},
+	["Tanaan Jungle"] = {
+		["Tanaan Channel"] = true,
+		["Barrier Sea"] = true,
+	},
+	["Spires of Arak"] = {
+		["Pinchwhistle Gearworks"] = true,
+		["Echidnean Shelf"] = true,
+		["The South Sea"] = true,
+		["Wreck of the Mother Lode"] = true,
+		["The Writhing Mire"] = true,
+		["Southport"] = true,
+		["Bloodmane Pridelands"] = true,
+		["The Evanescent Sea"] = true,
+	},
+};
+	
+local function UseSeaScorpionBait(info)
+	if (GSB("EasyLures") and GSB("DraenorBait")) then
+		local continent = GetCurrentMapContinent();
+		local zone, subzone = FL:GetBaseZoneInfo();
+		if (continent == 7 and seascorpion[zone] and seascorpion[zone][subzone]) then
+			return true;
+		end
+	end
+	-- return nil;
+end
+
+local function UsableDraenorBait(info)
+	if (GSB("EasyLures") and GSB("DraenorBait")) then
+		local continent = GetCurrentMapContinent();
+		local zone, subzone = FL:GetBaseZoneInfo();
+		if (continent == 7 and zone == info.zone) then
+			return not seascorpion[zone][subzone];
+		end
+	end
+end
+
+-- Blind Lake Sturgeon, 158035
+FishingItems[110290] = {
+	["enUS"] = "Blind Lake Sturgeon Bait",
+	spell = 158035,
+	zone = "Shadowmoon Valley (Draenor)",
+	usable = UsableDraenorBait,
+};
+FishingItems[110293] = {
+	["enUS"] = "Abyssal Gulper Eel Bait",
+	spell = 158038,
+	zone = "Spires of Arak",
+	usable = UsableDraenorBait,
+};
+FishingItems[110294] = {
+	["enUS"] = "Blackwater Whiptail Bait",
+	spell = 158039,
+	zone = "Talador",
+	usable = UsableDraenorBait,
+};
+FishingItems[110289] = {
+	["enUS"] = "Fat Sleeper Bait",
+	spell = 158034,
+	zone = "Nagrand (Draenor)",
+	usable = UsableDraenorBait,
+};
+FishingItems[110291] = {
+	["enUS"] = "Fire Ammonite Bait",
+	spell = 158036,
+	zone = "Frostfire Ridge",
+	usable = UsableDraenorBait,
+};
+FishingItems[110274] = {
+	["enUS"] = "Jawless Skulker Bait",
+	spell = 158031,
+	zone = "Gorgrond",
+	usable = UsableDraenorBait,
+};
+
+FishingItems[110292] = {
+	["enUS"] = "Sea Scorpion Bait",
+	spell = 158037,
+	zone = "Non-inland water",
+	usable = UseSeaScorpionBait,
+};
+
 FishingBuddy.FishingItems = FishingItems;
 
 local FluffOptions = {

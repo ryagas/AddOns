@@ -118,13 +118,13 @@ function boss:OnEnable(isWipe)
 	end
 	enabledModules[#enabledModules+1] = self
 
-	if self.SetupOptions then self:SetupOptions() end
-	if type(self.OnBossEnable) == "function" then self:OnBossEnable() end
-
 	if self.engageId then
 		self:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT", "CheckForEncounterEngage")
 		self:RegisterEvent("ENCOUNTER_END", "EncounterEnds")
 	end
+
+	if self.SetupOptions then self:SetupOptions() end
+	if type(self.OnBossEnable) == "function" then self:OnBossEnable() end
 
 	if IsEncounterInProgress() and not isWipe then -- Safety. ENCOUNTER_END might fire whilst IsEncounterInProgress is still true and engage a module.
 		self:CheckForEncounterEngage("NoEngage") -- Prevent engaging if enabling during a boss fight (after a DC)
@@ -911,7 +911,7 @@ function boss:Message(key, color, sound, text, icon)
 	if checkFlag(self, key, C.MESSAGE) then
 		local textType = type(text)
 		self:SendMessage("BigWigs_Message", self, key, textType == "string" and text or spells[text or key], color, sound, icon ~= false and icons[icon or textType == "number" and text or key])
-		if hasVoice and checkFlag(self, key, C.VOICE) then
+		if sound and hasVoice and checkFlag(self, key, C.VOICE) then
 			self:SendMessage("BigWigs_Voice", key)
 		end
 	end
@@ -965,7 +965,7 @@ do
 			else
 				self:SendMessage("BigWigs_Message", self, key, format(L.stack, stack or 1, textType == "string" and text or spells[text or key], coloredNames[player]), color, sound, icon ~= false and icons[icon or textType == "number" and text or key])
 			end
-			if hasVoice and sound and checkFlag(self, key, C.VOICE) then
+			if sound and hasVoice and checkFlag(self, key, C.VOICE) then
 				self:SendMessage("BigWigs_Voice", key)
 			end
 		end
@@ -985,7 +985,7 @@ do
 				if not checkFlag(self, key, C.MESSAGE) and not checkFlag(self, key, C.ME_ONLY) then wipe(player) return end
 			end
 			self:SendMessage("BigWigs_Message", self, key, format(L.other, msg, list), color, sound, texture)
-			if hasVoice and sound and checkFlag(self, key, C.VOICE) then
+			if sound and hasVoice and checkFlag(self, key, C.VOICE) then
 				self:SendMessage("BigWigs_Voice", key)
 			end
 			wipe(player)
@@ -1007,7 +1007,7 @@ do
 				if checkFlag(self, key, C.MESSAGE) and not checkFlag(self, key, C.ME_ONLY) then
 					-- Change color and remove sound (if not alwaysPlaySound) when warning about effects on other players
 					self:SendMessage("BigWigs_Message", self, key, format(L.other, msg, coloredNames[player]), color == "Personal" and "Important" or color, alwaysPlaySound and sound, texture)
-					if hasVoice and alwaysPlaySound and checkFlag(self, key, C.VOICE) then
+					if alwaysPlaySound and hasVoice and checkFlag(self, key, C.VOICE) then
 						self:SendMessage("BigWigs_Voice", key)
 					end
 				end

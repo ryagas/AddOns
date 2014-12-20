@@ -44,7 +44,9 @@ credits[FBConstants.ROLE_TRANSLATE_FRFR] = {
 	["Corwin Whitehorn"] = { "v0.8.5", },
 	["PierrotIV"] = { "V1.0.9e", },
 	["boidan01"] = { "V1.0.9e", },
-	["Matisk"] = { "V1.2a", },
+	["Matisk"] = { "V1.2a", "V1.4n" },
+	["ckeurk"] = { "V1.4n" },
+	["Mips"] = { "V1.4n" },
 	["Dabeuliou"] = { "V1.4d", "V1.4g" },
 };
 

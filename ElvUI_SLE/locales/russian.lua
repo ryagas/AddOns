@@ -208,14 +208,13 @@ L["Use the Shadow & Light New Item Flash instead of the default ElvUI flash"] = 
 --Datatexts--
 L["Panels & Dashboard"] = "Панели и Информация"
 L["LFR Lockout"] = "Состояние ЛФР"
+L["Loot History"] = "История добычи"
+L["Raid Saves"] = "Сохранения рейдов"
 L["Show/Hide LFR lockout info in time datatext's tooltip."] = "Отображать/скрывать информацию о сохранении ЛФР"
 L["Bosses killed: "] = "Боссов убито: "
 L["You didn't select any instance to track."] = "Вы не выбрали подземелья для отслеживания"
 L["This LFR isn't available for your level/gear."] = "Это подземелье не доступно для Вашего уровня или экипировки."
-L["Key to the Palace of Lei Shen:"] = "Ключ от дворца Лэй Шэня"
-L["Trove of the Thunder King:"] = "Сокровища Властелина Грома"
-L["Looted"] = "Получено"
-L["Not looted"] = "Не получено"
+L["This raid isn't available for your level/gear."] = "Этот рейд не доступен для Вашего уровня или экипировки."
 L["SLE_AUTHOR_INFO"] = "\"Shadow & Light\" от Darth Predator'а и Repooc'а"
 L["SLE_CONTACTS"] = [=[При возникновении вопросов, предложений и прочего обращаться:
 http://git.tukui.org/repooc/elvui-shadowandlight]=]
@@ -462,6 +461,8 @@ L["Maximum Roll Value"] = "Масимальное значение броска"
 L["The higher limit for custom roll button."] = "Верхняя граница броска при использовании собственных установок."
 L["Custom roll limits are set incorrectly! Minimum should be smaller then or equial to maximum."] = "Пределы для броска указаны некорректно! Минимальное значение должно быть меньше максимального."
 L["Sets size of buttons"] = "Устанавливает размер кнопок"
+L["Quick Action"] = "Быстрое действие"
+L["Use quick access (on right click) for this button."] = "Функция для быстрого действия. Вызывается нажатием ПКМ на кнопке открытия списка."
 
 --Unitframes--
 L["Options for customizing unit frames. Please don't change these setting when ElvUI's testing frames for bosses and arena teams are shown. That will make them invisible until retoggling."] = "Опции для дополнительной настройки рамок юнитов. Пожалуйста, не изменяйте эти настройки в то же время, кода включен тестовый режим рамок боссов и арены в ElvUI. Это сделает их невидимыми до повторного включения."

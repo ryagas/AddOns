@@ -263,27 +263,21 @@ local function configTable()
 								type = "toggle",
 								name = GetMapNameByID(953),
 							},
-							soof = {
+							hm = {
 								order = 7,
 								type = "toggle",
-								name = FLEX_RAID.." "..GetMapNameByID(953),
+								name = GetMapNameByID(994),
 							},
-						},
-					},
-					hubs = {
-						order = 3,
-						type = "group",
-						name = L["World Loot"],
-						guiInline = true,
-						get = function(info) return E.db.sle.lfrshow[ info[#info] ] end,
-						set = function(info, value) E.db.sle.lfrshow[ info[#info] ] = value; end,
-						args = {
-							leishen = {
-								order = 1,
+							--[[hmNormal = {
+								order = 8,
 								type = "toggle",
-								name = GetMapNameByID(928),
-								desc = L["Show/Hide the status of Key to the Palace of Lei Shen and Trove of the Thunder King."],
+								name = GetMapNameByID(994).." ("..PLAYER_DIFFICULTY1..")",
 							},
+							hmHeroic = {
+								order = 9,
+								type = "toggle",
+								name = GetMapNameByID(994).." ("..PLAYER_DIFFICULTY2..")",
+							},]]
 						},
 					},
 				},

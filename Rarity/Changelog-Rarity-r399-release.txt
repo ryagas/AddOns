@@ -1,0 +1,100 @@
+------------------------------------------------------------------------
+r400 | allara | 2014-12-17 18:17:38 +0000 (Wed, 17 Dec 2014) | 1 line
+Changed paths:
+   A /tags/r399-release (from /trunk:399)
+
+Tagging as r399-release
+------------------------------------------------------------------------
+r399 | allara | 2014-12-17 18:16:15 +0000 (Wed, 17 Dec 2014) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Lump of Goal, Rotten Helper Box: Fixed item ID, added defeat detection and holiday reminders
+- I had apparently broken holiday reminders earlier; attempted to fix them now
+------------------------------------------------------------------------
+r397 | allara | 2014-12-04 22:15:34 +0000 (Thu, 04 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- Bonus roll notification will not appear if you don't have any of the currency required
+------------------------------------------------------------------------
+r396 | allara | 2014-12-04 19:55:41 +0000 (Thu, 04 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+
+- Rarity will now notify you with an alert if a bonus roll pops up and you could obtain something Rarity tracks via the bonus roll
+------------------------------------------------------------------------
+r394 | allara | 2014-12-02 00:01:25 +0000 (Tue, 02 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- Moved the secondary tooltip 20 pixels further away to account for the possibility of a scrollbar
+------------------------------------------------------------------------
+r393 | allara | 2014-12-01 22:39:23 +0000 (Mon, 01 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Lil' Bling and Sky Bo: Add defeat detection
+------------------------------------------------------------------------
+r391 | allara | 2014-11-26 17:12:34 +0000 (Wed, 26 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Updated drop chance for the new Pilgrim's Bounty items
+------------------------------------------------------------------------
+r390 | allara | 2014-11-24 23:41:55 +0000 (Mon, 24 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- World tooltips will now take group size into account
+------------------------------------------------------------------------
+r388 | allara | 2014-11-24 23:04:36 +0000 (Mon, 24 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Options_Defaults.lua
+
+- Add new rewards from Pilgrim's Bounty: Frightened Bush Chicken and Silver-Plated Turkey Shooter
+------------------------------------------------------------------------
+r386 | allara | 2014-11-20 17:09:14 +0000 (Thu, 20 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Rarity will no longer ever try to detect that the tooltip is visible in order to update it when things change. Players will have to hide/show the tooltip to see the changes. This was causing performance issues for a small percentage of players. The tooltip will also never allow updating during combat. (That last change was made in a prior build.)
+------------------------------------------------------------------------
+r384 | allara | 2014-11-19 17:00:40 +0000 (Wed, 19 Nov 2014) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Bosses in MoP aren't very easily soloable yet with current gear, so I reverted all those items back to requiring a group
+
+------------------------------------------------------------------------
+r382 | allara | 2014-11-18 19:11:18 +0000 (Tue, 18 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Options_Defaults.lua
+
+- Add battle pets: Nightshade Sproutling, Red Goren Egg
+------------------------------------------------------------------------
+r380 | allara | 2014-11-18 17:52:21 +0000 (Tue, 18 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- WoD rare list updates
+------------------------------------------------------------------------
+r378 | allara | 2014-11-16 23:28:25 +0000 (Sun, 16 Nov 2014) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Garn Nighthowl: Changed recommended group size to 25 (up from 5)
+- Sea Turtle: Remove Draenor zones
+------------------------------------------------------------------------

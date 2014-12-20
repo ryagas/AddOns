@@ -9,7 +9,7 @@
 ## X-Curse-Project-Name: LibStub
 ## X-Curse-Project-ID: libstub
 ## X-Curse-Repository-ID: wow/libstub/mainline
-## X-Curse-Packaged-Version: v2.10
+## X-Curse-Packaged-Version: v2.11
 ## X-Curse-Project-Name: ElvUI Shadow & Light Edit
 ## X-Curse-Project-ID: shadow-and-light-edit
 ## X-Curse-Repository-ID: wow/shadow-and-light-edit/mainline

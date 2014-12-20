@@ -164,6 +164,13 @@ local CastingOptions = {
 		["primary"] = "EasyCast",
 		["deps"] = { ["EasyCast"] = "d", ["EasyLures"] = "d" },
 		["default"] = false },
+	["DraenorBait"] = {
+		["text"] = FBConstants.CONFIG_DRAENORBAIT_ONOFF,
+		["tooltip"] = FBConstants.CONFIG_DRAENORBAIT_INFO,
+		["v"] = 1,
+		["primary"] = "EasyCast",
+		["deps"] = { ["EasyCast"] = "d", ["EasyLures"] = "d" },
+		["default"] = true },
 	["MountedCast"] = {
 		["text"] = FBConstants.CONFIG_MOUNTEDCAST_ONOFF,
 		["tooltip"] = FBConstants.CONFIG_MOUNTEDCAST_INFO,
@@ -964,6 +971,7 @@ end
 -- We'll want to use the cheapest ones we can until our fish don't get
 -- away from us
 
+-- Full combat check function
 local function CheckCombat()
 	return InCombatLockdown() or UnitAffectingCombat("player") or UnitAffectingCombat("pet")
 end
@@ -976,7 +984,7 @@ local function PostCastUpdate()
 		if ( AddingLure ) then
 			local sp, sub, txt, tex, st, et, trade, int = UnitChannelInfo("player");
 			local _, lure = FL:GetPoleBonus();
-			if ( not sp or (lure and lure == LastLure.b) ) then
+			if ( not sp or not LastLure or (lure and lure == LastLure.b) ) then
 				AddingLure = false;
 				FL:UpdateLureInventory();
 			else
@@ -1130,7 +1138,10 @@ local function GetUpdateLure()
 						NextState = state;
 						NextLure = bestlure;
 					end
-				else 
+				elseif (state and bestlure) then
+					NextState = state;
+					NextLure = bestlure;
+				else
 					NextLure = nil -- oscarucb
 				end
 			elseif ( state and bestlure and tempenchant == 0 and GSB("LastResort") ) then
@@ -1152,25 +1163,16 @@ local function GetUpdateLure()
 					LastLure.time = GetTime() + RELURE_DELAY;
 					local id = DoLure.id;
 					local name = DoLure.n;
-					DoLure = nil;
 					return true, id, name; 
 				elseif ( LastLure and not LastLure.time ) then
 					LastLure = nil;
 					LastState = 0;
+					AddingLure = false;
 				end
 			end
 		end
 	end
 	return false;
-end
-
-local function UpdateLure()
-	local update, id = GetUpdateLure();
-	if (update and id) then
-		FL:InvokeLuring(id);
-	end
-	
-	return update;
 end
 
 local CaptureEvents = {};
@@ -1252,17 +1254,21 @@ local function SetStealClick(func)
 end
 FishingBuddy.SetStealClick = SetStealClick;
 
-
 local function CentralCasting()
 	-- put on a lure if we need to
-	if ( not StealClick() and not UpdateLure() ) then
-		if ( not FL:GetLastTooltipText() or not FL:OnFishingBobber() ) then
-			 -- watch for fishing holes
-			FL:SaveTooltipText();
+	if ( not StealClick() ) then
+		local update, id, n = GetUpdateLure();
+		if (update and id) then
+			FL:InvokeLuring(id);
+		else
+			if ( not FL:GetLastTooltipText() or not FL:OnFishingBobber() ) then
+				 -- watch for fishing holes
+				FL:SaveTooltipText();
+			end
+			LastCastTime = GetTime();
+			autopoleframe:Show();
+			FL:InvokeFishing(FishingBuddy.GetSettingBool("UseAction"));
 		end
-		LastCastTime = GetTime();
-		autopoleframe:Show();
-		FL:InvokeFishing(FishingBuddy.GetSettingBool("UseAction"));
 	end
 	FL:OverrideClick(HideAwayAll);
 end
@@ -1276,14 +1282,12 @@ local SavedWFOnMouseDown;
 local function WF_OnMouseDown(...)
 	-- Only steal 'right clicks' (self is arg #1!)
 	local button = select(2, ...);
-	if ( button == FL:GetSAMouseButton() and HijackCheck() ) then
-		if ( FL:CheckForDoubleClick() ) then
-			 -- We're stealing the mouse-up event, make sure we exit MouseLook
-			if ( IsMouselooking() ) then
-				MouselookStop();
-			end
-			CentralCasting();
+	if ( FL:CheckForDoubleClick(button) and HijackCheck() ) then
+		 -- We're stealing the mouse-up event, make sure we exit MouseLook
+		if ( IsMouselooking() ) then
+			MouselookStop();
 		end
+		CentralCasting();
 	end
 	if ( SavedWFOnMouseDown ) then
 		SavedWFOnMouseDown(...);
@@ -1391,6 +1395,8 @@ local function StopFishingMode(logout)
 		SetCVar("autointeract", "1");
 		resetClickToMove = nil;
 	end
+	
+	AddingLure = false;
 end
 
 local function FishingMode()
@@ -2154,6 +2160,17 @@ if ( FishingBuddy.Debugging ) then
 	FishingBuddy.Commands["macrotest"].func =
 		function()
 			CreateFishingMacro();
+			return true;
+		end
+
+	FishingBuddy.Commands["marksea"] = {};
+	FishingBuddy.Commands["marksea"].func =
+		function()
+			local fish = FishingBuddy_Info["Fishies"][111672];
+			local zone, subzone = FL:GetZoneInfo();
+			local nm,_,_,_,it,st,_,el,_,il = FL:GetItemInfo(111672);
+			local color, id, name = FL:SplitFishLink(link);
+			AddFishie(color, 111672, name, zone, subzone, fish["texture"], 1, fish["quality"], nil, it, st);
 			return true;
 		end
 end
