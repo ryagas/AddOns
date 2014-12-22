@@ -38,7 +38,7 @@ function mod:GetOptions()
 	return {
 		--[[ Mythic ]]--
 		-9396, -- Ravenous Bloodmaw
-		{162497, "FLASH"}, -- On the Hunt
+		{162497, "FLASH", "SAY"}, -- On the Hunt
 		"arena_sweeper", -- Arena Sweeper
 		--[[ General ]]--
 		-9394, -- Fire Pillar
@@ -111,16 +111,17 @@ function mod:OnTheHunt(args)
 	self:TargetMessage(args.spellId, args.destName, "Important", "Alarm")
 	if self:Me(args.destGUID) then
 		self:Flash(args.spellId)
+		self:Say(args.spellId)
 	end
 end
 
 do
 	local function printTarget(self, name, guid)
 		self:TargetMessage(159113, name, "Urgent", "Warning", nil, nil, true)
-		self:TargetBar(159113, 8.8, name) -- cast+channel
+		self:TargetBar(159113, 10.2, name) -- cast+channel (10.25 - 0.05)
 	end
 	function mod:Impale(args)
-		self:GetBossTarget(printTarget, 0.5, args.sourceGUID)
+		self:GetBossTarget(printTarget, 0, args.sourceGUID)
 		self:CDBar(args.spellId, 43) -- delayed by chain hurl/berserker rush
 	end
 end

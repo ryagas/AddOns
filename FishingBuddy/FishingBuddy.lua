@@ -28,6 +28,11 @@ local POLES = {
 	["Nat Pagle's Fish Terminator"] = "19944:0:0:0",
 }
 
+local FISHINGHATS = {
+	[118393] = true,	-- Tentacled Hat
+	[118380] = true,	-- HightFish Cap
+};
+
 local GeneralOptions = {
 	["ShowNewFishies"] = {
 		["text"] = FBConstants.CONFIG_SHOWNEWFISHIES_ONOFF,
@@ -384,6 +389,8 @@ FishingBuddy.GlobalSetSetting = function(setting, value)
 		FishingBuddy_Info["Settings"][setting] = value;
 	end
 end
+
+FishingBuddy.FishingHats = FISHINGHATS;
 
 FishingBuddy.ByFishie = nil;
 FishingBuddy.SortedFishies = nil;
@@ -783,6 +790,26 @@ PagleFish[86542] = {
 	["enUS"] = "Flying Tiger Gourami",
 	quest = 31443,
 };
+-- Lunkers
+PagleFish[116817] = {
+	["enUS"] = "Blackwater Whiptail Lunker",
+};
+PagleFish[116818] = {
+	["enUS"] = "Abyssal Gulper Lunker",
+};
+PagleFish[116819] = {
+	["enUS"] = "Fire Ammonite Lunker",
+};
+PagleFish[116820] = {
+	["enUS"] = "Blind Lake Lunker",
+};
+PagleFish[116821] = {
+	["enUS"] = "Fat Sleeper Lunker",
+};
+PagleFish[116822] = {
+	["enUS"] = "Jawless Skulker Lunker",
+};
+
 FishingBuddy.PagleFish = PagleFish;
 
 local QuestLures = {};
@@ -1103,75 +1130,75 @@ local function GetUpdateLure()
 		end
 
 		-- only apply a lure if we're actually fishing with a "real" pole
-		if (not FL:IsFishingPole()) then
-			return false;
-		end
+		if (FL:IsFishingPole()) then
 		
-		-- Let's wait a bit so that the enchant can show up before we lure again
-		if ( LastLure and LastLure.time and ((LastLure.time - GetTime()) > 0) ) then
-			return false;
-		end
+			-- Let's wait a bit so that the enchant can show up before we lure again
+			if ( LastLure and LastLure.time and ((LastLure.time - GetTime()) > 0) ) then
+				return false;
+			end
 		
-		if ( LastLure ) then
-			LastLure.time = nil;
-		end
+			if ( LastLure ) then
+				LastLure.time = nil;
+			end
 
-		local skill, _, _, _ = FL:GetCurrentSkill();
+			local skill, _, _, _ = FL:GetCurrentSkill();
 		
-		if (skill > 0) then
-			local NextLure, NextState;
-			local pole, tempenchant = FL:GetPoleBonus();
-			local state, bestlure = FL:FindBestLure(tempenchant, LureState);
-			if ( DoEscaped ) then
-				if ( state or bestlure ) then
-					NextState = state or LureState;
+			if (skill > 0) then
+				local NextLure, NextState;
+				local pole, tempenchant = FL:GetPoleBonus();
+				local state, bestlure = FL:FindBestLure(tempenchant, LureState);
+				if ( DoEscaped ) then
+					if ( state or bestlure ) then
+						NextState = state or LureState;
+						NextLure = bestlure;
+					else
+						NextLure = nil;
+					end
+				elseif ( GSB("AlwaysLure") ) then
+					-- don't put on a lure if we've already got one
+					if ( tempenchant == 0 ) then
+						if ( not state ) then
+							NextState, NextLure = FL:FindNextLure(nil, 0);
+						else
+							NextState = state;
+							NextLure = bestlure;
+						end
+					elseif (state and bestlure) then
+						NextState = state;
+						NextLure = bestlure;
+					else
+						NextLure = nil -- oscarucb
+					end
+				elseif ( state and bestlure and tempenchant == 0 and GSB("LastResort") ) then
+					NextState = state;
 					NextLure = bestlure;
 				else
 					NextLure = nil;
 				end
-			elseif ( GSB("AlwaysLure") ) then
-				-- don't put on a lure if we've already got one
-				if ( tempenchant == 0 ) then
-					if ( not state ) then
-						NextState, NextLure = FL:FindNextLure(nil, 0);
-					else
-						NextState = state;
-						NextLure = bestlure;
-					end
-				elseif (state and bestlure) then
-					NextState = state;
-					NextLure = bestlure;
-				else
-					NextLure = nil -- oscarucb
-				end
-			elseif ( state and bestlure and tempenchant == 0 and GSB("LastResort") ) then
-				NextState = state;
-				NextLure = bestlure;
-			else
-				NextLure = nil;
-			end
-			local DoLure = NextLure;
+				local DoLure = NextLure;
 	
-			if ( DoLure and DoLure.id ) then
-				-- if the pole has an enchantment, we can assume it's got a lure on it (so far, anyway)
-				-- remove the main hand enchantment (since it's a fishing pole, we know what it is)
-				local startTime, duration, enable = GetItemCooldown(DoLure.id);
-				if (startTime == 0) then
-					AddingLure = true;
-					LastLure = DoLure;
-					LureState = NextState;
-					LastLure.time = GetTime() + RELURE_DELAY;
-					local id = DoLure.id;
-					local name = DoLure.n;
-					return true, id, name; 
-				elseif ( LastLure and not LastLure.time ) then
-					LastLure = nil;
-					LastState = 0;
-					AddingLure = false;
+				if ( DoLure and DoLure.id ) then
+					-- if the pole has an enchantment, we can assume it's got a lure on it (so far, anyway)
+					-- remove the main hand enchantment (since it's a fishing pole, we know what it is)
+					local startTime, duration, enable = GetItemCooldown(DoLure.id);
+					if (startTime == 0) then
+						AddingLure = true;
+						LastLure = DoLure;
+						LureState = NextState;
+						LastLure.time = GetTime() + RELURE_DELAY;
+						local id = DoLure.id;
+						local name = DoLure.n;
+						return true, id, name; 
+					elseif ( LastLure and not LastLure.time ) then
+						LastLure = nil;
+						LastState = 0;
+						AddingLure = false;
+					end
 				end
 			end
 		end
 	end
+
 	return false;
 end
 

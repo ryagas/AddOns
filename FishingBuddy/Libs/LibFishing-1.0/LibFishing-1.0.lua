@@ -7,7 +7,7 @@ Licensed under a Creative Commons "Attribution Non-Commercial Share Alike" Licen
 --]]
 
 local MAJOR_VERSION = "LibFishing-1.0"
-local MINOR_VERSION = 90000 + tonumber(("$Rev: 920 $"):match("%d+"))
+local MINOR_VERSION = 90000 + tonumber(("$Rev: 926 $"):match("%d+"))
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub") end
 
@@ -89,8 +89,15 @@ local FISHINGLURES = {
 		["d"] = 10,
 		["w"] = true,
 	},
+	{	["id"] = 117405,
+		["n"] = "Nat's Drinking Hat",				-- 150 for 10 mins
+		["b"] = 150,
+		["s"] = 100,
+		["d"] = 10,
+		["w"] = true,
+	},
 	{	["id"] = 33820,
-		["n"] = "Weather-Beaten Fishing Hat",		  -- 75 for 10 minutes
+		["n"] = "Weather-Beaten Fishing Hat",		 -- 75 for 10 minutes
 		["b"] = 75,
 		["s"] = 1,
 		["d"] = 10,
@@ -1443,7 +1450,7 @@ function FishLib:GetOutfitBonus()
 end
 
 -- return a list of the best items we have for a fishing outfit
-function FishLib:GetFishingOutfitItems(wearing, nopole)
+function FishLib:GetFishingOutfitItems(wearing, nopole, ignore)
 	local ibp = function(link) return self:FishingBonusPoints(link); end;
 	-- find fishing gear
 	-- no affinity, check all bags
@@ -1472,24 +1479,26 @@ function FishLib:GetFishingOutfitItems(wearing, nopole)
 			wipe(itemtable);
 			itemtable = GetInventoryItemsForSlot(slotid, itemtable);
 			for location,id in pairs(itemtable) do
-				local player, bank, bags, void, slot, bag = EquipmentManager_UnpackLocation(location);
-				if ( bags and slot and bag ) then
-					link = GetContainerItemLink(bag, slot);
-				else
-					link = nil;
-				end
-				if ( link ) then
-					local b = self:FishingBonusPoints(link);
-					local go = false;
-					if ( ismain ) then
-						go = self:IsFishingPole(link);
+				if (not ignore or not ignore[id]) then
+					local player, bank, bags, void, slot, bag = EquipmentManager_UnpackLocation(location);
+					if ( bags and slot and bag ) then
+						link = GetContainerItemLink(bag, slot);
+					else
+						link = nil;
 					end
-					if (go or (b > 0)) then
-						local usable, _ = IsUsableItem(link);
-						if ( usable and (b > maxb) ) then
-							maxb = b;
-							outfit = outfit or {};
-							outfit[slotid] = { link=link, bag=bag, slot=slot, slotname=slotname };
+					if ( link ) then
+						local b = self:FishingBonusPoints(link);
+						local go = false;
+						if ( ismain ) then
+							go = self:IsFishingPole(link);
+						end
+						if (go or (b > 0)) then
+							local usable, _ = IsUsableItem(link);
+							if ( usable and (b > maxb) ) then
+								maxb = b;
+								outfit = outfit or {};
+								outfit[slotid] = { link=link, bag=bag, slot=slot, slotname=slotname };
+							end
 						end
 					end
 				end

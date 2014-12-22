@@ -388,13 +388,15 @@ local function DisplayPagleFish()
 	local line = nil;
 	for id,info in pairs(FishingBuddy.PagleFish) do
 		local haveone = (GetItemCount(id) > 0);
-		if ( haveone or IsQuestFlaggedCompleted(info.quest) ) then
+		if ( haveone ) then
 			local _, _, _, _, _, name, _ = FishingBuddy.GetFishieRaw(id);
-			if ( haveone ) then
-				name = Crayon:Yellow(name);
-			else
+			
+			if (not info.quest or IsUnitOnQuest(info.quest, "player")) then
 				name = Crayon:Green(name);
+			else
+				name = Crayon:Red(name);
 			end
+
 			if (line) then
 				line = line..", "..name
 			else
