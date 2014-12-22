@@ -15,6 +15,7 @@ P['general'] = {
 	['autoAcceptInvite'] = false,
 	['bottomPanel'] = true,
 	['hideErrorFrame'] = true,
+	['objectiveFrameHeight'] = 480,
 
 	['afk'] = true,
 	
@@ -307,7 +308,7 @@ P['datatexts'] = {
 		['LeftChatDataPanel'] = {
 			['left'] = 'Talent/Loot Specialization',
 			['middle'] = 'Durability',
-			['right'] = 'Combat/Arena Time',
+			['right'] = 'Garrison',
 		},
 		['RightChatDataPanel'] = {
 			['left'] = 'System',
@@ -515,7 +516,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -534,7 +534,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['castbar'] = {
 				['enable'] = true,
@@ -644,7 +643,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -663,7 +661,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['castbar'] = {
 				['enable'] = true,
@@ -754,7 +751,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -773,7 +769,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},	
 			['raidicon'] = {
 				['enable'] = true,
@@ -830,7 +825,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -849,7 +843,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},	
 			['raidicon'] = {
 				['enable'] = true,
@@ -907,7 +900,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -926,7 +918,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},	
 			['castbar'] = {
 				['enable'] = true,
@@ -1009,7 +1000,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -1028,7 +1018,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -1086,7 +1075,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -1105,7 +1093,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
@@ -1160,7 +1147,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -1179,7 +1165,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},			
 		},	
 		['boss'] = {
@@ -1237,7 +1222,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 11,
-				['spacing'] = 0,
 				['sizeOverride'] = 22,
 			},
 			['debuffs'] = {
@@ -1257,7 +1241,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = -11,
-				['spacing'] = 0,
 				['sizeOverride'] = 22,
 			},	
 			['castbar'] = {
@@ -1327,7 +1310,6 @@ P['unitframe'] = {
 				['sizeOverride'] = 22,
 				['xOffset'] = 0,
 				['yOffset'] = 12,
-				['spacing'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -1347,7 +1329,6 @@ P['unitframe'] = {
 				['sizeOverride'] = 22,
 				['xOffset'] = 0,
 				['yOffset'] = -13,
-				['spacing'] = 0,
 			},	
 			['castbar'] = {
 				['enable'] = true,
@@ -1429,7 +1410,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -1449,7 +1429,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 				['sizeOverride'] = 44,
 			},	
 			['buffIndicator'] = {
@@ -1571,7 +1550,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -1591,7 +1569,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
@@ -1689,7 +1666,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -1709,7 +1685,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},	
 			['rdebuffs'] = {
 				['enable'] = false,
@@ -1798,7 +1773,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -1818,7 +1792,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['spacing'] = 0,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
