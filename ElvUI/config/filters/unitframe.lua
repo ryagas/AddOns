@@ -447,15 +447,6 @@ G.unitframe.aurafilters['Whitelist'] = {
 		[SpellName(22812)] = Defaults(), --Barkskin
 		--[SpellName(1490)] = Defaults(), --Curse of the Elements (5% magic damage taken debuff)
 		--[SpellName(116202)] = Defaults(), --Aura of the Elements (5% magic damage taken debuff)
-		[SpellName(123059)] = Defaults(), --Destabilize (Amber-Shaper Un'sok)
-		[SpellName(136431)] = Defaults(), --Shell Concussion (Tortos)
-		[SpellName(137332)] = Defaults(), --Beast of Nightmares (Twin Consorts)
-		[SpellName(137375)] = Defaults(), --Beast of Nightmares (Twin Consorts)
-		[SpellName(144351)] = Defaults(), --Mark of Arrogance (Norushen)
-		[SpellName(142863)] = Defaults(), --Weak Ancient Barrier (Malkorok)
-		[SpellName(142864)] = Defaults(), --Ancient Barrier (Malkorok)
-		[SpellName(142865)] = Defaults(), --Strong Ancient Barrier (Malkorok)
-		[SpellName(143198)] = Defaults(), --Garrote (Fallen Protectors)
 	},
 }
 
@@ -712,10 +703,6 @@ G.unitframe.buffwatch = {
 	},
 }
 
-local mfTicks = 3
-if select(2, UnitClass("player")) == "PRIEST" and IsSpellKnown(157223) then --Enhanced Mind Flay
-	mfTicks = 4
-end
 --List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	--Warlock
@@ -729,8 +716,6 @@ G.unitframe.ChannelTicks = {
 	--[SpellName(44203)] = 4, -- "Tranquility"
 	[SpellName(16914)] = 10, -- "Hurricane"
 	--Priest
-	[SpellName(15407)] = mfTicks, -- "Mind Flay"
-	[SpellName(129197)] = mfTicks, -- "Mind Flay (Insanity)"
 	[SpellName(48045)] = 5, -- "Mind Sear"
 	[SpellName(47540)] = 2, -- "Penance"
 	--[SpellName(64901)] = 4, -- Hymn of Hope
@@ -743,6 +728,20 @@ G.unitframe.ChannelTicks = {
 	--Monk
 	[SpellName(115175)] = 9, -- "Smoothing Mist"
 }
+
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", function(self)
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+
+	local mfTicks = 3
+	if string.lower((UnitClass("player"))) == "priest" and IsSpellKnown(157223) then --Enhanced Mind Flay
+		mfTicks = 4
+	end
+
+	E.global.unitframe.ChannelTicks[SpellName(15407)] = mfTicks -- "Mind Flay"
+	E.global.unitframe.ChannelTicks[SpellName(129197)] = mfTicks -- "Mind Flay (Insanity)"
+end)
 
 G.unitframe.ChannelTicksSize = {
     --Warlock
