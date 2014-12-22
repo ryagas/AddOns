@@ -18,7 +18,7 @@ end
 
 local db, options
 local defaults = {
-	profile = {
+	global = {
 		colorRolls = true,
 		rollColor = {r = 1.0, g = 1.0, b = 0},	-- yellow
 		colorYours = true,
@@ -85,8 +85,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(Module.namespace, defaults)
-	db = self.db.profile
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:Info()

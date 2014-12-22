@@ -1,4 +1,12 @@
-v2.10
+v2.11 12/14/2014
+- Fixed errors on login when ElvUI's bag module was disabled
+- Fixed sizing issues with screensaver when autoscale wasn't there
+- Errors on changing backgrounds size
+- Added quick action functionality to ui buttons
+- Fixed error when trying to apply Darth's config
+- Added HighMaul LFR info to time datatext
+
+v2.10 11/27/2014
 - Fixed Vehicle Grey Issue #70
 - Cleanup some backend code
 - Added a new tag: 'health:sl:darth-heal'. Returns health in format "Deficit / Current | Percent". Yeah, Darth likes to make stupid stuff.
@@ -18,7 +26,6 @@ Dropdowns positioning and orientation are fully customised. If you were using ui
 - Raid marks and raid flares bars are now one bar. Thus settings for those have been reset. Features 2 visibility states:
 default - shown if you have target selected or in a group
 in group - always shown if you are in a group
-
 
 v2.09 10/30/2014
 - Added AddonSkins Embed system (Backend stuff, users don't need to adjust anything if using AddonSkins embed system)

@@ -11,7 +11,7 @@ local channels = {"party", "guild", "officer", "raid", "say", "yell"}
 
 local db, options
 local defaults = {
-	profile = {
+	global = {
 		mode = "HIDE",
 		color = {r = 0.45, g = 0.45, b = 0.45},
 		filters = {
@@ -85,8 +85,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(Module.namespace, defaults)
-	db = self.db.profile
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 	self:SetEventFilters()
 end
 

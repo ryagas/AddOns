@@ -1,0 +1,10 @@
+## Interface: 60000
+## Title: EventHorizon_|c4069ccf0Mage|r
+## Author: Brusalk
+## LoadOnDemand: 1
+## Dependencies: EventHorizon
+## OptDeps: 
+## SavedVariables: 
+
+config.lua
+myconfig.lua

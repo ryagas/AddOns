@@ -32,7 +32,7 @@ local colorModes = {
 
 local customColorNames = setmetatable({}, {
 	__index = function(t, v)
-		local r, g, b = unpack(Module.db.profile.color)
+		local r, g, b = unpack(Module.db.global.color)
 		t[v] = ("|cff%02x%02x%02x%s|r"):format(r * 255, g * 255, b * 255, v)
 		return t[v]
 	end
@@ -41,7 +41,7 @@ local customColorNames = setmetatable({}, {
 local db, options
 local defaults = {
 	realm = {},
-	profile = {
+	global = {
 		guildNotes = true,
 		altNotesFallback = true,
 		colorMode = "CHANNEL",
@@ -284,8 +284,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(Module.namespace, defaults)
-	db = self.db.profile
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:OnEnable()

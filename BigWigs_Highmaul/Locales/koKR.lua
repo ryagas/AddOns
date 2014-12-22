@@ -2,6 +2,8 @@
 if not L then return end
 if L then
 	L.blade_dance_bar = "칼춤 도는 중"
+
+	--L.arena_sweeper_desc = "Timer for getting knocked out of the stadium stands after you've been Chain Hurled."
 end
 
 L = BigWigs:NewBossLocale("The Butcher", "koKR")
@@ -30,24 +32,26 @@ end
 
 L = BigWigs:NewBossLocale("Brackenspore", "koKR")
 if L then
+	--L.mythic_ability = "Special Ability"
+	--L.mythic_ability_desc = "Show a timer bar for the next Call of the Tides or Exploding Fungus arriving."
+
 	L.creeping_moss_boss_heal = "보스 아래에 덩굴 이끼가 있습니다 (치유 중)"
 	--L.creeping_moss_add_heal = "Moss under BIG ADD (healing)"
 end
 
 L = BigWigs:NewBossLocale("Twin Ogron", "koKR")
 if L then
+	--L.volatility_self_desc = "Options for when the Arcane Volatility debuff is on you."
+
 	L.custom_off_volatility_marker = "불안정한 비전 징표 설정"
 	L.custom_off_volatility_marker_desc = "불안정한 징표의 대상을 {rt1}{rt2}{rt3}{rt4}의 징표로 설정합니다. 공격대장이거나 권한이 필요합니다."
 end
 
 L = BigWigs:NewBossLocale("Ko'ragh", "koKR")
 if L then
-	L.suppression_field_trigger1 = "조용히 해!"
-	L.suppression_field_trigger2 = "반으로 찢어주마!"
-	L.suppression_field_trigger3 = "박살내주마!"
-	L.suppression_field_trigger4 = "침묵!"
-
-	L.fire_bar = "모두 폭발합니다!!"
+	L.fire_bar = "모두 폭발합니다!"
+	--L.overwhelming_energy_bar = "Balls hit (%d)"
+	--L.dominating_power_bar = "MC balls hit (%d)"
 
 	--L.custom_off_fel_marker = "Expel Magic: Fel Marker"
 	--L.custom_off_fel_marker_desc = "Mark Expel Magic: Fel targets with {rt1}{rt2}{rt3}, requires promoted or leader.\n|cFFFF0000Only 1 person in the raid should have this enabled to prevent marking conflicts.|r"
@@ -55,7 +59,16 @@ end
 
 L = BigWigs:NewBossLocale("Imperator Mar'gok", "koKR")
 if L then
+	--L.phase4_trigger = "You know nothing of the power you meddle with"
+
+	--L.branded_say = "%s (%d) %dy"
+	--L.add_death_soon = "Add dying soon!"
+	--L.slow_fixate = "Slow+Fixate"
+
 	L.custom_off_fixate_marker = "시선집중 징표 설정"
 	L.custom_off_fixate_marker_desc = "고리안 전투마법사의 시선 집중의 대상을 {rt1}{rt2}의 징표로 설정합니다.\n|cFFFF0000징표 설정에서 문제가 발생하는 것을 막기 위해 공격대에서 오직 1명만 이 옵션을 활성화해야 합니다.|r"
+
+	--L.custom_off_branded_marker = "Branded Marker"
+	--L.custom_off_branded_marker_desc = "Mark Branded targets with {rt3}{rt4}, requires promoted or leader.\n|cFFFF0000Only 1 person in the raid should have this enabled to prevent marking conflicts.|r"	
 end
 

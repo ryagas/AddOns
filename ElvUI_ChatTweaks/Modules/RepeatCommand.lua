@@ -11,7 +11,7 @@ local format = string.format
 
 local db, options
 local defaults = {
-	profile = {
+	global = {
 		interval = 1
 	}
 }
@@ -56,8 +56,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(Module.namespace, defaults)
-	db = self.db.profile
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:GetOptions()

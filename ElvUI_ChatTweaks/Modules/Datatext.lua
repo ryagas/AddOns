@@ -15,7 +15,7 @@ local join = string.join
 
 local db, options
 local defaults = {
-	profile = {
+	global = {
 		display = "enabled",
 		showTotal = true,
 	}
@@ -42,8 +42,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(Module.namespace, defaults)
-	db = self.db.profile
-	Module.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	Module.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:Info()

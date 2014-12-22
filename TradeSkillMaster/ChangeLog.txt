@@ -1,3 +1,26 @@
+v2.10.9
+*Fixed bug in custom price code.
+
+v2.10.8
+*Fixed memory leak in custom price code.
+*Updated disenchanting rates.
+
+v2.10.7
+*Add TheUndermineJournal as optional dependency.
+
+v2.10.6
+*Fixed bug with search filter generation.
+
+v2.10.5
+*Reverted previous change.
+
+v2.10.4
+*Fixed bug regarding the option to open bags with AH.
+
+v2.10.3
+*Tweak some of the conversion rates.
+*Add missing vendor trade conversion for IOD.
+
 v2.10.2
 *Fixed Lua error caused by some changes in v2.10.
 

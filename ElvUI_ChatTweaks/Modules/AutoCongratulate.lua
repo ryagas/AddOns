@@ -11,7 +11,7 @@ local gsub = string.gsub
 
 local db, options
 local defaults = {
-	profile = {
+	global = {
 		dontAlways = true,
 		chance = 50,
 		minDelay = 1,
@@ -56,16 +56,20 @@ function Module:FiltersToString(tbl)
 end
 
 function Module:SendCongrats(settings)
-	-- remove realm from cross-realm achievements
-	local temp = {strsplit("-", settings[1])}
-	local sender = temp[1]
-	
 	if settings[2] == true then
 		if not db.multiple or #db.multiple == 0 then return end
 		-- multiple
 		SendChatMessage(db.multiple[random(1, #db.multiple)], settings[3], nil)
 	else
+		-- remove realm from cross-realm achievements
+		local temp = {strsplit("-", settings[1])}
+		local sender = temp[1]
 		if not db.single or #db.single == 0 then return end
+		
+		-- some error checking to stop the gsub errors
+		if not sender or sender == "" then return end
+		if not settings[4] or settings[4] == "" or type(settings[4]) == "number" then return end
+		
 		-- single
 		SendChatMessage(db.single[random(1, #db.single)]:gsub("#name#", sender):gsub("#achieve#", GetAchievementLink(settings[4])), settings[3], nil)
 	end
@@ -140,8 +144,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(Module.namespace, defaults)
-	db = self.db.profile
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:Info()
@@ -213,7 +217,7 @@ function Module:GetOptions()
 						name = L["Busy"],
 						desc = L["Disable while you're DND flagged."],
 						get = function() return db.dnd end,
-						set = function(_, value) db.dbd = value end,
+						set = function(_, value) db.dnd = value end,
 					},
 					player = {
 						type = "toggle",

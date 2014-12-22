@@ -14,7 +14,6 @@ mod.engageId = 1706
 
 local cleaveCount = 1
 local addCount = 1
-local frenzied = nil
 
 --------------------------------------------------------------------------------
 -- Localization
@@ -35,21 +34,28 @@ L = mod:GetLocale()
 
 function mod:GetOptions()
 	return {
-		-10228, {163046, "FLASH"},
-		{156147, "TANK"}, {156151, "TANK_HEALER"}, 156157, 156152, {-8860, "PROXIMITY"}, "frenzy",
-		"berserk", "bosskill"
+		--[[ Mythic ]] --
+		-10228, -- Night-Twisted Cadaver
+		{163046, "FLASH"}, -- Pale Vitriol
+		--[[ General ]]--
+		{156151, "TANK_HEALER"}, -- The Tenderizer
+		156157, -- Cleave
+		156152, -- Gushing Wounds
+		{-8860, "PROXIMITY"}, -- Bounding Cleave
+		"frenzy",
+		"berserk",
+		"bosskill"
 	}, {
 		[-10228] = "mythic",
-		[156147] = "general"
+		[156151] = "general"
 	}
 end
 
 function mod:OnBossEnable()
 	self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "BoundingCleave", "boss1")
-	self:Log("SPELL_AURA_APPLIED_DOSE", "Cleaver", 156147)
 	self:Log("SPELL_AURA_APPLIED", "Tenderizer", 156151)
 	self:Log("SPELL_AURA_APPLIED_DOSE", "Tenderizer", 156151)
-	self:Log("SPELL_CAST_START", "Cleave", 156157)
+	self:Log("SPELL_CAST_START", "Cleave", 156157, 156293)
 	self:Log("SPELL_AURA_APPLIED_DOSE", "GushingWounds", 156152)
 	self:Log("SPELL_AURA_REMOVED", "GushingWoundsRemoved", 156152)
 	self:Log("SPELL_AURA_APPLIED", "Frenzy", 156598)
@@ -62,7 +68,6 @@ end
 function mod:OnEngage()
 	cleaveCount = 1
 	addCount = 1
-	frenzied = nil
 	self:Bar(156151, 7) -- Tenderizer
 	self:Bar(-8860, 60) -- Bounding Cleave
 	if self:Mythic() then
@@ -107,7 +112,8 @@ do
 end
 
 function mod:BoundingCleave(_, spellName, _, _, spellId)
-	if spellId == 156197 then -- Bounding Cleave (knockback)
+	if spellId == 156197 or spellId == 156257 then -- Bounding Cleave (knockback)
+		local frenzied = spellId == 156257 and true
 		cleaveCount = 1
 		self:Message(-8860, "Urgent", "Alert")
 		self:Bar(-8860, frenzied and 30 or 60) -- Bounding Cleave
@@ -122,19 +128,13 @@ function mod:BoundingCleave(_, spellName, _, _, spellId)
 	end
 end
 
-function mod:Cleaver(args)
-	if args.amount % 2 == 0 then
-		self:StackMessage(args.spellId, args.destName, args.amount, "Attention")
-	end
-end
-
 function mod:Tenderizer(args)
 	self:StackMessage(args.spellId, args.destName, args.amount, "Urgent", args.amount and "Warning")
 	self:CDBar(args.spellId, 17)
 end
 
 function mod:Cleave(args)
-	self:Message(args.spellId, "Attention", nil, CL.count:format(args.spellName, cleaveCount))
+	self:Message(156157, "Attention", nil, CL.count:format(args.spellName, cleaveCount))
 	--self:StopBar(CL.count:format(args.spellName, cleaveCount))
 	cleaveCount = cleaveCount + 1
 	--self:CDBar(args.spellId, 6, CL.count:format(args.spellName, cleaveCount))
@@ -157,13 +157,12 @@ function mod:UNIT_HEALTH_FREQUENT(unit)
 	local hp = UnitHealth(unit) / UnitHealthMax(unit) * 100
 	if hp < 36 then
 		self:UnregisterUnitEvent("UNIT_HEALTH_FREQUENT", "boss1")
-		self:Message("frenzy", "Neutral", "Info", CL.soon:format(self:SpellName(L.frenzy)), false)
+		self:Message("frenzy", "Neutral", nil, CL.soon:format(self:SpellName(L.frenzy)), false)
 	end
 end
 
 function mod:Frenzy(args)
 	self:Message("frenzy", "Important", "Alarm", args.spellName, L.frenzy_icon)
-	frenzied = true
 	-- gains power faster while frenzied
 	local left = (100 - UnitPower("boss1")) * 0.3
 	self:Bar(-8860, left) -- Bounding Cleave

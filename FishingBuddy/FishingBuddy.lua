@@ -28,6 +28,11 @@ local POLES = {
 	["Nat Pagle's Fish Terminator"] = "19944:0:0:0",
 }
 
+local FISHINGHATS = {
+	[118393] = true,	-- Tentacled Hat
+	[118380] = true,	-- HightFish Cap
+};
+
 local GeneralOptions = {
 	["ShowNewFishies"] = {
 		["text"] = FBConstants.CONFIG_SHOWNEWFISHIES_ONOFF,
@@ -164,6 +169,13 @@ local CastingOptions = {
 		["primary"] = "EasyCast",
 		["deps"] = { ["EasyCast"] = "d", ["EasyLures"] = "d" },
 		["default"] = false },
+	["DraenorBait"] = {
+		["text"] = FBConstants.CONFIG_DRAENORBAIT_ONOFF,
+		["tooltip"] = FBConstants.CONFIG_DRAENORBAIT_INFO,
+		["v"] = 1,
+		["primary"] = "EasyCast",
+		["deps"] = { ["EasyCast"] = "d", ["EasyLures"] = "d" },
+		["default"] = true },
 	["MountedCast"] = {
 		["text"] = FBConstants.CONFIG_MOUNTEDCAST_ONOFF,
 		["tooltip"] = FBConstants.CONFIG_MOUNTEDCAST_INFO,
@@ -377,6 +389,8 @@ FishingBuddy.GlobalSetSetting = function(setting, value)
 		FishingBuddy_Info["Settings"][setting] = value;
 	end
 end
+
+FishingBuddy.FishingHats = FISHINGHATS;
 
 FishingBuddy.ByFishie = nil;
 FishingBuddy.SortedFishies = nil;
@@ -776,6 +790,26 @@ PagleFish[86542] = {
 	["enUS"] = "Flying Tiger Gourami",
 	quest = 31443,
 };
+-- Lunkers
+PagleFish[116817] = {
+	["enUS"] = "Blackwater Whiptail Lunker",
+};
+PagleFish[116818] = {
+	["enUS"] = "Abyssal Gulper Lunker",
+};
+PagleFish[116819] = {
+	["enUS"] = "Fire Ammonite Lunker",
+};
+PagleFish[116820] = {
+	["enUS"] = "Blind Lake Lunker",
+};
+PagleFish[116821] = {
+	["enUS"] = "Fat Sleeper Lunker",
+};
+PagleFish[116822] = {
+	["enUS"] = "Jawless Skulker Lunker",
+};
+
 FishingBuddy.PagleFish = PagleFish;
 
 local QuestLures = {};
@@ -964,6 +998,7 @@ end
 -- We'll want to use the cheapest ones we can until our fish don't get
 -- away from us
 
+-- Full combat check function
 local function CheckCombat()
 	return InCombatLockdown() or UnitAffectingCombat("player") or UnitAffectingCombat("pet")
 end
@@ -976,7 +1011,7 @@ local function PostCastUpdate()
 		if ( AddingLure ) then
 			local sp, sub, txt, tex, st, et, trade, int = UnitChannelInfo("player");
 			local _, lure = FL:GetPoleBonus();
-			if ( not sp or (lure and lure == LastLure.b) ) then
+			if ( not sp or not LastLure or (lure and lure == LastLure.b) ) then
 				AddingLure = false;
 				FL:UpdateLureInventory();
 			else
@@ -1095,82 +1130,76 @@ local function GetUpdateLure()
 		end
 
 		-- only apply a lure if we're actually fishing with a "real" pole
-		if (not FL:IsFishingPole()) then
-			return false;
-		end
+		if (FL:IsFishingPole()) then
 		
-		-- Let's wait a bit so that the enchant can show up before we lure again
-		if ( LastLure and LastLure.time and ((LastLure.time - GetTime()) > 0) ) then
-			return false;
-		end
+			-- Let's wait a bit so that the enchant can show up before we lure again
+			if ( LastLure and LastLure.time and ((LastLure.time - GetTime()) > 0) ) then
+				return false;
+			end
 		
-		if ( LastLure ) then
-			LastLure.time = nil;
-		end
+			if ( LastLure ) then
+				LastLure.time = nil;
+			end
 
-		local skill, _, _, _ = FL:GetCurrentSkill();
+			local skill, _, _, _ = FL:GetCurrentSkill();
 		
-		if (skill > 0) then
-			local NextLure, NextState;
-			local pole, tempenchant = FL:GetPoleBonus();
-			local state, bestlure = FL:FindBestLure(tempenchant, LureState);
-			if ( DoEscaped ) then
-				if ( state or bestlure ) then
-					NextState = state or LureState;
+			if (skill > 0) then
+				local NextLure, NextState;
+				local pole, tempenchant = FL:GetPoleBonus();
+				local state, bestlure = FL:FindBestLure(tempenchant, LureState);
+				if ( DoEscaped ) then
+					if ( state or bestlure ) then
+						NextState = state or LureState;
+						NextLure = bestlure;
+					else
+						NextLure = nil;
+					end
+				elseif ( GSB("AlwaysLure") ) then
+					-- don't put on a lure if we've already got one
+					if ( tempenchant == 0 ) then
+						if ( not state ) then
+							NextState, NextLure = FL:FindNextLure(nil, 0);
+						else
+							NextState = state;
+							NextLure = bestlure;
+						end
+					elseif (state and bestlure) then
+						NextState = state;
+						NextLure = bestlure;
+					else
+						NextLure = nil -- oscarucb
+					end
+				elseif ( state and bestlure and tempenchant == 0 and GSB("LastResort") ) then
+					NextState = state;
 					NextLure = bestlure;
 				else
 					NextLure = nil;
 				end
-			elseif ( GSB("AlwaysLure") ) then
-				-- don't put on a lure if we've already got one
-				if ( tempenchant == 0 ) then
-					if ( not state ) then
-						NextState, NextLure = FL:FindNextLure(nil, 0);
-					else
-						NextState = state;
-						NextLure = bestlure;
-					end
-				else 
-					NextLure = nil -- oscarucb
-				end
-			elseif ( state and bestlure and tempenchant == 0 and GSB("LastResort") ) then
-				NextState = state;
-				NextLure = bestlure;
-			else
-				NextLure = nil;
-			end
-			local DoLure = NextLure;
+				local DoLure = NextLure;
 	
-			if ( DoLure and DoLure.id ) then
-				-- if the pole has an enchantment, we can assume it's got a lure on it (so far, anyway)
-				-- remove the main hand enchantment (since it's a fishing pole, we know what it is)
-				local startTime, duration, enable = GetItemCooldown(DoLure.id);
-				if (startTime == 0) then
-					AddingLure = true;
-					LastLure = DoLure;
-					LureState = NextState;
-					LastLure.time = GetTime() + RELURE_DELAY;
-					local id = DoLure.id;
-					local name = DoLure.n;
-					DoLure = nil;
-					return true, id, name; 
-				elseif ( LastLure and not LastLure.time ) then
-					LastLure = nil;
-					LastState = 0;
+				if ( DoLure and DoLure.id ) then
+					-- if the pole has an enchantment, we can assume it's got a lure on it (so far, anyway)
+					-- remove the main hand enchantment (since it's a fishing pole, we know what it is)
+					local startTime, duration, enable = GetItemCooldown(DoLure.id);
+					if (startTime == 0) then
+						AddingLure = true;
+						LastLure = DoLure;
+						LureState = NextState;
+						LastLure.time = GetTime() + RELURE_DELAY;
+						local id = DoLure.id;
+						local name = DoLure.n;
+						return true, id, name; 
+					elseif ( LastLure and not LastLure.time ) then
+						LastLure = nil;
+						LastState = 0;
+						AddingLure = false;
+					end
 				end
 			end
 		end
 	end
-	return false;
-end
 
-local function UpdateLure()
-	local update, id = GetUpdateLure();
-	if (update and id) then
-		FL:InvokeLuring(id);
-	end
-	
-	return update;
+	return false;
 end
 
 local CaptureEvents = {};
@@ -1252,17 +1281,21 @@ local function SetStealClick(func)
 end
 FishingBuddy.SetStealClick = SetStealClick;
 
-
 local function CentralCasting()
 	-- put on a lure if we need to
-	if ( not StealClick() and not UpdateLure() ) then
-		if ( not FL:GetLastTooltipText() or not FL:OnFishingBobber() ) then
-			 -- watch for fishing holes
-			FL:SaveTooltipText();
+	if ( not StealClick() ) then
+		local update, id, n = GetUpdateLure();
+		if (update and id) then
+			FL:InvokeLuring(id);
+		else
+			if ( not FL:GetLastTooltipText() or not FL:OnFishingBobber() ) then
+				 -- watch for fishing holes
+				FL:SaveTooltipText();
+			end
+			LastCastTime = GetTime();
+			autopoleframe:Show();
+			FL:InvokeFishing(FishingBuddy.GetSettingBool("UseAction"));
 		end
-		LastCastTime = GetTime();
-		autopoleframe:Show();
-		FL:InvokeFishing(FishingBuddy.GetSettingBool("UseAction"));
 	end
 	FL:OverrideClick(HideAwayAll);
 end
@@ -1276,14 +1309,12 @@ local SavedWFOnMouseDown;
 local function WF_OnMouseDown(...)
 	-- Only steal 'right clicks' (self is arg #1!)
 	local button = select(2, ...);
-	if ( button == FL:GetSAMouseButton() and HijackCheck() ) then
-		if ( FL:CheckForDoubleClick() ) then
-			 -- We're stealing the mouse-up event, make sure we exit MouseLook
-			if ( IsMouselooking() ) then
-				MouselookStop();
-			end
-			CentralCasting();
+	if ( FL:CheckForDoubleClick(button) and HijackCheck() ) then
+		 -- We're stealing the mouse-up event, make sure we exit MouseLook
+		if ( IsMouselooking() ) then
+			MouselookStop();
 		end
+		CentralCasting();
 	end
 	if ( SavedWFOnMouseDown ) then
 		SavedWFOnMouseDown(...);
@@ -1391,6 +1422,8 @@ local function StopFishingMode(logout)
 		SetCVar("autointeract", "1");
 		resetClickToMove = nil;
 	end
+	
+	AddingLure = false;
 end
 
 local function FishingMode()
@@ -2154,6 +2187,17 @@ if ( FishingBuddy.Debugging ) then
 	FishingBuddy.Commands["macrotest"].func =
 		function()
 			CreateFishingMacro();
+			return true;
+		end
+
+	FishingBuddy.Commands["marksea"] = {};
+	FishingBuddy.Commands["marksea"].func =
+		function()
+			local fish = FishingBuddy_Info["Fishies"][111672];
+			local zone, subzone = FL:GetZoneInfo();
+			local nm,_,_,_,it,st,_,el,_,il = FL:GetItemInfo(111672);
+			local color, id, name = FL:SplitFishLink(link);
+			AddFishie(color, 111672, name, zone, subzone, fish["texture"], 1, fish["quality"], nil, it, st);
 			return true;
 		end
 end

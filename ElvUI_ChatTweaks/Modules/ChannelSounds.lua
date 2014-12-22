@@ -34,7 +34,7 @@ local soundChannels 		= {
 local options = {}
 
 local defaults = {
-	profile = {
+	global = {
 		guildSound = "None",
 		officerSound = "None",
 		partySound = "None",
@@ -91,8 +91,8 @@ end
 
 function Module:OnInitialize()
 	self.db = ElvUI_ChatTweaks.db:RegisterNamespace(Module.namespace, defaults)
-	db = self.db.profile
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	db = self.db.global
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:OnEnable()

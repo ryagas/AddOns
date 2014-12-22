@@ -137,11 +137,11 @@ local function IsTime(activate)
 	end
 
 	-- As of patch 5.1, extravaganza starts at 14:00 to 16:00 - PST for US realms, CET for
-	-- EU realms, and Australian EST for Oceanic realms regardless of sever or player local
-	-- time. Luckily the start time is refelected in the CalendarHolidayEvent entry (so
+	-- EU realms, and Australian EST for Oceanic realms regardless of server or player local
+	-- time. Luckily the start time is reflected in the CalendarHolidayEvent entry (so
 	-- Euro/Aussie/Oceanic players should be OK too). A limitation appears to be if the
 	-- player has selected to not to show weekly holiday events (but they're probably not
-	-- using FB anyway[thus lessening our competition!])
+	-- using FB anyway [thus lessening our competition!])
 	-- Can't find an API call to enable Calendar filters for holidays...would make this
 	-- less user dependent
 	local fishingEvent = nil;

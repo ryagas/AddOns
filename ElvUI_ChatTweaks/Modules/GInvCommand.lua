@@ -32,7 +32,7 @@ function Module:OnDisable()
 end
 
 function Module:OnInitialize()
-	self.debug = ElvUI_ChatTweaks.db.profile.debugging
+	self.debug = ElvUI_ChatTweaks.db.global.debugging
 end
 
 function Module:Info()
