@@ -211,6 +211,14 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.smallerWorldMap end,
 					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end					
 				},
+				objectiveFrameHeight = {
+					order = 20,
+					type = 'range',
+					name = L["Objective Frame Height"],
+					desc = L["Height of the objective tracker. Increase size to be able to see more objectives."],
+					min = 400, max = E.screenheight, step = 1,
+					set = function(info, value) E.db.general.objectiveFrameHeight = value; E:GetModule('Blizzard'):ObjectiveFrameHeight(); end,				
+				},
 			},
 		},	
 		media = {
@@ -411,7 +419,7 @@ E.Options.args.general = {
 					name = L['Location Text'],
 					desc = L['Change settings for the display of the location text that is on the minimap.'],
 					get = function(info) return E.db.general.minimap.locationText end,
-					set = function(info, value) E.db.general.minimap.locationText = value; E:GetModule('Minimap'):UpdateSettings() end,
+					set = function(info, value) E.db.general.minimap.locationText = value; E:GetModule('Minimap'):UpdateSettings(); E:GetModule('Minimap'):Update_ZoneText() end,
 					values = {
 						['MOUSEOVER'] = L['Minimap Mouseover'],
 						['SHOW'] = L['Always Display'],

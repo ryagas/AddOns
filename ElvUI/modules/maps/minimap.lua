@@ -145,12 +145,6 @@ function M:Update_ZoneText()
 	Minimap.location:SetTextColor(M:GetLocTextColor())
 end
 
-function M:UpdateLFG()
-	MiniMapLFGFrame:ClearAllPoints()
-	MiniMapLFGFrame:Point("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 2, 1)
-	MiniMapLFGFrameBorder:Hide()
-end
-
 function M:PLAYER_REGEN_ENABLED()
 	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 	self:UpdateSettings()
@@ -269,7 +263,7 @@ function M:UpdateSettings()
 		local scale = E.db.general.minimap.icons.lfgEye.scale or 1
 		QueueStatusMinimapButton:ClearAllPoints()
 		QueueStatusMinimapButton:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.lfgEye.xOffset or 3, E.db.general.minimap.icons.lfgEye.yOffset or 0)
-		MiniMapMailFrame:SetScale(scale)
+		QueueStatusMinimapButton:SetScale(scale)
 	end
 	
 	if MiniMapInstanceDifficulty and GuildInstanceDifficulty then
