@@ -1,9 +1,55 @@
 ------------------------------------------------------------------------
-r12433 | funkydude | 2014-12-20 14:37:29 +0000 (Sat, 20 Dec 2014) | 1 line
+r12440 | funkydude | 2014-12-21 22:55:27 +0000 (Sun, 21 Dec 2014) | 1 line
 Changed paths:
-   A /tags/r12433-release (from /trunk:12432)
+   A /tags/r12440-release (from /trunk:12439)
 
-Tagging as r12433-release
+Tagging as r12440-release
+------------------------------------------------------------------------
+r12439 | funkydude | 2014-12-21 22:43:48 +0000 (Sun, 21 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/KargathBladefist.lua
+
+KargathBladefist: Add say for on the hunt.
+------------------------------------------------------------------------
+r12438 | funkydude | 2014-12-21 22:30:57 +0000 (Sun, 21 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: Fix error on arcane.
+------------------------------------------------------------------------
+r12437 | funkydude | 2014-12-21 21:30:25 +0000 (Sun, 21 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/KargathBladefist.lua
+
+KargathBladefist: Fix impale duration
+------------------------------------------------------------------------
+r12436 | nebula169 | 2014-12-21 20:59:53 +0000 (Sun, 21 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/Locales/deDE.lua
+   M /trunk/Highmaul/Locales/esES.lua
+   M /trunk/Highmaul/Locales/frFR.lua
+   M /trunk/Highmaul/Locales/itIT.lua
+   M /trunk/Highmaul/Locales/koKR.lua
+   M /trunk/Highmaul/Locales/ptBR.lua
+   M /trunk/Highmaul/Locales/ruRU.lua
+   M /trunk/Highmaul/Locales/zhCN.lua
+   M /trunk/Highmaul/Locales/zhTW.lua
+
+Koragh: use the Dominating Power option for the mc balls bar, stop ball bars on next cast (stupid  recharge phase)
+------------------------------------------------------------------------
+r12435 | jongt23 | 2014-12-21 20:20:26 +0000 (Sun, 21 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Locales/esES.lua
+
+esES update
+------------------------------------------------------------------------
+r12434 | ananhaid | 2014-12-20 15:17:06 +0000 (Sat, 20 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Locales/zhCN.lua
+
+- zhCN update.
 ------------------------------------------------------------------------
 r12432 | dynaletik | 2014-12-20 10:24:15 +0000 (Sat, 20 Dec 2014) | 1 line
 Changed paths:
@@ -1520,10 +1566,4 @@ Changed paths:
    M /trunk/Plugins/Proximity.lua
 
 Proximity: First run through inward/outward pulse animation for targeted proximity modes.
-------------------------------------------------------------------------
-r12199 | nebula169 | 2014-11-18 16:16:45 +0000 (Tue, 18 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Plugins/Bars.lua
-
-Bars: prevent double messages with short break timers
 ------------------------------------------------------------------------

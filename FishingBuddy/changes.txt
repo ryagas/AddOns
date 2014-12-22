@@ -1,4 +1,11 @@
-﻿Version 1.4q
+﻿Version 1.4s
+- Add missing file that maanged to not get into source control
+
+Version 1.4r
+- Don't use Draenor special baits while doing the Hookshot or introductory fishing quests
+- Display lunkers with other quest fish in the watcher
+
+Version 1.4q
 - Now that the library is right, make sure we check it correctly for non-English clients
 
 Version 1.4p
