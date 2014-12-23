@@ -1,9 +1,25 @@
 ------------------------------------------------------------------------
-r400 | allara | 2014-12-17 18:17:38 +0000 (Wed, 17 Dec 2014) | 1 line
+r403 | allara | 2014-12-22 18:08:12 +0000 (Mon, 22 Dec 2014) | 1 line
 Changed paths:
-   A /tags/r399-release (from /trunk:399)
+   A /tags/r402-release (from /trunk:402)
 
-Tagging as r399-release
+Tagging as r402-release
+------------------------------------------------------------------------
+r402 | allara | 2014-12-22 18:08:00 +0000 (Mon, 22 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Winter Veil items that are obtained from Christmas Day and on will now be listed as "Unavailable" until December 25. This uses your local time, so may not exactly match server time.
+------------------------------------------------------------------------
+r401 | allara | 2014-12-19 19:40:07 +0000 (Fri, 19 Dec 2014) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Options_Defaults.lua
+
+- Added the following Winter Veil pets and toys (note that some of these are only available starting on the 25th): Clockwork Rocket Bot, Crashin' Thrashin' Flyer Controller, The Pigskin, MiniZep Controller, Foot Ball, Crashin' Thrashin' Racer Controller, Safari Lounge Cushion, Fuzzy Green Lounge Cushion, Zhevra Lounge Cushion, Pineapple Lounge Cushion, Snowman Kit, Red Helper Box, Jingling Bell, Green Helper Box
+- Rarity now caps the number of holiday reminders at 2
 ------------------------------------------------------------------------
 r399 | allara | 2014-12-17 18:16:15 +0000 (Wed, 17 Dec 2014) | 2 lines
 Changed paths:
@@ -66,35 +82,4 @@ Changed paths:
    M /trunk/Options_Defaults.lua
 
 - Rarity will no longer ever try to detect that the tooltip is visible in order to update it when things change. Players will have to hide/show the tooltip to see the changes. This was causing performance issues for a small percentage of players. The tooltip will also never allow updating during combat. (That last change was made in a prior build.)
-------------------------------------------------------------------------
-r384 | allara | 2014-11-19 17:00:40 +0000 (Wed, 19 Nov 2014) | 2 lines
-Changed paths:
-   M /trunk/Core.lua
-   M /trunk/Options_Defaults.lua
-
-- Bosses in MoP aren't very easily soloable yet with current gear, so I reverted all those items back to requiring a group
-
-------------------------------------------------------------------------
-r382 | allara | 2014-11-18 19:11:18 +0000 (Tue, 18 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-   M /trunk/Locales.lua
-   M /trunk/Options_Defaults.lua
-
-- Add battle pets: Nightshade Sproutling, Red Goren Egg
-------------------------------------------------------------------------
-r380 | allara | 2014-11-18 17:52:21 +0000 (Tue, 18 Nov 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-   M /trunk/Options_Defaults.lua
-
-- WoD rare list updates
-------------------------------------------------------------------------
-r378 | allara | 2014-11-16 23:28:25 +0000 (Sun, 16 Nov 2014) | 2 lines
-Changed paths:
-   M /trunk/Core.lua
-   M /trunk/Options_Defaults.lua
-
-- Garn Nighthowl: Changed recommended group size to 25 (up from 5)
-- Sea Turtle: Remove Draenor zones
 ------------------------------------------------------------------------
