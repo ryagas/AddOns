@@ -2,6 +2,8 @@ local L = BigWigs:NewBossLocale("Kargath Bladefist", "frFR")
 if not L then return end
 if L then
 	L.blade_dance_bar = "Danse"
+
+	L.arena_sweeper_desc = "Délai avant d'être expulsé des gradins après Projection de chaîne."
 end
 
 L = BigWigs:NewBossLocale("The Butcher", "frFR")
@@ -30,24 +32,26 @@ end
 
 L = BigWigs:NewBossLocale("Brackenspore", "frFR")
 if L then
+	L.mythic_ability = "Technique spéciale"
+	L.mythic_ability_desc = "Affiche une barre de délai pour l'arrivée du prochain Appel des marées ou Détonation fongique."
+
 	L.creeping_moss_boss_heal = "Mousse sous le BOSS (soigne)"
 	L.creeping_moss_add_heal = "Mousse sous le MANGE-CHAIR (soigne)"
 end
 
 L = BigWigs:NewBossLocale("Twin Ogron", "frFR")
 if L then
+	L.volatility_self_desc = "Options pour quand l'affaiblissement Volatilité arcanique est sur vous."
+
 	L.custom_off_volatility_marker = "Marquage Volatilité arcanique"
 	L.custom_off_volatility_marker_desc = "Marque les cibles de Volatilité arcanique avec {rt1}{rt2}{rt3}{rt4}. Nécessite d'être assistant ou chef de raid."
 end
 
 L = BigWigs:NewBossLocale("Ko'ragh", "frFR")
 if L then
-	L.suppression_field_trigger1 = "Taisez-vous !" -- à vérifier
-	L.suppression_field_trigger2 = "Je vous réduirai en pièces !" -- à vérifier
-	L.suppression_field_trigger3 = "Je vous écraserai !" -- à vérifier
-	L.suppression_field_trigger4 = "Silence !" -- à vérifier
-
 	L.fire_bar = "Tout le monde explose !"
+	L.overwhelming_energy_bar = "Impact des boules (%d)"
+	--L.dominating_power_bar = "MC balls hit (%d)"
 
 	L.custom_off_fel_marker = "Marquage Projection de magie : Gangrène"
 	L.custom_off_fel_marker_desc = "Marque les cibles de Projection de magie : Gangrène avec {rt1}{rt2}{rt3}. Nécessite d'être assistant ou chef de raid.\n|cFFFF0000Seule 1 personne du raid doit activer ceci afin d'éviter les conflits de marquage.|r"
@@ -55,9 +59,16 @@ end
 
 L = BigWigs:NewBossLocale("Imperator Mar'gok", "frFR")
 if L then
-	--L.branded_say = "%s (%d) %dy"
+	--L.phase4_trigger = "You know nothing of the power you meddle with"
+
+	L.branded_say = "%s (%d) %dm"
+	L.add_death_soon = "Mort de l'add imminente !"
+	L.slow_fixate = "Lenteur+Fixer"
 
 	L.custom_off_fixate_marker = "Marquage Fixer"
 	L.custom_off_fixate_marker_desc = "Marque les cibles de Fixer du Mage de guerre gorien avec {rt1}{rt2}. Nécessite d'être assistant ou chef de raid.\n|cFFFF0000Seule 1 personne du raid doit activer ceci afin d'éviter les conflits de marquage.|r"
+
+	L.custom_off_branded_marker = "Marquage Marqué"
+	L.custom_off_branded_marker_desc = "Marque les cibles de Marqué avec {rt3}{rt4}. Nécessite d'être assistant ou chef de raid.\n|cFFFF0000Seule 1 personne du raid doit activer ceci afin d'éviter les conflits de marquage.|r"
 end
 

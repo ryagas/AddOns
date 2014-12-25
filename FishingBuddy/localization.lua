@@ -151,6 +151,8 @@ FishingTranslations["enUS"] = {
 	CONFIG_ALWAYSLURE_INFO	  = "If enabled, put a lure on every time the pole doesn't have one.",
 	CONFIG_LASTRESORT_ONOFF   = "Lure of last resort",
 	CONFIG_LASTRESORT_INFO    = "If enabled, add the biggest lure we have even if it doesn't get us to 100% chance of a catch.",
+	CONFIG_DRAENORBAIT_ONOFF  = "Draenor Bait",
+	CONFIG_DRAENORBAIT_INFO   = "If enabled, attempt to use the right bait for the current Draenor zone.",
 
 	CONFIG_SHOWLOCATIONZONES_ONOFF	= "Show Zones",
 	CONFIG_SHOWLOCATIONZONES_INFO = "Display both zones and subzones.",

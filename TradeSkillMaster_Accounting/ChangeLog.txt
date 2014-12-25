@@ -1,3 +1,6 @@
+v2.4.2
+*Fixed issue with display of avgBuy info.
+
 v2.4.1
 *Fixed lua error on fresh install.
 

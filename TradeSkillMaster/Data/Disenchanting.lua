@@ -413,8 +413,20 @@ data.disenchant = {
 					[2] = {
 						{
 							minItemLevel = 494,
-							maxItemLevel = 610,
+							maxItemLevel = 593,
 							amountOfMats = 2.125
+						},
+					},
+					[3] = {
+						{
+							minItemLevel = 505,
+							maxItemLevel = 593,
+							amountOfMats = 8.1
+						},
+						{
+							minItemLevel = 594,
+							maxItemLevel = 630,
+							amountOfMats = 12
 						},
 					},
 				},
@@ -422,8 +434,20 @@ data.disenchant = {
 					[2] = {
 						{
 							minItemLevel = 494,
-							maxItemLevel = 610,
+							maxItemLevel = 593,
 							amountOfMats = 2.125
+						},
+					},
+					[3] = {
+						{
+							minItemLevel = 505,
+							maxItemLevel = 593,
+							amountOfMats = 8.1
+						},
+						{
+							minItemLevel = 594,
+							maxItemLevel = 630,
+							amountOfMats = 12
 						},
 					},
 				},
@@ -1442,12 +1466,12 @@ data.disenchant = {
 						{
 							minItemLevel = 505,
 							maxItemLevel = 569,
-							amountOfMats = 1
+							amountOfMats = 0.14
 						},
 						{
 							minItemLevel = 570,
 							maxItemLevel = 630,
-							amountOfMats = 1
+							amountOfMats = 0.14
 						},
 					},
 				},
@@ -1456,12 +1480,12 @@ data.disenchant = {
 						{
 							minItemLevel = 505,
 							maxItemLevel = 569,
-							amountOfMats = 1
+							amountOfMats = 0.14
 						},
 						{
 							minItemLevel = 570,
 							maxItemLevel = 630,
-							amountOfMats = 1
+							amountOfMats = 0.14
 						},
 					},
 				},

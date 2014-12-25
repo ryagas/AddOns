@@ -23,7 +23,7 @@ do
 	--@end-alpha@]===]
 
 	-- This will (in ZIPs), be replaced by the highest revision number in the source tree.
-	myRevision = tonumber("12307")
+	myRevision = tonumber("12441")
 
 	-- If myRevision ends up NOT being a number, it means we're running a SVN copy.
 	if type(myRevision) ~= "number" then
@@ -107,7 +107,7 @@ do
 end
 
 -- GLOBALS: ADDON_LOAD_FAILED, BigWigs, BigWigs3DB, BigWigs3IconDB, BigWigsLoader, BigWigsOptions, CreateFrame, CUSTOM_CLASS_COLORS, error, GetAddOnEnableState, GetAddOnInfo
--- GLOBALS: GetAddOnMetadata, GetInstanceInfo, GetLocale, GetNumGroupMembers, GetRealmName, GetSpecialization, GetSpecializationRole, GRAY_FONT_COLOR, InCombatLockdown
+-- GLOBALS: GetAddOnMetadata, GetInstanceInfo, GetLocale, GetNumGroupMembers, GetRealmName, GetSpecialization, GetSpecializationRole, GetTime, GRAY_FONT_COLOR, InCombatLockdown
 -- GLOBALS: InterfaceOptionsFrameOkay, IsAddOnLoaded, IsAltKeyDown, IsControlKeyDown, IsEncounterInProgress, IsInGroup, IsInInstance, IsInRaid, IsPartyLFG, LFGDungeonReadyPopup
 -- GLOBALS: LibStub, LoadAddOn, message, print, RAID_CLASS_COLORS, RaidNotice_AddMessage, RaidWarningFrame, RegisterAddonMessagePrefix, RolePollPopup, select, SetMapByID, strsplit
 -- GLOBALS: tostring, tremove, type, UnitAffectingCombat, UnitClass, UnitGroupRolesAssigned, UnitIsDeadOrGhost, UnitName, UnitSetRole, unpack, SLASH_BigWigs1, SLASH_BigWigs2
@@ -477,9 +477,9 @@ end
 
 do
 	-- This is a crapfest mainly because DBM's actual handling of versions is a crapfest, I'll try explain how this works...
-	local DBMdotRevision = "11873" -- The changing version of the local client, changes with every alpha revision using an SVN keyword.
-	local DBMdotReleaseRevision = "11873" -- This is manually changed by them every release, they use it to track the highest release version, a new DBM release is the only time it will change.
-	local DBMdotDisplayVersion = "6.0.5" -- Same as above but is changed between alpha and release cycles e.g. "N.N.N" for a release and "N.N.N alpha" for the alpha duration
+	local DBMdotRevision = "11978" -- The changing version of the local client, changes with every alpha revision using an SVN keyword.
+	local DBMdotReleaseRevision = "11978" -- This is manually changed by them every release, they use it to track the highest release version, a new DBM release is the only time it will change.
+	local DBMdotDisplayVersion = "6.0.8" -- Same as above but is changed between alpha and release cycles e.g. "N.N.N" for a release and "N.N.N alpha" for the alpha duration
 	function mod:DBM_VersionCheck(prefix, sender, revision, releaseRevision, displayVersion)
 		if prefix == "H" and (BigWigs and BigWigs.db.profile.fakeDBMVersion or self.isFakingDBM) then
 			SendAddonMessage("D4", "V\t"..DBMdotRevision.."\t"..DBMdotReleaseRevision.."\t"..DBMdotDisplayVersion.."\t"..GetLocale(), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
@@ -585,9 +585,9 @@ mod.UPDATE_SHAPESHIFT_FORM = mod.ACTIVE_TALENT_GROUP_CHANGED
 
 -- Merged LFG_ProposalTime addon by Freebaser
 do
-	local timeLeft
+	local prev
 	function mod:LFG_PROPOSAL_SHOW()
-		if not timeLeft then
+		if not prev then
 			local BD = {
 				bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
 				tile = true,
@@ -618,16 +618,16 @@ do
 			timerBar.text = timerBar:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
 			timerBar.text:SetPoint("CENTER", timerBar, "CENTER")
 
-			timeLeft = 40
-			timerBar:SetScript("OnUpdate", function(frame, elapsed)
-				timeLeft = timeLeft - elapsed
+			prev = GetTime() + 40
+			timerBar:SetScript("OnUpdate", function(f)
+				local timeLeft = prev - GetTime()
 				if timeLeft > 0 then
-					frame:SetValue(timeLeft)
-					frame.text:SetFormattedText("Big Wigs: %.1f", timeLeft)
+					f:SetValue(timeLeft)
+					f.text:SetFormattedText("Big Wigs: %.1f", timeLeft)
 				end
 			end)
 
-			self.LFG_PROPOSAL_SHOW = function() timeLeft = 40 end
+			self.LFG_PROPOSAL_SHOW = function() timeLeft = GetTime() + 40 end
 		end
 	end
 end

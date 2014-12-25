@@ -1,3 +1,26 @@
+v2.10.11
+*Adjust DE levels for Draenic Dust for blue items.
+
+v2.10.10
+*Add Temporal Crystal to conversions.
+*Tweak DE levels for Draenic Dust / Luminous Shards.
+
+v2.10.9
+*Fixed bug in custom price code.
+
+v2.10.8
+*Fixed memory leak in custom price code.
+*Updated disenchanting rates.
+
+v2.10.7
+*Add TheUndermineJournal as optional dependency.
+
+v2.10.6
+*Fixed bug with search filter generation.
+
+v2.10.5
+*Reverted previous change.
+
 v2.10.4
 *Fixed bug regarding the option to open bags with AH.
 
