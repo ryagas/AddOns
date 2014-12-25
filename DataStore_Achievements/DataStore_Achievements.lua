@@ -88,6 +88,8 @@ local function ScanTabards()
 end
 
 local function ScanSingleAchievement(id, isCompleted, month, day, year, flags, wasEarnedByMe)
+	if not id then return end
+	
 	local storage		-- pointer to the destination location of this achievement's info (ie = character or account)
 
 	local isAccountBound = ( bit.band(flags, ACHIEVEMENT_FLAGS_ACCOUNT) == ACHIEVEMENT_FLAGS_ACCOUNT )

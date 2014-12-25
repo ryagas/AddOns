@@ -324,7 +324,7 @@ c.RegisterInitiatingSpell("Insanity", "Insanity")
 c.AddSpell("Insanity", "Delay", {
    IsMinDelayDefinition = true,
    GetDelay = function()
-      return a.Insanity
+      return c.GetBuffDuration("Shadow Word: Insanity")
    end,
 })
 
