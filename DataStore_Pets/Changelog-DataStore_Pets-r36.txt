@@ -1,9 +1,12 @@
 ------------------------------------------------------------------------
-r35 | thaoky | 2014-12-24 14:14:54 +0000 (Wed, 24 Dec 2014) | 1 line
+r36 | thaoky | 2014-12-27 13:24:01 +0000 (Sat, 27 Dec 2014) | 1 line
 Changed paths:
-   A /tags/6.0.002 (from /trunk:34)
+   D /trunk/Data/MountList.lua
+   D /trunk/Data/MountToSpellID.lua
+   M /trunk/DataStore_Pets.lua
+   M /trunk/DataStore_Pets.toc
 
-Tagging as 6.0.002
+Removed mount-related features.
 ------------------------------------------------------------------------
 r34 | thaoky | 2014-12-24 14:03:36 +0000 (Wed, 24 Dec 2014) | 1 line
 Changed paths:

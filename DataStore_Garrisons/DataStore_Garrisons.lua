@@ -17,9 +17,13 @@ local AddonDB_Defaults = {
 		Reference = {
 			FollowerNamesToID = {},			-- ex: ["Nat Pagle"] = 202 ... necessary because the id's do not remain constant in game, and the full list varies per character.
 		},
+		Options = {
+			ReportUncollected = 1,			-- Report uncollected resources
+		},
 		Characters = {
 			['*'] = {				-- ["Account.Realm.Name"] 
 				lastUpdate = nil,
+				lastResourceCollection = nil,
 				numFollowers = 0,
 				numFollowersAtLevel100 = 0,
 				numFollowersAtiLevel615 = 0,
@@ -142,9 +146,45 @@ local BuildingTypes = {
 }
 
 -- *** Utility functions ***
+local function GetOption(option)
+	return addon.db.global.Options[option]
+end
+
+local function GetNumUncollectedResources(from)
+	-- no known collection time (alt never logged in) .. return 0
+	if not from then return 0 end
+	
+	local age = time() - from
+	local resources = math.floor(age / 600)		-- 10 minutes = 1 resource
+	
+	-- cap at 500
+	if resources > 500 then
+		resources = 500
+	end
+	return resources
+end
+
+local function CheckUncollectedResources()
+	local account, realm, name
+	local num
+	
+	for key, character in pairs(addon.db.global.Characters) do
+		account, realm, name = strsplit(".", key)
+		num = GetNumUncollectedResources(character.lastResourceCollection)
+		if name and num >= 400 then
+			addon:Print(format("%s has %s uncollected resources", name, num))
+		end
+	end
+end
 
 -- *** Scanning functions ***
 local function ScanBuildings()
+	local plots = C_Garrison.GetPlots()
+
+	-- to avoid deleting previously saved data when the game is not ready to deliver information
+	-- exit if no data is available
+	if not plots or #plots == 0 then return end
+
 	local buildings = addon.ThisCharacter.Buildings
 	wipe(buildings)
 	
@@ -156,7 +196,6 @@ local function ScanBuildings()
 	local ref = addon.db.global.Reference
 	
 	-- Scan other buildings
-	local plots = C_Garrison.GetPlots()
 	for i = 1, #plots do
 		local plot = plots[i]
 		
@@ -174,13 +213,13 @@ local function ScanBuildings()
 end
 	
 local function ScanFollowers()
+	local followersList = C_Garrison.GetFollowers()
+	if not followersList then return end
+
 	local followers = addon.ThisCharacter.Followers
 	wipe(followers)
 	
 	-- = C_Garrison.GetFollowerNameByID(id)
-	
-	local followersList = C_Garrison.GetFollowers()
-	if not followersList then return end
 	
 	local ref = addon.db.global.Reference
 	local name		-- follower name
@@ -249,6 +288,10 @@ local function ScanFollowers()
 	addon.ThisCharacter.lastUpdate = time()
 end
 
+local function ScanResourceCollectionTime()
+	addon.ThisCharacter.lastResourceCollection = time()
+end
+
 -- *** Event Handlers ***
 local function OnFollowerAdded()
 	ScanFollowers()
@@ -274,6 +317,15 @@ local function OnGarrisonBuildingRemoved()
 	ScanBuildings()
 end
 
+local function OnShowLootToast(event, lootType, link, quantity)
+	if lootType ~= "currency" then return end
+	
+	-- make sure it is garrison resources
+	if link and link:match("currency:824") then	
+		ScanResourceCollectionTime()
+	end
+end
+
 local function OnAddonLoaded(event, addonName)
 	if addonName == "Blizzard_GarrisonUI" then
 		ScanBuildings()
@@ -295,7 +347,7 @@ local function _GetFollowerInfo(character, name)
 	
 	local id, rarity, level, iLevel = link:match("garrfollower:(%d+):(%d+):(%d+):(%d+)")
 
-	return id, rarity, level, iLevel, follower.xp, follower.levelXP
+	return id, tonumber(rarity), tonumber(level), tonumber(iLevel), follower.xp, follower.levelXP
 end
 
 local function _GetFollowerLink(character, name)
@@ -344,6 +396,10 @@ local function _GetBuildingInfo(character, name)
 	return building.id, building.rank
 end
 
+local function _GetUncollectedResources(character)
+	return GetNumUncollectedResources(character.lastResourceCollection)
+end
+
 local PublicMethods = {
 	GetFollowers = _GetFollowers,
 	GetFollowerInfo = _GetFollowerInfo,
@@ -357,6 +413,7 @@ local PublicMethods = {
 	GetNumRareFollowers = _GetNumRareFollowers,
 	GetNumEpicFollowers = _GetNumEpicFollowers,
 	GetBuildingInfo = _GetBuildingInfo,
+	GetUncollectedResources = _GetUncollectedResources,
 }
 
 function addon:OnInitialize()
@@ -374,6 +431,7 @@ function addon:OnInitialize()
 	DataStore:SetCharacterBasedMethod("GetNumRareFollowers")
 	DataStore:SetCharacterBasedMethod("GetNumEpicFollowers")
 	DataStore:SetCharacterBasedMethod("GetBuildingInfo")
+	DataStore:SetCharacterBasedMethod("GetUncollectedResources")
 end
 
 function addon:OnEnable()
@@ -387,6 +445,12 @@ function addon:OnEnable()
 	addon:RegisterEvent("GARRISON_BUILDING_ACTIVATED", OnGarrisonBuildingActivated)
 	addon:RegisterEvent("GARRISON_BUILDING_UPDATE", OnGarrisonBuildingUpdate)
 	addon:RegisterEvent("GARRISON_BUILDING_REMOVED", OnGarrisonBuildingRemoved)
+	addon:RegisterEvent("SHOW_LOOT_TOAST", OnShowLootToast)
+	
+	addon:SetupOptions()
+	if GetOption("ReportUncollected") == 1 then
+		CheckUncollectedResources()
+	end
 end
 
 function addon:OnDisable()

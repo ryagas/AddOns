@@ -1,4 +1,22 @@
 ------------------------------------------------------------------------
+r151 | thaoky | 2014-12-27 13:28:47 +0000 (Sat, 27 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/Altoholic.lua
+   M /trunk/Core.lua
+   M /trunk/Frames/TabOptions.lua
+   M /trunk/Modules/Altoholic_Achievements/Achievements.lua
+   M /trunk/Modules/Altoholic_Characters/TabCharacters.lua
+   M /trunk/Modules/Altoholic_Grids/Grid_Mounts.lua
+   M /trunk/Modules/Altoholic_Grids/TabGrids.lua
+   M /trunk/Modules/Altoholic_Guild/Frames/GuildMembers.lua
+   M /trunk/Modules/Altoholic_Summary/Currencies.lua
+   M /trunk/Modules/Altoholic_Summary/Currencies.xml
+   M /trunk/Modules/Altoholic_Summary/TabSummary.lua
+   M /trunk/Tooltip.lua
+   M /trunk/changelog.txt
+
+6.0.003 Commit
+------------------------------------------------------------------------
 r150 | thaoky | 2014-12-24 14:51:45 +0000 (Wed, 24 Dec 2014) | 1 line
 Changed paths:
    M /trunk/.pkgmeta

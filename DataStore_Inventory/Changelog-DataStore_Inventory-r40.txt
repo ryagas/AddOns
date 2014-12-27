@@ -1,20 +1,20 @@
 ------------------------------------------------------------------------
-r30 | thaoky | 2014-12-24 14:16:19 +0000 (Wed, 24 Dec 2014) | 1 line
+r40 | thaoky | 2014-12-27 13:21:51 +0000 (Sat, 27 Dec 2014) | 1 line
 Changed paths:
-   A /tags/6.0.002 (from /trunk:29)
+   M /trunk/Options.lua
+   M /trunk/Options.xml
 
-Tagging as 6.0.002
+Modified options pane to use parentKey references
 ------------------------------------------------------------------------
-r29 | thaoky | 2014-12-24 14:04:19 +0000 (Wed, 24 Dec 2014) | 1 line
+r38 | thaoky | 2014-12-24 13:59:48 +0000 (Wed, 24 Dec 2014) | 1 line
 Changed paths:
-   M /trunk/DataStore_Quests.toc
+   M /trunk/DataStore_Inventory.toc
 
 .toc update to use project-version
 ------------------------------------------------------------------------
-r28 | thaoky | 2014-10-17 17:04:12 +0000 (Fri, 17 Oct 2014) | 1 line
+r37 | thaoky | 2014-10-17 17:03:48 +0000 (Fri, 17 Oct 2014) | 1 line
 Changed paths:
-   M /trunk/DataStore_Quests.lua
-   M /trunk/DataStore_Quests.toc
+   M /trunk/DataStore_Inventory.toc
 
 6.0.001 Commit
 ------------------------------------------------------------------------

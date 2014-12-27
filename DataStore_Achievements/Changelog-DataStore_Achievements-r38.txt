@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------
-r37 | thaoky | 2014-12-24 14:11:27 +0000 (Wed, 24 Dec 2014) | 1 line
+r38 | thaoky | 2014-12-27 13:08:22 +0000 (Sat, 27 Dec 2014) | 1 line
 Changed paths:
-   A /tags/6.0.002 (from /trunk:36)
+   M /trunk/DataStore_Achievements.lua
 
-Tagging as 6.0.002
+Fixed processing of achievement ids that are nil
 ------------------------------------------------------------------------
 r36 | thaoky | 2014-12-24 13:44:47 +0000 (Wed, 24 Dec 2014) | 4 lines
 Changed paths:
