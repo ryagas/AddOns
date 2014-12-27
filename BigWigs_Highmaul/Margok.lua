@@ -5,7 +5,7 @@
 
 local mod, CL = BigWigs:NewBoss("Imperator Mar'gok", 994, 1197)
 if not mod then return end
-mod:RegisterEnableMob(77428)
+mod:RegisterEnableMob(77428, 78623) -- Imperator Mar'gok, Cho'gall (Mythic)
 mod.engageId = 1705
 
 --------------------------------------------------------------------------------
@@ -174,7 +174,7 @@ local function updateProximity()
 		else
 			local jumpDistance = (brandedOnMe == 164005 and 0.75 or 0.5)^(amount - 1) * 200
 			if jumpDistance < 50 then
-				mod:OpenProximity(156225, jumpDistance)
+				mod:OpenProximity(156225, max(5, jumpDistance))
 			end
 		end
 	end
@@ -331,7 +331,7 @@ do
 	function mod:GrowingDarkness(args)
 		local t = GetTime()
 		if self:Me(args.destGUID) and t-prev > 2 then
-			self:Message(args.spellId, "Personal", "Alarm", CL.underyou:format(args.spellName)) -- you ded, so ded.
+			self:Message(args.spellId, "Personal", "Info", CL.underyou:format(args.spellName)) -- you ded, so ded.
 			self:Flash(args.spellId)
 			prev = t
 		end
@@ -355,7 +355,7 @@ function mod:UNIT_HEALTH_FREQUENT(unit)
 		end
 	elseif mobId == 77879 and not addDeathWarned and hp < 30 then -- Displacement
 		self:UnregisterUnitEvent("UNIT_HEALTH_FREQUENT", unit)
-		self:Message(156471, "Attention", "Warning", L.add_death_soon)
+		self:Message(156471, "Attention", "Info", L.add_death_soon)
 		addDeathWarned = true
 	end
 end
@@ -391,6 +391,16 @@ end
 function mod:AcceleratedAssault(args)
 	if args.amount > 5 and args.amount % 3 == 0 then -- at 5 it stacks every second
 		self:Message(args.spellId, "Attention", "Warning", CL.count:format(args.spellName, args.amount))
+	end
+end
+
+function mod:ArcaneAberration(args)
+	self:Message(156471, "Urgent", not self:Healer() and "Info", CL.add_spawned)
+	self:CDBar(156471, aberrationCount == 1 and 46 or 51, -9945, 156471) -- Arcane Aberration
+	aberrationCount = aberrationCount + 1
+	if args.spellId == 164299 or (self:Mythic() and phase == 2) then -- Displacing
+		addDeathWarned = nil
+		self:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", nil, "boss2")
 	end
 end
 
@@ -431,11 +441,11 @@ do
 			BigWigs:Print(("The debuff scan failed, tell a developer! Latency: %d/%d"):format(h, w))
 			amount = 0 -- don't show count or distance
 		end
-		local fortification = args.spellId == 164005 or (self:Mythic() and phase == 3)
-		local jumpDistance = (fortification and 0.75 or 0.5)^(amount - 1) * 200 -- Fortification takes longer to get rid of
+		local isFortification = args.spellId == 164005 or (self:Mythic() and phase == 3)
+		local jumpDistance = (isFortification and 0.75 or 0.5)^(amount - 1) * 200 -- Fortification takes longer to get rid of
 
 		if self:Me(args.destGUID) then
-			brandedOnMe = args.spellId
+			brandedOnMe = isFortification and 164005 or args.spellId
 			self:TargetBar(156225, 4, args.destName)
 			if not self:LFR() then
 				local text = self:SpellName(156225)
@@ -483,25 +493,37 @@ do
 	end
 end
 
-function mod:ArcaneAberration(args)
-	self:Message(156471, "Urgent", not self:Healer() and "Info", CL.add_spawned)
-	self:CDBar(156471, aberrationCount == 1 and 46 or 51, -9945, 156471) -- Arcane Aberration
-	aberrationCount = aberrationCount + 1
-	if args.spellId == 164299 or (self:Mythic() and phase == 2) then -- Displacing
-		addDeathWarned = nil
-		self:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", nil, "boss2")
+do
+	local function replicatingNovaStop()
+		replicatingNova = nil
+		mod:CloseProximity(157349)
+		updateProximity()
+	end
+	function mod:ForceNova(args)
+		self:Message(157349, "Urgent")
+		self:CDBar(157349, novaCount == 1 and 46 or 50)
+		if args.spellId == 164235 or (self:Mythic() and phase == 3) then -- Fortification (three novas)
+			self:Bar(157349, 10.5, args.spellName)
+			self:ScheduleTimer("Bar", 8, 157349, 10.5, args.spellName)
+		elseif args.spellId == 164240 or (self:Mythic() and phase == 1) then -- Replication (aoe damage on hit)
+			replicatingNova = self:ScheduleTimer(replicatingNovaStop, 8) -- XXX how long should the proximity be open?
+			updateProximity()
+		end
+		novaCount = novaCount + 1
 	end
 end
 
 do
 	local function printTarget(self, name, guid)
-		self:Message(158605, "Urgent", self:Tank() and "Alarm", CL.casting:format(CL.on:format(self:SpellName(158605), name)))
 		if self:Me(guid) then
+			self:Message(158605, "Personal", "Alarm", CL.casting:format(CL.you:format(self:SpellName(158605))))
 			self:Flash(158605)
+		else
+			self:Message(158605, "Urgent", nil, CL.casting:format(CL.on:format(self:SpellName(158605), name)))
 		end
 	end
 	function mod:MarkOfChaos(args)
-		self:Bar(158605, 51) -- 51-52 with some random cases of 55
+		self:Bar(158605, 51)
 		self:GetBossTarget(printTarget, 0.1, args.sourceGUID)
 	end
 end
@@ -509,15 +531,15 @@ end
 function mod:MarkOfChaosApplied(args)
 	markOfChaosTarget = args.destName
 	self:PrimaryIcon(158605, args.destName)
-	self:TargetMessage(158605, args.destName, "Urgent", "Alarm") -- warn again for the tank in case the cast target changed
+	self:TargetMessage(158605, args.destName, "Urgent", "Alarm") -- warn again in case the cast target changed
 	self:TargetBar(158605, 8, args.destName)
+	local isFortification = args.spellId == 164178 or (self:Mythic() and phase == 3)
 	if self:Me(args.destGUID) then
 		self:Flash(158605)
-		if args.spellId == 164178 then -- Fortification (you're rooted)
+		if isFortification then -- Fortification (you're rooted)
 			self:Say(158605)
 		end
-	elseif args.spellId == 164178 and self:Range(args.destName) < 35 then -- Fortification (target rooted)
-		self:RangeMessage(158605)
+	elseif isFortification and self:Range(args.destName) < 35 then -- Fortification (target rooted)
 		self:Flash(158605)
 	end
 	updateProximity()
@@ -530,35 +552,15 @@ function mod:MarkOfChaosRemoved(args)
 	updateProximity()
 end
 
-do
-	local function replicatingNovaStop()
-		replicatingNova = nil
-		mod:CloseProximity(157349)
-		updateProximity()
-	end
-	function mod:ForceNova(args)
-		self:Message(157349, "Urgent")
-		self:CDBar(157349, novaCount == 1 and 46 or 50)
-		if args.spellId == 164235 then -- Fortification (three novas)
-			self:Bar(157349, 10.5, args.spellName)
-			self:ScheduleTimer("Bar", 8, 157349, 10.5, args.spellName)
-		elseif args.spellId == 164240 then -- Replication (aoe damage on hit)
-			replicatingNova = self:ScheduleTimer(replicatingNovaStop, 8) -- XXX how long should the proximity be open?
-			updateProximity()
-		end
-		novaCount = novaCount + 1
-	end
-end
-
 -- Intermission
 
 do
-	local count = 0
+	local count, maxCount = 0, 0
 	local function nextAdd(self)
-		self:Message("volatile_anomaly", "Attention", "Info", CL.incoming:format(self:SpellName(L.volatile_anomaly)), L.volatile_anomaly_icon)
-		count = count - 1
-		if count > 0 then
-			self:Bar("volatile_anomaly", 12, L.volatile_anomaly, L.volatile_anomaly_icon)
+		count = count + 1
+		self:Message("volatile_anomaly", "Attention", "Info", ("%s %d/%d"):format(self:SpellName(L.volatile_anomaly), count, maxCount), L.volatile_anomaly_icon)
+		if count < maxCount then
+			self:Bar("volatile_anomaly", 12, CL.count:format(self:SpellName(L.volatile_anomaly), count+1), L.volatile_anomaly_icon)
 			self:ScheduleTimer(nextAdd, 12, self)
 		end
 	end
@@ -567,11 +569,11 @@ do
 		local first = args.spellId == 174057
 		self:Message("stages", "Neutral", nil, ("%d%% - %s"):format(self:Mythic() and (first and 66 or 33) or (first and 55 or 25), CL.intermission), false)
 		self:Bar("stages", first and 65 or 60, CL.intermission, "spell_arcane_blast")
-		self:Bar("volatile_anomaly", 14, L.volatile_anomaly, L.volatile_anomaly_icon)
-		count = first and 5 or 4
+		count, maxCount = 0, first and 5 or 4
+		self:Bar("volatile_anomaly", 14, CL.count:format(self:SpellName(L.volatile_anomaly), 1), L.volatile_anomaly_icon)
 		self:ScheduleTimer(nextAdd, 14, self)
 		if not first then
-			self:ScheduleTimer("Message", 15, "stages", "Neutral", "Info", -9921, false) -- Gorian Reaver
+			self:ScheduleTimer("Message", 14, "stages", "Neutral", "Info", -9921, false) -- Gorian Reaver
 			self:CDBar(158563, 29) -- Kick to the Face
 		end
 	end
@@ -581,6 +583,7 @@ do
 	end
 end
 
+-- Warmage
 function mod:Slow(args)
 	if self:Dispeller("magic", nil, args.spellId) then
 		self:TargetMessage(args.spellId, args.destName, "Attention", "Alert", nil, nil, true)
@@ -623,6 +626,7 @@ function mod:NetherEnergy(args)
 	end
 end
 
+-- Reaver
 function mod:CrushArmor(args)
 	local amount = args.amount or 1
 	self:StackMessage(args.spellId, args.destName, amount, "Attention", amount > 2 and "Warning")

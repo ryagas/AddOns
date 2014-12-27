@@ -312,6 +312,8 @@ function ElvUI_ChatTweaks:PrintHelp()
 			print(format(cmdStr, "/tt", L["Send a tell to your target."]))
 		elseif module:IsEnabled() and name == "Developer Tools" then
 			print(format(cmdStr, "/ctdev", L["Various Developer Tools"]))
+		elseif module:IsEnabled() and name == "Fake Achievement" then
+			print(format(cmdStr, "/fake", L["Generate fake achievement links."]))
 		end
 	end
 end
@@ -377,9 +379,9 @@ end
 function ElvUI_ChatTweaks:SetUpdateConfig(dummy)
 	self:DisableAllModules()
 	self.db = LibStub("AceDB-3.0"):New("ElvUI_ChatTweaksDB", self.defaults)
-	self.db.RegisterCallback(self, "OnProfileChanged", "SetUpdateConfig")
-	self.db.RegisterCallback(self, "OnProfileCopied", "SetUpdateConfig")
-	self.db.RegisterCallback(self, "OnProfileReset", "SetUpdateConfig")
+	--self.db.RegisterCallback(self, "OnProfileChanged", "SetUpdateConfig")
+	--self.db.RegisterCallback(self, "OnProfileCopied", "SetUpdateConfig")
+	--self.db.RegisterCallback(self, "OnProfileReset", "SetUpdateConfig")
 	for k, v in self:IterateModules() do
 		v:OnInitialize()
 		if self.db.global.modules[k] ~= false then 

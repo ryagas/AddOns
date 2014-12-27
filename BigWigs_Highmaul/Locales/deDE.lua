@@ -51,6 +51,7 @@ L = BigWigs:NewBossLocale("Ko'ragh", "deDE")
 if L then
 	L.fire_bar = "Alle explodieren!"
 	L.overwhelming_energy_bar = "Kugeln treffen auf (%d)"
+	L.dominating_power_bar = "MC Kugeln treffen auf (%d)"
 
 	L.custom_off_fel_marker = "Magie ausstoßen: Teufelsenergie markieren"
 	L.custom_off_fel_marker_desc = "Markiert die Ziele von Magie ausstoßen: Teufelsenergie mit {rt1}{rt2}{rt3}, benötigt Leiter oder Assistent.\n|cFFFF0000Um Konflikte beim Markieren zu vermeiden, sollte lediglich 1 Person im Raid diese Option aktivieren.|r"
@@ -58,6 +59,8 @@ end
 
 L = BigWigs:NewBossLocale("Imperator Mar'gok", "deDE")
 if L then
+	--L.phase4_trigger = "You know nothing of the power you meddle with"
+
 	L.branded_say = "%s (%d) %dm"
 	L.add_death_soon = "Add stirbt bald!"
 	L.slow_fixate = "Verlangsamen + Fixieren"

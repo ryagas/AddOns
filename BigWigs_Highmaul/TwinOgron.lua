@@ -77,7 +77,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_START", "ShieldCharge", 158134)
 	self:Log("SPELL_CAST_START", "InterruptingShout", 158093)
 	self:Log("SPELL_CAST_SUCCESS", "Pulverize", 158385)
-	self:Log("SPELL_CAST_START", "PulverizeCast", 157952, 158415, 158419) -- 1.58s cast
+	self:Log("SPELL_CAST_START", "PulverizeCast", 158415, 158419)
 	-- Phemos
 	self:Log("SPELL_CAST_START", "DoubleSlash", 158521)
 	self:Log("SPELL_AURA_APPLIED", "ArcaneWound", 167200) -- Mythic
@@ -90,7 +90,6 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED_DOSE", "BlazeDamage", 158241)
 	--Mythic
 	self:Log("SPELL_AURA_APPLIED", "ArcaneTwisted", 163297)
-	--self:Emote("ArcaneVolatility", "163372")
 	self:Log("SPELL_CAST_SUCCESS", "ArcaneVolatility", 163372)
 	self:Log("SPELL_AURA_APPLIED", "ArcaneVolatilityApplied", 163372)
 	self:Log("SPELL_AURA_REFRESH", "ArcaneVolatilityApplied", 163372)
@@ -116,7 +115,7 @@ function mod:OnEngage()
 		self:Bar(163372, 62) -- Arcane Volatility
 		self:Berserk(420)
 	else
-		self:Berserk(480)
+		self:Berserk(self:LFR() and 600 or 480)
 	end
 end
 
@@ -186,18 +185,19 @@ end
 do
 	local count = 0
 	function mod:Pulverize(args)
-		count = 0
-		self:Message(158385, "Urgent", "Info", CL.count:format(args.spellName, 1))
+		count = 1
+		-- skip the first actual cast (157952) in favor of announcing it at the start of the sequence to give people more time to spread out
+		self:Message(158385, "Urgent", "Info", CL.count:format(args.spellName, count))
+		self:Bar(158385, 3.1, ("<%s>"):format(CL.count:format(args.spellName, count)))
 		self:CDBar(158134, polInterval) -- Shield Charge
 	end
 	function mod:PulverizeCast(args)
 		count = count + 1
-		if count > 1 then
-			self:Message(158385, "Urgent", "Info", CL.count:format(args.spellName, count))
-			pulverizeProximity = nil
-			self:CloseProximity(158385)
-			updateProximity()
-		end
+		self:Message(158385, "Urgent", "Info", CL.count:format(args.spellName, count))
+		self:CDBar(158385, count == 2 and 3.3 or 6.6, ("<%s>"):format(CL.count:format(args.spellName, count))) -- these can vary by 1s or so
+		pulverizeProximity = nil
+		self:CloseProximity(158385)
+		updateProximity()
 	end
 end
 
@@ -225,7 +225,13 @@ function mod:Whirlwind(args)
 end
 
 function mod:EnfeeblingRoar(args)
-	self:Message(args.spellId, "Attention", "Alert")
+	local _, _, _, _, _, endTime = UnitCastingInfo(self:GetUnitIdByGUID(args.sourceGUID))
+	local cast = endTime and (endTime / 1000 - GetTime()) or 0
+	if cast > 1.5 then
+		self:Bar(args.spellId, cast, CL.cast:format(args.spellName))
+	end
+
+	self:Message(args.spellId, "Attention", "Alert", CL.casting:format(args.spellName))
 	self:CDBar(158200, phemosInterval, CL.count:format(self:SpellName(158200), quakeCount+1)) -- Quake
 end
 
@@ -283,18 +289,20 @@ do
 	end
 
 	local timeLeft, timer = 6, nil
-	local function sayCountdown()
+	local function sayCountdown(self)
 		timeLeft = timeLeft - 1
-		mod:Say("volatility_self", timeLeft, true)
-		if timeLeft < 2 then
-			mod:CancelTimer(timer)
+		self:Say("volatility_self", timeLeft, true)
+		if timeLeft < 2 and timer then
+			self:CancelTimer(timer)
+			timer = nil
 		end
 	end
 	function mod:ArcaneVolatilityApplied(args)
 		if self:Me(args.destGUID) then
+			if timer then self:CancelTimer(timer) end
 			timeLeft = 6
-			self:TargetBar("volatility_self", 6, args.destName, args.spellId)
-			timer = self:ScheduleRepeatingTimer(sayCountdown, 1)
+			timer = self:ScheduleRepeatingTimer(sayCountdown, 1, self)
+			self:TargetBar("volatility_self", 6, args.destName)
 		end
 	end
 
@@ -303,7 +311,10 @@ do
 		if self:Me(args.destGUID) then
 			self:StopBar(args.spellId, args.destName)
 			volatilityOnMe = nil
-			self:CancelTimer(timer)
+			if timer then
+				self:CancelTimer(timer)
+				timer = nil
+			end
 		end
 		updateProximity()
 		if self.db.profile.custom_off_volatility_marker then

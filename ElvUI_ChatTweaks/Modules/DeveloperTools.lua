@@ -138,6 +138,7 @@ function Module:OnDisable()
 	self:UnregisterChatCommand("ctdev")
 	self:UnregisterChatCommand("hextorgb")
 	self:UnregisterChatCommand("rgbtohex")
+	self:UnregisterChatCommand("ccolor")
 	
 	for channel, _ in pairs(db.chatEvents.watch) do
 		ChatFrame_RemoveMessageEventFilter(("CHAT_MSG_%s"):format(channel:upper()), MonitorChat)

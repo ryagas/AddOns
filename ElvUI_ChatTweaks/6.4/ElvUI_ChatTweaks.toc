@@ -6,7 +6,7 @@
 ## RequiredDeps: ElvUI
 ## OptionalDeps: SharedMedia
 ## SavedVariables: ElvUI_ChatTweaksDB
-## X-Curse-Packaged-Version: 7.01
+## X-Curse-Packaged-Version: 7.02
 ## X-Curse-Project-Name: ElvUI Chat Tweaks
 ## X-Curse-Project-ID: elvui_chattweaks
 ## X-Curse-Repository-ID: wow/elvui_chattweaks/mainline

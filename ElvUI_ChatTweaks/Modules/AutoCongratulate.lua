@@ -23,8 +23,8 @@ local defaults = {
 		party = true,
 		raid = true,
 		guild = true,
-		single = {"Congrats #name#!"},
-		multiple = {"Congrats #name#!"}
+		single = {"Congrats #name# on #achieve#!"},
+		multiple = {"Congrats everyone!"}
 	}
 }
 
@@ -68,8 +68,7 @@ function Module:SendCongrats(settings)
 		
 		-- some error checking to stop the gsub errors
 		if not sender or sender == "" then return end
-		if not settings[4] or settings[4] == "" or type(settings[4]) == "number" then return end
-		
+		if not settings[4] or settings[4] == "" or settings[4] == 0 then return end
 		-- single
 		SendChatMessage(db.single[random(1, #db.single)]:gsub("#name#", sender):gsub("#achieve#", GetAchievementLink(settings[4])), settings[3], nil)
 	end
@@ -96,7 +95,8 @@ function Module:Achievement(event, message, sender)
 	local delay = random(db.minDelay, db.maxDelay) -- get a random delay
 	
 	-- pull the achievemt ID from the achievement link
-	local id = message:match("^.+\124c%w%w%w%w%w%w%w%w\124Hachievement:(%-?%d-):%w-:%d-:%d-:%d-:%-?%d-:%d-:%d-:%d-:%d-\124h%[.-%]\124h\124r") or 0
+	--local id = message:match("^.+\124c%w%w%w%w%w%w%w%w\124Hachievement:(%-?%d-):%w-:%d-:%d-:%d-:%-?%d-:%d-:%d-:%d-:%d-\124h%[.-%]\124h\124r") or 0
+	local id = message:match("|cffffff00|Hachievement:([0-9]+):.+:[%-0-9]+:[%-0-9]+:[%-0-9]+:[%-0-9]+:[%-0-9]+:[%-0-9]+:[%-0-9]+:[%-0-9]+|h%[[^]]+%]|h|r")
 	
 	-- party/raid or nearby
 	if event == "CHAT_MSG_ACHIEVEMENT" then

@@ -1,0 +1,38 @@
+------------------------------------------------------------------------
+r198 | lockslap | 2014-12-26 00:58:27 +0000 (Fri, 26 Dec 2014) | 1 line
+Changed paths:
+   A /tags/7.02 (from /trunk:197)
+
+Tagged as version 7.02.
+------------------------------------------------------------------------
+r197 | lockslap | 2014-12-26 00:58:05 +0000 (Fri, 26 Dec 2014) | 3 lines
+Changed paths:
+   M /trunk/ElvUI_ChatTweaks.lua
+   M /trunk/ElvUI_ChatTweaks.toc
+   M /trunk/Extra/includes.xml
+   M /trunk/Locales/enUS.lua
+   M /trunk/Modules/AutoCongratulate.lua
+   M /trunk/Modules/DeveloperTools.lua
+   A /trunk/Modules/FakeAchievement.lua
+
+Fixed Auto Congratulate module.
+Added Fake Achievement module for generating fake achievement links.
+Updated locale.
+------------------------------------------------------------------------
+r195 | lockslap | 2014-12-13 03:20:34 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/ElvUI_ChatTweaks.toc
+   M /trunk/Modules/AutoCongratulate.lua
+
+Added error checking to Auto Congratulate module to prevent gsub errors.
+------------------------------------------------------------------------
+r193 | lockslap | 2014-12-06 19:58:59 +0000 (Sat, 06 Dec 2014) | 3 lines
+Changed paths:
+   M /trunk/ElvUI_ChatTweaks.lua
+   M /trunk/ElvUI_ChatTweaks.toc
+   M /trunk/Modules/AutoCongratulate.lua
+
+Fixed Auto Congratulate module.
+Sticking with Global config change.
+Updated locales.
+------------------------------------------------------------------------

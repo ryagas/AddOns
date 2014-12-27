@@ -544,26 +544,56 @@ local seascorpion = {
 		["The Evanescent Sea"] = true,
 	},
 };
-	
-local function UseSeaScorpionBait(info)
-	if (GSB("EasyLures") and GSB("DraenorBait")) then
-		local continent = GetCurrentMapContinent();
-		local zone, subzone = FL:GetBaseZoneInfo();
-		if (continent == 7 and seascorpion[zone] and seascorpion[zone][subzone]) then
+
+local QuestBaits = {
+	{
+		item = 114628,		-- Icespine Stinger Bait
+		spell = 168510,
+	},
+	{
+		item = 114874,		-- Moonshell Claw Bait
+		spell = 169212,
+	},
+};
+
+local function IsQuestFishing()
+	-- Check for hookshot
+	if (GetItemCount(116755) > 0) then
+		return true;
+	end
+
+	-- and intro quest baits
+	for _,bait in ipairs(QuestBaits) do
+		if (GetItemCount(bait.item) > 0 or FL:HasBuff(GetSpellInfo(bait.spell))) then
 			return true;
+		end
+	end
+end
+
+local function UseSeaScorpionBait(info)
+	if (not IsQuestFishing()) then
+		if (GSB("EasyLures") and GSB("DraenorBait")) then
+			local continent = GetCurrentMapContinent();
+			local zone, subzone = FL:GetBaseZoneInfo();
+			if (continent == 7 and seascorpion[zone] and seascorpion[zone][subzone]) then
+				return true;
+			end
 		end
 	end
 	-- return nil;
 end
 
 local function UsableDraenorBait(info)
-	if (GSB("EasyLures") and GSB("DraenorBait")) then
-		local continent = GetCurrentMapContinent();
-		local zone, subzone = FL:GetBaseZoneInfo();
-		if (continent == 7 and zone == info.zone) then
-			return not seascorpion[zone][subzone];
+	if (not IsQuestFishing()) then
+		if (GSB("EasyLures") and GSB("DraenorBait")) then
+			local continent = GetCurrentMapContinent();
+			local zone, subzone = FL:GetBaseZoneInfo();
+			if (continent == 7 and zone == info.zone) then
+				return not seascorpion[zone][subzone];
+			end
 		end
 	end
+	-- return nil;
 end
 
 -- Blind Lake Sturgeon, 158035
