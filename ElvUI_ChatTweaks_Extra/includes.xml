@@ -5,6 +5,7 @@
 	<Script file="..\ElvUI_ChatTweaks\Modules\ColorRolls.lua" />
 	<Script file="..\ElvUI_ChatTweaks\Modules\Companions.lua" />
 	<Script file="..\ElvUI_ChatTweaks\Modules\DamageMeters.lua" />
+	<Script file="..\ElvUI_ChatTweaks\Modules\FakeAchievement.lua" />
 	<Script file="..\ElvUI_ChatTweaks\Modules\FunFilters.lua" />
 	<Script file="..\ElvUI_ChatTweaks\Modules\GoldCalculator.lua" />
 	<Script file="..\ElvUI_ChatTweaks\Modules\Magic8Ball.lua" />
