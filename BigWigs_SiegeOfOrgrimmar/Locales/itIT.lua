@@ -187,7 +187,7 @@ L["farseer_trigger"] = "Chiaroveggenti, guarite le nostre ferite!"
 L["ironstar_impact_desc"] = "Una barra a tempo per quando la Pirostella si schianterà contro l'altra parte della stanza."
 L["ironstar_rolling"] = "Pirostella in movimento!"
 L["manifest_rage"] = "Manifestazione della Rabbia"
-L["manifest_rage_desc"] = "Quando Garrosh raggiungwe 100 inizierà a prelanciare Manifestazione della Rabbia per 2 secondi, e poi la canalizzerà. Mentre canalizza, evoca degli add grandi. Porta la Pirostella su Garrosh per incapacitarlo ed interrompere il suo lancio."
+L["manifest_rage_desc"] = "Quando Garrosh raggiunge 100 inizierà a prelanciare Manifestazione della Rabbia per 2 secondi, e poi la canalizzerà. Mentre canalizza, evoca degli add grandi. Porta la Pirostella su Garrosh per incapacitarlo ed interrompere il suo lancio."
 L["phase_3_end_trigger"] = "Pensate di aver VINTO? Siete CIECHI. VI COSTRINGERÒ AD APRIRE GLI OCCHI."
 
 

@@ -116,6 +116,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED_DOSE", "NetherEnergy", 178468)
 	self:Yell("Phase4", L.phase4_trigger)
 	self:Log("SPELL_CAST_START", "GlimpseOfMadness", 165243)
+	self:Log("SPELL_CAST_START", "DarkStar", 178607)
 	self:Log("SPELL_CAST_START", "EnvelopingNight", 165876)
 	self:Log("SPELL_AURA_APPLIED", "InfiniteDarkness", 165102)
 	self:Log("SPELL_AURA_APPLIED", "Entropy", 165116)
@@ -139,7 +140,7 @@ function mod:OnEngage()
 	wipe(brandedMarks)
 	self:Bar(156238, 6)  -- Arcane Wrath
 	self:Bar(156467, 15) -- Destructive Resonance
-	self:Bar(156471, 25) -- Arcane Aberration
+	self:Bar(156471, 25, -9945, 156471) -- Arcane Aberration
 	self:Bar(158605, 34) -- Mark of Chaos
 	self:Bar(157349, 45) -- Force Nova
 	self:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", nil, "boss1")
@@ -156,10 +157,7 @@ local function updateProximity()
 			mod:OpenProximity(165595, 8)
 		elseif #gazeTargets > 0 then
 			mod:OpenProximity(165595, 8, gazeTargets)
-		else
-			mod:CloseProximity(165595)
 		end
-		return
 	end
 
 	-- mark of chaos > fixate > branded > nova
@@ -171,6 +169,7 @@ local function updateProximity()
 		local _, _, _, amount = UnitDebuff("player", mod:SpellName(brandedOnMe))
 		if not amount then
 			BigWigs:Print("For some reason the proximity check failed on you, tell a developer!")
+			mod:ScheduleTimer(error, 0.5, "BigWigs: For some reason the proximity check failed on you, tell a developer!")
 		else
 			local jumpDistance = (brandedOnMe == 164005 and 0.75 or 0.5)^(amount - 1) * 200
 			if jumpDistance < 50 then
@@ -192,13 +191,23 @@ end
 
 -- Mythic
 
+local function stopBars(self)
+	self:StopBar(156238) -- Arcane Wrath
+	self:StopBar(156467) -- Destructive Resonance
+	self:StopBar(-9945)  -- Arcane Aberration
+	self:StopBar(158605) -- Mark of Chaos
+	self:StopBar(157349) -- Force Nova
+	-- XXX replicatingNova could be open for some extra amount of time
+end
+
 function mod:Phase4()
+	self:ScheduleTimer(stopBars, 10, self)
 	phase = phase + 1
 	nightCount = 1
-	gazeOnMe = true
+	gazeOnMe = nil
 	wipe(gazeTargets)
 	self:Message("stages", "Neutral", "Long", CL.phase:format(phase), false)
-	--self:CDBar("adds", 30) -- Night-Twisted adds (repeating timer)
+	--self:CDBar("adds", 32) -- Night-Twisted adds (repeating timer)
 	self:CDBar(165102, 47) -- Infinite Darkness
 	self:CDBar(165243, 53) -- Glimpse of Madness
 	self:CDBar(178607, 64) -- Dark Star
@@ -289,10 +298,10 @@ do -- GazeOfTheAbyss
 			if args.amount and args.amount > 2 then
 				self:PlaySound(args.spellId, "Warning")
 			end
-			self:TargetBar(args.spellId, 10, args.destName)
+			self:TargetBar(args.spellId, 15, args.destName)
 
 			self:CancelTimer(timer)
-			timeLeft = 10
+			timeLeft = 15
 			timer = self:ScheduleRepeatingTimer(sayCountdown, 1, self)
 
 			updateProximity()
@@ -303,23 +312,30 @@ do -- GazeOfTheAbyss
 	end
 
 	function mod:GazeOfTheAbyssRemoved(args)
+		tDeleteItem(gazeTargets, args.destName)
 		if self:Me(args.destGUID) then
 			gazeOnMe = nil
 			self:StopBar(args.spellId, args.destName)
 			self:CancelTimer(timer)
 			self:CloseProximity(args.spellId)
+		elseif #gazeTargets == 0 and not gazeOnMe then
+			self:CloseProximity(args.spellId)
 		end
-		tDeleteItem(gazeTargets, args.destName)
 		updateProximity()
 	end
 
 	function mod:GazeClosestApplied(args)
+		if self:Me(args.destGUID) and gazeOnMe then return end
+
 		tDeleteItem(gazeTargets, args.destName)
+		if #gazeTargets == 0 and not gazeOnMe then
+			self:CloseProximity(args.spellId)
+		end
 		updateProximity()
 	end
 
 	function mod:GazeClosestRemoved(args)
-		if checkDebuff(args.destName, 165595) and not tContains(gazeTargets, args.destName) then -- the explody debuff
+		if not self:Me(args.destGUID) and checkDebuff(args.destName, 165595) and not tContains(gazeTargets, args.destName) then -- the explody debuff
 			gazeTargets[#gazeTargets + 1] = args.destName
 			updateProximity()
 		end
@@ -379,7 +395,7 @@ function mod:Phases(unit, spellName, _, _, spellId)
 	elseif spellId == 158012 or spellId == 157964 then -- Power of Fortification, Replication (Phase start)
 		self:CDBar(156238, 8)  -- Arcane Wrath
 		self:CDBar(156467, 18) -- Destructive Resonance
-		self:CDBar(156471, 28) -- Arcane Aberration
+		self:CDBar(156471, 28, -9945, 156471) -- Arcane Aberration
 		self:CDBar(158605, 38) -- Mark of Chaos
 		self:CDBar(157349, 48) -- Force Nova
 		if spellId ~= 157964 then -- Replication is the last phase
@@ -390,12 +406,12 @@ end
 
 function mod:AcceleratedAssault(args)
 	if args.amount > 5 and args.amount % 3 == 0 then -- at 5 it stacks every second
-		self:Message(args.spellId, "Attention", "Warning", CL.count:format(args.spellName, args.amount))
+		self:StackMessage(args.spellId, self:UnitName("boss1target"), args.amount, "Attention", "Warning")
 	end
 end
 
 function mod:ArcaneAberration(args)
-	self:Message(156471, "Urgent", not self:Healer() and "Info", CL.add_spawned)
+	self:Message(156471, "Attention", not self:Healer() and "Info", CL.add_spawned)
 	self:CDBar(156471, aberrationCount == 1 and 46 or 51, -9945, 156471) -- Arcane Aberration
 	aberrationCount = aberrationCount + 1
 	if args.spellId == 164299 or (self:Mythic() and phase == 2) then -- Displacing
@@ -431,14 +447,17 @@ do
 					local _, _, _, a = UnitDebuff(dst, spl)
 					if a then
 						BigWigs:Print("The debuff scan worked after a delay, tell a developer!")
+						self:ScheduleTimer(error, 0.5, "BigWigs: The debuff scan worked after a delay, tell a developer!")
 					else
 						BigWigs:Print("The debuff scan failed even after a delay, tell a developer!")
+						self:ScheduleTimer(error, 0.5, "BigWigs: The debuff scan failed even after a delay, tell a developer!")
 					end
 				end,
 				0.4, self:Me(args.destGUID) and "player" or args.destName, args.spellName
 			)
 			local _, _, h, w = GetNetStats()
 			BigWigs:Print(("The debuff scan failed, tell a developer! Latency: %d/%d"):format(h, w))
+			self:ScheduleTimer(error, 0.5, ("BigWigs: The debuff scan failed, tell a developer! Latency: %d/%d"):format(h, w))
 			amount = 0 -- don't show count or distance
 		end
 		local isFortification = args.spellId == 164005 or (self:Mythic() and phase == 3)
@@ -449,7 +468,7 @@ do
 			self:TargetBar(156225, 4, args.destName)
 			if not self:LFR() then
 				local text = self:SpellName(156225)
-				if amount > 0 and jumpDistance < 50 then
+				if amount > 0 and jumpDistance < 100 then
 					text = L.branded_say:format(text, amount, jumpDistance)
 				elseif amount > 1 then
 					text = CL.count:format(text, amount)
@@ -486,7 +505,7 @@ do
 	}
 	function mod:DestructiveResonance(args)
 		local sound = self:Healer() or self:Damager() == "RANGED"
-		self:Message(156467, "Urgent", sound and "Warning")
+		self:Message(156467, "Important", sound and "Warning")
 		local t = not self:Mythic() and mineTimes[phase] and mineTimes[phase][mineCount] or 15.8
 		self:CDBar(156467, phase == 1 and 24 or t)
 		mineCount = mineCount + 1
@@ -506,7 +525,7 @@ do
 			self:Bar(157349, 10.5, args.spellName)
 			self:ScheduleTimer("Bar", 8, 157349, 10.5, args.spellName)
 		elseif args.spellId == 164240 or (self:Mythic() and phase == 1) then -- Replication (aoe damage on hit)
-			replicatingNova = self:ScheduleTimer(replicatingNovaStop, 8) -- XXX how long should the proximity be open?
+			replicatingNova = self:ScheduleTimer(replicatingNovaStop, (self:Mythic() and phase == 3) and 26 or 8) -- keep it open longer for fortification+replication
 			updateProximity()
 		end
 		novaCount = novaCount + 1
@@ -519,7 +538,7 @@ do
 			self:Message(158605, "Personal", "Alarm", CL.casting:format(CL.you:format(self:SpellName(158605))))
 			self:Flash(158605)
 		else
-			self:Message(158605, "Urgent", nil, CL.casting:format(CL.on:format(self:SpellName(158605), name)))
+			self:Message(158605, "Urgent", nil, CL.casting:format(self:SpellName(158605)))
 		end
 	end
 	function mod:MarkOfChaos(args)

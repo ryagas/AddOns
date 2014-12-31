@@ -1,0 +1,16 @@
+## Interface: 60000
+## Author: Blazeflack
+## Version: 2.34
+## Title: |cff1784d1ElvUI|r CastBarPowerOverlay
+## Notes: Adds a toggle option to overlay the castbar on the power bar for the respective unit frame.
+## RequiredDeps: ElvUI
+## OptionalDeps: ElvUI_CastBarSnap
+
+locales.lua
+config.lua
+core.lua
+
+ 
+ 
+## X-Tukui-ProjectID: 62
+## X-Tukui-ProjectFolders: ElvUI_CastBarPowerOverlay

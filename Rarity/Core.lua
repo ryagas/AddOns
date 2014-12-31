@@ -1,5 +1,5 @@
 Rarity = LibStub("AceAddon-3.0"):NewAddon("Rarity", "AceConsole-3.0", "AceEvent-3.0", "AceTimer-3.0", "LibSink-2.0", "AceBucket-3.0", "LibBars-1.0")
-Rarity.MINOR_VERSION = tonumber(("$Revision: 402 $"):match("%d+"))
+Rarity.MINOR_VERSION = tonumber(("$Revision: 406 $"):match("%d+"))
 local FORCE_PROFILE_RESET_BEFORE_REVISION = 1 -- Set this to one higher than the Revision on the line above this
 local L = LibStub("AceLocale-3.0"):GetLocale("Rarity")
 local R = Rarity
@@ -18,7 +18,7 @@ local lbz = LibStub("LibBabble-Zone-3.0"):GetUnstrictLookupTable()
 local lbsz = LibStub("LibBabble-SubZone-3.0"):GetUnstrictLookupTable()
 local lbct = LibStub("LibBabble-CreatureType-3.0"):GetUnstrictLookupTable()
 local lbb = LibStub("LibBabble-Boss-3.0"):GetUnstrictLookupTable()
---
+---
 
 
 --[[
@@ -2543,7 +2543,7 @@ do
 								elseif v.questId and v.holidayTexture then
 									if Rarity.holiday_textures[v.holidayTexture] == nil then
 										status = colorize(L["Unavailable"], gray)
-									elseif v.christmasOnly and dt.month == 12 and dt.month < 25 then
+									elseif v.christmasOnly and dt.month == 12 and dt.day < 25 then
 										status = colorize(L["Unavailable"], gray)
 									else
 										if type(v.questId) == "table" then
@@ -3085,6 +3085,7 @@ function R:ScanToys(reason)
 					for kk, vv in pairs(v) do
 						if type(vv) == "table" then
 							if vv.itemId and vv.itemId == itemId and not vv.repeatable then
+								vv.known = true
 								vv.enabled = false
 								vv.found = true
 							end

@@ -1,0 +1,12 @@
+## Interface: 60000
+## Title: |cff1784d1ElvUI |rMy Priority
+## Notes: Shows stat Priorities for your current class and spec - based off of Noxxics Pawn weights.
+## Author: Krypt (Ectorkrypt-Barthilas)
+## Version: 1.2.0
+## Released: 07/12/2014
+## Updated: 26/12/2014
+## RequiredDeps: ElvUI
+## X-Category: Plugins
+## DefaultState: Enabled
+
+ElvUI_MyPriority.lua

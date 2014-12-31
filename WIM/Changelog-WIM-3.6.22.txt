@@ -1,0 +1,48 @@
+------------------------------------------------------------------------
+r443 | mysticalos | 2014-12-28 20:30:15 +0000 (Sun, 28 Dec 2014) | 1 line
+Changed paths:
+   A /tags/3.6.22 (from /trunk:442)
+
+Tagging as 3.6.22
+------------------------------------------------------------------------
+r442 | mysticalos | 2014-12-28 20:27:01 +0000 (Sun, 28 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/ChangeLog.lua
+   M /trunk/Sources/Options/CoreOptions.lua
+   M /trunk/WIM.lua
+
+fix 3 more options that somehow went invisible at some point. 
+------------------------------------------------------------------------
+r440 | mysticalos | 2014-11-30 23:42:48 +0000 (Sun, 30 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/ChangeLog.lua
+   M /trunk/Modules/URLHandler.lua
+   M /trunk/WIM.lua
+
+Quick fix
+------------------------------------------------------------------------
+r438 | mysticalos | 2014-11-30 23:21:34 +0000 (Sun, 30 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/ChangeLog.lua
+   M /trunk/Modules/URLHandler.lua
+
+Make armory links go to US region instead of EU, for US players.
+------------------------------------------------------------------------
+r437 | mysticalos | 2014-11-30 23:11:47 +0000 (Sun, 30 Nov 2014) | 2 lines
+Changed paths:
+   M /trunk/ChangeLog.lua
+   M /trunk/Sources/Options/CoreOptions.lua
+   M /trunk/WIM.lua
+
+Tweaks
+Changelog and bump version
+------------------------------------------------------------------------
+r436 | mysticalos | 2014-11-30 22:47:54 +0000 (Sun, 30 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Sources/ContextMenu.lua
+   M /trunk/Sources/MessageWindows.lua
+   M /trunk/Sources/Options/CoreOptions.lua
+   M /trunk/Sources/WindowHandler.lua
+
+Fix an options bug that caused several options to just be invisible or misplaced.
+------------------------------------------------------------------------

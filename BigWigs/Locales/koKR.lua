@@ -122,11 +122,17 @@ L["tankhealer"] = "|cFFFF0000방어 & 치유 전담만 경고합니다.|r "
 L["TANK_HEALER"] = "방어 & 치유 전담만"
 L["TANK_HEALER_desc"] = "일부 능력은 방어 전담과 치유 전담에게만 중요합니다. 당신의 역할에 대한 능력 경고를 표시하지 않으려면 이 옵션을 해제합니다."
 L["test"] = "테스트"
+L["testBarsBtn"] = "테스트 바 생성"
+L["testBarsBtn_desc"] = "현재 설정을 테스트해볼 수 있는 바를 생성합니다."
 L["thanks"] = "다양한 분야에서 개발을 위해 다음과 같은 사람들의 도움이 있었습니다."
+L["toggleAnchorsBtn"] = "기준점 표시 전환"
+L["toggleAnchorsBtn_desc"] = "모든 기준점들을 나타내거나 숨깁니다."
 L["tooltipHint"] = [=[|cffeda55f클릭|r : 모두 초기화
 |cffeda55f알트-클릭|r 비활성화
 |cffeda55f컨트롤-알트-클릭|r : BigWigs 비활성화.]=]
 L["upToDate"] = "최신 버전:"
+L["VOICE"] = "음성"
+L["VOICE_desc"] = "만약 음성 플러그인을 설치하셨다면, 당신에게 큰 소리로 경고를 해주는 사운드 파일을 실행할 수 있게 되는 옵션이 활성화될 것입니다."
 L["warmup"] = "준비"
 L["warmup_desc"] = "보스와의 전투가 시작될 때까지의 시간"
 L["website"] = "웹사이트"

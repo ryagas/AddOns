@@ -1,0 +1,12 @@
+## Interface: 60000
+## Title: |cff103050Stealth|r|cffFF8000Missions|r
+## Notes: Display the latest completed Garrison Mission after combat.
+## Author: Dandraffbal-Stormreaver US
+## Version: 1.1
+## RequiredDeps: Blizzard_GarrisonUI
+
+StealthMissions.lua
+ 
+ 
+## X-Tukui-ProjectID: 256
+## X-Tukui-ProjectFolders: StealthMissions
