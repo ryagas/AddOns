@@ -28,6 +28,8 @@ local savedDBDefaults = {
 		deMaxQuality = 3,
 		logDays = 3,
 		includeSoulbound = false,
+		deCustomPrice = "0c",
+		deAboveVendor = false,
 	},
 }
 
@@ -96,4 +98,16 @@ function TSM:IsDestroyable(itemString)
 		end
 	end
 	return unpack(destroyCache[itemString] or {})
+end
+
+function TSM:GetPrice(customPrice, itemString)
+	local price, err
+	if type(customPrice) == "number" then
+		price = customPrice
+	elseif type(customPrice) == "string" then
+		local func, parseErr = TSMAPI:ParseCustomPrice(customPrice)
+		err = parseErr
+		price = func and func(itemString)
+	end
+	return price ~= 0 and price or nil, err
 end
