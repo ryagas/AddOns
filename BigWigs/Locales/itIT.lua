@@ -94,10 +94,12 @@ L["resetPositions"] = "Ripristina le Posizioni"
 L["SAY"] = "Parla"
 L["SAY_desc"] = "I messaggi sul canale 'Parla' sono facili da identificare grazie ai fumetti che creano. Big Wigs userà un mesaggio sul canale 'Parla' per avvisare chi sta vicino a te."
 L["selectEncounter"] = "Seleziona il Combattimento"
+L["severelyOutdated"] = "|cffff0000La tua versione di Big Wigs è vecchia di oltre 300 revisioni! Vi suggeriamo CALDAMENTE di aggiornare l'addon per evitare che ci siano problemi con gli altri giocatori!|r"
 L["showBlizzWarnings"] = "Visualizza i messaggi Blizzard"
 L["showBlizzWarningsDesc"] = [=[La Blizzard fornisce i propri messaggi per alcune abilità di alcuni combattimenti. Secondo noi, questi messaggi sono troppo lunghi e descrittivi. Noi proviamo a produrne di più immediati, più puntali, che non interferiscano con il gioco e che non ti dicano esattamente cosa fare.
 
 |cffff4411Quando disattivatii, gli avvertimenti Blizzard non verranno visualizzati in mezzo allo schermo, ma compariranno comunque in chat.|r]=]
+L["slashDescBreak"] = "|cFFFED000/break:|r Invia un timer di pausa a tutta la tua incursione."
 L["slashDescConfig"] = "|cFFFED000/bw:|r Apri la configurazione di Big Wigs."
 L["slashDescLocalBar"] = "|cFFFED000/localbar:|r Crea una barra personale solo per te stesso."
 L["slashDescPull"] = "|cFFFED000/pull:|r Invia un conto alla rovescia per l'ingaggio alla tua incursione."
@@ -120,11 +122,17 @@ L["tankhealer"] = "|cFFFF0000Messaggio per Difensori e Guaritori.|r "
 L["TANK_HEALER"] = "Solo Difensori e Guaritori"
 L["TANK_HEALER_desc"] = "Alcune abilità sono rilevanti solo per i Difensori e i Guaritori. Se vuoi vedere questi avvertimenti anche se non è il tuo ruolo, disabilita questa opzione."
 L["test"] = "Prova"
+L["testBarsBtn"] = "Crea Barra Test"
+L["testBarsBtn_desc"] = "Crea una barra test per provare le tue impostazioni attuali."
 L["thanks"] = "Grazie per seguirci in tutte le fasi dello sviluppo."
+L["toggleAnchorsBtn"] = "Attiva o disattiva gli Ancoraggi"
+L["toggleAnchorsBtn_desc"] = "Attiva o disattiva la visualizzazione dei punti di ancoraggio."
 L["tooltipHint"] = [=[|cffeda55fClic|r per reinizializzare tutti i moduli.
 |cffeda55fAlt-Clic|r per Disattivarli.
 |cffeda55fClic-Destro|r per aprire le Opzioni.]=]
 L["upToDate"] = "Aggiornati:"
+L["VOICE"] = "Voce"
+L["VOICE_desc"] = "Se hai un plugin vocale installato, questa opzione lo indurrà a riprodurre un file sonoro per annunciarti l'avvertimento."
 L["warmup"] = "Pre-ingaggio"
 L["warmup_desc"] = "Conto alla rovescia per l'inizio del combattimento con il boss."
 L["website"] = "Sito Web"

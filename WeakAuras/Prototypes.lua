@@ -1435,7 +1435,7 @@ WeakAuras.event_prototypes = {
         display = L["Ignore Rune CD"],
         type = "toggle",
         init = "arg",
-        test = "(notestRune or matchedRune ~= true or event  == 'COOLDOWN_REMAINING_CHECK')"
+        test = "true"
       },
       {
         name = "spellName",
@@ -1464,7 +1464,14 @@ WeakAuras.event_prototypes = {
       },
       {
         hidden = true,
-        test = "(inverse and startTime == 0) or (not inverse and startTime > 0)"
+        -- The logic here is:
+        -- If _inverse_ is checked, we want it to show if it's not on cooldown, which is either
+        --   startTime == 0 (truely not on cooldown)
+        --   or if we should ignore rune cds and it matches a runecd, so: notestRune and matchedRune
+        -- If _inverse_ is not checked, we want to show if we are on cooldown, so
+        --   startTime must be > 0, and that's enough if notest rune isn't checked
+        --   if notest rune is checked, we want to only show if we didn't match a rune
+        test = "(inverse and (startTime == 0 or (notestRune and matchedRune))) or (not inverse and startTime > 0 and (not notestRune or not matchedRune))"
       }
     },
     durationFunc = function(trigger)
@@ -2440,7 +2447,7 @@ WeakAuras.event_prototypes = {
       end
     end,
     hasItemID = true,
-    --automaticrequired = true
+    automaticrequired = true
   },
   ["Threat Situation"] = {
     type = "status",
@@ -2608,6 +2615,7 @@ WeakAuras.event_prototypes = {
       "PLAYER_ALIVE",
       "PLAYER_UNGHOST",
       "UNIT_PET",
+      "PET_UPDATE",
       "UNIT_ENTERED_VEHICLE",
       "UNIT_EXITED_VEHICLE",
       "PLAYER_UPDATE_RESTING",
@@ -2619,6 +2627,9 @@ WeakAuras.event_prototypes = {
     init = function(trigger)
       if(trigger.use_mounted ~= nil) then
         WeakAuras.WatchForMounts();
+      end
+      if (trigger.use_HasPet ~= nil) then
+        WeakAuras.WatchForPetDeath();
       end
       return "";
     end,
@@ -2663,7 +2674,7 @@ WeakAuras.event_prototypes = {
         name = "HasPet",
         display = L["HasPet"],
         type = "tristate",
-        init = "UnitExists('pet')"
+        init = "UnitExists('pet') and not UnitIsDead('pet')"
       }
     },
     automaticrequired = true

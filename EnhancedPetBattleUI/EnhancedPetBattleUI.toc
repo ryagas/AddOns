@@ -1,0 +1,14 @@
+## Interface: 60000
+## Title: |cff1784d1EnhancedPetBattleUI|r
+## Author: Azilroka, Sortokk
+## Version: 2.05
+## Notes: A Pet Battle Heads Up Display Frame
+## OptionalDeps: Tukui, ElvUI, AsphyxiaUI-Core, DuffedUI, Enhanced_Config
+## SavedVariables: EnhancedPetBattleUIOptions
+
+EnhancedPetBattleUI.lua
+
+ 
+ 
+## X-Tukui-ProjectID: 139
+## X-Tukui-ProjectFolders: EnhancedPetBattleUI

@@ -23,7 +23,7 @@ do
 	--@end-alpha@]===]
 
 	-- This will (in ZIPs), be replaced by the highest revision number in the source tree.
-	myRevision = tonumber("12439")
+	myRevision = tonumber("12463")
 
 	-- If myRevision ends up NOT being a number, it means we're running a SVN copy.
 	if type(myRevision) ~= "number" then
@@ -457,13 +457,19 @@ do
 	local L = GetLocale()
 	if L == "ptBR" then
 		delayedMessages[#delayedMessages+1] = "Think you can translate Big Wigs into Brazilian Portuguese (ptBR)? Check out our easy translator tool: http://www.wowace.com/addons/big-wigs/localization/"
+	elseif L == "zhTW" then
+		delayedMessages[#delayedMessages+1] = "Think you can translate Big Wigs into Traditional Chinese (zhTW)? Check out our easy translator tool: http://www.wowace.com/addons/big-wigs/localization/"
+	elseif L == "ruRU" then
+		delayedMessages[#delayedMessages+1] = "Think you can translate Big Wigs into Russian (ruRU)? Check out our easy translator tool: http://www.wowace.com/addons/big-wigs/localization/"
+	elseif L == "itIT" then
+		delayedMessages[#delayedMessages+1] = "Think you can translate Big Wigs into Italian (itIT)? Check out our easy translator tool: http://www.wowace.com/addons/big-wigs/localization/"
 	end
 
 	CTimerAfter(11, function()
-		local _, _, _, _, _, _, year = GetAchievementInfo(8482) -- Mythic Garrosh
-		if year == 13 and (L == "enUS" or L == "enGB") then
-			sysprint("We're looking for a new end-game raider to join our developer team! See [goo.gl/aajTfo] for more info.")
-		end
+		--local _, _, _, _, _, _, year = GetAchievementInfo(8482) -- Mythic Garrosh
+		--if year == 13 and (L == "enUS" or L == "enGB") then
+		--	sysprint("We're looking for a new end-game raider to join our developer team! See [goo.gl/aajTfo] for more info.")
+		--end
 		for _, msg in next, delayedMessages do
 			sysprint(msg)
 		end
@@ -477,9 +483,9 @@ end
 
 do
 	-- This is a crapfest mainly because DBM's actual handling of versions is a crapfest, I'll try explain how this works...
-	local DBMdotRevision = "11978" -- The changing version of the local client, changes with every alpha revision using an SVN keyword.
-	local DBMdotReleaseRevision = "11978" -- This is manually changed by them every release, they use it to track the highest release version, a new DBM release is the only time it will change.
-	local DBMdotDisplayVersion = "6.0.8" -- Same as above but is changed between alpha and release cycles e.g. "N.N.N" for a release and "N.N.N alpha" for the alpha duration
+	local DBMdotRevision = "12134" -- The changing version of the local client, changes with every alpha revision using an SVN keyword.
+	local DBMdotReleaseRevision = "12134" -- This is manually changed by them every release, they use it to track the highest release version, a new DBM release is the only time it will change.
+	local DBMdotDisplayVersion = "6.0.9" -- Same as above but is changed between alpha and release cycles e.g. "N.N.N" for a release and "N.N.N alpha" for the alpha duration
 	function mod:DBM_VersionCheck(prefix, sender, revision, releaseRevision, displayVersion)
 		if prefix == "H" and (BigWigs and BigWigs.db.profile.fakeDBMVersion or self.isFakingDBM) then
 			SendAddonMessage("D4", "V\t"..DBMdotRevision.."\t"..DBMdotReleaseRevision.."\t"..DBMdotDisplayVersion.."\t"..GetLocale(), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
@@ -627,7 +633,7 @@ do
 				end
 			end)
 
-			self.LFG_PROPOSAL_SHOW = function() timeLeft = GetTime() + 40 end
+			self.LFG_PROPOSAL_SHOW = function() prev = GetTime() + 40 end
 		end
 	end
 end

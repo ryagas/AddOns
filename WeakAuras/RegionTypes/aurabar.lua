@@ -129,18 +129,17 @@ local barPrototype = {
 
     -- VERTICAL (Grow: T -> B, Deplete: B -> T)
     elseif orientation == "VERTICAL" then
-      TLx, TLy, TRx, TRy, BLx, BLy, BRx, BRy = GetTexCoord(90, false)
+      TLx, TLy, TRx, TRy, BLx, BLy, BRx, BRy = GetTexCoord(270, false)
 
-      TLx_, TLy_ = TLx      , TLy      ; TRx_, TRy_ = TRx      , TRy      ;
-      BLx_, BLy_ = BLx*progress  , BLy      ; BRx_, BRy_ = BRx*progress  , BRy      ;
+      TLx_, TLy_ = TLx           , TLy ; TRx_, TRy_ = TRx           , TRy;
+      BLx_, BLy_ = BLx * progress, BLy ; BRx_, BRy_ = BRx * progress, BRy;
 
     -- VERTICAL_INVERSE (Grow: B -> T, Deplete: T -> B)
     elseif orientation == "VERTICAL_INVERSE" then
-      TLx, TLy, TRx, TRy, BLx, BLy, BRx, BRy = GetTexCoord(270, false)
+      TLx, TLy, TRx, TRy, BLx, BLy, BRx, BRy = GetTexCoord(90, false)
 
-      TLx_, TLy_ = TLx*progress  , TLy      ; TRx_, TRy_ = TRx*progress  , TRy      ;
-      BLx_, BLy_ = BLx      , BLy      ; BRx_, BRy_ = BRx      , BRy      ;
-
+      TLx_, TLy_ = TLx * progress, TLy ; TRx_, TRy_ = TRx * progress, TRy;
+      BLx_, BLy_ = BLx           , BLy ; BRx_, BRy_ = BRx           , BRy;
     end
 
     -- HORIZONTAL (Grow: L -> R, Deplete: R -> L)
@@ -892,30 +891,28 @@ local function modify(parent, region, data)
   -- Rotate text
     local textDegrees = data.rotateText == "LEFT" and 90 or data.rotateText == "RIGHT" and -90 or 0;
 
-  -- Update timer visibility
-    if data.timer then
+  -- Update text visibility
+  if data.text then
     -- Update text font
     text:SetFont(SharedMedia:Fetch("font", data.textFont), data.textSize, data.textFlags and data.textFlags ~= "None" and data.textFlags);
     text:SetTextColor(data.textColor[1], data.textColor[2], data.textColor[3], data.textColor[4]);
     text:SetWordWrap(false);
     animRotate(text, textDegrees);
+    text:Show();
+  else
+    text:Hide();
+  end
 
-        timer:Show();
-    else
-        timer:Hide();
-    end
-
-  -- Update text visibility
-    if data.text then
+  -- Update timer visibility
+  if data.timer then
     -- Update timer font
     timer:SetFont(SharedMedia:Fetch("font", data.timerFont), data.timerSize, data.timerFlags and data.timerFlags ~= "None" and data.timerFlags);
     timer:SetTextColor(data.timerColor[1], data.timerColor[2], data.timerColor[3], data.timerColor[4]);
     animRotate(timer, textDegrees);
-
-        text:Show();
-    else
-        text:Hide();
-    end
+    timer:Show();
+  else
+    timer:Hide();
+  end
 
   -- Update icon visibility
     if data.icon then

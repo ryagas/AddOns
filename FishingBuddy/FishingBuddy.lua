@@ -790,6 +790,7 @@ PagleFish[86542] = {
 	["enUS"] = "Flying Tiger Gourami",
 	quest = 31443,
 };
+
 -- Lunkers
 PagleFish[116817] = {
 	["enUS"] = "Blackwater Whiptail Lunker",
@@ -809,6 +810,14 @@ PagleFish[116821] = {
 PagleFish[116822] = {
 	["enUS"] = "Jawless Skulker Lunker",
 };
+
+PagleFish[116158] = {
+	["enUS"] = "Lunarfall Carp",
+};
+PagleFish[112633] = {
+	["enUS"] = "Frostdeep Minnow",
+};
+
 
 FishingBuddy.PagleFish = PagleFish;
 
@@ -1823,7 +1832,7 @@ FishingBuddy.OnEvent = function(self, event, ...)
 	if ( event == "PLAYER_EQUIPMENT_CHANGED" or
 		  event == "WEAR_EQUIPMENT_SET" or
 		  event == "EQUIPMENT_SWAP_FINISHED" or
-		  event == "ITEM_LOCK_CHANGED" ) then
+		  event == "BAG_UPDATE" ) then
 		FishingMode();
 	elseif ( event == "LOOT_OPENED" ) then		
 		local doautoloot = ShouldAutoLoot() and (GetCVar("autoLootDefault") ~= "1" );
@@ -1905,7 +1914,8 @@ FishingBuddy.OnEvent = function(self, event, ...)
 	elseif ( event == "PLAYER_ENTERING_WORLD" ) then
 		IsZoning = nil;
 --		DumpZoneEvents();
-		self:RegisterEvent("ITEM_LOCK_CHANGED");
+-- we could watch for UNIT_INVENTORY_CHANGED, if we wanted to check for "player" in the args
+		self:RegisterEvent("BAG_UPDATE");
 		self:RegisterEvent("PLAYER_EQUIPMENT_CHANGED");
 		self:RegisterEvent("EQUIPMENT_SWAP_FINISHED");
 		self:RegisterEvent("WEAR_EQUIPMENT_SET");
@@ -1924,7 +1934,7 @@ FishingBuddy.OnEvent = function(self, event, ...)
 	elseif ( event == "PLAYER_LEAVING_WORLD") then
 		RunHandlers(FBConstants.LEAVING_EVT);
 		IsZoning = 1;
-		self:UnregisterEvent("ITEM_LOCK_CHANGED");
+		self:UnregisterEvent("BAG_UPDATE");
 		self:UnregisterEvent("PLAYER_EQUIPMENT_CHANGED");
 		self:UnregisterEvent("EQUIPMENT_SWAP_FINISHED");
 		self:UnregisterEvent("WEAR_EQUIPMENT_SET");

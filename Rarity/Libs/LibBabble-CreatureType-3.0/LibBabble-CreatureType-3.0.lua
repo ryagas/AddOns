@@ -1,6 +1,6 @@
 --[[
 Name: LibBabble-CreatureType-3.0
-Revision: $Rev: 147 $
+Revision: $Rev: 149 $
 Maintainers: ckknight, nevcairiel, Ackis
 Website: http://www.wowace.com/projects/libbabble-creaturetype-3-0/
 Dependencies: None
@@ -8,7 +8,7 @@ License: MIT
 ]]
 
 local MAJOR_VERSION = "LibBabble-CreatureType-3.0"
-local MINOR_VERSION = 90000 + tonumber(("$Rev: 147 $"):match("%d+"))
+local MINOR_VERSION = 90000 + tonumber(("$Rev: 149 $"):match("%d+"))
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib = LibStub("LibBabble-3.0"):New(MAJOR_VERSION, MINOR_VERSION)
@@ -272,7 +272,7 @@ elseif GAME_LOCALE == "koKR" then
 	lib:SetCurrentTranslations {
 	-- Aberration = "",
 	-- Abyssal = "",
-	-- Basilisk = "",
+	Basilisk = "바실리스크", -- Needs review
 	Bat = "박쥐",
 	Bear = "곰",
 	Beast = "야수",
@@ -306,7 +306,7 @@ elseif GAME_LOCALE == "koKR" then
 	-- Goat = "",
 	Gorilla = "고릴라",
 	Humanoid = "인간형",
-	-- Hydra = "",
+	Hydra = "히드라", -- Needs review
 	Hyena = "하이에나",
 	Imp = "임프",
 	Mechanical = "기계",
@@ -323,7 +323,7 @@ elseif GAME_LOCALE == "koKR" then
 	["Remote Control"] = "무선조종 장난감",
 	Rhino = "코뿔소",
 	-- Riverbeast = "",
-	-- Rylak = "",
+	Rylak = "라일라크", -- Needs review
 	Scorpid = "전갈",
 	Serpent = "뱀",
 	["Shale Spider"] = "혈암 거미",
@@ -677,7 +677,7 @@ elseif GAME_LOCALE == "itIT" then
 	Wasp = "Vespa",
 	["Water Elemental"] = "Elementale d'Acqua",
 	["Water Strider"] = "Gerride",
-	-- ["Wild Pet"] = "",
+	["Wild Pet"] = "Creatura Selvaggia",
 	["Wind Serpent"] = "Serpente Volante",
 	Wolf = "Lupo",
 	Worm = "Verme",

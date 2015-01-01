@@ -79,6 +79,7 @@ L["flash"] = "Мигание"
 L["font"] = "Шрифт"
 L["fontColor"] = "Цвет шрифта"
 L["fontSize"] = "Размер шрифта"
+L["general"] = "Главный модуль" -- Needs review
 L["growingUpwards"] = "Рост вверх"
 L["growingUpwardsDesc"] = "Переключение направления роста вверх или вниз от якоря."
 L["icon"] = "Иконка"

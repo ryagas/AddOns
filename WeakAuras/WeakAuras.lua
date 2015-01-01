@@ -239,6 +239,67 @@ function WeakAuras.IsOptionsOpen()
   return false;
 end
 
+WeakAuras.unusedOverlayGlows = {}
+WeakAuras.numOverlayGlows = 0
+
+local function OverlayGlowAnimOutFinished(animGroup)
+  local overlay = animGroup:GetParent()
+  local frame = overlay:GetParent()
+  overlay:Hide()
+  tinsert(WeakAuras.unusedOverlayGlows, overlay)
+  frame.overlay = nil
+end
+
+local function OverlayGlow_OnHide(self)
+  if self.animOut:IsPlaying() then
+    self.animOut:Stop()
+    OverlayGlowAnimOutFinished(self.animOut)
+  end
+end
+
+local function GetOverlayGlow()
+  local overlay = tremove(WeakAuras.unusedOverlayGlows)
+  if not overlay then
+    WeakAuras.numOverlayGlows = WeakAuras.numOverlayGlows + 1
+    overlay = CreateFrame("Frame", "WeakAurasGlowOverlay"..WeakAuras.numOverlayGlows, UIParent, "ActionBarButtonSpellActivationAlert")
+    overlay.animOut:SetScript("OnFinished", OverlayGlowAnimOutFinished)
+    overlay:SetScript("OnHide", OverlayGlow_OnHide)
+  end
+  return overlay
+end
+
+local function WeakAuras_ShowOverlayGlow(frame)
+  if frame.overlay then
+    if frame.overlay.animOut:IsPlaying() then
+      frame.overlay.animOut:Stop()
+      frame.overlay.animIn:Play()
+    end
+  else
+    frame.overlay = GetOverlayGlow()
+    local frameWidth, frameHeight = frame:GetSize()
+    frame.overlay:SetParent(frame)
+    frame.overlay:ClearAllPoints()
+    --Make the height/width available before the next frame:
+    frame.overlay:SetSize(frameWidth * 1.4, frameHeight * 1.4)
+    frame.overlay:SetPoint("TOPLEFT", frame, "TOPLEFT", -frameWidth * 0.2, frameHeight * 0.2)
+    frame.overlay:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", frameWidth * 0.2, -frameHeight * 0.2)
+    frame.overlay.animIn:Play()
+  end
+end
+
+local function WeakAuras_HideOverlayGlow(frame)
+  if frame.overlay then
+    if frame.overlay.animIn:IsPlaying() then
+      frame.overlay.animIn:Stop()
+    end
+    if frame:IsVisible() then
+      frame.overlay.animOut:Play()
+    else
+      OverlayGlowAnimOutFinished(frame.overlay.animOut)
+    end
+  end
+end
+
 local function forbidden()
   print("|cffffff00A WeakAura that you are using just tried to use a forbidden function but has been blocked from doing so. Please check your auras!|r")
 end
@@ -254,12 +315,19 @@ local blockedFunctions = {
   SetTradeMoney = true,
 }
 
+local overrideFunctions = {
+  ActionButton_ShowOverlayGlow = WeakAuras_ShowOverlayGlow,
+  ActionButton_HideOverlayGlow = WeakAuras_HideOverlayGlow,
+}
+
 local exec_env = setmetatable({}, { __index =
   function(t, k)
     if k == "_G" then
       return t
     elseif blockedFunctions[k] then
       return forbidden
+    elseif overrideFunctions[k] then
+      return overrideFunctions[k]
     else
       return _G[k]
     end
@@ -359,7 +427,7 @@ do
       end
       end
       if(active) then
-      num = num + 1;
+        num = num + 1;
       end
     end
     return num;
@@ -866,6 +934,7 @@ do
       startTime = startTime or 0;
       duration = duration or 0;
       local time = GetTime();
+      local remaining = startTime + duration - time;
 
       if(duration > 1.51) then
         -- On non-GCD cooldown
@@ -877,7 +946,8 @@ do
             match = false
             for runeId = 1,6 do
               local runeStart, runeDuration = GetRuneCooldown(runeId)
-              if runeDuration == duration and math.abs(runeStart - startTime) < 0.01 then
+              local runeRemaining = runeStart + runeDuration - time;
+              if math.abs(remaining - runeRemaining) < 0.03 then
                 match = true;
                 break;
               end
@@ -896,7 +966,8 @@ do
             match = false
             for runeId = 1,6 do
               local runeStart, runeDuration = GetRuneCooldown(runeId)
-              if runeDuration == duration and math.abs(runeStart - startTime) < 0.01 then
+              local runeRemaining = runeStart + runeDuration - time;
+              if math.abs(remaining - runeRemaining) < 0.03 then
                 match = true;
                 break;
               end
@@ -2204,6 +2275,8 @@ loadFrame:RegisterEvent("PLAYER_REGEN_ENABLED");
 
 loadFrame:RegisterEvent("PLAYER_ROLES_ASSIGNED");
 loadFrame:RegisterEvent("PLAYER_DIFFICULTY_CHANGED");
+loadFrame:RegisterEvent("PET_BATTLE_OPENING_START");
+loadFrame:RegisterEvent("PET_BATTLE_CLOSE");
 
 loadFrame:SetScript("OnEvent", WeakAuras.ScanForLoads);
 
@@ -2764,20 +2837,28 @@ function WeakAuras.Rename(data, newid)
 
   regions[newid] = regions[oldid];
   regions[oldid] = nil;
+
   auras[newid] = auras[oldid];
   auras[oldid] = nil;
+
+  loaded_auras[newid] = loaded_auras[oldid];
   loaded_auras[oldid] = nil;
+
   events[newid] = events[oldid];
   events[oldid] = nil;
-  loaded_events[oldid] = nil;
+
   loaded[newid] = loaded[oldid];
   loaded[oldid] = nil;
+
+  loaded_events[newid] = oldid;
+  loaded_events[oldid] = nil;
+
   db.displays[newid] = db.displays[oldid];
   db.displays[oldid] = nil;
 
   if(clones[oldid]) then
-  clones[newid] = clones[oldid];
-  clones[oldid] = nil;
+    clones[newid] = clones[oldid];
+    clones[oldid] = nil;
   end
 
   db.displays[newid].id = newid;
@@ -3019,14 +3100,12 @@ function WeakAuras.Modernize(data)
   end
 
   -- upgrade from singleselecting talents to multi select, see ticket 52
-  if (type(load.talent) == number) then
+  if (type(load.talent) == "number") then
     local talent = load.talent;
     load.talent = {};
     load.talent.single = talent;
     load.talent.multi = {}
   end
-
-  load.use_talent = load.use_talent and true or nil
 
   -- Add status/event information to triggers
   for triggernum=0,(data.numTriggers or 9) do
@@ -3747,8 +3826,8 @@ function WeakAuras.SetRegion(data, cloneId)
           end
         end
         function region:Expand()
-          if(regionType == "model") then
-            region:EnsureModel();
+          if(region.preShow) then
+            region:PreShow();
           end
           region.toShow = true;
           region.toHide = false;
@@ -3776,8 +3855,8 @@ function WeakAuras.SetRegion(data, cloneId)
           end
         end
         function region:Expand()
-          if(regionType == "model") then
-            region:EnsureModel()
+          if(region.PreShow) then
+            region:PreShow();
           end
           if(WeakAuras.IsAnimating(region) == "finish" or (not region:IsVisible() or (cloneId and region.justCreated))) then
             region.justCreated = nil;
@@ -3979,9 +4058,9 @@ function WeakAuras.PerformActions(data, type)
 
     if(glow_frame) then
       if(actions.glow_action == "show") then
-        ActionButton_ShowOverlayGlow(glow_frame);
+        WeakAuras_ShowOverlayGlow(glow_frame);
       elseif(actions.glow_action == "hide") then
-        ActionButton_HideOverlayGlow(glow_frame);
+        WeakAuras_HideOverlayGlow(glow_frame);
       end
     end
   end
@@ -4989,6 +5068,20 @@ do
     mountedFrame:SetScript("OnEvent", function()
     elapsed = 0;
     mountedFrame:SetScript("OnUpdate", checkForMounted);
+    end)
+  end
+  end
+end
+
+do
+  local petFrame;
+  WeakAuras.frames["Pet Use Handler"] = petFrame;
+  function WeakAuras.WatchForPetDeath()
+  if not(petFrame) then
+    petFrame = CreateFrame("frame");
+    petFrame:RegisterUnitEvent("UNIT_HEALTH", "pet");
+    petFrame:SetScript("OnEvent", function()
+      WeakAuras.ScanEvents("PET_UPDATE");
     end)
   end
   end
