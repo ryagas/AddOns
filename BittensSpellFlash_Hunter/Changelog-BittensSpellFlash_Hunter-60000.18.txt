@@ -1,0 +1,99 @@
+------------------------------------------------------------------------
+r103 | slippycheeze | 2015-01-01 10:30:36 +0000 (Thu, 01 Jan 2015) | 1 line
+Changed paths:
+   A /tags/60000.18 (from /trunk:102)
+
+Create tag 60000.18
+------------------------------------------------------------------------
+r102 | slippycheeze | 2015-01-01 10:30:13 +0000 (Thu, 01 Jan 2015) | 13 lines
+Changed paths:
+   M /trunk/src/Rotations.lua
+   M /trunk/src/Spells.lua
+
+When solo, Mend Pet at 80 percent, not 50 percent
+
+Turns out that the much more conservative approach to using Mend Pet is
+sensible in dungeons, but it means that tanking pets end up dying way
+more often than they should when faced with level 100+ mobs -- and
+non-tanking pets are even worse off.
+
+Using Mend Pet more frequently in this situation means that you are much
+less likely to get dangerously low in health and see burst damage take
+them out, in turn improving performance.
+
+Since the spell is optional, this also doesn't force a rotation change
+on anyone.  (Not that most hunters have pets any longer, but whatever.)
+------------------------------------------------------------------------
+r100 | slippycheeze | 2014-12-18 21:04:26 +0000 (Thu, 18 Dec 2014) | 10 lines
+Changed paths:
+   M /trunk/src/IDs.lua
+   M /trunk/src/Rotations.lua
+   M /trunk/src/Spells.lua
+
+Work around multiple Kill Shot bugs for MM and BM hunters
+
+Blizzard have several issues, including not accounting for the Enhanced
+Kill Shot perk in their API functions, sometimes returning that KS is
+off cooldown incorrectly, and so on.
+
+See for details:
+
+http://us.battle.net/wow/en/forum/topic/15700039856
+http://us.battle.net/wow/en/forum/topic/15699089759
+------------------------------------------------------------------------
+r97 | slippycheeze | 2014-12-13 05:13:00 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+
+Switch to auto-generated changelog from curse
+------------------------------------------------------------------------
+r96 | slippycheeze | 2014-12-13 05:12:55 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/src/IDs.lua
+   M /trunk/src/Rotations.lua
+   M /trunk/src/Spells.lua
+   M /trunk/version_history.txt
+
+Implement MM hunter rotation for 6.0, finally.
+------------------------------------------------------------------------
+r94 | slippycheeze | 2014-12-13 02:55:40 +0000 (Sat, 13 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/src/IDs.lua
+   M /trunk/src/Rotations.lua
+   M /trunk/src/Spells.lua
+   M /trunk/version_history.txt
+
+Implement initial SV hunter WoD rotation.
+------------------------------------------------------------------------
+r92 | slippycheeze | 2014-12-07 09:37:47 +0000 (Sun, 07 Dec 2014) | 5 lines
+Changed paths:
+   M /trunk/src/Spells.lua
+   M /trunk/version_history.txt
+
+Make Barrage and Powershot optional.
+
+Both have consequences beyond just doing damage that you might need to
+avoid triggering.  Glaive Toss is still mandatory because it is a more
+or less single target spell.
+------------------------------------------------------------------------
+r90 | slippycheeze | 2014-12-05 17:22:45 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/src/Rotations.lua
+   M /trunk/version_history.txt
+
+Really fix the damn lua error.
+------------------------------------------------------------------------
+r88 | slippycheeze | 2014-12-02 01:31:36 +0000 (Tue, 02 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/BittensSpellFlash_Hunter.toc
+   M /trunk/version_history.txt
+
+Mark as 6.0 compatible.
+------------------------------------------------------------------------
+r86 | slippycheeze | 2014-12-02 00:59:56 +0000 (Tue, 02 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/src/Rotations.lua
+   M /trunk/version_history.txt
+
+Fix lua error breaking non-BM specs
+------------------------------------------------------------------------

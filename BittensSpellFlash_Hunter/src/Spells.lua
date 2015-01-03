@@ -267,12 +267,12 @@ c.AddOptionalSpell("Mend Pet", nil, {
    end,
 })
 
-c.AddOptionalSpell("Mend Pet", "at 50", {
+c.AddOptionalSpell("Mend Pet", "in combat", {
    Buff = "Mend Pet",
    BuffUnit = "pet",
    EarlyRefresh = 2,
    CheckFirst = function()
-      return c.GetHealthPercent("pet") < 50
+      return c.GetHealthPercent("pet") < (c.IsSolo() and 80 or 50)
    end,
 })
 
