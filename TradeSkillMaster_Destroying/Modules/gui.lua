@@ -198,7 +198,8 @@ function private:UpdateST(forceShow)
 			local deValue = TSM:GetPrice("Disenchant", itemString)
 			local vendorSell = (TSM.db.global.deAboveVendor and TSM:GetPrice("VendorSell", itemString)) or 0
 			local customPrice = TSM:GetPrice(TSM.db.global.deCustomPrice, itemString) or 0
-			if spell ~= "Disenchant" or not deValue or (spell == "Disenchant" and (deValue and deValue >= customPrice and deValue >= vendorSell)) then
+			local deSpellName = GetSpellInfo(TSM.spells.disenchant)
+			if spell ~= deSpellName or not deValue or (spell == deSpellName and (deValue and deValue >= customPrice and deValue >= vendorSell)) then
 				local link = GetContainerItemLink(bag, slot)
 				if spell and quantity >= perDestroy then
 					local row = {
@@ -263,6 +264,9 @@ function private:LootOpened()
 			if itemString and quantity > 0 then
 				temp.result[itemString] = quantity
 			end
+		end
+		if private.currentSpell == GetSpellInfo(TSM.spells.disenchant) then
+			temp.isDraenicEnchanting = TSM:HasDraenicEnchanting()
 		end
 		TSM.db.global.history[private.currentSpell] = TSM.db.global.history[private.currentSpell] or {}
 		tinsert(TSM.db.global.history[private.currentSpell], temp)

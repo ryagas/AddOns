@@ -1,3 +1,6 @@
+v2.1.8
+*Fixed a bug with non-English clients.
+
 v2.1.7
 *Bug Fix on last commit.
 
