@@ -482,6 +482,7 @@ local seascorpion = {
 		["Darktide Strait"] = true,
 		["The Evanescent Sea"] = true,
 		["Karabor Harbor"] = true,
+		["Tanaan Channel"] = true,
 	},
 	["Gorgrond"] = {
 		["Colossal Depths"] = true,
@@ -897,6 +898,8 @@ if ( FishingBuddy.Debugging ) then
 			DumpChosen();
 			return true;
 		end
+
+	FishingBuddy.SeaScorpion = seascorpion;
 end
 
 function fixthis()

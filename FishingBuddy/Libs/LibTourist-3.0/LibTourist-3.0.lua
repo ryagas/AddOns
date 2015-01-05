@@ -1,6 +1,6 @@
 ﻿--[[
 Name: LibTourist-3.0
-Revision: $Rev: 177 $
+Revision: $Rev: 178 $
 Author(s): ckknight (ckknight@gmail.com), Arrowmaster, Odica (maintainer)
 Website: http://ckknight.wowinterface.com/
 Documentation: http://www.wowace.com/addons/libtourist-3-0/
@@ -10,7 +10,7 @@ License: MIT
 ]]
 
 local MAJOR_VERSION = "LibTourist-3.0"
-local MINOR_VERSION = 90000 + tonumber(("$Revision: 177 $"):match("(%d+)"))
+local MINOR_VERSION = 90000 + tonumber(("$Revision: 178 $"):match("(%d+)"))
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub") end
 
@@ -3065,7 +3065,7 @@ do
 
 	zones[BZ["Alterac Valley"]] = {
 		low = 45,
-		high = 90,
+		high = MAX_PLAYER_LEVEL,
 		continent = Eastern_Kingdoms,
 		paths = BZ["Hillsbrad Foothills"],
 		groupSize = 40,
@@ -3075,7 +3075,7 @@ do
 
 	zones[BZ["Arathi Basin"]] = {
 		low = 10,
-		high = 90,
+		high = MAX_PLAYER_LEVEL,
 		continent = Eastern_Kingdoms,
 		paths = BZ["Arathi Highlands"],
 		groupSize = 15,
@@ -3085,7 +3085,7 @@ do
 
 	zones[BZ["Warsong Gulch"]] = {
 		low = 10,
-		high = 90,
+		high = MAX_PLAYER_LEVEL,
 		continent = Kalimdor,
 		paths = isHorde and BZ["Northern Barrens"] or BZ["Ashenvale"],
 		groupSize = 10,
@@ -5117,7 +5117,7 @@ do
 
 	zones[BZ["Eye of the Storm"]] = {
 		low = 35,
-		high = 90,
+		high = MAX_PLAYER_LEVEL,
 		continent = Outland,
 		groupSize = 15,
 		type = "Battleground",
@@ -5698,7 +5698,7 @@ do
 
 	zones[BZ["Strand of the Ancients"]] = {
 		low = 65,
-		high = 90,
+		high = MAX_PLAYER_LEVEL,
 		continent = Northrend,
 		groupSize = 15,
 		type = "Battleground",
@@ -5707,7 +5707,7 @@ do
 
 	zones[BZ["Isle of Conquest"]] = {
 		low = 75,
-		high = 90,
+		high = MAX_PLAYER_LEVEL,
 		continent = Northrend,
 		groupSize = 40,
 		type = "Battleground",
@@ -6169,7 +6169,7 @@ do
 
 	zones[BZ["The Battle for Gilneas"]] = {
 		low = 85,
-		high = 90,
+		high = MAX_PLAYER_LEVEL,
 		continent = Eastern_Kingdoms,
 		groupSize = 10,
 		type = "Battleground",
@@ -6178,7 +6178,7 @@ do
 
 	zones[BZ["Twin Peaks"]] = {
 		low = 85,
-		high = 90,
+		high = MAX_PLAYER_LEVEL,
 		continent = Eastern_Kingdoms,
 		paths = BZ["Twilight Highlands"],
 		groupSize = 10,
@@ -6511,7 +6511,7 @@ do
 	-- Patch 5.3 Battleground
 	zones[BZ["Deepwind Gorge"]] = {
 		low = 90,
-		high = 90,
+		high = MAX_PLAYER_LEVEL,
 		continent = Pandaria,
 		paths = BZ["Valley of the Four Winds"],
 		groupSize = 15,

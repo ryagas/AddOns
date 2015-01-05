@@ -1,0 +1,16 @@
+tag v0.6
+881948c37faa8f1501dad79c2a84ab6dfdf3e907
+funkydude <none>
+2014-12-29 08:23:44 +0000
+
+Tagging as v0.6
+
+
+--------------------
+
+funkydude:
+	- 2 more sound fixes
+	- missed a comment.
+	- Support separate sounds for on you / others.
+	- Only play the voice instead of the voice & BW sound. If no voice exists, fallback to the BW sound.
+	- More cleanups.

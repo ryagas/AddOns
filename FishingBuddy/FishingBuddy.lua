@@ -794,21 +794,27 @@ PagleFish[86542] = {
 -- Lunkers
 PagleFish[116817] = {
 	["enUS"] = "Blackwater Whiptail Lunker",
+	lunker = true,
 };
 PagleFish[116818] = {
 	["enUS"] = "Abyssal Gulper Lunker",
+	lunker = true,
 };
 PagleFish[116819] = {
 	["enUS"] = "Fire Ammonite Lunker",
+	lunker = true,
 };
 PagleFish[116820] = {
 	["enUS"] = "Blind Lake Lunker",
+	lunker = true,
 };
 PagleFish[116821] = {
 	["enUS"] = "Fat Sleeper Lunker",
+	lunker = true,
 };
 PagleFish[116822] = {
 	["enUS"] = "Jawless Skulker Lunker",
+	lunker = true,
 };
 
 PagleFish[116158] = {

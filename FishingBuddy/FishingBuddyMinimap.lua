@@ -70,6 +70,11 @@ MinimapEvents["VARIABLES_LOADED"] = function()
 		FishingBuddy_Player["MinimapData"] = { hide=false };
 	end
 
+	-- Fix Curse bug #246
+	if ( not FishingBuddy_Player["MinimapData"].minimapPos ) then
+		FishingBuddy_Player["MinimapData"]["minimapPos"] = 225;
+	end
+
 	if ( not icon:IsRegistered(FBConstants.NAME) ) then
 		local data = {
 				icon = "Interface\\Icons\\Trade_Fishing",

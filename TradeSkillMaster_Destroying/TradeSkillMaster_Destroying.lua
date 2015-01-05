@@ -47,8 +47,11 @@ function TSM:OnInitialize()
 	TSM:RegisterModule()
 	
 	-- request itemInfo for everything in the disenchant log
-	for _, deInfo in ipairs(TSM.db.global.history[GetSpellInfo(TSM.spells.disenchant)]) do
-		TSMAPI:GetSafeItemInfo(deInfo.item)
+	local deSpellName = GetSpellInfo(TSM.spells.disenchant)
+	if deSpellName and TSM.db.global.history[deSpellName] then
+		for _, deInfo in ipairs(TSM.db.global.history[deSpellName]) do
+			TSMAPI:GetSafeItemInfo(deInfo.item)
+		end
 	end
 end
 
@@ -71,7 +74,7 @@ function TSM:OnTSMDBShutdown()
 	for _, deInfo in ipairs(TSM.db.global.history[GetSpellInfo(TSM.spells.disenchant)]) do
 		local rarity, iLevel, iType = TSMAPI:Select({3, 4, 6}, TSMAPI:GetSafeItemInfo(deInfo.item))
 		local isValid = true
-		if type(rarity) == "number" and rarity >= 2 and rarity <= 4 and type(iLevel) == "number" and iLevel > 0 and type(iType) == "string" and iTypeLookup[iType] and (deInfo.isDraenicEnchanting or true) then
+		if type(rarity) == "number" and rarity >= 2 and rarity <= 4 and type(iLevel) == "number" and iLevel > 0 and type(iType) == "string" and iTypeLookup[iType] and deInfo.isDraenicEnchanting then
 			local result = {}
 			for itemString, num in pairs(deInfo.result) do
 				local itemID = TSMAPI:GetItemID(itemString)
@@ -149,14 +152,18 @@ function TSM:HasDraenicEnchanting()
 	local profession1, profession2 = GetProfessions()
 	
 	-- check first profession
-	local skillName, _, level, maxLevel = GetProfessionInfo(profession1)
-	if skillName == GetSpellInfo(7411) and level >= 600 and maxLevel == 700 then
-		return true
+	if profession1 then
+		local skillName, _, level, maxLevel = GetProfessionInfo(profession1)
+		if skillName == GetSpellInfo(7411) and level >= 600 and maxLevel == 700 then
+			return true
+		end
 	end
 	
 	-- check second profession
-	local skillName, _, level, maxLevel = GetProfessionInfo(profession2)
-	if skillName == GetSpellInfo(7411) and level >= 600 and maxLevel == 700 then
-		return true
+	if profession2 then
+		local skillName, _, level, maxLevel = GetProfessionInfo(profession2)
+		if skillName == GetSpellInfo(7411) and level >= 600 and maxLevel == 700 then
+			return true
+		end
 	end
 end

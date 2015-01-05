@@ -1,7 +1,7 @@
 local g = BittensGlobalTables
 local c = g.GetOrMakeTable("BittensSpellFlashLibrary", 2)
 local u = g.GetTable("BittensUtilities")
-if u.SkipOrUpgrade(c, "MainFile", tonumber("20150101002823") or time()) then
+if u.SkipOrUpgrade(c, "MainFile", tonumber("20150101225953") or time()) then
    return
 end
 
@@ -212,7 +212,9 @@ function c.GetID(name)
    if id then
       return id
    else
-      print("No spell defined (or no ID attribute):", name)
+      if name ~= nil then
+         print("No spell defined (or no ID attribute):", name)
+      end
    end
 end
 

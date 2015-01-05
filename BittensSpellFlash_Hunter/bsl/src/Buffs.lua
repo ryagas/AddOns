@@ -1,7 +1,7 @@
 local g = BittensGlobalTables
 local c = g.GetTable("BittensSpellFlashLibrary")
 local u = g.GetTable("BittensUtilities")
-if u.SkipOrUpgrade(c, "Buffs", tonumber("20150101002823") or time()) then
+if u.SkipOrUpgrade(c, "Buffs", tonumber("20150101225953") or time()) then
    return
 end
 
