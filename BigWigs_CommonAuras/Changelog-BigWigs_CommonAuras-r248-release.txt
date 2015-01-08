@@ -1,0 +1,26 @@
+------------------------------------------------------------------------
+r248 | funkydude | 2014-12-29 08:24:47 +0000 (Mon, 29 Dec 2014) | 1 line
+Changed paths:
+   A /tags/r248-release (from /trunk:247)
+
+Tagging as r248-release
+------------------------------------------------------------------------
+r247 | nebula169 | 2014-12-24 08:19:01 +0000 (Wed, 24 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/CommonAuras.lua
+
+use green for the healing cds (tranq/hymn/revival)
+------------------------------------------------------------------------
+r246 | funkydude | 2014-12-22 22:25:01 +0000 (Mon, 22 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/CommonAuras.lua
+
+Remove sound from message callback
+------------------------------------------------------------------------
+r244 | nebula169 | 2014-12-18 20:07:37 +0000 (Thu, 18 Dec 2014) | 2 lines
+Changed paths:
+   M /trunk/CommonAuras.lua
+
+update feasts, repair, portals, and combat resses
+add Divine Hymn, Tranquility, Life Cocoon, Revival, and Anti-Magic Zone
+------------------------------------------------------------------------
