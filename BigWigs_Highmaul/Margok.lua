@@ -13,7 +13,7 @@ mod.engageId = 1705
 --
 
 local phase = 1
-local mineCount, novaCount, aberrationCount, nightCount = 1, 1, 1, 1
+local mineCount, novaCount, aberrationCount, nightCount, glimpseCount = 1, 1, 1, 1, 1
 local p1times = {}
 local addDeathWarned = nil
 local markOfChaosTarget, brandedOnMe, fixateOnMe, replicatingNova, gazeOnMe = nil, nil, nil, nil, nil
@@ -103,7 +103,8 @@ function mod:GetOptions()
 end
 
 function mod:OnBossEnable()
-	self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "Phases", "boss1")
+	self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "PhaseEnd", "boss1")
+	self:Log("SPELL_AURA_APPLIED", "PhaseStart", 158012, 157964) -- Power of Fortification, Replication
 	self:Log("SPELL_AURA_APPLIED_DOSE", "AcceleratedAssault", 159515)
 	-- Spell, Spell: Displacement, Spell: Fortification, Spell: Replication
 	self:Log("SPELL_CAST_START", "ArcaneWrath", 156238, 163988, 163989, 163990)
@@ -138,6 +139,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "GazeClosestApplied", 176537)
 	self:Log("SPELL_AURA_REMOVED", "GazeClosestRemoved", 176537)
 	self:Log("SPELL_AURA_APPLIED", "GrowingDarknessDamage", 176525)
+	--self:Log("SPELL_CAST_SUCCESS", "ChogallSpawn", 181113) -- XXX 6.1
 
 	self:Death("ReaverDeath", 78549) -- Gorian Reaver
 end
@@ -237,6 +239,7 @@ do
 		self:ScheduleTimer(startPhase, 10, self)
 		phase = 4
 		nightCount = 1
+		glimpseCount = 1
 		gazeOnMe = nil
 		wipe(gazeTargets)
 		self:Message("stages", "Neutral", "Long", CL.phase:format(phase), false)
@@ -244,6 +247,11 @@ do
 		self:ScheduleTimer(nextAdd, 32, self)
 		self:DelayedMessage(165876, 80, "Important", CL.soon:format(CL.count:format(self:SpellName(165876), nightCount)), false, "Info")
 	end
+
+	-- XXX for patch 6.1
+	--function mod:ChogallSpawn(args)
+	--	
+	--end
 end
 
 do
@@ -290,8 +298,9 @@ function mod:EnvelopingNight(args)
 end
 
 function mod:GlimpseOfMadness(args)
-	self:Message(args.spellId, "Attention")
-	self:Bar(args.spellId, 27)
+	self:Message(args.spellId, "Attention", "Info", CL.count:format(args.spellName, glimpseCount))
+	glimpseCount = glimpseCount + 1
+	self:Bar(args.spellId, 27, CL.count:format(args.spellName, glimpseCount))
 end
 
 do -- GazeOfTheAbyss
@@ -404,12 +413,12 @@ function mod:UNIT_HEALTH_FREQUENT(unit)
 	end
 end
 
-function mod:Phases(unit, spellName, _, _, spellId)
-	if spellId == 164336 or spellId == 164751 or spellId == 164810 then -- Teleport to Displacement, Fortification, Replication (Phase end)
+function mod:PhaseEnd(unit, spellName, _, _, spellId)
+	if spellId == 164336 or spellId == 164751 or spellId == 164810 then -- Teleport to Displacement, Fortification, Replication
 		phase = phase + 1
 		mineCount, novaCount = 1, 1
 
-		if spellId == 164336 then -- no intermission for Displacement
+		if spellId == 164336 then -- short intermission for Displacement
 			self:Message("stages", "Neutral", "Long", CL.phase:format(phase), false)
 			self:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", nil, unit)
 			 -- first power just pauses the cds for a few seconds
@@ -437,18 +446,21 @@ function mod:Phases(unit, spellName, _, _, spellId)
 				self:ScheduleTimer("CDBar", 15, 158563, 27) -- Kick to the Face
 			end
 		end
-	elseif spellId == 158012 or spellId == 157964 then -- Power of Fortification, Replication (Phase start)
-		self:CDBar(156238, 8)  -- Arcane Wrath
-		self:CDBar(156467, 18) -- Destructive Resonance
-		self:CDBar(156471, 28, CL.count:format(self:SpellName(-9945), aberrationCount), 156471) -- Arcane Aberration
-		self:CDBar(158605, 38) -- Mark of Chaos
-		self:CDBar(157349, 48) -- Force Nova
-		if spellId ~= 157964 or self:Mythic() then -- Replication is the last phase
-			self:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", nil, unit)
-		end
-		if spellId == 157964 and self:Mythic() then
-			self:RegisterEvent("CHAT_MSG_MONSTER_YELL", "Phase4")
-		end
+	end
+end
+
+function mod:PhaseStart(args)
+	if not self.isEngaged then return end -- In Mythic mode he gains this when he's floating around the room before engage.
+	self:CDBar(156238, 8)  -- Arcane Wrath
+	self:CDBar(156467, 18) -- Destructive Resonance
+	self:CDBar(156471, 28, CL.count:format(self:SpellName(-9945), aberrationCount)) -- Arcane Aberration
+	self:CDBar(158605, 38) -- Mark of Chaos
+	self:CDBar(157349, 48) -- Force Nova
+	if args.spellId ~= 157964 or self:Mythic() then -- Replication is the last phase
+		self:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", nil, "boss1")
+	end
+	if args.spellId == 157964 and self:Mythic() then
+		self:RegisterEvent("CHAT_MSG_MONSTER_YELL", "Phase4")
 	end
 end
 
