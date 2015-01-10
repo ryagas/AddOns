@@ -1,4 +1,12 @@
 ------------------------------------------------------------------------
+r41 | thaoky | 2015-01-09 17:11:55 +0000 (Fri, 09 Jan 2015) | 2 lines
+Changed paths:
+   M /trunk/DataStore_Inventory.lua
+   M /trunk/Options.xml
+
+- Fixed usage of options
+- XML frames cleanup
+------------------------------------------------------------------------
 r40 | thaoky | 2014-12-27 13:21:51 +0000 (Sat, 27 Dec 2014) | 1 line
 Changed paths:
    M /trunk/Options.lua

@@ -1,4 +1,23 @@
 ------------------------------------------------------------------------
+r8 | thaoky | 2015-01-09 17:35:48 +0000 (Fri, 09 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Locales/repoenUS.lua
+
+Added 2 missing localizations
+------------------------------------------------------------------------
+r7 | thaoky | 2015-01-09 17:11:11 +0000 (Fri, 09 Jan 2015) | 6 lines
+Changed paths:
+   M /trunk/DataStore_Garrisons.lua
+   M /trunk/Options.lua
+   M /trunk/Options.xml
+
+- Added an option to select at which level uncollected resources should be reported
+- Followers are now stored by id, instead of by name
+- Added tracking of abilities, traits, and ability counters
+- Fixed resetting the uncollected resource timer
+- Fixed usage of options
+- XML frames cleanup
+------------------------------------------------------------------------
 r6 | thaoky | 2014-12-27 13:45:04 +0000 (Sat, 27 Dec 2014) | 1 line
 Changed paths:
    M /trunk/DataStore_Garrisons.toc

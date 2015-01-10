@@ -1,4 +1,15 @@
 ------------------------------------------------------------------------
+r40 | thaoky | 2015-01-09 17:14:31 +0000 (Fri, 09 Jan 2015) | 4 lines
+Changed paths:
+   M /trunk/DataStore_Mails.lua
+   M /trunk/Options.lua
+   M /trunk/Options.xml
+
+- Added an option to report expired mails to the chat frame
+- Fixed usage of options
+- XML frames cleanup
+
+------------------------------------------------------------------------
 r39 | thaoky | 2014-12-27 13:22:45 +0000 (Sat, 27 Dec 2014) | 1 line
 Changed paths:
    M /trunk/DataStore_Mails.lua

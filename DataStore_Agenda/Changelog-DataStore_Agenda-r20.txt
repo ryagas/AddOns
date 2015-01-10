@@ -1,44 +1,29 @@
 ------------------------------------------------------------------------
-r40 | thaoky | 2014-12-27 13:17:28 +0000 (Sat, 27 Dec 2014) | 1 line
+r20 | thaoky | 2015-01-09 17:01:50 +0000 (Fri, 09 Jan 2015) | 1 line
 Changed paths:
-   M /trunk/Options.lua
-   M /trunk/Options.xml
+   M /trunk/DataStore_Agenda.lua
 
-Modified options pane to use parentKey references
+- Fixed ClearExpiredDungeons()
 ------------------------------------------------------------------------
-r37 | thaoky | 2014-12-24 13:48:00 +0000 (Wed, 24 Dec 2014) | 2 lines
+r19 | thaoky | 2014-12-27 13:09:17 +0000 (Sat, 27 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/DataStore_Agenda.lua
+
+Fixed ClearExpiredDungeons()
+------------------------------------------------------------------------
+r17 | thaoky | 2014-12-24 13:46:59 +0000 (Wed, 24 Dec 2014) | 2 lines
 Changed paths:
    M /trunk/.pkgmeta
-   M /trunk/DataStore_Auctions.toc
+   M /trunk/DataStore_Agenda.toc
    D /trunk/Libs
-   M /trunk/Locales/deDE.lua
-   M /trunk/Locales/enUS.lua
-   M /trunk/Locales/esES.lua
-   A /trunk/Locales/esMX.lua (from /trunk/Locales/esMX.lua:34)
-   M /trunk/Locales/frFR.lua
-   M /trunk/Locales/itIT.lua
-   M /trunk/Locales/koKR.lua
-   M /trunk/Locales/ptBR.lua
-   A /trunk/Locales/repoenUS.lua (from /trunk/Locales/repoenUS.lua:34)
-   M /trunk/Locales/ruRU.lua
-   M /trunk/Locales/zhCN.lua
-   M /trunk/Locales/zhTW.lua
-   M /trunk/Options.lua
-   A /trunk/locale.xml (from /trunk/locale.xml:34)
 
 .toc update to use project-version
 Reverted changes by Myrrodin.
 ------------------------------------------------------------------------
-r36 | myrroddin | 2014-11-30 05:50:44 +0000 (Sun, 30 Nov 2014) | 1 line
+r16 | myrroddin | 2014-11-30 03:30:17 +0000 (Sun, 30 Nov 2014) | 2 lines
 Changed paths:
    M /trunk/.pkgmeta
-
-- Oops, wrong pkgmeta. Sorry!
-------------------------------------------------------------------------
-r35 | myrroddin | 2014-11-30 05:41:26 +0000 (Sun, 30 Nov 2014) | 5 lines
-Changed paths:
-   M /trunk/.pkgmeta
-   M /trunk/DataStore_Auctions.toc
+   M /trunk/DataStore_Agenda.toc
    A /trunk/Libs
    A /trunk/Libs/Ace3.lua
    A /trunk/Libs/Ace3.toc
@@ -127,30 +112,7 @@ Changed paths:
    A /trunk/Libs/LibStub
    A /trunk/Libs/LibStub/LibStub.lua
    A /trunk/Libs/changelog.txt
-   M /trunk/Locales/deDE.lua
-   M /trunk/Locales/enUS.lua
-   M /trunk/Locales/esES.lua
-   D /trunk/Locales/esMX.lua
-   M /trunk/Locales/frFR.lua
-   M /trunk/Locales/itIT.lua
-   M /trunk/Locales/koKR.lua
-   M /trunk/Locales/ptBR.lua
-   D /trunk/Locales/repoenUS.lua
-   M /trunk/Locales/ruRU.lua
-   M /trunk/Locales/zhCN.lua
-   M /trunk/Locales/zhTW.lua
-   M /trunk/Options.lua
-   D /trunk/locale.xml
 
-- Load support libs properly
-- Merge esES and esMX together
-- Fix localization strings so debugging works
-- Don't load a file to load a file to load a file...
-- Adjust ToC and pkgmeta to correct methods
-------------------------------------------------------------------------
-r34 | thaoky | 2014-10-17 17:02:01 +0000 (Fri, 17 Oct 2014) | 1 line
-Changed paths:
-   M /trunk/DataStore_Auctions.toc
-
-6.0.001 Commit
+- Properly load support libs
+- Adjust pkgmeta and ToC accordingly
 ------------------------------------------------------------------------

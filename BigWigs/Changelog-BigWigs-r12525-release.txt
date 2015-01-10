@@ -1,9 +1,110 @@
 ------------------------------------------------------------------------
-r12508 | funkydude | 2015-01-06 10:59:13 +0000 (Tue, 06 Jan 2015) | 1 line
+r12525 | funkydude | 2015-01-09 22:18:31 +0000 (Fri, 09 Jan 2015) | 1 line
 Changed paths:
-   A /tags/r12508-release (from /trunk:12507)
+   A /tags/r12525-release (from /trunk:12524)
 
-Tagging as r12508-release
+Tagging as r12525-release
+------------------------------------------------------------------------
+r12524 | funkydude | 2015-01-09 21:30:38 +0000 (Fri, 09 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+
+Bump version
+------------------------------------------------------------------------
+r12523 | funkydude | 2015-01-08 21:38:28 +0000 (Thu, 08 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Core/BossPrototype.lua
+
+BossPrototype: Tiny speedup in icon fetching.
+------------------------------------------------------------------------
+r12522 | funkydude | 2015-01-08 17:03:57 +0000 (Thu, 08 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/Margok.lua
+
+Use .isEngaged to prevent false messages on out of combat buff gains.
+------------------------------------------------------------------------
+r12521 | nebula169 | 2015-01-08 12:49:49 +0000 (Thu, 08 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: make Arcane Wound TANK_HEALER and change it to a TargetMessage
+------------------------------------------------------------------------
+r12520 | nebula169 | 2015-01-08 09:17:35 +0000 (Thu, 08 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: show if arcane empowered on the bar for mythic
+------------------------------------------------------------------------
+r12519 | nebula169 | 2015-01-08 00:21:51 +0000 (Thu, 08 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: revert phase start change
+------------------------------------------------------------------------
+r12518 | funkydude | 2015-01-07 22:03:37 +0000 (Wed, 07 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Trash.lua
+
+Trash: add rune of destruction.
+------------------------------------------------------------------------
+r12517 | funkydude | 2015-01-07 21:13:30 +0000 (Wed, 07 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Trash.lua
+
+Trash: add rune of disintegration.
+------------------------------------------------------------------------
+r12516 | elvador | 2015-01-07 12:33:19 +0000 (Wed, 07 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: Count Glimpse of Madness spawns
+------------------------------------------------------------------------
+r12515 | nebula169 | 2015-01-07 09:04:58 +0000 (Wed, 07 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+   M /trunk/Highmaul/Margok.lua
+
+move some more unit events to cleu
+------------------------------------------------------------------------
+r12514 | nebula169 | 2015-01-07 03:45:07 +0000 (Wed, 07 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: switch some unit events to cleu
+------------------------------------------------------------------------
+r12513 | funkydude | 2015-01-07 02:07:50 +0000 (Wed, 07 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/KargathBladefist.lua
+   M /trunk/Highmaul/Margok.lua
+   M /trunk/Highmaul/Tectus.lua
+   M /trunk/Highmaul/TheButcher.lua
+
+Highmaul: commented out improvements for next patch.
+------------------------------------------------------------------------
+r12512 | nebula169 | 2015-01-07 01:11:10 +0000 (Wed, 07 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: tweaks
+------------------------------------------------------------------------
+r12511 | nebula169 | 2015-01-07 00:52:56 +0000 (Wed, 07 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: pause all the things
+------------------------------------------------------------------------
+r12510 | nebula169 | 2015-01-06 22:17:25 +0000 (Tue, 06 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: delay the Overwhelming Power message
+------------------------------------------------------------------------
+r12509 | nebula169 | 2015-01-06 21:57:52 +0000 (Tue, 06 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: fix mc bars and reschedule the "soon" message when barrier goes down
 ------------------------------------------------------------------------
 r12507 | funkydude | 2015-01-06 10:50:28 +0000 (Tue, 06 Jan 2015) | 1 line
 Changed paths:
@@ -1239,254 +1340,4 @@ Changed paths:
    M /trunk/Highmaul/Koragh.lua
 
 Koragh: tweaks
-------------------------------------------------------------------------
-r12314 | nebula169 | 2014-12-08 16:50:07 +0000 (Mon, 08 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Koragh.lua
-
-Koragh: add initial timers for Overwhelming Power and Dominating Mind
-------------------------------------------------------------------------
-r12313 | nebula169 | 2014-12-08 16:14:45 +0000 (Mon, 08 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Koragh.lua
-
-Koragh: add Overwhelming Energy
-------------------------------------------------------------------------
-r12312 | funkydude | 2014-12-08 15:28:30 +0000 (Mon, 08 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Brackenspore.lua
-   M /trunk/Highmaul/KargathBladefist.lua
-   M /trunk/Highmaul/Tectus.lua
-   M /trunk/Highmaul/TheButcher.lua
-
-Highmaul: Cleanup boss options.
-------------------------------------------------------------------------
-r12311 | nebula169 | 2014-12-08 09:55:30 +0000 (Mon, 08 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: add Fixate proximity, leave the early cast warning for Mark of Chaos but move everything else back to SPELL_AURA_APPLIED
-------------------------------------------------------------------------
-r12310 | nebula169 | 2014-12-08 04:41:28 +0000 (Mon, 08 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: fix second intermission, warn for Mark of Chaos on cast, don't get fancy with Branded in LFR, timer tweaks
-------------------------------------------------------------------------
-r12309 | nebula169 | 2014-12-08 03:07:47 +0000 (Mon, 08 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: fix Branded, remove debug
-------------------------------------------------------------------------
-r12307 | funkydude | 2014-12-08 01:55:21 +0000 (Mon, 08 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/BigWigs.toc
-   M /trunk/Highmaul/Margok.lua
-
-Margok: add an extra print to weed the application function out as a source of errors.
-------------------------------------------------------------------------
-r12306 | funkydude | 2014-12-08 01:46:08 +0000 (Mon, 08 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: few more bugfixes.
-------------------------------------------------------------------------
-r12305 | funkydude | 2014-12-08 01:32:01 +0000 (Mon, 08 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: cleanup options
-------------------------------------------------------------------------
-r12304 | funkydude | 2014-12-08 01:23:09 +0000 (Mon, 08 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Plugins/Messages.lua
-
-Messages: Translate menu entry.
-------------------------------------------------------------------------
-r12303 | funkydude | 2014-12-08 01:19:47 +0000 (Mon, 08 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Plugins/Statistics.lua
-
-Statistics: Translate menu entry.
-------------------------------------------------------------------------
-r12302 | funkydude | 2014-12-07 23:42:35 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: Fix initial mark of chaos timer, attempt to fix the Branded stack errors for some users.
-------------------------------------------------------------------------
-r12301 | funkydude | 2014-12-07 22:33:37 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Options/Options.lua
-
-Options: Fix opening main config when a boss is enabled.
-------------------------------------------------------------------------
-r12300 | funkydude | 2014-12-07 21:06:50 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: Fix error on Branded and fix incorrect range calculation. Also mark branded with "ME_ONLY" as the warnings are somewhat spammy, the say message seems to be enough. If you want spammed by these warnings, untick "me only" for Branded.
-------------------------------------------------------------------------
-r12298 | funkydude | 2014-12-07 17:10:03 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Options/Options.lua
-
-Options: Kill tooltip for boss button.
-------------------------------------------------------------------------
-r12297 | funkydude | 2014-12-07 17:02:19 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Options/Options.lua
-
-Options: Add temp button for opening the boss options.
-------------------------------------------------------------------------
-r12296 | nebula169 | 2014-12-07 16:50:53 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: no count on first stack
-------------------------------------------------------------------------
-r12295 | funkydude | 2014-12-07 16:48:38 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/BigWigs.toc
-
-bump to v4.6, new options panel
-------------------------------------------------------------------------
-r12294 | nebula169 | 2014-12-07 16:41:19 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: fix proximity calls
-------------------------------------------------------------------------
-r12293 | nebula169 | 2014-12-07 16:36:49 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Locales/deDE.lua
-   M /trunk/Highmaul/Locales/esES.lua
-   M /trunk/Highmaul/Locales/frFR.lua
-   M /trunk/Highmaul/Locales/itIT.lua
-   M /trunk/Highmaul/Locales/koKR.lua
-   M /trunk/Highmaul/Locales/ptBR.lua
-   M /trunk/Highmaul/Locales/ruRU.lua
-   M /trunk/Highmaul/Locales/zhCN.lua
-   M /trunk/Highmaul/Locales/zhTW.lua
-
-update locales
-------------------------------------------------------------------------
-r12292 | nebula169 | 2014-12-07 16:35:18 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: fix Branded proximity distance after Mark of Chaos
-------------------------------------------------------------------------
-r12291 | nebula169 | 2014-12-07 16:24:49 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: fix Fixate marking! separate Branded into it's own option, add a target message, add proximity when you have it and the jump is under 50 yards, add distance to say when under 50 yards
-------------------------------------------------------------------------
-r12290 | funkydude | 2014-12-07 16:18:16 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Locales/enUS.lua
-   M /trunk/Options/Options.lua
-
-Translate the main buttons.
-------------------------------------------------------------------------
-r12289 | funkydude | 2014-12-07 15:30:59 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Locales/enUS.lua
-   M /trunk/Plugins/Bars.lua
-   M /trunk/Plugins/Locales/enUS.lua
-   M /trunk/Plugins/Messages.lua
-
-Translate some option names.
-------------------------------------------------------------------------
-r12288 | nebula169 | 2014-12-07 15:20:03 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Options/Options.lua
-
-Options: add subPanelOptions to the options tree
-------------------------------------------------------------------------
-r12287 | funkydude | 2014-12-07 15:14:19 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/BlackrockFoundry/Locales/esES.lua
-   M /trunk/Highmaul/Locales/esES.lua
-
-fix esMX
-------------------------------------------------------------------------
-r12286 | funkydude | 2014-12-07 14:38:02 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Options/Options.lua
-
-Options: Temporarily create 3rd party plugins in their own separate blizz panels.
-------------------------------------------------------------------------
-r12285 | nebula169 | 2014-12-07 02:59:07 +0000 (Sun, 07 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Options/Options.lua
-
-Options: fix options for non-lod
-------------------------------------------------------------------------
-r12284 | jongt23 | 2014-12-06 23:42:54 +0000 (Sat, 06 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Locales/esES.lua
-
-esES update
-------------------------------------------------------------------------
-r12283 | funkydude | 2014-12-06 22:48:27 +0000 (Sat, 06 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Plugins/Bars.lua
-
-Bars: Organize the config table.
-------------------------------------------------------------------------
-r12282 | funkydude | 2014-12-06 22:35:38 +0000 (Sat, 06 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Options/Options.lua
-
-Options: Remove a callback register.
-------------------------------------------------------------------------
-r12281 | funkydude | 2014-12-06 22:33:00 +0000 (Sat, 06 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Loader.lua
-   M /trunk/Options/Options.lua
-   M /trunk/Plugins/AltPower.lua
-   M /trunk/Plugins/Bars.lua
-   M /trunk/Plugins/Emphasize.lua
-   M /trunk/Plugins/Messages.lua
-   M /trunk/Plugins/Proximity.lua
-   M /trunk/Plugins/Statistics.lua
-
-First run through the configuration shuffling to use a dedicated AceGUI window, whilst merging all the configuration together. Further improvements (and translations) will happen.
-------------------------------------------------------------------------
-r12280 | nebula169 | 2014-12-06 03:15:21 +0000 (Sat, 06 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: pull the Branded count from UnitDebuff
-------------------------------------------------------------------------
-r12279 | nebula169 | 2014-12-06 02:49:03 +0000 (Sat, 06 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: show the player in the say
-------------------------------------------------------------------------
-r12278 | nebula169 | 2014-12-06 02:34:31 +0000 (Sat, 06 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-   M /trunk/Highmaul/Tectus.lua
-
-Margok: fix Branded say
-------------------------------------------------------------------------
-r12277 | funkydude | 2014-12-06 01:06:41 +0000 (Sat, 06 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Core/BossPrototype.lua
-   M /trunk/Core/Constants.lua
-   M /trunk/Core/Core.lua
-   M /trunk/Locales/enUS.lua
-
-Initial support for using a voice plugin.
-------------------------------------------------------------------------
-r12276 | funkydude | 2014-12-06 00:35:22 +0000 (Sat, 06 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/TwinOgron.lua
-
-TwinOgron: Add enrage.
 ------------------------------------------------------------------------
