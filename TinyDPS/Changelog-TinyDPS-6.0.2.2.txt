@@ -1,0 +1,12 @@
+tag 6.0.2.2
+bed6f6d601c6762f43b94324dff9ab7d49366378
+Talyrius <talyrius@gmail.com>
+2014-10-22 13:46:46 -0700
+
+Tagging as 6.0.2.2
+
+
+--------------------
+
+Talyrius:
+	- Fixed boss fight detection and performed some code cleanup
