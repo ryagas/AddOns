@@ -5,7 +5,7 @@
 local L = LibStub("AceLocale-3.0"):GetLocale("Big Wigs: Common")
 local BW_L = LibStub("AceLocale-3.0"):GetLocale("Big Wigs")
 local UnitAffectingCombat, UnitIsPlayer, UnitGUID, UnitPosition, UnitDistanceSquared, UnitIsConnected = UnitAffectingCombat, UnitIsPlayer, UnitGUID, UnitPosition, UnitDistanceSquared, UnitIsConnected
-local EJ_GetSectionInfo, GetSpellInfo = EJ_GetSectionInfo, GetSpellInfo
+local EJ_GetSectionInfo, GetSpellInfo, GetSpellTexture = EJ_GetSectionInfo, GetSpellInfo, GetSpellTexture
 local format, sub, gsub, band = string.format, string.sub, string.gsub, bit.band
 local type, next, tonumber = type, next, tonumber
 local core = BigWigs
@@ -63,10 +63,10 @@ local eventMap = setmetatable({}, metaMap)
 local unitEventMap = setmetatable({}, metaMap)
 local icons = setmetatable({}, {__index =
 	function(self, key)
-		local _, value
+		local value
 		if type(key) == "number" then
 			if key > 0 then
-				_, _, value = GetSpellInfo(key)
+				value = GetSpellTexture(key)
 				if not value then
 					core:Print(format("An invalid spell id (%d) is being used in a bar/message.", key))
 				end
@@ -1089,6 +1089,31 @@ function boss:StopBar(text, player)
 		self:SendMessage("BigWigs_StopBar", self, type(text) == "number" and spells[text] or text)
 		self:SendMessage("BigWigs_StopEmphasize", self, type(text) == "string" and text or spells[text])
 	end
+end
+
+function boss:PauseBar(key, text)
+	local msg = text or spells[key]
+	self:SendMessage("BigWigs_PauseBar", self, msg)
+	self:SendMessage("BigWigs_StopEmphasize", self, msg)
+end
+
+function boss:ResumeBar(key, text)
+	local msg = text or spells[key]
+	self:SendMessage("BigWigs_ResumeBar", self, msg)
+	if checkFlag(self, key, C.EMPHASIZE) then
+		local length = self:BarTimeLeft(msg)
+		if length > 0 then
+			self:SendMessage("BigWigs_StartEmphasize", self, msg, length)
+		end
+	end
+end
+
+function boss:BarTimeLeft(text)
+	local bars = core:GetPlugin("Bars")
+	if bars then
+		return bars:GetBarTimeLeft(self, type(text) == "number" and spells[text] or text)
+	end
+	return 0
 end
 
 -- ICONS

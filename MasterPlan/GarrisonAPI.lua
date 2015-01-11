@@ -1,9 +1,9 @@
 local api, _, T = {}, ...
-if T.Mark ~= 16 then return end
+if T.Mark ~= 23 then return end
 local EV, L = T.Evie, {}
 setmetatable(L, {__call=function(self,k) if T.L then L = T.L return L(k) end return k end})
 
-local f, data, mechanics = CreateFrame("Frame"), {}, {}
+local f, data = CreateFrame("Frame"), {}
 f:SetScript("OnUpdate", function(self) wipe(data) self:Hide() end)
 hooksecurefunc(C_Garrison, "StartMission", function() wipe(data) end)
 
@@ -130,13 +130,6 @@ local dropFollowers, missionDuration = {}, {} do -- Start/Available capture
 	end)
 end
 
-local function populateMechanics()
-	local q = C_Garrison.GetFollowerAbilityCounterMechanicInfo
-	for _, aid in pairs({11, 100, 168, 148, 160, 101, 105, 157, 122}) do
-		local mid, _, tex = q(aid)
-		mechanics[mid], mechanics[tex:lower():gsub("%.blp$","")] = aid, aid
-	end
-end
 local function AddCounterMechanic(fit, fabid)
 	if fabid and fabid > 0 then
 		if C_Garrison.GetFollowerAbilityIsTrait(fabid) then
@@ -144,7 +137,7 @@ local function AddCounterMechanic(fit, fabid)
 		else
 			local mid, _, tex = C_Garrison.GetFollowerAbilityCounterMechanicInfo(fabid)
 			if tex then
-				fit.counters[fabid], mechanics[mid], mechanics[tex:lower():gsub("%.blp$","")] = mid, fabid, fabid
+				fit.counters[fabid] = mid
 			end
 		end
 	end
@@ -159,11 +152,12 @@ local function SetFollowerInfo(t)
 		if v.isCollected then
 			local fid, fit = v.followerID, v
 			v.counters, v.traits, v.isCombat = {}, {}, v.isCollected and not unfreeStatusOrder[v.status] or false
-			for i=1,4 do
+			for i=1,2 do
 				AddCounterMechanic(fit, C_Garrison.GetFollowerAbilityAtIndex(fid, i))
 				AddCounterMechanic(fit, C_Garrison.GetFollowerTraitAtIndex(fid, i))
 			end
-			ft[fid] = fit
+			AddCounterMechanic(fit, C_Garrison.GetFollowerTraitAtIndex(fid, 3))
+			ft[fid], v.affinity = fit, T.Affinities[v.garrFollowerID or v.followerID]
 		end
 	end
 	for k, v in pairs(C_Garrison.GetInProgressMissions()) do
@@ -238,19 +232,41 @@ function api.GetFollowerTraits()
 				local t = ci[k] or {}
 				ci[k], t[#t+1] = t, fid
 			end
+			local k = info.affinity
+			if k and k > 0 then
+				local t = ci[-k] or {}
+				ci[-k], t[#t+1] = t, fid
+			end
 		end
 		data.traits = ci
 		f:Show()
 	end
 	return data.traits
 end
-function api.GetMechanicInfo(mid)
-	if populateMechanics then
-		populateMechanics = populateMechanics()
+do -- api.GetMechanicInfo(mid/tex), api.GetMechanicDescription(mid)
+	local counter, desc = {}, {}
+	local function populate()
+		for _, fid in pairs({6, 118, 127, 131, 138, 140, 144}) do
+			for _, a in pairs(C_Garrison.GetFollowerAbilities(fid)) do
+				for k,t in pairs(a.counters) do
+					counter[k], counter[t.icon:lower():gsub("%.blp$","")], desc[k] = a.id, a.id, t.description
+				end
+			end
+		end
 	end
-	if not mechanics[mid] then api.GetFollowerInfo() end
-	if mechanics[mid] then
-		return C_Garrison.GetFollowerAbilityCounterMechanicInfo(mechanics[mid])
+	function api.GetMechanicInfo(mid)
+		if populate then
+			populate = populate()
+		end
+		if counter[mid] then
+			return C_Garrison.GetFollowerAbilityCounterMechanicInfo(counter[mid])
+		end
+	end
+	function api.GetMechanicDescription(tid)
+		if populate then
+			populate = populate()
+		end
+		return desc[tid]
 	end
 end
 function api.GetMissionThreats(missionID)
@@ -555,7 +571,7 @@ do -- GetMissionSeen
 end
 
 do -- PrepareAllMissionGroups/GetMissionGroups {sc xp gr ti p1 p2 p3 xp pb}
-	local msf, msi, msd, mmi = {}, {}, {}
+	local msf, msi, msd, mmi, finfo = {}, {}, {}
 	local suppressFollowerEvents, releaseFollowerEvents do
 		local level, frames, followers = 0
 		local function failsafe()
@@ -601,6 +617,10 @@ do -- PrepareAllMissionGroups/GetMissionGroups {sc xp gr ti p1 p2 p3 xp pb}
 			end
 		end
 	end
+	local function cmp_level(a, b)
+		local a, b = finfo[a], finfo[b]
+		return (a.level + a.iLevel) > (b.level + b.iLevel)
+	end
 	function api.PrepareAllMissionGroups()
 		mmi = C_Garrison.GetAvailableMissions(mmi)
 		suppressFollowerEvents()
@@ -613,8 +633,9 @@ do -- PrepareAllMissionGroups/GetMissionGroups {sc xp gr ti p1 p2 p3 xp pb}
 		mmi = nil
 	end
 	function api.GetMissionGroups(mid, trustValid)
-		if not trustValid then
-			local finfo, valid, fn = api.GetFollowerInfo(), true, 1
+		if not trustValid or not msi[1] then
+			finfo = api.GetFollowerInfo()
+			local valid, fn = true, 1
 			for k,v in pairs(finfo) do
 				if v.isCollected and v.status ~= GARRISON_FOLLOWER_INACTIVE then
 					local key = v.level .. "#" .. v.iLevel
@@ -627,12 +648,14 @@ do -- PrepareAllMissionGroups/GetMissionGroups {sc xp gr ti p1 p2 p3 xp pb}
 			for i=fn,#msi do
 				valid, msi[i] = false
 			end
+			table.sort(msi, cmp_level)
 			for k,v in pairs(msf) do
 				if not (finfo[k] and finfo[k].isCollected and finfo[k].status ~= GARRISON_FOLLOWER_INACTIVE) then
 					valid, msf[k] = false
 				end
 			end
 			if not valid then wipe(msd) end
+			finfo = nil
 		end
 		if not msd[mid] then
 			local mmi, mi = mmi or C_Garrison.GetAvailableMissions()
@@ -743,15 +766,15 @@ do -- GetBackfillMissionGroups(minfo, filter, cmp, f1, f2, f3, f4)
 		return api.GetFilteredMissionGroups(mi, (af1 or af2 or af3) and backfillFilter or afilter, cmp or api.GetMissionDefaultGroupRank(mi), limit)
 	end
 end
-function api.GetBuffsXPMultiplier(buffs)
-	local mul = 1
-	for i=1,#buffs do
-		local v = buffs[i]
-		if v == 80 or v == 236 then
-			mul = mul + 0.30
+do -- api.GetBuffsXPMultiplier(buffs)
+	local xpBuffs = {[80]=0.30, [236]=0.35}
+	function api.GetBuffsXPMultiplier(buffs)
+		local mul = 1
+		for i=1,#buffs do
+			mul = mul + (xpBuffs[buffs[i]] or 0)
 		end
+		return mul
 	end
-	return mul
 end
 function api.GetFollowerXPGain(fi, mlvl, base, bonus)
 	if fi.quality == 4 and fi.level == 100 then
@@ -904,8 +927,11 @@ api.GroupRank, api.GroupFilter = {}, {} do
 		end
 		return ac > bc
 	end
-	function api.GroupRank.xp2(a, b, ...)
+	function api.GroupRank.threats2(a, b, ...)
 		local ac, bc = a[1], b[1]
+		if ac == bc then
+			ac, bc = a[3]*a[1], b[3]*b[1]
+		end
 		if ac == bc then
 			return xp(a, b, ...)
 		end
@@ -1023,7 +1049,7 @@ do -- api.GetSuggestedGroups(mi, onlyBackfill, f1, f2, f3)
 			end
 		end
 		if best < 100 then
-			local bg = api.GetBackfillMissionGroups(mi, api.GroupFilter.IDLE, api.GroupRank[rt == "xp" and "xp2" or "threats"], 1, f1, f2, f3)
+			local bg = api.GetBackfillMissionGroups(mi, api.GroupFilter.IDLE, api.GroupRank[rt == "xp" and "threats2" or "threats"], 1, f1, f2, f3)
 			if bg and bg[1] and bg[1][1] > best then
 				g[#g + 1] = bg[1]
 			end
@@ -1091,6 +1117,13 @@ function api.ExtendFollowerTooltipMissionRewardXP(mi, fi)
 			
 			local toLevel, wmul = fi.levelXP - fi.xp, tip.XPBarBackground:GetWidth()/fi.levelXP
 			tip.XPBarBackground:SetTexture(0.25, 0.25, 0.25)
+			if tip.XPBar:IsShown() then
+				tip.XPRewardBase:SetPoint("TOPLEFT", tip.XPBar, "TOPRIGHT")
+				tip.XPRewardBase:SetPoint("BOTTOMLEFT", tip.XPBar, "BOTTOMRIGHT")
+			else
+				tip.XPRewardBase:SetPoint("TOPLEFT", tip.XPBarBackground, "TOPLEFT")
+				tip.XPRewardBase:SetPoint("BOTTOMLEFT", tip.XPBarBackground, "BOTTOMLEFT")
+			end
 			tip.XPRewardBase:SetWidth(math.max(0.01, math.min(toLevel, base)*wmul))
 			tip.XPRewardBonus:SetWidth(math.max(0.01, math.min(toLevel-base, bonus)*wmul))
 			tip.XPRewardBonus:SetShown(bonus > 0 and toLevel > base)
@@ -1107,13 +1140,16 @@ function api.ExtendFollowerTooltipMissionRewardXP(mi, fi)
 	end
 end
 
-function api.GetGroupEstimates(missions)
-	local ft, fc, f = {}, 0, C_Garrison.GetFollowers()
+function api.UpdateGroupEstimates(missions, useInactive)
+	local ft, nf, f = {}, 0, C_Garrison.GetFollowers()
 	for i=1,#f do
 		local fi = f[i]
-		if fi.isCollected and fi.status ~= GARRISON_FOLLOWER_INACTIVE then
-			local cn, tn, fid = 1, 1, fi.followerID
-			fi.counters, fi.traits, fi.traitMap, fc = {}, {}, {}, fc + 1
+		if fi.isCollected and (useInactive or fi.status ~= GARRISON_FOLLOWER_INACTIVE) and not T.config.ignore[fi.followerID] then
+			local cn, tn, fid, af = 1, 1, fi.followerID, T.Affinities[fi.garrFollowerID] or 0
+			fi.counters, fi.traits, fi.affinity, nf = {}, {}, af, nf + 1
+			if (af or 0) > 0 then
+				fi.traits[tn], tn = -af, tn + 1
+			end
 			for i=1,3 do
 				local a = C_Garrison.GetFollowerAbilityAtIndex(fid, i)
 				a = a and a > 0 and C_Garrison.GetFollowerAbilityCounterMechanicInfo(a)
@@ -1122,10 +1158,10 @@ function api.GetGroupEstimates(missions)
 				end
 				a = C_Garrison.GetFollowerTraitAtIndex(fid, i)
 				if a and a > 0 then
-					fi.traits[tn], fi.traitMap[a], tn = a, i, tn + 1
+					fi.traits[tn], tn, fi.saffinity = a, tn + 1, a == af or fi.saffinity or nil
 				end
 			end
-			ft[fc] = fi
+			ft[nf], fi.active, fi.working = fi, fi.status ~= GARRISON_FOLLOWER_INACTIVE and 1 or 0, fi.status == GARRISON_FOLLOWER_WORKING and 1 or 0
 		end
 	end
 	f = ft
@@ -1137,108 +1173,132 @@ function api.GetGroupEstimates(missions)
 		t[#t+1], ms[sz], best[missions[i][1]] = missions[i], t, {-1}
 	end
 
-	local counters = {}
-	local m2, m3 = ms[2], ms[3]
-	local n2, n3 = #m2, #m3
-	for a=1,fc do
-		local co = f[a].counters
-		for i=1,#co do
-			local v = co[i]
-			counters[v] = (counters[v] or 0) + 1
+	local counters, traits, m2, m3 = {}, {[221]=0, [79]=0, [77]=0, [76]=0, [244]=0, [201]=0, [202]=0, [232]=0}, ms[2], ms[3]
+	local n2, n3, s1, s2, ec = #m2, #m3, 17592186044416, 68719476736, T.EnvironmentCounters
+	for a=1,nf do
+		local fa = f[a]
+		for i=1,2 do
+			local s, t = fa[i == 1 and "counters" or "traits"], i == 1 and counters or traits
+			for i=1,#s do
+				local v = s[i]
+				t[v] = (t[v] or 0) + 1
+			end
 		end
-		local ns = (f[a].traitMap[79] and 1 or 0)
+		local na, nw = fa.active, fa.working
 					
-		for b=a+1,fc do
-			local co = f[b].counters
-			for i=1,#co do
-				local v = co[i]
-				counters[v] = (counters[v] or 0) + 1
-			end
-			local ns = ns + (f[b].traitMap[79] and 1 or 0)
+		for b=a+1,nf do
+			local fb = f[b]
+			local na, nw = na + fb.active, nw + fb.working
 			
-			for i=1, n2 do
-				local mi, nc, l = m2[i], 0
-				for i=6,#mi do
-					local c = mi[i]
-					nc, l = nc + ((counters[c] or 0) > (l == c and 1 or 0) and 1 or 0), c
-				end
-				local best = best[mi[1]]
-				if best[1] <= nc and (best[1] < nc or mi[5] <= 0 or best[3] <= ns) then
-					local mlvl, la, lb = mi[2], f[a].iLevel + f[b].level*3, f[b].iLevel + f[b].level*3
-					mlvl = mlvl > 100 and (mlvl + 300) or (mlvl * 3)
-					local gap = (mlvl > la and (mlvl - la) or 0) + (mlvl > lb and (mlvl - lb) or 0)
-					if best[1] < nc or (mi[5] > 0 and best[3] < ns) or best[2] > gap then
-						best[1], best[2], best[3], best[4], best[5] = nc, gap, ns, a, b
+			local mi, mic, c = m2, n2
+			repeat
+				local fc = f[c or b]
+				local ns, na, nw = traits[79], na + (c and fc.active or 0), nw + (c and fc.working or 0)
+				for i=1,2 do
+					local s, t = fc[i == 1 and "counters" or "traits"], i == 1 and counters or traits
+					for i=1,#s do
+						local v = s[i]
+						t[v] = (t[v] or 0) + 1
 					end
 				end
-			end
-			
-			for c = b+1,fc do
-				local co = f[c].counters
-				for i=1,#co do
-					local v = co[i]
-					counters[v] = (counters[v] or 0) + 1
-				end
-				local ns = ns + (f[c].traitMap[79] and 1 or 0)
 				
-				for i=1, n3 do
-					local mi, nc, l = m3[i], 0
-					for i=6,#mi do
+				for i=1, mic do
+					local mi, l, lc = mi[i]
+					local etc, cap = ec[mi[6]], (#mi-6)*6
+					local nc, d = (etc ~= 0 and traits[etc] or 0) > 0 and (etc == 42 and 1 or 2) or (etc == 4 and traits[244] > 0 and 2) or 0, mi[4]*2^-traits[221]
+					for i=7,#mi do
 						local c = mi[i]
-						nc, l = nc + ((counters[c] or 0) > (l == c and 1 or 0) and 1 or 0), c
+						local need = (l == c and 1 or 0)
+						local cs = (counters[c] or 0) > need and 6 or 0
+						nc, l, lc = nc + cs + (c == 6 and cs == 0 and traits[232] > (need - (need == 1 and lc > 0 and 1 or 0)) and 3 or 0), c, cs
 					end
-					local best = best[mi[1]]
-					if best[1] <= nc and (best[1] < nc or mi[5] <= 0 or best[3] <= ns) then
-						local mlvl, la, lb, lc = mi[2], f[a].iLevel + f[b].level*3, f[b].iLevel + f[b].level*3, f[c].iLevel + f[c].level*3
-						mlvl = mlvl > 100 and (mlvl + 300) or (mlvl * 3)
-						local gap = (mlvl > la and (mlvl - la) or 0) + (mlvl > lb and (mlvl - lb) or 0) + (mlvl > lc and (mlvl - lc) or 0)
-						if best[1] < nc or (mi[5] > 0 and best[3] < ns) or best[2] > gap then
-							best[1], best[2], best[3], best[4], best[5], best[6] = nc, gap, ns, a, b, c
+					nc = nc + traits[(d >= 25200) and 76 or 77]*2 + traits[201]*2 + traits[202]*4
+					if nc < cap then
+						local ra, rb, rc = fa.affinity or 0, fb.affinity, c and fc.affinity
+						local sa, sb, sc = fa.saffinity, fb.saffinity, fc.saffinity
+						if ra == rc or rb == rc then rc, sc = nil end
+						if ra == rb or not rb then rb, sb, rc, sc = rc, sc end
+						repeat
+							local nt, nf = traits[ra] or 0, traits[-ra] or 0
+							if nt == 0 or ra == 0 or nf == 0 then
+							elseif nf > 1 then
+								nc = nc + nt*3
+							else
+								nc = nc + (nt - (sa and 1 or 0))*3
+							end
+							ra, rb, sa, sb, rc = rb, rc, sb, sc
+						until nc >= cap or not ra
+					end
+					nc = nc > cap and cap or nc
+					
+					local best, sc = best[mi[1]], nc * s1
+					if best[1] - sc < s1 then
+						local mlvl, la, lb, lc = mi[2], fa.iLevel + fb.level*3, fb.iLevel + fb.level*3, fc.iLevel + fc.level*3
+						mlvl = mlvl > 100 and (mlvl + 300) or (600 + mlvl * 3)
+						local gap = (mlvl > la and (mlvl - la) or 0) + (mlvl > lb and (mlvl - lb) or 0) + (c and mlvl > lc and (mlvl - lc) or 0)
+						sc = sc + s2 * ((mi[5] > 0 and ns * 16 or 0) + na) + (32768-gap)*16 + traits[221]*4 + (3-nw)
+						if best[1] < sc then
+							best[1], best[2], best[3], best[4] = sc, a, b, c
 						end
 					end
 				end
 				
-				for i=1,#co do
-					local v = co[i]
-					counters[v] = counters[v] - 1
+				for i=1,c and 2 or 0 do
+					local s, t = fc[i == 1 and "counters" or "traits"], i == 1 and counters or traits
+					for i=1,#s do
+						local v = s[i]
+						t[v] = t[v] - 1
+					end
 				end
-			end
+				
+				c, mi, mic = (c or b) + 1, m3, n3
+			until c > nf
 
-			for i=1,#co do
-				local v = co[i]
-				counters[v] = counters[v] - 1
+			for i=1,2 do
+				local s, t = fb[i == 1 and "counters" or "traits"], i == 1 and counters or traits
+				for i=1,#s do
+					local v = s[i]
+					t[v] = t[v] - 1
+				end
 			end
 		end
 		
-		for i=1,#co do
-			local v = co[i]
-			counters[v] = counters[v] - 1
+		for i=1,2 do
+			local s, t = fa[i == 1 and "counters" or "traits"], i == 1 and counters or traits
+			for i=1,#s do
+				local v = s[i]
+				t[v] = t[v] - 1
+			end
 		end
 	end
 	
 	for i=1,#missions do
 		local best = best[missions[i][1]]
-		if best[1] > 0 then
-			wipe(counters)
-			local bt, mi, l, co = {[4]=best[6]}, missions[i]
-			for i=4,#best do
-				co, bt[i-3] = f[best[i]].counters, f[best[i]].followerID
-				for i=1,#co do
-					local v = co[i]
-					counters[v] = (counters[v] or 0) + 1
+		if best and best[1] > 0 then
+			wipe(counters) wipe(traits)
+			local bt, mi, l = {}, missions[i]
+			for i=1, mi[3] do
+				local fi = f[best[1+i]]
+				bt[i] = fi.followerID
+				for i=1,2 do
+					local s, t = fi[i == 1 and "counters" or "traits"], i == 1 and counters or traits
+					for i=1,#s do
+						local v = s[i]
+						t[v] = (t[v] or 0) + 1
+					end
 				end
 			end
-			for i=6,#mi do
+			bt[4], bt[5] = traits[79] or 0, (floor(best[1]/s1) + mi[3]*2)/((#mi-6)*6 + mi[3]*2)
+			for i=7,#mi do
 				local c = mi[i]
-				bt[i], l = (counters[c] or 0) > (l == c and 1 or 0), c
+				local v, d = counters[c] or 0, l == c and 2 or 1
+				bt[i], l = v > d and 2 or v == d, c
 			end
 			missions[i].best = bt
 		else
 			missions[i].best = nil
 		end
 	end
-	
-	return best
 end
 
 T.Garrison = api

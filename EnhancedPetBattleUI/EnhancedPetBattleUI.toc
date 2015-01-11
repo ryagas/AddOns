@@ -5,10 +5,12 @@
 ## Notes: A Pet Battle Heads Up Display Frame
 ## OptionalDeps: Tukui, ElvUI, AsphyxiaUI-Core, DuffedUI, Enhanced_Config
 ## SavedVariables: EnhancedPetBattleUIOptions
+## X-Tukui-ProjectID: 139
+## X-Tukui-ProjectFolders: EnhancedPetBattleUI
+## X-Curse-Packaged-Version: 2.05
+## X-Curse-Project-Name: EnhancedPetBattleUI
+## X-Curse-Project-ID: tukui-elvui-petbattlehud
+## X-Curse-Repository-ID: wow/tukui-elvui-petbattlehud/mainline
 
 EnhancedPetBattleUI.lua
 
- 
- 
-## X-Tukui-ProjectID: 139
-## X-Tukui-ProjectFolders: EnhancedPetBattleUI

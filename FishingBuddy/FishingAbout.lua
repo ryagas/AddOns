@@ -12,6 +12,7 @@ credits[FBConstants.ROLE_TRANSLATE_ZHTW] = {
 	["Andyca"] = { "V1.0.7a" },
 	["zhTW"] = { "V1.0.9e", },
 	["titanium0107"] = { "V1.1e", "V1.2", "V1.2a", "V1.2c", "V1.2e", },
+	["alec65 "] = { "V1.4u", },
 };
 
 credits[FBConstants.ROLE_TRANSLATE_ITIT] = {
@@ -107,6 +108,7 @@ credits[FBConstants.ROLE_HELP_BUGS] = {
 	["DirtyHarryGermany"] = { "Beta tester", },
 	["Alindrios"] = { "Fish Watcher bugs", },
 	["Dehvid"] = { "64-bit crash bug", },
+	["ProphetV"] = { "Fish Watcher accounting errors", }
 };
 
 -- Ideas and suggestions

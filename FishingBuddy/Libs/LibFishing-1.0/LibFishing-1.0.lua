@@ -7,7 +7,7 @@ Licensed under a Creative Commons "Attribution Non-Commercial Share Alike" Licen
 --]]
 
 local MAJOR_VERSION = "LibFishing-1.0"
-local MINOR_VERSION = 90000 + tonumber(("$Rev: 926 $"):match("%d+"))
+local MINOR_VERSION = 90000 + tonumber(("$Rev: 946 $"):match("%d+"))
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub") end
 
@@ -103,6 +103,21 @@ local FISHINGLURES = {
 		["d"] = 10,
 		["w"] = true,
 	},
+	{	["id"] = 116826,
+		["n"] = "Draenic Fishing Pole",				 -- 200 for 10 minutes
+		["b"] = 200,
+		["s"] = 1,
+		["d"] = 10,
+		["w"] = true,
+	},
+	{	["id"] = 116825,
+		["n"] = "Savage Fishing Pole",				 -- 200 for 10 minutes
+		["b"] = 200,
+		["s"] = 1,
+		["d"] = 10,
+		["w"] = true,
+	},
+
 	{	["id"] = 34832,
 		["n"] = "Captain Rumsey's Lager",			     -- 10 for 3 mins
 		["b"] = 10,

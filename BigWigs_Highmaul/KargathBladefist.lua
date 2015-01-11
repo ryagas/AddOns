@@ -74,6 +74,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_START", "VileBreath", 160521)
 	-- Mythic
 	self:Log("SPELL_AURA_APPLIED", "OnTheHunt", 162497)
+	--self:Log("SPELL_CAST_SUCCESS", "CatSpawn", 181113) -- XXX 6.1
 end
 
 function mod:OnEngage()
@@ -106,6 +107,12 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		end
 	end
 end
+
+-- XXX for patch 6.1
+--function mod:CatSpawn(args)
+--	self:Message(-9396, "Neutral", nil, nil, false) -- Ravenous Bloodmaw
+--	self:Bar(-9396, 110, nil, "ability_druid_tigersroar")
+--end
 
 function mod:OnTheHunt(args)
 	self:TargetMessage(args.spellId, args.destName, "Important", "Alarm")
@@ -200,9 +207,9 @@ do
 	local prev = 0
 	function mod:MaulingBrewDamage(args)
 		local t = GetTime()
-		if self:Me(args.destGUID) and t-prev > 2 then
-			self:Message(args.spellId, "Personal", "Info", CL.underyou:format(args.spellName))
+		if self:Me(args.destGUID) and t-prev > 1 then
 			prev = t
+			self:Message(args.spellId, "Personal", "Info", CL.underyou:format(args.spellName))
 		end
 	end
 end
@@ -211,9 +218,9 @@ do
 	local prev = 0
 	function mod:FlameJetDamage(args)
 		local t = GetTime()
-		if self:Me(args.destGUID) and t-prev > 2 then
-			self:Message(args.spellId, "Personal", "Info", CL.underyou:format(args.spellName))
+		if self:Me(args.destGUID) and t-prev > 1 then
 			prev = t
+			self:Message(args.spellId, "Personal", "Info", CL.underyou:format(args.spellName))
 		end
 	end
 end

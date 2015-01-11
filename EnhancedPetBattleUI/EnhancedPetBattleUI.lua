@@ -1,27 +1,16 @@
 local AddOnName, Engine = ...
-local LSM, Color, EP, BattlePetBreedID = LibStub('LibSharedMedia-3.0'), RAID_CLASS_COLORS[select(2, UnitClass('player'))]
+local LSM, EP = LibStub('LibSharedMedia-3.0'), LibStub('LibElvUIPlugin-1.0')
+local BattlePetBreedID = select(4, GetAddOnInfo('BattlePetBreedID'))
+local Color = RAID_CLASS_COLORS[select(2, UnitClass('player'))]
 local _, BreedInfo, BreedData, FriendFrame, EnemyFrame, CurrentTabard, CurrentHelm, BorderColor = nil
 
 local floor, format, unpack, min, max, select = floor, format, unpack, min, max, select
 
-EnhancedPetBattleUIOptions = {
-	['AlwaysShow'] = false,
-	['HideBlizzard'] = false,
-	['GrowUp'] = false,
-	['StatusBarTexture'] = 'Asphyxia',
-	['Font'] = 'Tukui Pixel',
-	['FontSize'] = 12,
-	['FontFlag'] = 'MONOCHROMEOUTLINE',
-	['TextOffset'] = 2,
-	['EnhanceTooltip'] = true,
-	['LevelBreakdown'] = true,
-	['PetTrackerIcon'] = false,
-	['TeamAurasOnBottom'] = true,
-}
+EnhancedPetBattleUIOptions = {}
 
 local AddOn = {
 	['Version'] = GetAddOnMetadata(AddOnName, 'Version'),
-	['Title'] = GetAddOnMetadata(AddOnName, 'Title'),
+	['Title'] = select(2, GetAddOnInfo(AddOnName)),
 	['TexturePath'] = [[Interface\AddOns\EnhancedPetBattleUI\Textures\]],
 	['TooltipHealthIcon'] = '|TInterface\\PetBattles\\PetBattle-StatIcons:16:16:0:0:32:32:16:32:16:32|t',
 	['TooltipPowerIcon'] = '|TInterface\\PetBattles\\PetBattle-StatIcons:16:16:0:0:32:32:0:16:0:16|t',
@@ -798,16 +787,25 @@ EnhancedPetBattleUI:RegisterEvent('ADDON_LOADED')
 EnhancedPetBattleUI:RegisterEvent('PLAYER_ENTERING_WORLD')
 EnhancedPetBattleUI:SetScript('OnEvent', function(self, event, addon)
 	if addon == AddOnName then
-		EP = LibStub('LibElvUIPlugin-1.0', true)
-		if EP then
-			EP:RegisterPlugin(AddOnName, GetOptions)
-		end
+		local StatusBarTexture, Font, FontFlag = (IsAddOnLoaded('ElvUI') and 'ElvUI Norm' or 'Asphyxia'), (IsAddOnLoaded('ElvUI') and 'ElvUI Font' or 'Tukui Pixel'), (IsAddOnLoaded('ElvUI') and 'OUTLINE' or 'MONOCHROMEOUTLINE')
+		if EnhancedPetBattleUIOptions['AlwaysShow'] == nil then EnhancedPetBattleUIOptions['AlwaysShow'] = false end
+		if EnhancedPetBattleUIOptions['HideBlizzard'] == nil then EnhancedPetBattleUIOptions['HideBlizzard'] = false end
+		if EnhancedPetBattleUIOptions['GrowUp'] == nil then EnhancedPetBattleUIOptions['GrowUp'] = false end
+		if EnhancedPetBattleUIOptions['StatusBarTexture'] == nil then EnhancedPetBattleUIOptions['StatusBarTexture'] = StatusBarTexture end
+		if EnhancedPetBattleUIOptions['Font'] == nil then EnhancedPetBattleUIOptions['Font'] = Font end
+		if EnhancedPetBattleUIOptions['FontSize'] == nil then EnhancedPetBattleUIOptions['FontSize'] = 12 end
+		if EnhancedPetBattleUIOptions['FontFlag'] == nil then EnhancedPetBattleUIOptions['FontFlag'] = FontFlag end
+		if EnhancedPetBattleUIOptions['TextOffset'] == nil then EnhancedPetBattleUIOptions['TextOffset'] = 2 end
+		if EnhancedPetBattleUIOptions['EnhanceTooltip'] == nil then EnhancedPetBattleUIOptions['EnhanceTooltip'] = true end
+		if EnhancedPetBattleUIOptions['LevelBreakdown'] == nil then EnhancedPetBattleUIOptions['LevelBreakdown'] = true end
+		if EnhancedPetBattleUIOptions['PetTrackerIcon'] == nil then EnhancedPetBattleUIOptions['PetTrackerIcon'] = false end
+		if EnhancedPetBattleUIOptions['TeamAurasOnBottom'] == nil then EnhancedPetBattleUIOptions['TeamAurasOnBottom'] = true end
+		BorderColor = { self:GetBackdropBorderColor() }
 
-		BattlePetBreedID = GetAddOnEnableState(UnitName('player'), 'BattlePetBreedID') > 0
 		BreedInfo = LibStub('LibPetBreedInfo-1.0', true)
 		if BreedInfo then BreedData = BreedInfo.breedData self:UnregisterEvent(event) end
 
-		BorderColor = { self:GetBackdropBorderColor() }
+		EP:RegisterPlugin(AddOnName, GetOptions)
 
 		FriendFrame, EnemyFrame = 'EnhancedPetBattleUI_Pet', 'EnhancedPetBattleUI_EnemyPet'
 		tinsert(BaseFrameNames, 'EnhancedPetBattleUI_Pet')

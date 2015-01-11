@@ -699,7 +699,6 @@ do
 						desc = L.restartDesc,
 						order = 3,
 						width = "half",
-						disabled = function() return not db.emphasizeMove end,
 					},
 					emphasizeGrowup = {
 						type = "toggle",
@@ -1038,6 +1037,8 @@ function plugin:OnPluginEnable()
 	colors = BigWigs:GetPlugin("Colors")
 
 	self:RegisterMessage("BigWigs_StartBar")
+	self:RegisterMessage("BigWigs_PauseBar", "PauseBar")
+	self:RegisterMessage("BigWigs_ResumeBar", "ResumeBar")
 	self:RegisterMessage("BigWigs_StopBar", "StopSpecificBar")
 	self:RegisterMessage("BigWigs_StopBars", "StopModuleBars")
 	self:RegisterMessage("BigWigs_OnBossDisable", "StopModuleBars")
@@ -1157,6 +1158,42 @@ do
 end
 
 --------------------------------------------------------------------------------
+-- Pausing bars
+--
+
+function plugin:PauseBar(_, module, text)
+	if not normalAnchor then return end
+	for k in next, normalAnchor.bars do
+		if k:Get("bigwigs:module") == module and k.candyBarLabel:GetText() == text then
+			k:Pause()
+			return
+		end
+	end
+	for k in next, emphasizeAnchor.bars do
+		if k:Get("bigwigs:module") == module and k.candyBarLabel:GetText() == text then
+			k:Pause()
+			return
+		end
+	end
+end
+
+function plugin:ResumeBar(_, module, text)
+	if not normalAnchor then return end
+	for k in next, normalAnchor.bars do
+		if k:Get("bigwigs:module") == module and k.candyBarLabel:GetText() == text then
+			k:Resume()
+			return
+		end
+	end
+	for k in next, emphasizeAnchor.bars do
+		if k:Get("bigwigs:module") == module and k.candyBarLabel:GetText() == text then
+			k:Resume()
+			return
+		end
+	end
+end
+
+--------------------------------------------------------------------------------
 -- Stopping bars
 --
 
@@ -1196,6 +1233,25 @@ function plugin:StopModuleBars(_, module)
 		end
 	end
 	if dirty then rearrangeBars(emphasizeAnchor) end
+end
+
+--------------------------------------------------------------------------------
+-- Bar utility functions
+--
+
+function plugin:GetBarTimeLeft(module, text)
+	if not normalAnchor then return end
+	for k in next, normalAnchor.bars do
+		if k:Get("bigwigs:module") == module and k.candyBarLabel:GetText() == text then
+			return k.remaining
+		end
+	end
+	for k in next, emphasizeAnchor.bars do
+		if k:Get("bigwigs:module") == module and k.candyBarLabel:GetText() == text then
+			return k.remaining
+		end
+	end
+	return 0
 end
 
 --------------------------------------------------------------------------------
@@ -1407,9 +1463,9 @@ function plugin:EmphasizeBar(bar)
 		normalAnchor.bars[bar] = nil
 		emphasizeAnchor.bars[bar] = true
 		bar:Set("bigwigs:anchor", emphasizeAnchor)
-		if db.emphasizeRestart then
-			bar:Start() -- restart the bar -> remaining time is a full length bar again after moving it to the emphasize anchor
-		end
+	end
+	if db.emphasizeRestart then
+		bar:Start() -- restart the bar -> remaining time is a full length bar again after moving it to the emphasize anchor
 	end
 	local module = bar:Get("bigwigs:module")
 	local key = bar:Get("bigwigs:option")

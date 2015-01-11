@@ -80,7 +80,7 @@ a.Rotations.BeastMastery = {
          "Growl",
          "Last Stand",
          "Bullheaded",
-         "Mend Pet at 50",
+         "Mend Pet in combat",
          "Counter Shot",
          "Tranquilizing Shot"
       )
@@ -194,7 +194,7 @@ a.Rotations.Marksmanship = {
          "Growl",
          "Last Stand",
          "Bullheaded",
-         "Mend Pet at 50",
+         "Mend Pet in combat",
          "Counter Shot",
          "Tranquilizing Shot"
       )
@@ -254,7 +254,7 @@ a.Rotations.Survival = {
          "Growl",
          "Last Stand",
          "Bullheaded",
-         "Mend Pet at 50",
+         "Mend Pet in combat",
          "Counter Shot",
          "Tranquilizing Shot"
       )

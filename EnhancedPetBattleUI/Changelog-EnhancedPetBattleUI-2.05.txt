@@ -1,0 +1,11 @@
+tag 2.05
+193353546b354f26f0f5afc306466096db657e17
+Azilroka <darktemplar9900@yahoo.com>
+2014-10-14 14:54:22 -0500
+
+
+
+--------------------
+
+Michael Tindal:
+	- Version 2.05, TOC Bump.

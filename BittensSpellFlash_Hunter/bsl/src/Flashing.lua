@@ -1,13 +1,14 @@
 local g = BittensGlobalTables
 local c = g.GetTable("BittensSpellFlashLibrary")
 local u = g.GetTable("BittensUtilities")
-if u.SkipOrUpgrade(c, "Flashing", tonumber("20141215204639") or time()) then
+if u.SkipOrUpgrade(c, "Flashing", tonumber("20150101225953") or time()) then
    return
 end
 
 local CalendarGetDate = CalendarGetDate
 local GetItemCount = GetItemCount
 local GetZoneText = GetZoneText
+local GetSpellCharges = GetSpellCharges
 local max = math.max
 local pairs = pairs
 local select = select
@@ -37,6 +38,12 @@ local function spellCastable(spell)
       return false -- TODO: Add lag or cushion?
    end
 
+   -- if the spell uses charges, and we don't have any, it can't be cast.
+   local charges = GetSpellCharges(spell.ID)
+   if charges and charges <= 0 then
+      return false
+   end
+
    local isUsable, notEnoughPower = s.UsableSpell(spell.ID)
    if notEnoughPower then
       if not spell.NoPowerCheck then
@@ -48,8 +55,8 @@ local function spellCastable(spell)
 
    if not (spell.NoRangeCheck or spell.Melee or spell.Range)
       and s.SpellHasRange(spell.ID)
-      and not s.SpellInRange(spell.ID) then
-
+      and not s.SpellInRange(spell.ID)
+   then
       return false
    end
 
@@ -65,6 +72,13 @@ local function flashable(spell)
    if spell.RunFirst then
       spell:RunFirst()
    end
+
+   -- after RunFirst, in case that changes the spell ID or something else
+   -- crazy like that.
+   if not c.HasSpell(spell.ID) then
+      return false
+   end
+
    if spell.CheckFirst and not spell:CheckFirst() then
       return false
    end
@@ -78,19 +92,15 @@ local function flashable(spell)
       or spell.Debuff
       or spell.MyBuff
       or spell.Interrupt
-      or spell.Dispel then
+      or spell.Dispel
+   then
+      local early = c.GetBusyTime(spell.NoGCD) + max(0, c.GetCastTime(spell.ID) or 0)
 
-      local early =
-         c.GetBusyTime(spell.NoGCD) + max(0, c.GetCastTime(spell.ID) or 0)
-      if spell.Interrupt
-         and s.GetCastingOrChanneling(nil, nil, true) - early <= 0 then
-
+      if spell.Interrupt and s.GetCastingOrChanneling(nil, nil, true) - early <= 0 then
          return false -- TODO: Add lag or cushion?
       end
 
-      if spell.Dispel
-         and not s.Buff(nil, nil, early, nil, nil, nil, spell.Dispel) then
-
+      if spell.Dispel and not s.Buff(nil, nil, early, nil, nil, nil, spell.Dispel) then
          return false
       end
 
@@ -99,8 +109,8 @@ local function flashable(spell)
       if auraCheck(spell, spell.Buff, pending, s.Buff, early)
          or auraCheck(spell, spell.MyDebuff, pending, s.MyDebuff, early)
          or auraCheck(spell, spell.Debuff, pending, s.Debuff, early)
-         or auraCheck(spell, spell.MyBuff, pending, s.MyBuff, early) then
-
+         or auraCheck(spell, spell.MyBuff, pending, s.MyBuff, early)
+      then
          return false
       end
    end
@@ -137,8 +147,8 @@ local function flashable(spell)
    local flashID = spell.FlashID or spell.ID
    if (flashableFunc and not flashableFunc(flashID))
       or not castableFunc(spell)
-      or (spell.CheckLast and not spell:CheckLast()) then
-
+      or (spell.CheckLast and not spell:CheckLast())
+   then
       return false
    end
 
@@ -268,19 +278,34 @@ local function getDelay(spell)
       return nil
    end
 
+   if spell.CheckLast and not spell:CheckLast() then
+      return false
+   end
+
    if spell.GetDelay then
       return spell:GetDelay()
    end
 
    local early = (spell.EarlyRefresh or 0) + c.GetCastTime(spell.ID)
+
+   local charges, nextCharge = GetSpellCharges(spell.ID)
+      and c.GetChargeInfo(spell.ID)
+      or nil, 0
+
+   if charges and charges <= 0 then
+      return false
+   end
+
    return max(
+      nextCharge,
       auraDelay(spell, spell.Buff, c.GetBuffDuration, early),
       auraDelay(spell, spell.MyDebuff, c.GetMyDebuffDuration, early),
       auraDelay(spell, spell.Debuff, c.GetDebuffDuration, early),
       auraDelay(spell, spell.MyBuff, c.GetMyBuffDuration, early),
       spell.Cooldown
          and c.GetCooldown(spell.ID, spell.NoGCD, spell.Cooldown)
-         or 0)
+         or 0
+   )
 end
 
 local function delayFlash(spell, delay, minDelay, rotation)
@@ -367,10 +392,11 @@ function c.DelayPriorityFlash(...)
    if nextSpell then
       if c.DebugLastFlashedSpell ~= nextSpellName then
          local targets = format("T:%d/%d", c.EstimatedHarmTargets, c.EstimatedHealTargets)
+         local strDelay = format("%.2f", nextDelay)
          if rotation.ExtraDebugInfo then
-            c.Debug("Flash", targets, rotation.ExtraDebugInfo(), nextSpellName, nextDelay)
+            c.Debug("Flash", targets, rotation.ExtraDebugInfo(), nextSpellName, strDelay)
          else
-            c.Debug("Flash", targets, nextSpellName, nextDelay)
+            c.Debug("Flash", targets, nextSpellName, strDelay)
          end
          c.DebugLastFlashedSpell = nextSpellName
       end

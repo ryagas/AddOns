@@ -5,6 +5,8 @@ FishingBuddy.WatchFrame = {};
 -- 5.0.4 has a problem with a global "_" (see some for loops below)
 local _
 
+local GSB = FishingBuddy.GetSettingBool;
+
 local MAX_FISHINGWATCH_LINES = 1;
 local WATCHDRAGGER_SHOW_DELAY = 0.5;
 
@@ -74,6 +76,12 @@ local WatcherOptions = {
 		["tooltip"] = FBConstants.CONFIG_FISHWATCHPAGLE_INFO,
 		["v"] = 1,
 		["default"] = true,
+		["deps"] = { ["WatchFishies"] = "d" } },
+	["WatchCurrentOnly"] = {
+		["text"] = FBConstants.CONFIG_FISHWATCHCURRENT_ONOFF,
+		["tooltip"] = FBConstants.CONFIG_FISHWATCHCURRENT_INFO,
+		["v"] = 1,
+		["default"] = false,
 		["deps"] = { ["WatchFishies"] = "d" } },
 };
 
@@ -259,9 +267,7 @@ local function BuildCurrentData(zone, subzone, zidx, sidx)
 			local info = IsSpecialFish(fishid, itemTexture);
 			if ( info ) then
 				info.count = info.count + count;
-				if ( not info.skipped ) then
-					totalCount = totalCount + count;
-				end
+				totalCount = totalCount + count;
 			else
 				if (sc and sc[fishid]) then
 					count = count - sc[fishid];
@@ -387,11 +393,14 @@ end
 local function DisplayPagleFish()
 	local line = nil;
 	for id,info in pairs(FishingBuddy.PagleFish) do
-		local haveone = (GetItemCount(id) > 0);
-		if ( haveone ) then
+		local havesome = GetItemCount(id);
+		if ( havesome > 0 ) then
 			local _, _, _, _, _, name, _ = FishingBuddy.GetFishieRaw(id);
 			
-			if (not info.quest or IsUnitOnQuest(info.quest, "player")) then
+			if (info.lunker) then
+				local color = Crayon:GetThresholdHexColor(havesome, 5, 1);
+				name = Crayon:Colorize(color, name);
+			elseif (not info.quest or IsUnitOnQuest(info.quest, "player")) then
 				name = Crayon:Green(name);
 			else
 				name = Crayon:Red(name);
@@ -451,7 +460,6 @@ end
 
 -- Fish watcher functions
 local function NoShow()
-	local GSB = FishingBuddy.GetSettingBool;
 	return ((not GSB("WatchFishies")) or (GSB("WatchOnlyWhenFishing") and not FishingBuddy.AreWeFishing()));
 end
 
@@ -481,7 +489,6 @@ function UpdateTotalsLine(index)
 		else
 			line = FBConstants.TOTAL..totalpart;
 		end
-		local GSB = FishingBuddy.GetSettingBool;
 		if ( GSB("WatchCurrentSkill") ) then
 			local _, playerskill = FL:GetFishingSkillLine(false, true, true);
 			line = line..Crayon:White(" | ")..CHAT_MSG_SKILL..": "..playerskill;
@@ -514,6 +521,18 @@ local function UpdateFishieEntry(index, info)
 	local fishietext = FishingBuddy.StripRaw(info.text);
 	local dopercent = FishingBuddy.GetSettingBool("WatchFishPercent");
 	local amount = info.count;
+	local totalAmount = totalCount;
+	local currentonly = GSB("WatchCurrentOnly");
+
+	if (currentonly) then
+		if (info.current == 0) then
+			return index;
+		end
+
+		amount = info.current;
+		totalAmount = totalCurrent;
+	end
+
 	if ( info.skipped ) then
 		if ( info.quest ) then
 			fishietext = fishietext.." ("..amount..")";
@@ -537,11 +556,12 @@ local function UpdateFishieEntry(index, info)
 			color1 = white;
 		end
 		local numbers = white.."(".."|r"..color1..amount;
+
 		if ( dopercent ) then
-			local percent = format("%.1f", ( amount / totalCount ) * 100);
+			local percent = format("%.1f", ( amount / totalAmount ) * 100);
 			numbers = numbers.." : "..percent.."%";
 		end
-		if ( gotDiffs ) then
+		if ( not currentonly and gotDiffs ) then
 			numbers = numbers..", |r";
 			amount = info.current or 0;
 			local diffs = amount;
@@ -564,8 +584,6 @@ WatchEvents[FBConstants.OPT_UPDATE_EVT] = function(changed)
 end
 
 local function WatchUpdate()
-	local GSB = FishingBuddy.GetSettingBool;
-
 	local noshow = NoShow();
 
 	local zone, subzone = FL:GetZoneInfo();
