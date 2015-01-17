@@ -1,7 +1,7 @@
 local g = BittensGlobalTables
 local c = g.GetTable("BittensSpellFlashLibrary")
 local u = g.GetTable("BittensUtilities")
-if u.SkipOrUpgrade(c, "Flashing", tonumber("20150101225953") or time()) then
+if u.SkipOrUpgrade(c, "Flashing", tonumber("20150117044749") or time()) then
    return
 end
 
@@ -12,7 +12,6 @@ local GetSpellCharges = GetSpellCharges
 local max = math.max
 local pairs = pairs
 local select = select
-local type = type
 local format = string.format
 
 local s = SpellFlashAddon
@@ -64,8 +63,11 @@ local function spellCastable(spell)
 end
 
 local function getFlashColor(spell, rotation)
-   return spell.FlashColor
-      or (c.AoE and (rotation and rotation.AoEColor or c.AoeColor))
+   if spell.FlashColor then
+      return spell.FlashColor
+   elseif rotation and rotation.FlashColor then
+      return rotation.FlashColor
+   end
 end
 
 local function flashable(spell)
@@ -251,35 +253,33 @@ local function getDelay(spell)
    end
 
    if spell.CheckFirst and not spell:CheckFirst() then
-      return false
+      return false, "CheckFirst failed"
    end
 
-   if spell.Melee then
-      if not s.MeleeDistance() then
-         return nil
-      end
+   if spell.Melee and not s.MeleeDistance() then
+      return false, "Melee spell out of range"
    elseif not spell.NoRangeCheck
       and s.SpellHasRange(spell.ID)
-      and not s.SpellInRange(spell.ID) then
-
-      return false
+      and not s.SpellInRange(spell.ID)
+   then
+      return false, "Ranged spell out of range"
    end
 
    if spell.Type == "form" and c.IsCasting(spell.ID) then
-      return false
+      return false, "form is being cast"
    end
 
    if spell.Range and c.DistanceAtTheMost() > spell.Range then
-      return nil
+      return false, "spell.Range check failed"
    end
 
    -- TODO support items? forms? pet spells?
    if not s.Flashable(spell.FlashID or spell.ID) then
-      return nil
+      return false, "s.Flashable failed"
    end
 
    if spell.CheckLast and not spell:CheckLast() then
-      return false
+      return false, "CheckLast failed"
    end
 
    if spell.GetDelay then
@@ -293,7 +293,7 @@ local function getDelay(spell)
       or nil, 0
 
    if charges and charges <= 0 then
-      return false
+      return false, "charges <= 0 failed"
    end
 
    return max(
@@ -380,6 +380,12 @@ function c.DelayPriorityFlash(...)
                      nextSpellMinDelay = minDelay
                   end
                end
+            end
+         elseif spell.Debug then
+            local d = format("%s: %s", s.SpellName(spell.ID), modDelay)
+            if c.DebugLastSpell ~= d then
+               c.Debug("Flash", d)
+               c.DebugLastSpell = d
             end
          end
       end

@@ -1,9 +1,170 @@
 ------------------------------------------------------------------------
-r12525 | funkydude | 2015-01-09 22:18:31 +0000 (Fri, 09 Jan 2015) | 1 line
+r12551 | funkydude | 2015-01-15 14:54:43 +0000 (Thu, 15 Jan 2015) | 1 line
 Changed paths:
-   A /tags/r12525-release (from /trunk:12524)
+   A /tags/r12551-release (from /trunk:12550)
 
-Tagging as r12525-release
+Tagging as r12551-release
+------------------------------------------------------------------------
+r12550 | funkydude | 2015-01-15 14:41:09 +0000 (Thu, 15 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+Loader: Prevent a possible error.
+------------------------------------------------------------------------
+r12549 | nebula169 | 2015-01-15 08:07:56 +0000 (Thu, 15 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+
+Brackenspore: add count to soon message for Infesting Spores
+------------------------------------------------------------------------
+r12548 | nebula169 | 2015-01-15 08:05:12 +0000 (Thu, 15 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Sound.lua
+
+Sound: fix per-ability custom sounds
+------------------------------------------------------------------------
+r12547 | funkydude | 2015-01-15 07:44:28 +0000 (Thu, 15 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+
+bump version
+------------------------------------------------------------------------
+r12546 | funkydude | 2015-01-14 21:09:26 +0000 (Wed, 14 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+   M /trunk/Loader.lua
+
+Loader: Also play the ready sound in the Master channel when the LFG queue has popped.
+------------------------------------------------------------------------
+r12545 | funkydude | 2015-01-14 20:25:05 +0000 (Wed, 14 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Core/Core.lua
+   M /trunk/Loader.lua
+
+Core: Decrease chance of Pulse firing during test mode.
+------------------------------------------------------------------------
+r12544 | nebula169 | 2015-01-12 21:03:21 +0000 (Mon, 12 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: start Arcane Volatility say countdown at 3s left
+------------------------------------------------------------------------
+r12543 | nebula169 | 2015-01-12 20:41:20 +0000 (Mon, 12 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: tweak proximity
+------------------------------------------------------------------------
+r12542 | nebula169 | 2015-01-12 20:35:45 +0000 (Mon, 12 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: tweak proximity priority
+------------------------------------------------------------------------
+r12541 | funkydude | 2015-01-12 18:25:08 +0000 (Mon, 12 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: Fix a comment.
+------------------------------------------------------------------------
+r12540 | nebula169 | 2015-01-12 07:16:42 +0000 (Mon, 12 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: show Enfeebling Roar damage increase
+------------------------------------------------------------------------
+r12539 | funkydude | 2015-01-12 03:04:58 +0000 (Mon, 12 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Brackenspore.lua
+
+Brackenspore: Tweak sounds, throttle big add heal message.
+------------------------------------------------------------------------
+r12538 | funkydude | 2015-01-11 22:49:38 +0000 (Sun, 11 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Tectus.lua
+
+Tectus: Throttle Crystalline Barrage
+------------------------------------------------------------------------
+r12537 | nebula169 | 2015-01-11 21:04:46 +0000 (Sun, 11 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: prevent the proximity from getting stuck open in mythic
+------------------------------------------------------------------------
+r12535 | funkydude | 2015-01-11 14:40:31 +0000 (Sun, 11 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Trash.lua
+
+Trash: Disable on boss engage.
+------------------------------------------------------------------------
+r12534 | funkydude | 2015-01-11 13:50:48 +0000 (Sun, 11 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Trash.lua
+
+Trash: add messages
+------------------------------------------------------------------------
+r12533 | funkydude | 2015-01-11 13:48:10 +0000 (Sun, 11 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: Fix Arcane Wound message.
+------------------------------------------------------------------------
+r12532 | funkydude | 2015-01-11 13:24:55 +0000 (Sun, 11 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+   M /trunk/Core/BossPrototype.lua
+   M /trunk/Core/Constants.lua
+   M /trunk/Core/Core.lua
+   M /trunk/Plugins/Colors.lua
+   M /trunk/Plugins/Emphasize.lua
+   M /trunk/Plugins/Sound.lua
+   M /trunk/ThroneOfThunder/DarkAnimus.lua
+
+Tweaks.
+------------------------------------------------------------------------
+r12531 | funkydude | 2015-01-10 19:12:45 +0000 (Sat, 10 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Trash.lua
+
+Trash: Add Arcane Volatility and Frozen Core.
+------------------------------------------------------------------------
+r12530 | funkydude | 2015-01-10 18:53:15 +0000 (Sat, 10 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+   M /trunk/Loader.lua
+
+Bump version
+------------------------------------------------------------------------
+r12529 | funkydude | 2015-01-10 15:29:28 +0000 (Sat, 10 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/KargathBladefist.lua
+   M /trunk/Highmaul/Margok.lua
+   M /trunk/Highmaul/Trash.lua
+
+Trash: Don't /say in LFR.
+------------------------------------------------------------------------
+r12528 | funkydude | 2015-01-10 02:59:44 +0000 (Sat, 10 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/Margok.lua
+   M /trunk/Highmaul/Tectus.lua
+
+More commented out changes.
+------------------------------------------------------------------------
+r12527 | funkydude | 2015-01-09 22:39:19 +0000 (Fri, 09 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+bump DBM faker.
+------------------------------------------------------------------------
+r12526 | nebula169 | 2015-01-09 22:30:50 +0000 (Fri, 09 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/Margok.lua
+   M /trunk/Highmaul/Tectus.lua
+   M /trunk/Highmaul/TwinOgron.lua
+
+clear custom marks after the encounter
 ------------------------------------------------------------------------
 r12524 | funkydude | 2015-01-09 21:30:38 +0000 (Fri, 09 Jan 2015) | 1 line
 Changed paths:
@@ -926,418 +1087,4 @@ Changed paths:
    M /trunk/Highmaul/Koragh.lua
 
 Koragh: add Volatile Anomalies timer, range check the Suppression Field target, show Expel Magic: Frost duration, add some cd times
-------------------------------------------------------------------------
-r12378 | nebula169 | 2014-12-14 23:13:21 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Koragh.lua
-
-Koragh: fix Expel Magic: Fel timer and add inital cd after gaining barrier
-------------------------------------------------------------------------
-r12377 | funkydude | 2014-12-14 23:08:59 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Brackenspore.lua
-
-Brackenspore: Remove unused "flash" option from moss heal.
-------------------------------------------------------------------------
-r12376 | nebula169 | 2014-12-14 22:51:04 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Brackenspore.lua
-
-Brackenspore: flag Creeping Moss TANK, only flash for Exploding Fungus
-------------------------------------------------------------------------
-r12375 | funkydude | 2014-12-14 22:11:12 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/BigWigs.toc
-
-bump version
-------------------------------------------------------------------------
-r12374 | nebula169 | 2014-12-14 21:18:36 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/ThroneOfThunder/IronQon.lua
-
-IronQon: simple Arcing Lightning proximity
-------------------------------------------------------------------------
-r12373 | funkydude | 2014-12-14 21:06:56 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Tectus.lua
-
-Tectus: add say for barrage
-------------------------------------------------------------------------
-r12372 | funkydude | 2014-12-14 21:02:44 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Core/BossPrototype.lua
-
-BossPrototype: Fix :Message always firing a voice callback.
-------------------------------------------------------------------------
-r12371 | nebula169 | 2014-12-14 20:47:12 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: fix Crush Armor error
-------------------------------------------------------------------------
-r12370 | funkydude | 2014-12-14 20:32:29 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Tectus.lua
-
-Tectus: Use correct id for barrage damage message.
-------------------------------------------------------------------------
-r12369 | dynaletik | 2014-12-14 18:36:45 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Locales/deDE.lua
-
-- deDE update
-------------------------------------------------------------------------
-r12368 | nebula169 | 2014-12-14 16:36:36 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Brackenspore.lua
-
-Brackenspore: flash on the mythic abilities
-------------------------------------------------------------------------
-r12367 | nebula169 | 2014-12-14 16:29:24 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Brackenspore.lua
-
-Brackenspore: add initial mythic ability cd
-------------------------------------------------------------------------
-r12366 | nebula169 | 2014-12-14 16:18:11 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Brackenspore.lua
-
-Brackenspore: remove the non-working flamethrower Creeping Moss warning
-------------------------------------------------------------------------
-r12365 | nebula169 | 2014-12-14 16:09:12 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Brackenspore.lua
-
-Brackenspore: bump up the time on the Exploding Fungus bar
-------------------------------------------------------------------------
-r12364 | nebula169 | 2014-12-14 16:02:07 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Brackenspore.lua
-   M /trunk/Highmaul/Locales/deDE.lua
-   M /trunk/Highmaul/Locales/esES.lua
-   M /trunk/Highmaul/Locales/frFR.lua
-   M /trunk/Highmaul/Locales/itIT.lua
-   M /trunk/Highmaul/Locales/koKR.lua
-   M /trunk/Highmaul/Locales/ptBR.lua
-   M /trunk/Highmaul/Locales/ruRU.lua
-   M /trunk/Highmaul/Locales/zhCN.lua
-   M /trunk/Highmaul/Locales/zhTW.lua
-
-Brackenspore: add timer for Call of the Tides/Exploding Fungus
-------------------------------------------------------------------------
-r12363 | funkydude | 2014-12-14 16:00:24 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Tectus.lua
-
-Tectus: add sound to Tectonic Upheaval.
-------------------------------------------------------------------------
-r12362 | elvador | 2014-12-14 15:40:46 +0000 (Sun, 14 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Brackenspore.lua
-
-Brackenspore: updated timers for Infesting Spores, Decay, Mind Fungus and Rejuvenating Mushroom
-------------------------------------------------------------------------
-r12360 | funkydude | 2014-12-13 21:58:43 +0000 (Sat, 13 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/BigWigs.toc
-
-bump version
-------------------------------------------------------------------------
-r12359 | nebula169 | 2014-12-13 20:08:50 +0000 (Sat, 13 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Koragh.lua
-
-Koragh: typo fix
-------------------------------------------------------------------------
-r12358 | nebula169 | 2014-12-13 18:15:54 +0000 (Sat, 13 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/TwinOgron.lua
-
-TwinOgron: typo fix
-------------------------------------------------------------------------
-r12357 | jongt23 | 2014-12-13 18:04:08 +0000 (Sat, 13 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Locales/esES.lua
-
-esES update
-------------------------------------------------------------------------
-r12356 | nebula169 | 2014-12-13 13:36:11 +0000 (Sat, 13 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/TwinOgron.lua
-
-TwinOgron: indicate if Whirlwind or Shield Charge are empowered in mythic, better timers for all difficulties (hopefully)
-------------------------------------------------------------------------
-r12355 | nebula169 | 2014-12-13 11:10:03 +0000 (Sat, 13 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/TwinOgron.lua
-
-TwinOgron: more Arcane Volatility tweaks: fix proximity, fix cd, revert to a message on cast, remove the target bars
-------------------------------------------------------------------------
-r12354 | dynaletik | 2014-12-13 08:36:05 +0000 (Sat, 13 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Locales/deDE.lua
-
-- deDE update
-------------------------------------------------------------------------
-r12353 | nebula169 | 2014-12-13 07:58:45 +0000 (Sat, 13 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/TwinOgron.lua
-
-TwinOgron: tweaks
-------------------------------------------------------------------------
-r12352 | nebula169 | 2014-12-13 07:50:49 +0000 (Sat, 13 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/TwinOgron.lua
-
-TwinOgron: fix Arcane Volatility duration and add target message
-------------------------------------------------------------------------
-r12351 | nebula169 | 2014-12-13 07:07:26 +0000 (Sat, 13 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Koragh.lua
-   M /trunk/Highmaul/Locales/deDE.lua
-   M /trunk/Highmaul/Locales/esES.lua
-   M /trunk/Highmaul/Locales/frFR.lua
-   M /trunk/Highmaul/Locales/itIT.lua
-   M /trunk/Highmaul/Locales/koKR.lua
-   M /trunk/Highmaul/Locales/ptBR.lua
-   M /trunk/Highmaul/Locales/ruRU.lua
-   M /trunk/Highmaul/Locales/zhCN.lua
-   M /trunk/Highmaul/Locales/zhTW.lua
-   M /trunk/Highmaul/TwinOgron.lua
-
-Koragh: change the Overwhelming Energy bar text
-------------------------------------------------------------------------
-r12350 | pettigrow | 2014-12-12 23:14:39 +0000 (Fri, 12 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Locales/frFR.lua
-
-frFR Update
-------------------------------------------------------------------------
-r12349 | elvador | 2014-12-12 19:37:12 +0000 (Fri, 12 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Brackenspore.lua
-
-Brackenspore: Added counter for infesting spores
-------------------------------------------------------------------------
-r12348 | dynaletik | 2014-12-12 10:15:37 +0000 (Fri, 12 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Locales/deDE.lua
-
-- deDE update
-------------------------------------------------------------------------
-r12347 | nebula169 | 2014-12-12 08:51:58 +0000 (Fri, 12 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/TwinOgron.lua
-
-TwinOgron: tweak Pulverize, add say countdown for Arcane Volatility
-------------------------------------------------------------------------
-r12346 | nebula169 | 2014-12-12 08:29:32 +0000 (Fri, 12 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: add Gorian Reaver timers
-------------------------------------------------------------------------
-r12345 | nebula169 | 2014-12-12 07:37:41 +0000 (Fri, 12 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Koragh.lua
-
-Koragh: show the Overwhelming Energy bar for everyone
-------------------------------------------------------------------------
-r12344 | nebula169 | 2014-12-12 06:11:25 +0000 (Fri, 12 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Brackenspore.lua
-
-Brackenspore: fix Decay count
-------------------------------------------------------------------------
-r12343 | elvador | 2014-12-11 23:15:38 +0000 (Thu, 11 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Brackenspore.lua
-
-Brackenspore: Added counter for decays
-------------------------------------------------------------------------
-r12342 | nebula169 | 2014-12-11 16:06:48 +0000 (Thu, 11 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/TwinOgron.lua
-
-TwinOgron: add Arcane Twisted, tweaks
-------------------------------------------------------------------------
-r12341 | nebula169 | 2014-12-11 15:00:43 +0000 (Thu, 11 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/KargathBladefist.lua
-   M /trunk/Highmaul/TwinOgron.lua
-
-TwinOgron: add say to Arcane Volatility
-------------------------------------------------------------------------
-r12340 | nebula169 | 2014-12-11 14:58:43 +0000 (Thu, 11 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/TwinOgron.lua
-
-TwinOgron: add proximity for first cast of Pulverize, clean up Arcane Volatility
-------------------------------------------------------------------------
-r12339 | nebula169 | 2014-12-11 10:42:16 +0000 (Thu, 11 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/KargathBladefist.lua
-
-KargathBladefist: change Berserker Rush sound to "Long"
-------------------------------------------------------------------------
-r12338 | nebula169 | 2014-12-11 10:35:43 +0000 (Thu, 11 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
-   M /trunk/BlackrockFoundry/Kagraz.lua
-   M /trunk/BlackrockFoundry/TheIronMaidens.lua
-
-BlackrockFoundry: fix some INSTANCE_ENCOUNTER_ENGAGE_UNIT uses
-------------------------------------------------------------------------
-r12337 | dynaletik | 2014-12-11 08:19:46 +0000 (Thu, 11 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Locales/deDE.lua
-
-- deDE update
-------------------------------------------------------------------------
-r12336 | funkydude | 2014-12-11 07:59:08 +0000 (Thu, 11 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/TheButcher.lua
-
-TheButcher: remove sound from frenzy soon warning.
-------------------------------------------------------------------------
-r12335 | nebula169 | 2014-12-11 07:57:06 +0000 (Thu, 11 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Locales/deDE.lua
-   M /trunk/Highmaul/Locales/esES.lua
-   M /trunk/Highmaul/Locales/frFR.lua
-   M /trunk/Highmaul/Locales/itIT.lua
-   M /trunk/Highmaul/Locales/koKR.lua
-   M /trunk/Highmaul/Locales/ptBR.lua
-   M /trunk/Highmaul/Locales/ruRU.lua
-   M /trunk/Highmaul/Locales/zhCN.lua
-   M /trunk/Highmaul/Locales/zhTW.lua
-
-update locales
-------------------------------------------------------------------------
-r12334 | nebula169 | 2014-12-11 07:45:11 +0000 (Thu, 11 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/KargathBladefist.lua
-
-KargathBladefist: add Arena Sweeper, fixed hurled check, tweak Berserker Rush times
-------------------------------------------------------------------------
-r12333 | nebula169 | 2014-12-11 07:40:07 +0000 (Thu, 11 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Core/BossPrototype.lua
-
-BossPrototype: register the encounter events before calling OnBossEnable on the module
-------------------------------------------------------------------------
-r12331 | funkydude | 2014-12-10 22:54:53 +0000 (Wed, 10 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: add fixate say
-------------------------------------------------------------------------
-r12330 | funkydude | 2014-12-10 22:48:20 +0000 (Wed, 10 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/BigWigs.toc
-   M /trunk/Highmaul/TheButcher.lua
-
-TheButcher: Bounding cleave fix.
-------------------------------------------------------------------------
-r12329 | funkydude | 2014-12-10 22:00:50 +0000 (Wed, 10 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/TheButcher.lua
-
-TheButcher: Remove warnings for "the cleaver" tank stacking debuff. I just don't see this being useful.
-------------------------------------------------------------------------
-r12328 | funkydude | 2014-12-10 21:27:16 +0000 (Wed, 10 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: Disable marking by default.
-------------------------------------------------------------------------
-r12327 | funkydude | 2014-12-10 20:01:04 +0000 (Wed, 10 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/TheButcher.lua
-
-TheButcher: change cleave option id.
-------------------------------------------------------------------------
-r12326 | funkydude | 2014-12-10 19:52:55 +0000 (Wed, 10 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/TheButcher.lua
-
-TheButcher: Add extra cleave id.
-------------------------------------------------------------------------
-r12325 | nebula169 | 2014-12-10 14:48:40 +0000 (Wed, 10 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: revert the Accelerated Assault change
-------------------------------------------------------------------------
-r12324 | nebula169 | 2014-12-10 14:09:14 +0000 (Wed, 10 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: fix Force Nova: Fortitude's subsequent casts, add a sound to Destructive Resonance for ranged, timer tweaks
-------------------------------------------------------------------------
-r12323 | nebula169 | 2014-12-10 09:18:46 +0000 (Wed, 10 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Locales/deDE.lua
-   M /trunk/Highmaul/Locales/esES.lua
-   M /trunk/Highmaul/Locales/frFR.lua
-   M /trunk/Highmaul/Locales/itIT.lua
-   M /trunk/Highmaul/Locales/koKR.lua
-   M /trunk/Highmaul/Locales/ptBR.lua
-   M /trunk/Highmaul/Locales/ruRU.lua
-   M /trunk/Highmaul/Locales/zhCN.lua
-   M /trunk/Highmaul/Locales/zhTW.lua
-   M /trunk/Highmaul/Margok.lua
-
-Margok: move Branded to custom marking for the extra target during Replication
-------------------------------------------------------------------------
-r12322 | nebula169 | 2014-12-10 08:38:43 +0000 (Wed, 10 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: remove icon from Branded target when they lose the debuff
-------------------------------------------------------------------------
-r12321 | nebula169 | 2014-12-10 08:29:47 +0000 (Wed, 10 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Margok.lua
-
-Margok: nil check Branded stacks (event lag?), sound at a higher stacks for Accelerated Assault, actually close the Force Nova proximity after a delay
-------------------------------------------------------------------------
-r12320 | funkydude | 2014-12-10 04:14:39 +0000 (Wed, 10 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Plugins/Bars.lua
-
-Bars: Fire a "BigWigs_StartPull" callback when a pull timer is started.
-------------------------------------------------------------------------
-r12319 | MysticalOS | 2014-12-09 23:19:12 +0000 (Tue, 09 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Loader.lua
-
-Bump DBM faker
-------------------------------------------------------------------------
-r12318 | funkydude | 2014-12-09 11:55:01 +0000 (Tue, 09 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Core/BossPrototype.lua
-
-BossPrototype: I don't think there was any real reason for using UnitIsUnit here, let's find out.
-------------------------------------------------------------------------
-r12317 | funkydude | 2014-12-09 11:51:07 +0000 (Tue, 09 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Core/BossPrototype.lua
-   M /trunk/Core/Locales/common.enUS.lua
-
-BossPrototype: Change stack message to show "on you" rather than "on player" when it's on you.
-------------------------------------------------------------------------
-r12316 | nebula169 | 2014-12-09 05:11:03 +0000 (Tue, 09 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Koragh.lua
-   M /trunk/Highmaul/Margok.lua
-
-Margok: add proximity for Force Nova: Replication and clean up proximity code
-------------------------------------------------------------------------
-r12315 | nebula169 | 2014-12-08 17:06:33 +0000 (Mon, 08 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Highmaul/Koragh.lua
-
-Koragh: tweaks
 ------------------------------------------------------------------------

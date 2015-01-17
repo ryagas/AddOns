@@ -108,6 +108,7 @@ credits[FBConstants.ROLE_HELP_BUGS] = {
 	["DirtyHarryGermany"] = { "Beta tester", },
 	["Alindrios"] = { "Fish Watcher bugs", },
 	["Dehvid"] = { "64-bit crash bug", },
+	["ProphetV"] = { "Fish Watcher accounting errors", }
 };
 
 -- Ideas and suggestions

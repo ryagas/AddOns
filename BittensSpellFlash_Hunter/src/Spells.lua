@@ -178,6 +178,7 @@ c.AddOptionalSpell("Stampede", nil, {
 })
 
 c.AddSpell("Cobra Shot", nil, {
+   FlashID = { "Cobra Shot", "Steady Shot" },
    CheckFirst = function()
       -- focusing shot replaces cobra shot
       return avoidCapping("Cobra Shot", 0) and not c.HasTalent("Focusing Shot")
@@ -185,6 +186,7 @@ c.AddSpell("Cobra Shot", nil, {
 })
 
 c.AddSpell("Focusing Shot", nil, {
+   FlashID = { "Focusing Shot", "Cobra Shot", "Steady Shot" },
    CheckFirst = function()
       local castTime = c.GetCastTime("Focusing Shot")
       -- we are out of other things, allow some overcap.
@@ -193,6 +195,7 @@ c.AddSpell("Focusing Shot", nil, {
 })
 
 c.AddSpell("Cobra Shot", "for Steady Focus", {
+   FlashID = { "Cobra Shot", "Steady Shot" },
    CheckFirst = function()
       return c.HasTalent("Steady Focus")
          and a.startedSteadyFocus

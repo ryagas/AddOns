@@ -53,16 +53,26 @@ end
 L = BigWigs:NewBossLocale("Imperator Mar'gok", "itIT")
 if L then
 L["add_death_soon"] = "L'add sta per morire tra poco!"
+L["adds"] = "Fedele Torcinotte"
+L["adds_desc"] = "Timer per l'entrata in combattimento dei Fedele Torcinotte."
 L["branded_say"] = "%s (%d) %dy"
+L["custom_off_branded_marker"] = "Marcatore di Marchiato"
+L["custom_off_branded_marker_desc"] = "Evidenzia i bersagli marchiati con Marchiato con {rt3}{rt4}, richiede assistente o capo-incursione."
+L["custom_off_fixate_marker"] = "Marcatore Ossessione"
+L["custom_off_fixate_marker_desc"] = [=[Evidenzia i bersagli di Ossessione dei Maghi da Guerra Gorian con {rt1}{rt2}, richiede assistente o capo-incursione.
+|cFFFF0000Solo 1 persona nell'incursione dovrebbe attivare questa opzione per evitare conflicci con l'evidenziazione.|r]=]
+L["gaze_target_message"] = "Lo Sguardo sta targettando TE!!!"
 L["phase4_trigger"] = "Non conosci il potere con cui hai a che fare, Mar'gok."
+L["slow_fixate"] = "Ossessione+Rallentamento"
 
 end
 
 L = BigWigs:NewBossLocale("Highmaul Trash", "itIT")
 if L then
+L["arcanist"] = "Arcanista Gorian"
 L["oro"] = "Oro"
-L["ritualist"] = "Ritualista Spezzatore" -- Needs review
-L["runemaster"] = "Maestro Runico Gorian" -- Needs review
+L["ritualist"] = "Ritualista Spezzatore"
+L["runemaster"] = "Maestro Runico Gorian"
 
 end
 

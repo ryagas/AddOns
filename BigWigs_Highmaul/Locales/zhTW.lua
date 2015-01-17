@@ -69,6 +69,7 @@ end
 
 L = BigWigs:NewBossLocale("Highmaul Trash", "zhTW")
 if L then
+L["arcanist"] = "戈利安秘法師" -- Needs review
 L["oro"] = "歐洛" -- Needs review
 L["ritualist"] = "破源者祭儀師" -- Needs review
 L["runemaster"] = "戈利安符文師" -- Needs review

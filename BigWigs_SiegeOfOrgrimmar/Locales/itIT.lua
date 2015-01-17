@@ -5,7 +5,7 @@ L["defile_you"] = "Suolo Profanato sotto DI TE"
 L["defile_you_desc"] = "Avvisa quando Suolo Profanato è sotto di te."
 L["inferno_self"] = "Assalto dell'Inferno su DI TE"
 L["inferno_self_bar"] = "Stai per esplodere!"
-L["inferno_self_desc"] = "Conto alla rovescia speciale per quando Assalto dell'inferno è su di te."
+L["inferno_self_desc"] = "Conto alla rovescia speciale per quando Assalto dell'Inferno è su di te."
 L["intermission_desc"] = "Avvisa quando i boss usano Misure Disperate"
 L["no_meditative_field"] = "Non sei nella bolla!"
 

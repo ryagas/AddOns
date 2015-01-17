@@ -267,9 +267,7 @@ local function BuildCurrentData(zone, subzone, zidx, sidx)
 			local info = IsSpecialFish(fishid, itemTexture);
 			if ( info ) then
 				info.count = info.count + count;
-				if ( not info.skipped ) then
-					totalCount = totalCount + count;
-				end
+				totalCount = totalCount + count;
 			else
 				if (sc and sc[fishid]) then
 					count = count - sc[fishid];
@@ -523,13 +521,16 @@ local function UpdateFishieEntry(index, info)
 	local fishietext = FishingBuddy.StripRaw(info.text);
 	local dopercent = FishingBuddy.GetSettingBool("WatchFishPercent");
 	local amount = info.count;
+	local totalAmount = totalCount;
 	local currentonly = GSB("WatchCurrentOnly");
 
-	if (currentonly and info.current == 0) then
-		return index;
-	else
+	if (currentonly) then
+		if (info.current == 0) then
+			return index;
+		end
+
 		amount = info.current;
-		totalCount = totalCurrent;
+		totalAmount = totalCurrent;
 	end
 
 	if ( info.skipped ) then
@@ -557,7 +558,7 @@ local function UpdateFishieEntry(index, info)
 		local numbers = white.."(".."|r"..color1..amount;
 
 		if ( dopercent ) then
-			local percent = format("%.1f", ( amount / totalCount ) * 100);
+			local percent = format("%.1f", ( amount / totalAmount ) * 100);
 			numbers = numbers.." : "..percent.."%";
 		end
 		if ( not currentonly and gotDiffs ) then

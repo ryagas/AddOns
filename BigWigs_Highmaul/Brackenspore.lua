@@ -98,9 +98,11 @@ function mod:OnBossEnable()
 end
 
 function mod:OnEngage()
+	decayCount = 1
+	infestingSporesCount = 1
 	self:Bar(159219, 32) -- Necrotic Breath
 	self:Bar(159996, 45) -- Infesting Spores
-	self:DelayedMessage(159996, 40, "Important", CL.soon:format(mod:SpellName(159996)))
+	self:DelayedMessage(159996, 40, "Important", CL.soon:format(CL.count:format(self:SpellName(159996), infestingSporesCount)))
 	self:CDBar("mind_fungus", 10, L.mind_fungus, L.mind_fungus_icon) -- Mind Fungus
 	self:CDBar("spore_shooter", 20, CL.small_adds, L.spore_shooter_icon) -- Spore Shooter
 	self:CDBar("flesh_eater", 32, CL.big_add, L.flesh_eater_icon) -- Fungal Flesh-Eater
@@ -110,8 +112,6 @@ function mod:OnEngage()
 		self:CDBar("mythic_ability", 20, L.mythic_ability, L.mythic_ability_icon)
 	end
 	self:Berserk(600)
-	decayCount = 1
-	infestingSporesCount = 1
 end
 
 --------------------------------------------------------------------------------
@@ -135,7 +135,7 @@ function mod:CreepingMossHeal(args)
 		local mobId = self:MobId(args.destGUID)
 		if mobId == 78491 then -- Brackenspore
 			self:Message(args.spellId, "Important", "Info", L.creeping_moss_boss_heal)
-		elseif mobId == 79092 then -- Fungal Flesh-Eater
+		elseif mobId == 79092 and decayCount > 1 then -- Fungal Flesh-Eater. If decayCount is 1 it probably just spawned on moss, so don't bother warning.
 			self:Message(args.spellId, "Important", nil, L.creeping_moss_add_heal)
 		end
 	end
@@ -156,7 +156,7 @@ function mod:InfestingSpores(args)
 	self:Bar(args.spellId, 12, CL.cast:format(args.spellName)) -- 2s cast + 10s channel
 	infestingSporesCount = infestingSporesCount + 1
 	self:Bar(args.spellId, 58, CL.count:format(args.spellName, infestingSporesCount)) -- happens at 100 energy
-	self:DelayedMessage(args.spellId, 53, "Important", CL.soon:format(args.spellName))
+	self:DelayedMessage(args.spellId, 53, "Important", CL.soon:format(CL.count:format(args.spellName, infestingSporesCount)))
 end
 
 function mod:Decay(args)
@@ -166,13 +166,13 @@ function mod:Decay(args)
 end
 
 function mod:SporeShooter(args)
-	self:Message("spore_shooter", "Attention", nil, CL.small_adds, L.spore_shooter_icon)
+	self:Message("spore_shooter", "Attention", self:Damager() and "Info", CL.small_adds, L.spore_shooter_icon)
 	self:Bar("spore_shooter", 60, CL.small_adds, L.spore_shooter_icon)
 end
 
 function mod:FungusSpawns(unit, spellName, _, _, spellId)
 	if spellId == 163141 then -- Mind Fungus
-		self:Message("mind_fungus", "Attention", nil, spellId, L.mind_fungus_icon)
+		self:Message("mind_fungus", "Attention", self:Damager() and "Long", spellId, L.mind_fungus_icon)
 		self:CDBar("mind_fungus", self:Mythic() and 30 or 51, spellId, L.mind_fungus_icon) -- 51.1, 58.6, 55.5, 55, 61.5, 59.5
 	elseif spellId == 163142 then -- Evolved Fungus (Fungal Flesh-Eater)
 		self:Message("flesh_eater", "Urgent", self:Tank() and "Long", CL.spawning:format(CL.big_add), L.flesh_eater_icon)

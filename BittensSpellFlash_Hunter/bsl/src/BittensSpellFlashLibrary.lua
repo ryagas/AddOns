@@ -1,7 +1,7 @@
 local g = BittensGlobalTables
 local c = g.GetOrMakeTable("BittensSpellFlashLibrary", 2)
 local u = g.GetTable("BittensUtilities")
-if u.SkipOrUpgrade(c, "MainFile", tonumber("20150101225953") or time()) then
+if u.SkipOrUpgrade(c, "MainFile", tonumber("20150117044749") or time()) then
    return
 end
 
@@ -67,8 +67,8 @@ function c.RegisterAddon()
       local inCombat = s.InCombat()
       if (IsMounted() and not inCombat)
          or UnitIsDeadOrGhost("player")
-         or UnitInVehicle("player") then
-
+         or UnitInVehicle("player")
+      then
          return
       end
 
@@ -268,6 +268,10 @@ function c.HasGlyph(name)
    end
 end
 
+function c.Form(name)
+   return s.Form(name and c.GetID(name) or nil)
+end
+
 local function getCastTime(localizedNameOrId)
   return (select(4, GetSpellInfo(localizedNameOrId)) or 0) / 1000
 end
@@ -444,7 +448,7 @@ function c.AddSpell(spellName, tag, attributes)
    if attributes == nil then
       attributes = { }
    end
-   for k, v in pairs(attributes) do
+   for k, _ in pairs(attributes) do
       convertToIDs(attributes, k, "ID", "Debuff%d*", "Buff%d*")
    end
    if attributes.ID == nil then

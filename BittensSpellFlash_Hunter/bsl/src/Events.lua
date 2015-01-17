@@ -1,14 +1,12 @@
 local g = BittensGlobalTables
 local c = g.GetTable("BittensSpellFlashLibrary")
 local u = g.GetTable("BittensUtilities")
-if u.SkipOrUpgrade(c, "Events", tonumber("20150101225953") or time()) then
+if u.SkipOrUpgrade(c, "Events", tonumber("20150117044749") or time()) then
    return
 end
 
 local s = SpellFlashAddon
 
-local GetActionInfo = GetActionInfo
-local GetMacroSpell = GetMacroSpell
 local GetNetStats = GetNetStats
 local GetSpellInfo = GetSpellInfo
 local GetTime = GetTime
@@ -160,7 +158,7 @@ end
 
 local function findTargetCount(minClientTime, harmOrHeal)
    local max = 0
-   for spellID, info in u.Pairs(aoeTracking[harmOrHeal]) do
+   for _, info in u.Pairs(aoeTracking[harmOrHeal]) do
       if info.clientTime >= minClientTime and info.targetsHit > max then
          max = info.targetsHit
       end
@@ -195,17 +193,6 @@ local pastTravelInfo = { }
       TravelTime = __,
    }
 ]]--
-
-local travelEnders = {
-   SPELL_DAMAGE = true,
-   SPELL_MISSED = true,
--- These cause problem w/ spells that both deal damage and apply an aura, if
--- two are in the air (because then the first one lands, but consumes both
--- launches, and ends up w/ a ridiculously small travel time).
-   SPELL_AURA_APPLIED = true,
-   SPELL_AURA_REFRESH = true,
-   SPELL_AURA_APPLIED_DOSE = true,
-}
 
 local function getTrimmed(table, max, spellID, target, magically)
    if magically then
@@ -339,7 +326,6 @@ local function estimateTravelTime(name)
    local metaInfo = metaTravelInfo[name]
    local lastTravel = metaInfo.Estimate
    local lastLaunch = 0
-   local spellID = c.GetID(name)
    for _, id in pairs(metaInfo.IDs) do
       local pastInfo = pastTravelInfo[id]
       if pastInfo and pastInfo.LaunchTime > lastLaunch then
@@ -523,13 +509,13 @@ local function hideOverlay(button)
 end
 
 local function hookLAB(buttons)
-   labButtons = buttons
+   labButtons = buttons         -- unused, but acceptable anyway
    if labScriptFrame then
       labScriptFrame:UnregisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
       labScriptFrame:UnregisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
    else
       labScriptFrame = CreateFrame("frame")
-      labScriptFrame:SetScript("OnEvent", function(self, event, spellId)
+      labScriptFrame:SetScript("OnEvent", function(_, event, spellId)
          if c.DisableProcHighlights then
             for button in next, buttons do
                if button:GetSpellId() == spellId and button.overlay then
@@ -545,10 +531,6 @@ local function hookLAB(buttons)
    end
    labScriptFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
    labScriptFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
-end
-
-local function doGlowHook(action, button)
-   action(button)
 end
 
 hooksecurefunc("ActionButton_ShowOverlayGlow", function(button)
@@ -677,7 +659,7 @@ local function handleLogEvent(...)
          updateAoeTracking(spellID, "heal", timestamp)
       end
 
-      fireEvent("SpellHeal", spellID, target, amount)
+      fireEvent("SpellHeal", spellID, target, amount, overheal)
    elseif event == "SPELL_ENERGIZE" or event == "SPELL_PERIODIC_ENERGIZE" then
       local amount = select(15, ...)
       fireEvent("Energized", spellID, amount)
@@ -688,7 +670,6 @@ local function handleLogEvent(...)
 end
 
 local function printCurrentSpells()
-   local list = ""
    for id, info in pairs(currentSpells) do
       c.Debug("Cast Event", "   ", id, info.Name,
          "Target:", info.Target,
@@ -734,7 +715,7 @@ end
 
 local function updateLastGCD(localizedName)
    if c.A and not c.A.SpecialGCDs[localizedName] then
-      local gcd, totalGcd = s.GlobalCooldown()
+      local _, totalGcd = s.GlobalCooldown()
       if totalGcd and totalGcd > 0 then
          c.LastGCD = totalGcd
       end
@@ -749,7 +730,7 @@ local function setCost(info)
 end
 
 frame:SetScript("OnEvent",
-   function(self, event, ...)
+   function(_, event, ...)
       if event == "ADDON_LOADED" then
          local labButtons = u.GetFromTable(
             LibStub, "libs", "LibActionButton-1.0", "activeButtons")

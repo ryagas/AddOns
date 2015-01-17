@@ -1,4 +1,7 @@
-﻿Version 1.4u
+﻿Version 1.4v
+- Fix for watcher fish counting (thanks ProphetV!)
+
+Version 1.4u
 - Add an option to display just the current fish in the watcher (Curse #237)
 - Do some fixing around Curse bug #246 (it looks like some addons turn off minimap icons)
 - Updated Traditional Chinese (thanks alec65!)

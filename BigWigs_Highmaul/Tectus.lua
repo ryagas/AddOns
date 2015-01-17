@@ -62,6 +62,7 @@ end
 
 function mod:OnBossEnable()
 	--self:Log("SPELL_CAST_SUCCESS", "AddsSpawn", 181113) -- XXX 6.1
+	--self:Log("SPELL_CAST_SUCCESS", "BossUnitKilled", 181089) -- XXX 6.1
 	-- Tectus
 	self:Log("SPELL_AURA_APPLIED_DOSE", "Accretion", 162288)
 	self:Log("SPELL_AURA_APPLIED", "CrystallineBarrage", 162346)
@@ -93,6 +94,15 @@ function mod:OnEngage()
 	end
 end
 
+function mod:OnBossDisable()
+	if self.db.profile.custom_off_barrage_marker then
+		for _, player in next, marked do
+			SetRaidTarget(player, 0)
+		end
+		wipe(marked)
+	end
+end
+
 --------------------------------------------------------------------------------
 -- Event Handlers
 --
@@ -105,13 +115,15 @@ function mod:Accretion(args)
 end
 
 do
-	local list, scheduled = mod:NewTargetList(), nil
+	local list, scheduled, throttle = mod:NewTargetList(), nil, {}
 	local function warn(self, spellId)
 		self:TargetMessage(spellId, list, "Positive") -- ME_ONLY by default, too spammy
 		scheduled = nil
 	end
 	function mod:CrystallineBarrage(args)
 		--self:CDBar(args.spellId, 30.5)
+		if throttle[args.destGUID] then return end
+		throttle[args.destGUID] = true
 		if self:Me(args.destGUID) then
 			self:Flash(args.spellId)
 			self:Say(args.spellId, 120361) -- 120361 = "Barrage"
@@ -121,6 +133,9 @@ do
 			if not scheduled then
 				scheduled = self:ScheduleTimer(warn, 0.2, self, args.spellId)
 			end
+		end
+		if not throttle.timer then
+			throttle.timer = self:ScheduleTimer(wipe, 3, throttle)
 		end
 		if self.db.profile.custom_off_barrage_marker then
 			for i=1, 5 do
@@ -180,6 +195,16 @@ function mod:Split(unit, spellName, _, _, spellId)
 		--self:CDBar(162346, 8) -- Crystalline Barrage 7-12s, then every ~20s, 2-5s staggered
 	end
 end
+
+-- XXX for patch 6.1
+-- Was probably not even worth adding this but warcraftlogs might be happier about it
+--function mod:BossUnitKilled()
+--	if not self:Mythic() then
+--		self:StopBar(-10061) -- Earthwarper
+--		self:StopBar(-10062) -- Berserker
+--	end
+--end
+
 
 -- Adds
 
