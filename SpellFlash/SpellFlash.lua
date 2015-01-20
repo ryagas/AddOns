@@ -1453,6 +1453,18 @@ local function Hook_ActionButton_ShowOverlayGlow(self)
 end
 hooksecurefunc("ActionButton_ShowOverlayGlow", Hook_ActionButton_ShowOverlayGlow)
 
+do
+        local libButtonGlow = LibStub("LibButtonGlow-1.0", true)
+        if libButtonGlow then
+                local lbgShowOverlayGlow = libButtonGlow.ShowOverlayGlow
+                libButtonGlow.ShowOverlayGlow = function(...)
+                        if not s.config.disable_default_proc_highlighting then
+                                return lbgShowOverlayGlow(...)
+                        end
+                end
+        end
+end
+
 -- This is used for testing purposes only
 function SpellFlashAddon.ShowBuffs(unit, Debuff)
 	local unit = unit

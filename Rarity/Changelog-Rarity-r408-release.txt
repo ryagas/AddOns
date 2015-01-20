@@ -1,9 +1,17 @@
 ------------------------------------------------------------------------
-r407 | allara | 2014-12-30 19:07:15 +0000 (Tue, 30 Dec 2014) | 1 line
+r409 | allara | 2015-01-19 02:37:02 +0000 (Mon, 19 Jan 2015) | 1 line
 Changed paths:
-   A /tags/r406-release (from /trunk:406)
+   A /tags/r408-release (from /trunk:408)
 
-Tagging as r406-release
+Tagging as r408-release
+------------------------------------------------------------------------
+r408 | allara | 2015-01-19 02:36:47 +0000 (Mon, 19 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Options_Defaults.lua
+
+- Tooltip fix
 ------------------------------------------------------------------------
 r406 | allara | 2014-12-30 19:06:58 +0000 (Tue, 30 Dec 2014) | 1 line
 Changed paths:
@@ -36,38 +44,4 @@ Changed paths:
 
 - Added the following Winter Veil pets and toys (note that some of these are only available starting on the 25th): Clockwork Rocket Bot, Crashin' Thrashin' Flyer Controller, The Pigskin, MiniZep Controller, Foot Ball, Crashin' Thrashin' Racer Controller, Safari Lounge Cushion, Fuzzy Green Lounge Cushion, Zhevra Lounge Cushion, Pineapple Lounge Cushion, Snowman Kit, Red Helper Box, Jingling Bell, Green Helper Box
 - Rarity now caps the number of holiday reminders at 2
-------------------------------------------------------------------------
-r399 | allara | 2014-12-17 18:16:15 +0000 (Wed, 17 Dec 2014) | 2 lines
-Changed paths:
-   M /trunk/Core.lua
-   M /trunk/Options_Defaults.lua
-
-- Lump of Goal, Rotten Helper Box: Fixed item ID, added defeat detection and holiday reminders
-- I had apparently broken holiday reminders earlier; attempted to fix them now
-------------------------------------------------------------------------
-r397 | allara | 2014-12-04 22:15:34 +0000 (Thu, 04 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-
-- Bonus roll notification will not appear if you don't have any of the currency required
-------------------------------------------------------------------------
-r396 | allara | 2014-12-04 19:55:41 +0000 (Thu, 04 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-   M /trunk/Locales.lua
-
-- Rarity will now notify you with an alert if a bonus roll pops up and you could obtain something Rarity tracks via the bonus roll
-------------------------------------------------------------------------
-r394 | allara | 2014-12-02 00:01:25 +0000 (Tue, 02 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-
-- Moved the secondary tooltip 20 pixels further away to account for the possibility of a scrollbar
-------------------------------------------------------------------------
-r393 | allara | 2014-12-01 22:39:23 +0000 (Mon, 01 Dec 2014) | 1 line
-Changed paths:
-   M /trunk/Core.lua
-   M /trunk/Options_Defaults.lua
-
-- Lil' Bling and Sky Bo: Add defeat detection
 ------------------------------------------------------------------------
