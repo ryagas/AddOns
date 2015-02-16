@@ -15,11 +15,28 @@ L["bars"] = "바"
 L["bestTimeBar"] = "최고 기록"
 L["Beware"] = "조심해라 (알갈론)"
 L["bigWigsBarStyleName_Default"] = "기본값"
+L["blockEmotes"] = "화면 중간에 나타나는 감정표현 막기"
+L["blockEmotesDesc"] = [=[특정 보스들은 특정 능력을 사용할 때 감정 표현을 하는데, 이 메시지들은 너무 장황합니다. 우리는 게임플레이에 간섭하지 않으면서 여러분들로 하여금 특별하게 무엇을 하라고 요구하지 않는 더 적고 알맞는 메시지를 송출하여고 합니다.
+
+주의: 보스들의 감정표현을 계속 보고 싶으시다면 채팅창을 통하여 보실 수 있습니다.]=]
+L["blockGarrison"] = "주둔지 관련 팝업 막기"
+L["blockGarrisonDesc"] = [=[주둔지는 몇몇 상황들을 알려주는 팝업창을 띄우는데, 그 중 대부분은 주둔지 임무가 완료되었을 경우입니다.
+
+이 팝업창들은 보스와의 전투 중 여러분들의 UI의 중요한 부분을 가릴 수 있기 때문에, 막으시는 것을 권장합니다.]=]
+L["blockGuildChallenge"] = "길드 도전 관련 팝업 막기"
+L["blockGuildChallengeDesc"] = [=[길드 도전은 몇몇 상황들을 알려주는 팝업창을 띄우는데, 그 중 대부분은 길드원으로 구성된 그룹이 영웅 던전이나 도전모드 던전을 완료했을 경우입니다.
+
+이 팝업창들은 보스와의 전투 중 여러분들의 UI의 중요한 부분을 가릴 수 있기 때문에, 막으시는 것을 권장합니다.]=]
+L["blockMovies"] = "본적이 있는 영상들 막기"
+L["blockMoviesDesc"] = "보스와의 전투 시 나오는 영상들을 한 번만 재생하고(그러므로 여러분들은 한 번씩은 볼 수 있습니다) 그 후에는 막습니다."
+L["blockSpellErrors"] = "주문 오류 팝업 막기"
+L["blockSpellErrorsDesc"] = "\"마법이 아직 준비되지 않았습니다.\" 같이 화면 상단부에 나타나는 메시지들을 막습니다."
+L["bossBlock"] = "보스 블락"
+L["bossBlockDesc"] = "설정을 통하여 보스와의 전투 중 발생하는 다양한 것들을 막을 수 있습니다."
 L["bossDefeatDurationPrint"] = "%s '%s'에 물리침."
 L["bossStatistics"] = "보스 통계"
 L["bossStatsDescription"] = "보스가 죽은 시간의 합계, 전멸 횟수의 합계, 전투가 지속된 총 시간, 또는 가장 빠른 보스 죽임 등의 다양한 보스 관련 통계를 기록합니다. 이 통계는 각각의 보스 설정 화면에서 볼 수 있으나, 기록된 통계가 없는 보스에선 보여지지 않습니다."
 L["bossWipeDurationPrint"] = "%s '%s'에서 전멸함."
-L["breakAnnounce"] = "%g |4분:분; 지금부터 휴식을 시작합니다!"
 L["breakBar"] = "휴식 시간"
 L["breakFinished"] = "휴식 시간이 끝났습니다!"
 L["breakMinutes"] = "휴식 시간이 %d |4분:분; 후에 종료됩니다!"
@@ -103,6 +120,7 @@ L["monochrome"] = "단색"
 L["monochromeDesc"] = "글꼴 가장자리의 외곽선을 제거하여 단색 모드로 전환합니다."
 L["move"] = "이동"
 L["moveDesc"] = "강조 바를 이동하기 위해 강조 앵커를 표시합니니다. 이 옵션이 비활성화면, 간단히 강조 바의 크기와 색상만 변경할 수 있습니다."
+L["movieBlocked"] = "이 동영상을 본 적이 있으므로 생략합니다."
 L["Neutral"] = "중립"
 L["newBestTime"] = "새로운 최고 기록!"
 L["none"] = "없음"
@@ -111,6 +129,10 @@ L["normalMessages"] = "일반 메시지"
 L["outline"] = "외곽선"
 L["output"] = "출력"
 L["Personal"] = "개인"
+L["positionDesc"] = "정확한 자리를 정하기 위하여 직접 수치를 입력하거나 슬라이더를 움직이세요."
+L["positionExact"] = "정확한 위치설정"
+L["positionX"] = "X 좌표"
+L["positionY"] = "Y 좌표"
 L["Positive"] = "긍정적"
 L["primary"] = "첫번째 아이콘"
 L["primaryDesc"] = "첫번째 공격대 대상에게 사용할 아이콘을 지정합니다."

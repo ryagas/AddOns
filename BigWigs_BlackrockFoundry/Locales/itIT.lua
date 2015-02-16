@@ -16,7 +16,12 @@ end
 
 L = BigWigs:NewBossLocale("The Blast Furnace", "itIT")
 if L then
+	--L.custom_on_shieldsdown_marker = "Shields Down marker"
+	--L.custom_on_shieldsdown_marker_desc = "Mark a vulnerable Primal Elementalist with {rt8}, requires promoted or leader."
+
 	--L.heat_increased_message = "Heat increased! Blast every %ss"
+
+	--L.bombs_dropped = "Bombs dropped! (%d)"
 end
 
 L = BigWigs:NewBossLocale("Hans'gar and Franzok", "itIT")
@@ -59,6 +64,7 @@ if L then
 	--L.adds_train = "Adds train"
 	--L.big_add_train = "Big add train"
 	--L.cannon_train = "Cannon train"
+	--L.deforester = "Deforester" -- /dump (EJ_GetSectionInfo(10329))
 	--L.random = "Random trains"
 end
 
@@ -66,7 +72,7 @@ L = BigWigs:NewBossLocale("The Iron Maidens", "itIT")
 if L then
 	--L.ship_trigger = "prepares to man the Dreadnaught's Main Cannon!"
 
-	--L.ship = "Jump to Ship: %s"
+	--L.ship = "Jump to Ship"
 
 	--L.custom_off_heartseeker_marker = "Bloodsoaked Heartseeker marker"
 	--L.custom_off_heartseeker_marker_desc = "Marks Heartseeker targets with {rt1}{rt2}{rt3}, requires promoted or leader."

@@ -23,7 +23,7 @@ do
 	--@end-alpha@]===]
 
 	-- This will (in ZIPs), be replaced by the highest revision number in the source tree.
-	myRevision = tonumber("12524")
+	myRevision = tonumber("12756")
 
 	-- If myRevision ends up NOT being a number, it means we're running a SVN copy.
 	if type(myRevision) ~= "number" then
@@ -85,6 +85,10 @@ local loadOnCoreLoaded = {} -- BigWigs modulepacks that should load when the cor
 local menus = {} -- contains the menus for BigWigs, once the core is loaded they will get injected
 local enableZones = {} -- contains the zones in which BigWigs will enable
 local worldBosses = {} -- contains the list of world bosses per zone that should enable the core
+local fakeWorldZones = { -- Probably not needed, but let's be safe
+	[466]=true, -- Outland
+	[862]=true, -- Pandaria
+}
 
 do
 	local c = "BigWigs_Classic"
@@ -96,22 +100,22 @@ do
 
 	public.zoneTbl = {
 		[696]=c, [755]=c,
-		[775]=bc, [780]=bc, [779]=bc, [776]=bc, [465]=bc, [473]=bc, [799]=bc, [782]=bc,
+		[775]=bc, [780]=bc, [779]=bc, [776]=bc, [799]=bc, [782]=bc, [466]=bc,
 		[604]=wotlk, [543]=wotlk, [535]=wotlk, [529]=wotlk, [527]=wotlk, [532]=wotlk, [531]=wotlk, [609]=wotlk, [718]=wotlk,
 		[752]=cata, [758]=cata, [754]=cata, [824]=cata, [800]=cata, [773]=cata,
-		[896]=mop, [897]=mop, [886]=mop, [930]=mop, [953]=mop, [807]=mop, [809]=mop, [928]=mop, [929]=mop, [951]=mop, [862]=mop,
+		[896]=mop, [897]=mop, [886]=mop, [930]=mop, [953]=mop, [862]=mop,
 
 		[877]=lw, [871]=lw, [874]=lw, [885]=lw, [867]=lw, [919]=lw, -- MoP
 		[964]=lw, [969]=lw, [984]=lw, [987]=lw, [989]=lw, [993]=lw, [995]=lw, [1008]=lw -- WoD
 	}
 end
 
--- GLOBALS: ADDON_LOAD_FAILED, BigWigs, BigWigs3DB, BigWigs3IconDB, BigWigsLoader, BigWigsOptions, CreateFrame, CUSTOM_CLASS_COLORS, error, GetAddOnEnableState, GetAddOnInfo
--- GLOBALS: GetAddOnMetadata, GetInstanceInfo, GetLocale, GetNumGroupMembers, GetRealmName, GetSpecialization, GetSpecializationRole, GetTime, GRAY_FONT_COLOR, InCombatLockdown
--- GLOBALS: InterfaceOptionsFrameOkay, IsAddOnLoaded, IsAltKeyDown, IsControlKeyDown, IsEncounterInProgress, IsInGroup, IsInInstance, IsInRaid, IsPartyLFG, LFGDungeonReadyPopup
--- GLOBALS: LibStub, LoadAddOn, message, print, RAID_CLASS_COLORS, RaidNotice_AddMessage, RaidWarningFrame, RegisterAddonMessagePrefix, RolePollPopup, select, SetMapByID, strsplit
+-- GLOBALS: _G, ADDON_LOAD_FAILED, BigWigs, BigWigs3DB, BigWigs3IconDB, BigWigsLoader, BigWigsOptions, CreateFrame, CUSTOM_CLASS_COLORS, error, GetAddOnEnableState, GetAddOnInfo
+-- GLOBALS: GetAddOnMetadata, GetInstanceInfo, GetLocale, GetNumGroupMembers, GetRealmName, GetSpecialization, GetSpecializationRole, GetSpellInfo, GetTime, GRAY_FONT_COLOR, InCombatLockdown
+-- GLOBALS: InterfaceOptionsFrameOkay, IsAddOnLoaded, IsAltKeyDown, IsControlKeyDown, IsEncounterInProgress, IsInGroup, IsInInstance, IsInRaid, IsPartyLFG, IsSpellKnown, LFGDungeonReadyPopup
+-- GLOBALS: LibStub, LoadAddOn, message, PlaySoundFile, print, RAID_CLASS_COLORS, RaidNotice_AddMessage, RaidWarningFrame, RegisterAddonMessagePrefix, RolePollPopup, select, SetMapByID, strsplit
 -- GLOBALS: tostring, tremove, type, UnitAffectingCombat, UnitClass, UnitGroupRolesAssigned, UnitIsDeadOrGhost, UnitName, UnitSetRole, unpack, SLASH_BigWigs1, SLASH_BigWigs2
--- GLOBALS: SLASH_BigWigsVersion1, wipe, WorldMapFrame
+-- GLOBALS: SLASH_BigWigsVersion1, UnitBuff, wipe, WorldMapFrame
 
 -----------------------------------------------------------------------
 -- Utility
@@ -245,15 +249,19 @@ do
 			local zone = tonumber(rawZone:trim())
 			if zone then
 				-- register the zone for enabling.
-				enableZones[zone] = true
-
-				if not loadOnZone[zone] then loadOnZone[zone] = {} end
-				loadOnZone[zone][#loadOnZone[zone] + 1] = addon
-
-				if override then
-					loadOnZone[override][#loadOnZone[override] + 1] = addon
-				else
+				if fakeWorldZones[zone] then
 					if not menus[zone] then menus[zone] = true end
+				else
+					enableZones[zone] = true
+
+					if not loadOnZone[zone] then loadOnZone[zone] = {} end
+					loadOnZone[zone][#loadOnZone[zone] + 1] = addon
+
+					if override then
+						loadOnZone[override][#loadOnZone[override] + 1] = addon
+					else
+						if not menus[zone] then menus[zone] = true end
+					end
 				end
 			else
 				local name = GetAddOnInfo(addon)
@@ -279,8 +287,6 @@ do
 
 					if override then
 						loadOnZone[override][#loadOnZone[override] + 1] = addon
-					else
-						if not menus[zoneOrBoss] then menus[zoneOrBoss] = true end
 					end
 				else
 					worldBosses[zoneOrBoss] = currentZone
@@ -411,12 +417,12 @@ do
 		BigWigs_DragonSoul = "BigWigs_Cataclysm",
 		BigWigs_Firelands = "BigWigs_Cataclysm",
 		BigWigs_Throne = "BigWigs_Cataclysm",
-		--BigWigs_EndlessSpring = "BigWigs_MistsOfPandaria",
-		--BigWigs_HeartOfFear = "BigWigs_MistsOfPandaria",
-		--BigWigs_Mogushan = "BigWigs_MistsOfPandaria",
-		--BigWigs_Pandaria = "BigWigs_MistsOfPandaria",
-		--BigWigs_SiegeOfOrgrimmar = "BigWigs_MistsOfPandaria",
-		--BigWigs_ThroneOfThunder = "BigWigs_MistsOfPandaria",
+		BigWigs_EndlessSpring = "BigWigs_MistsOfPandaria",
+		BigWigs_HeartOfFear = "BigWigs_MistsOfPandaria",
+		BigWigs_Mogushan = "BigWigs_MistsOfPandaria",
+		BigWigs_Pandaria = "BigWigs_MistsOfPandaria",
+		BigWigs_SiegeOfOrgrimmar = "BigWigs_MistsOfPandaria",
+		BigWigs_ThroneOfThunder = "BigWigs_MistsOfPandaria",
 		LittleWigs_ShadoPanMonastery = "LittleWigs",
 		LittleWigs_ScarletHalls = "LittleWigs",
 		LittleWigs_ScarletMonastery = "LittleWigs",
@@ -456,13 +462,13 @@ do
 
 	local L = GetLocale()
 	if L == "ptBR" then
-		delayedMessages[#delayedMessages+1] = "Think you can translate Big Wigs into Brazilian Portuguese (ptBR)? Check out our easy translator tool: http://www.wowace.com/addons/big-wigs/localization/"
+	--	delayedMessages[#delayedMessages+1] = "We *really* need help translating Big Wigs! Think you can help us? Please check out our translator website: goo.gl/nwR5cy"
 	elseif L == "zhTW" then
-	--	delayedMessages[#delayedMessages+1] = "Think you can translate Big Wigs into Traditional Chinese (zhTW)? Check out our easy translator tool: http://www.wowace.com/addons/big-wigs/localization/"
+	--	delayedMessages[#delayedMessages+1] = "Think you can translate Big Wigs into Traditional Chinese (zhTW)? Check out our easy translator tool: goo.gl/nwR5cy"
 	elseif L == "ruRU" then
-	--	delayedMessages[#delayedMessages+1] = "Think you can translate Big Wigs into Russian (ruRU)? Check out our easy translator tool: http://www.wowace.com/addons/big-wigs/localization/"
+	--	delayedMessages[#delayedMessages+1] = "Think you can translate Big Wigs into Russian (ruRU)? Check out our easy translator tool: goo.gl/nwR5cy"
 	elseif L == "itIT" then
-		delayedMessages[#delayedMessages+1] = "Think you can translate Big Wigs into Italian (itIT)? Check out our easy translator tool: http://www.wowace.com/addons/big-wigs/localization/"
+	--	delayedMessages[#delayedMessages+1] = "Think you can translate Big Wigs into Italian (itIT)? Check out our easy translator tool: goo.gl/nwR5cy"
 	end
 
 	CTimerAfter(11, function()
@@ -483,35 +489,37 @@ end
 
 do
 	-- This is a crapfest mainly because DBM's actual handling of versions is a crapfest, I'll try explain how this works...
-	local DBMdotRevision = "12226" -- The changing version of the local client, changes with every alpha revision using an SVN keyword.
-	local DBMdotReleaseRevision = "12226" -- This is manually changed by them every release, they use it to track the highest release version, a new DBM release is the only time it will change.
-	local DBMdotDisplayVersion = "6.0.10" -- Same as above but is changed between alpha and release cycles e.g. "N.N.N" for a release and "N.N.N alpha" for the alpha duration
+	local DBMdotRevision = "12764" -- The changing version of the local client, changes with every alpha revision using an SVN keyword.
+	local DBMdotReleaseRevision = "12764" -- This is manually changed by them every release, they use it to track the highest release version, a new DBM release is the only time it will change.
+	local DBMdotDisplayVersion = "6.0.15" -- Same as above but is changed between alpha and release cycles e.g. "N.N.N" for a release and "N.N.N alpha" for the alpha duration
 
-	local timer = nil
-	local prevUpgradedUser = nil
+	local timer, prevUpgradedUser = nil, nil
 	local function sendMsg()
 		if IsInGroup() then
 			SendAddonMessage("D4", "V\t"..DBMdotRevision.."\t"..DBMdotReleaseRevision.."\t"..DBMdotDisplayVersion.."\t"..GetLocale().."\t".."true", IsInGroup(2) and "INSTANCE_CHAT" or "RAID") -- LE_PARTY_CATEGORY_INSTANCE = 2
 		end
-		timer = nil
+		timer, prevUpgradedUser = nil, nil
 	end
 	function mod:DBM_VersionCheck(prefix, sender, revision, releaseRevision, displayVersion)
 		if prefix == "H" and (BigWigs and BigWigs.db.profile.fakeDBMVersion or self.isFakingDBM) then
 			if timer then timer:Cancel() end
-			prevUpgradedUser = nil
-			timer = CTimerNewTicker(3.2, sendMsg, 1)
+			timer = CTimerNewTicker(3.3, sendMsg, 1)
 		elseif prefix == "V" then
 			usersDBM[sender] = displayVersion
-			-- If there are people with newer versions than us, suddenly we've upgraded!
-			local rev, dotRev = tonumber(revision), tonumber(DBMdotRevision)
-			if rev and displayVersion and rev ~= 99999 and rev > dotRev and not displayVersion:find("alpha", nil, true) then -- Failsafes
-				if not prevUpgradedUser then
-					prevUpgradedUser = sender
-				elseif prevUpgradedUser ~= sender then
-					DBMdotRevision = revision -- Update our local rev with the highest possible rev found.
-					DBMdotReleaseRevision = releaseRevision -- Update our release rev with the highest found, this should be the same for alpha users and latest release users.
-					DBMdotDisplayVersion = displayVersion -- Update to the latest display version.
-					self:DBM_VersionCheck("H") -- Re-send addon message.
+			if BigWigs and BigWigs.db.profile.fakeDBMVersion or self.isFakingDBM then
+				-- If there are people with newer versions than us, suddenly we've upgraded!
+				local rev, dotRev = tonumber(revision), tonumber(DBMdotRevision)
+				if rev and displayVersion and rev ~= 99999 and rev > dotRev and not displayVersion:find("alpha", nil, true) then -- Failsafes
+					if not prevUpgradedUser then
+						prevUpgradedUser = sender
+					elseif prevUpgradedUser ~= sender then
+						DBMdotRevision = revision -- Update our local rev with the highest possible rev found.
+						DBMdotReleaseRevision = releaseRevision -- Update our release rev with the highest found, this should be the same for alpha users and latest release users.
+						DBMdotDisplayVersion = displayVersion -- Update to the latest display version.
+						-- Re-send the addon message.
+						if timer then timer:Cancel() end
+						timer = CTimerNewTicker(1, sendMsg, 1)
+					end
 				end
 			end
 		end
@@ -639,7 +647,14 @@ do
 			timerBar.text = timerBar:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
 			timerBar.text:SetPoint("CENTER", timerBar, "CENTER")
 
-			prev = GetTime() + 40
+			self.LFG_PROPOSAL_SHOW = function()
+				prev = GetTime() + 40
+				-- Play in Master for those that have SFX off or very low.
+				-- We can't do PlaySound("ReadyCheck", "Master") as PlaySound is throttled, and Blizz already plays it.
+				PlaySoundFile("Sound\\Interface\\levelup2.ogg", "Master")
+			end
+			self:LFG_PROPOSAL_SHOW()
+
 			timerBar:SetScript("OnUpdate", function(f)
 				local timeLeft = prev - GetTime()
 				if timeLeft > 0 then
@@ -647,8 +662,6 @@ do
 					f.text:SetFormattedText("Big Wigs: %.1f", timeLeft)
 				end
 			end)
-
-			self.LFG_PROPOSAL_SHOW = function() prev = GetTime() + 40 end
 		end
 	end
 end
@@ -750,8 +763,7 @@ end
 
 do
 	local queueLoad = {}
-	-- Kazzak, Doomwalker, Salyis's Warband, Sha of Anger, Nalak, Oondasta, Ordos
-	local warnedThisZone = {[465]=true,[473]=true,[807]=true,[809]=true,[928]=true,[929]=true,[951]=true} -- World Bosses
+	local warnedThisZone = {}
 	function mod:PLAYER_REGEN_ENABLED()
 		self:ACTIVE_TALENT_GROUP_CHANGED() -- Force role check
 		bwFrame:UnregisterEvent("PLAYER_REGEN_ENABLED")
@@ -852,7 +864,7 @@ do
 		-- Lacking zone modules
 		if (BigWigs and BigWigs.db.profile.showZoneMessages == false) or self.isShowingZoneMessages == false then return end
 		local zoneAddon = public.zoneTbl[id]
-		if zoneAddon and not warnedThisZone[id] and zoneAddon ~= "BigWigs_MistsOfPandaria" and not IsAddOnEnabled(zoneAddon) then -- XXX compat
+		if zoneAddon and not fakeWorldZones[id] and not warnedThisZone[id] and not IsAddOnEnabled(zoneAddon) then
 			warnedThisZone[id] = true
 			local msg = L.missingAddOn:format(zoneAddon)
 			sysprint(msg)
@@ -954,56 +966,58 @@ end
 -- LDB Plugin
 --
 
-local ldb11 = LibStub("LibDataBroker-1.1", true)
-if ldb11 then
-	ldb = ldb11:NewDataObject("BigWigs", {
-		type = "launcher",
-		label = "Big Wigs",
-		icon = "Interface\\AddOns\\BigWigs\\Textures\\icons\\core-disabled",
-	})
+do
+	local ldb11 = LibStub("LibDataBroker-1.1", true)
+	if ldb11 then
+		ldb = ldb11:NewDataObject("BigWigs", {
+			type = "launcher",
+			label = "Big Wigs",
+			icon = "Interface\\AddOns\\BigWigs\\Textures\\icons\\core-disabled",
+		})
 
-	function ldb.OnClick(self, button)
-		if button == "RightButton" then
-			loadCoreAndOpenOptions()
-		else
-			loadAndEnableCore()
-			if IsAltKeyDown() then
-				if IsControlKeyDown() then
-					BigWigs:Disable()
+		function ldb.OnClick(self, button)
+			if button == "RightButton" then
+				loadCoreAndOpenOptions()
+			else
+				loadAndEnableCore()
+				if IsAltKeyDown() then
+					if IsControlKeyDown() then
+						BigWigs:Disable()
+					else
+						for name, module in BigWigs:IterateBossModules() do
+							if module:IsEnabled() then module:Disable() end
+						end
+						sysprint(L.modulesDisabled)
+					end
 				else
 					for name, module in BigWigs:IterateBossModules() do
-						if module:IsEnabled() then module:Disable() end
+						if module:IsEnabled() then module:Reboot() end
 					end
-					sysprint(L.modulesDisabled)
+					sysprint(L.modulesReset)
 				end
-			else
-				for name, module in BigWigs:IterateBossModules() do
-					if module:IsEnabled() then module:Reboot() end
-				end
-				sysprint(L.modulesReset)
 			end
 		end
-	end
 
-	function ldb.OnTooltipShow(tt)
-		tt:AddLine("Big Wigs")
-		local h = nil
-		if BigWigs and BigWigs:IsEnabled() then
-			local added = nil
-			for name, module in BigWigs:IterateBossModules() do
-				if module:IsEnabled() then
-					if not added then
-						tt:AddLine(L.activeBossModules, 1, 1, 1)
-						added = true
+		function ldb.OnTooltipShow(tt)
+			tt:AddLine("Big Wigs")
+			local h = nil
+			if BigWigs and BigWigs:IsEnabled() then
+				local added = nil
+				for name, module in BigWigs:IterateBossModules() do
+					if module:IsEnabled() then
+						if not added then
+							tt:AddLine(L.activeBossModules, 1, 1, 1)
+							added = true
+						end
+						tt:AddLine(module.displayName)
 					end
-					tt:AddLine(module.displayName)
 				end
 			end
+			for i, v in next, tooltipFunctions do
+				v(tt)
+			end
+			tt:AddLine(L.tooltipHint, 0.2, 1, 0.2, 1)
 		end
-		for i, v in next, tooltipFunctions do
-			v(tt)
-		end
-		tt:AddLine(L.tooltipHint, 0.2, 1, 0.2, 1)
 	end
 end
 

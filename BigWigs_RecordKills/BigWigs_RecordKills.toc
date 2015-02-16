@@ -2,7 +2,7 @@
 ## Title: Big Wigs [|cffeda55fRecord Kills|r]
 ## Author: Kiezo
 ## Notes: A record of your fastest kills of MoP raid bosses.
-## Version: 2.03
+## Version: 2.04
 ## Dependencies: BigWigs
 ## SavedVariables: RKDatabase
 

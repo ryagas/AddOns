@@ -1,0 +1,6 @@
+## Interface: 60100
+## Title: Kait|cff00ccffInstaller
+## Author: Kait
+## Notes: Installs profiles for KaitUI
+
+KaitInstaller.lua

@@ -1,0 +1,19 @@
+------------------------------------------------------------------------
+r100 | funkydude | 2014-10-29 00:19:41 +0000 (Wed, 29 Oct 2014) | 1 line
+Changed paths:
+   A /tags/r100-release (from /trunk:99)
+
+Tagging as r100-release
+------------------------------------------------------------------------
+r99 | funkydude | 2014-10-27 17:28:58 +0000 (Mon, 27 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/ErrorMonster.lua
+
+Reduce throttle from 10 to 7 seconds.
+------------------------------------------------------------------------
+r97 | funkydude | 2014-10-14 19:58:40 +0000 (Tue, 14 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/ErrorMonster.toc
+
+bump toc
+------------------------------------------------------------------------

@@ -17,6 +17,8 @@ if L then
 L["adds_desc"] = "Таймеры, когда новые помощники вступят в бой."
 L["custom_off_barrage_marker"] = "Маркировка Кристаллического залпа"
 L["custom_off_barrage_marker_desc"] = "Отмечать людей с Кристаллическим залпом {rt1}{rt2}{rt3}{rt4}{rt5}, требуется быть помощником или лидером."
+L["custom_on_shard_marker"] = "Метка Осколка Тектоника"
+L["custom_on_shard_marker_desc"] = "Отмечать 2 Осколка Тектоника метками {rt8}{rt7}, требует быть лидером рейда или иметь права помощника."
 L["motes"] = "Частица"
 L["shard"] = "Осколок"
 
@@ -26,8 +28,13 @@ L = BigWigs:NewBossLocale("Brackenspore", "ruRU")
 if L then
 L["creeping_moss_add_heal"] = "Мох под БОЛЬШИМ АДДОМ (исцеляется)"
 L["creeping_moss_boss_heal"] = "Мох под БОССОМ (исцеление)"
+L["custom_off_spore_shooter_marker"] = "Метка Спорострела"
+L["custom_off_spore_shooter_marker_desc"] = [=[Отмечать Спорострелы метками {rt1}{rt2}{rt3}{rt4}, требует быть лидером рейда или иметь права помощника.
+|cFFFF0000Только один человек должен иметь данную опцию включенной, чтобы избежать конфликтов.|r
+|cFFADFF2FПодсказка: если эта настройка включена у вас, чтобы отметить мобов как можно быстрее проведите мышкой над ними.|r]=]
 L["mythic_ability"] = "Особая способность"
-L["mythic_ability_desc"] = "Показать таймер следующего Зова прилива или Взрывных поганок"
+L["mythic_ability_desc"] = "Показать таймер следующего Зова прилива или Взрывных поганок."
+L["mythic_ability_wave"] = "Приближается Волна!"
 
 end
 
@@ -44,8 +51,9 @@ if L then
 L["custom_off_fel_marker"] = "Метка - Исторжение магии: Скверна"
 L["custom_off_fel_marker_desc"] = [=[Пометить метками {rt1}{rt2}{rt3} цели с Исторженим магии: Скверна. Требует лидера или повышения.
 |cFFFF0000Только 1 человек должен иметь данную опцию включенной, чтобы избежать конфликтов.|r]=]
+L["dominating_power_bar"] = "Шаров КР упало (%d)"
 L["fire_bar"] = "Все взорвутся!"
-L["overwhelming_energy_bar"] = "Шаров упало"
+L["overwhelming_energy_bar"] = "Шаров упало (%d)"
 
 end
 
@@ -68,6 +76,7 @@ end
 
 L = BigWigs:NewBossLocale("Highmaul Trash", "ruRU")
 if L then
+L["arcanist"] = "Горианский чародей"
 L["oro"] = "Оро"
 L["ritualist"] = "Ритуалист-сокрушитель"
 L["runemaster"] = "Горианский мастер рун"

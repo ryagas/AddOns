@@ -1,12 +1,12 @@
 local L = BigWigs:NewBossLocale("Gruul", "frFR")
 if not L then return end
 if L then
-
+	L.first_ability = "Frappe ou Heurt"
 end
 
 L = BigWigs:NewBossLocale("Oregorger", "frFR")
 if L then
-	--L.berserk_trigger = "Oregorger has gone insane from hunger!"
+	L.berserk_trigger = "La faim rend Mangeroc fou furieux !" -- à vérifier
 
 	L.shard_explosion = "Explosion de Eclat explosif"
 	L.shard_explosion_desc = "Barre mise en évidence séparée pour l'explosion."
@@ -16,7 +16,12 @@ end
 
 L = BigWigs:NewBossLocale("The Blast Furnace", "frFR")
 if L then
+	L.custom_on_shieldsdown_marker = "Marquage Boucliers dissipés"
+	L.custom_on_shieldsdown_marker_desc = "Marque une Élémentariste primordiale vulnérable avec {rt8}. Nécessite d'être assistant ou chef de raid."
+
 	L.heat_increased_message = "La Chaleur augmente ! Explosion toutes les %ss"
+
+	L.bombs_dropped = "Bombes lâchées ! (%d)"
 end
 
 L = BigWigs:NewBossLocale("Hans'gar and Franzok", "frFR")
@@ -38,7 +43,7 @@ end
 
 L = BigWigs:NewBossLocale("Beastlord Darmac", "frFR")
 if L then
-	--L.next_mount = "Mounting imminent !"
+	L.next_mount = "Mise en selle imminente !"
 
 	L.custom_off_pinned_marker = "Marquage Clouer au sol"
 	L.custom_off_pinned_marker_desc = "Marque les cibles de Clouer au sol avec {rt8}{rt7}{rt6}{rt5}{rt4}. Nécessite d'être assistant ou chef de raid.\n|cFFFF0000Seule 1 personne du raid doit activer ceci afin d'éviter les conflits de marquage.|r\n|cFFADFF2FASTUCE : si le raid a décidé que c'est vous qui devez l'activer, survoler rapidement toutes les mines est le moyen le plus rapide de les marquer.|r"
@@ -49,6 +54,9 @@ end
 
 L = BigWigs:NewBossLocale("Operator Thogar", "frFR")
 if L then
+	L.custom_off_firemender_marker = "Marquage Garde-feu grom’kar"
+	L.custom_off_firemender_marker_desc = "Marque les Gardes-feu grom’kar avec {rt1}{rt2}. Nécessite d'être assistant ou chef de raid.\n|cFFFF0000Seule 1 personne du raid doit activer ceci afin d'éviter les conflits de marquage.|r\n|cFFADFF2FASTUCE : si le raid a décidé que c'est vous qui devez l'activer, survoler rapidement toutes les mines est le moyen le plus rapide de les marquer.|r"
+
 	L.cauterizing_bolt_message = "Votre focalisation incante Eclair cautérisant !"
 
 	L.trains = "Alertes Train"
@@ -59,14 +67,15 @@ if L then
 	--L.adds_train = "Adds train"
 	--L.big_add_train = "Big add train"
 	--L.cannon_train = "Cannon train"
+	L.deforester = "Abatteur d'arbres" -- /dump (EJ_GetSectionInfo(10329))
 	L.random = "Trains aléatoires"
 end
 
 L = BigWigs:NewBossLocale("The Iron Maidens", "frFR")
 if L then
-	--L.ship_trigger = "prepares to man the Dreadnaught's Main Cannon!"
+	L.ship_trigger = "s'apprête à employer le canon principal du cuirassier !" -- à vérifier
 
-	L.ship = "Saut vers le navire : %s"
+	L.ship = "Saut vers le navire"
 
 	L.custom_off_heartseeker_marker = "Marquage Crève-cœur imprégné de sang"
 	L.custom_off_heartseeker_marker_desc = "Marque les cibles des crèves-cœurs avec {rt1}{rt2}{rt3}. Nécessite d'être assistant ou chef de raid."
@@ -79,4 +88,10 @@ if L then
 	L.custom_off_markedfordeath_marker = "Marquage Désigné pour mourir"
 	L.custom_off_markedfordeath_marker_desc = "Marque les cibles de Désigné pour mourir avec {rt1}{rt2}. Nécessite d'être assistant ou chef de raid."
 end
+
+L = BigWigs:NewBossLocale("Blackrock Foundry Trash", "frFR")
+if L then
+	L.gnasher = "Grinceur sombréclat"
+	L.furnace = "Tuyau d’échappement du haut-fourneau"
+	end
 

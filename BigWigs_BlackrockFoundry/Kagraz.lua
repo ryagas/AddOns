@@ -15,6 +15,9 @@ mod.engageId = 1689
 
 local wolvesActive = nil
 local moltenTorrentOnMe = nil
+local blazingTarget = nil
+local firestormCount = 1
+local fixateOnMe = nil
 
 --------------------------------------------------------------------------------
 -- Localization
@@ -35,10 +38,25 @@ L = mod:GetLocale()
 
 function mod:GetOptions()
 	return {
-		156018, 156040,
-		155318, 156724, {154932, "ICON", "FLASH", "SAY", "PROXIMITY"}, {"molten_torrent_self", "SAY"}, 155776, {155277, "ICON", "FLASH", "PROXIMITY"}, 155493, {163284, "TANK"},
-		{154952, "FLASH"}, {154950, "TANK"}, {155074, "TANK_HEALER"}, 155064,
-		"berserk", "bosskill"
+		--[[ Aknor Steelbringer ]]--
+		156018, -- Devastating Slam
+		156040, -- Drop the Hammer
+		--[[ Ka'graz ]]--
+		155318, -- Lava Slash
+		-9352, -- Summon Enchanted Armaments
+		{154932, "ICON", "FLASH", "SAY", "PROXIMITY"}, -- Molten Torrent
+		{"molten_torrent_self", "SAY"},
+		155776, -- Summon Cinder Wolves
+		{155277, "ICON", "SAY", "FLASH", "PROXIMITY"}, -- Blazing Radiance
+		155493, -- Firestorm
+		{163284, "TANK"}, -- Rising Flames
+		--[[ Cinder Wolf ]]--
+		{154952, "FLASH"}, -- Fixate
+		{154950, "TANK"}, -- Overheated
+		{155074, "TANK_HEALER"}, -- Charring Breath
+		155064, -- Rekindle
+		"berserk",
+		"bosskill"
 	}, {
 		[156018] = -9354, -- Aknor Steelbringer
 		[155318] = -9350, -- Ka'graz
@@ -52,20 +70,22 @@ function mod:OnBossEnable()
 
 	-- Aknor
 	self:Log("SPELL_CAST_START", "DevastatingSlam", 156018)
-	self:Log("SPELL_CAST_START", "DropHammer", 156040)
+	self:Log("SPELL_CAST_START", "DropTheHammer", 156040)
 	-- Ka'graz
 	self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", nil, "boss1")
+	self:Log("SPELL_AURA_APPLIED", "LavaSlashDamage", 155314)
 	self:Log("SPELL_DAMAGE", "LavaSlashDamage", 155318)
 	self:Log("SPELL_MISSED", "LavaSlashDamage", 155318)
 	self:Log("SPELL_AURA_APPLIED", "MoltenTorrentApplied", 154932)
 	self:Log("SPELL_AURA_REMOVED", "MoltenTorrentRemoved", 154932)
 	self:Log("SPELL_CAST_SUCCESS", "CinderWolves", 155776)
-	self:Log("SPELL_CAST_SUCCESS", "BlazingRadiance", 155277)
-	self:Log("SPELL_CAST_START", "Firestorm", 155493)
+	self:Log("SPELL_AURA_APPLIED", "BlazingRadiance", 155277)
+	self:Log("SPELL_AURA_REMOVED", "BlazingRadianceRemoved", 155277)
 	self:Log("SPELL_AURA_APPLIED", "RisingFlames", 163284)
 	self:Log("SPELL_AURA_APPLIED_DOSE", "RisingFlames", 163284)
 	-- Cinder Wolves
 	self:Log("SPELL_AURA_APPLIED", "Fixate", 154952)
+	self:Log("SPELL_AURA_REMOVED", "FixateOver", 154952)
 	self:Log("SPELL_AURA_APPLIED", "Overheated", 154950)
 	self:Log("SPELL_AURA_APPLIED", "CharringBreath", 155074)
 	self:Log("SPELL_AURA_APPLIED_DOSE", "CharringBreath", 155074)
@@ -75,8 +95,11 @@ function mod:OnBossEnable()
 end
 
 function mod:OnEngage()
-	self:Bar(155318, 12) -- Lava Slash
-	self:Bar(154938, 30) -- Molten Torrent
+	wolvesActive = nil
+	moltenTorrentOnMe, blazingTarget, fixateOnMe = nil, nil, nil
+	firestormCount = 1
+	--self:Bar(155318, 11) -- Lava Slash
+	self:Bar(154938, 31) -- Molten Torrent
 	self:Bar(155776, 60) -- Summon Cinder Wolves
 end
 
@@ -105,10 +128,20 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(unit, spellName, _, _, spellId)
 	if spellId == 154914 then -- Lava Slash
 		self:Message(155318, "Urgent")
-		self:Bar(155318, 14.5)
+		--self:Bar(155318, 14.5)
 	elseif spellId == 163644 then -- Summon Enchanted Armaments
-		self:Message(156724, "Attention")
-		self:Bar(156724, self:Mythic() and 20 or 45)
+		self:Message(-9352, "Attention", nil, 175007, "inv_sword_1h_firelandsraid_d_04")
+		self:Bar(-9352, self:Mythic() and 20 or 46, 175007, "inv_sword_1h_firelandsraid_d_04")
+	elseif spellId == 155564 then -- Firestorm
+		self:Message(155493, "Important", "Long", CL.count:format(self:SpellName(155493), firestormCount))
+		firestormCount = firestormCount + 1
+		self:Bar(155493, 14, CL.cast:format(spellName))
+
+		--self:StopBar(155277) -- Blazing Radiance
+		self:Bar(-9352, 18, 175007, "inv_sword_1h_firelandsraid_d_04") -- Summon Enchanted Armaments
+		--self:Bar(155318, 28) -- Lava Slash
+		self:Bar(154932, 47) -- Molten Torrent
+		self:Bar(155776, 76) -- Cinder Wolves
 	end
 end
 
@@ -116,9 +149,9 @@ do
 	local prev = 0
 	function mod:LavaSlashDamage(args)
 		local t = GetTime()
-		if t-prev > 3 and self:Me(args.destGUID) then
+		if t-prev > 1.5 and self:Me(args.destGUID) then
 			prev = t
-			self:Message(args.spellId, "Personal", "Alarm", CL.underyou:format(args.spellName))
+			self:Message(155318, "Personal", "Alarm", CL.underyou:format(args.spellName))
 		end
 	end
 end
@@ -151,7 +184,13 @@ do
 		end
 	end
 	function mod:MoltenTorrentRemoved(args)
-		moltenTorrentOnMe = nil
+		if self:Me(args.destGUID) then
+			moltenTorrentOnMe = nil
+			self:CloseProximity(args.spellId)
+			if blazingTarget then
+				self:OpenProximity(155277, 10, blazingTarget)
+			end
+		end
 	end
 end
 
@@ -159,17 +198,35 @@ function mod:CinderWolves(args)
 	self:Message(args.spellId, "Important", "Alarm")
 	wolvesActive = true
 
-	self:Bar(155277, 33) -- Blazing Radiance
-	self:Bar(155493, 64) -- Firestorm
-	self:DelayedMessage(155493, 50, "Neutral", CL.soon:format(self:SpellName(155493)), nil, "Info") -- Firestorm
+	--self:Bar(155277, 32) -- Blazing Radiance
+	self:Bar(155493, 62, CL.count:format(self:SpellName(155493), firestormCount)) -- Firestorm
+	self:DelayedMessage(155493, 55, "Neutral", CL.soon:format(self:SpellName(155493)), nil, "Info") -- Firestorm
 end
 
-function mod:Fixate(args)
-	if self:Me(args.destGUID) then
-		self:Message(args.spellId, "Personal", "Alarm", CL.you:format(args.spellName))
-		self:Flash(args.spellId)
+do
+	local scheduled = nil
+	local function startBar(self, spellId)
+		if not fixateOnMe and (self:Healer() or self:Damager() == "RANGED") then
+			self:Bar(spellId, 10)
+		end
+		fixateOnMe = nil
+		scheduled = nil
 	end
-	self:TargetBar(args.spellId, 10, args.destName)
+	function mod:Fixate(args)
+		if self:Me(args.destGUID) then
+			self:Message(args.spellId, "Personal", "Alarm", CL.you:format(args.spellName))
+			self:TargetBar(args.spellId, 10, args.destName)
+			self:Flash(args.spellId)
+			fixateOnMe = true
+		end
+		if not scheduled then
+			scheduled = self:ScheduleTimer(startBar, 0.1, self, args.spellId)
+		end
+	end
+end
+
+function mod:FixateOver(args)
+	self:StopBar(args.spellId, args.destName)
 end
 
 function mod:Overheated(args)
@@ -181,20 +238,22 @@ end
 function mod:CharringBreath(args)
 	local amount = args.amount or 1
 	if self:Mythic() or amount % 2 == 0 then
-		self:StackMessage(args.spellId, args.destName, amount, "Attention", amount > (self:Mythic() and 2 or 7) and "Warning")
+		self:StackMessage(args.spellId, args.destName, amount, "Attention", amount > 2 and "Warning")
 	end
 end
 
 function mod:Rekindle(args)
 	self:TargetMessage(args.spellId, args.sourceName, "Positive", "Warning")
-	self:Bar(args.spellId, 6)
+	self:Bar(args.spellId, 8)
 end
 
 function mod:BlazingRadiance(args)
-	self:Bar(args.spellId, 12)
+	--self:Bar(args.spellId, 12)
 	self:PrimaryIcon(args.spellId, args.destName)
+	blazingTarget = args.destName
 	if self:Me(args.destGUID) then
 		self:Flash(args.spellId)
+		self:Say(args.spellId)
 		self:OpenProximity(args.spellId, 10)
 	else
 		if not moltenTorrentOnMe then
@@ -211,24 +270,16 @@ end
 
 function mod:BlazingRadianceRemoved(args)
 	self:PrimaryIcon(args.spellId)
+	blazingTarget = nil
 	if not moltenTorrentOnMe then
 		self:CloseProximity(args.spellId)
 	end
 end
 
-function mod:Firestorm(args)
-	self:Message(args.spellId, "Important", "Long")
-	self:Bar(args.spellId, 12, CL.cast:format(args.spellName))
-
-	self:StopBar(155277) -- Blazing Radiance
-	self:Bar(154932, 44) -- Molten Torrent
-	self:Bar(155776, 74) -- Cinder Wolves
-end
-
 function mod:RisingFlames(args)
 	local amount = args.amount or 1
-	if amount % 3 == 0 then -- XXX no idea when we should warn for stacks
-		self:StackMessage(args.spellId, args.destName, amount, "Attention", amount > 8 and "Warning")
+	if amount % 3 == 0 then
+		self:StackMessage(args.spellId, args.destName, amount, "Attention", amount > 5 and "Warning")
 	end
 end
 
@@ -239,7 +290,7 @@ function mod:DevastatingSlam(args)
 	--self:CDBar(args.spellId, 6) -- 6-10.9
 end
 
-function mod:DropHammer(args)
+function mod:DropTheHammer(args)
 	self:Message(args.spellId, "Attention")
 	--self:CDBar(args.spellId, 11) -- 11.3-14.4
 end

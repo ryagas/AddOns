@@ -10,6 +10,9 @@
 --------------------------------------------------------
 -- CHANGELOG --
 --------------------------------------------------------
+--- v2.04 ---
+-Fix some issues with boss names/order for Foundry.
+
 --- v2.03 ---
 -Fix typo in display for Brackenspore. Records should be intact.
 

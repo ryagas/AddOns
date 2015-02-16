@@ -1,0 +1,8 @@
+## Interface: 60100
+## Title: Kait|cff00ccffMedia
+## Author: Kait, based on addons by Fishingrod, Aftermathhyo, Aftermathhqt, Aftermathhqq, Aftermathhz & Afterdudu @ Sylvanas EU (Game92 @ Wowinterface), Treeston, Touchy
+## Notes: Adds media, changes some fonts, provides a Maque skin, changes Grid Profiles etc
+
+KaitFontChanger.lua
+KaitMasque.lua
+KaitGridProfileSwitcher.lua

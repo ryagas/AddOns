@@ -15,11 +15,28 @@ L["bars"] = "Barras"
 L["bestTimeBar"] = "Mejor tiempo"
 L["Beware"] = "Cuidado (Algalon)"
 L["bigWigsBarStyleName_Default"] = "Por defecto"
+L["blockEmotes"] = "Bloquear emotes del centro de la pantalla"
+L["blockEmotesDesc"] = [=[Algunos jefes muestran emotes para ciertas habilidades, estos mensajes son demasiado largos y descriptivos. Intentamos acortarlos, y ajustarlos para que no interfieran con el juego, y que no te digan específicamente que tienes que hacer.
+
+Ten en cuenta: Los emotes de Jefe seguirán siendo visibles en el chat si deseas leerlos.]=]
+L["blockGarrison"] = "Bloquear ventanas emergentes de ciudadela"
+L["blockGarrisonDesc"] = [=[Las ventanas emergentes de ciudadela muestran varias cosas, pero principalmente cuando un seguidor a completado una misión.
+
+Estas ventanas pueden cubrir partes críticas de tu interfaz durante un encuentro, así que recomendamos bloquearlas.]=]
+L["blockGuildChallenge"] = "Bloquear ventanas emergentes de hermandad"
+L["blockGuildChallengeDesc"] = [=[Los logros de hermandad muestran ventanas emergentes, principalmente cuando un grupo de tu hermandad completa una mazmorra heroica o un desafío.
+
+Estas ventanas pueden cubrir partes críticas de tu interfaz durante un encuentro, así que recomendamos bloquearlas.]=]
+L["blockMovies"] = "Bloquear vídeos repetidos"
+L["blockMoviesDesc"] = "Los vídeos de un encuentro solo se visionarán una vez (los verás todos una vez) y luego serán bloqueados."
+L["blockSpellErrors"] = "Bloquear mensajes de hechizos fallidos"
+L["blockSpellErrorsDesc"] = "Mensajes como \"Ese hechizo no está listo todavía\" que normalmente se muestran arriba de la pantalla serán bloqueados."
+L["bossBlock"] = "Bloque de Jefe"
+L["bossBlockDesc"] = "Configura varias cosas que puedes bloquear durante un encuentro."
 L["bossDefeatDurationPrint"] = "Derrotado '%s' después de %s."
 L["bossStatistics"] = "Estadísticas de Jefe"
 L["bossStatsDescription"] = "Registro de estadísticas de Jefes, como el número de veces que ha sido derrotado, cantidad de wipes, tiempo total que duró el combate, o la muerte más rápida. Estas estadísticas se pueden ver en la ventana de configuración de cada jefe, pero permanecerán ocultas en los jefes que no tengan todavía registro de estadísticas."
 L["bossWipeDurationPrint"] = "Wipe en '%s' después de %s."
-L["breakAnnounce"] = "Tienes %g |4minuto:minutos; de descanso!"
 L["breakBar"] = "Tiempo de descanso"
 L["breakFinished"] = "El descanso ha terminado!"
 L["breakMinutes"] = "El descanso acaba en %d |4minuto:minutos;!"
@@ -102,6 +119,7 @@ L["monochrome"] = "Monocromo"
 L["monochromeDesc"] = "Cambia a monocromo el indicador, quitando cualquier suavizado de fuente."
 L["move"] = "Mover"
 L["moveDesc"] = "Mueve las barras enfatizadas al anclaje de Enfatizar. Si esta opción está desactivada, las barras enfatizadas simplemente cambiarán el tamaño y el color."
+L["movieBlocked"] = "Ya has visto esta cinemática antes, omitiéndola."
 L["Neutral"] = "Neutral"
 L["newBestTime"] = "¡Nueva muerte más rápida!"
 L["none"] = "Ninguno"
@@ -110,6 +128,10 @@ L["normalMessages"] = "Mensajes normales"
 L["outline"] = "Contorno"
 L["output"] = "Salida"
 L["Personal"] = "Personal"
+L["positionDesc"] = "Introduce o mueve el deslizador si necesitas posicionar de manera precisa desde el anclaje."
+L["positionExact"] = "Posicionamiento preciso"
+L["positionX"] = "Posición X"
+L["positionY"] = "Posición Y"
 L["Positive"] = "Positivo"
 L["primary"] = "Primario"
 L["primaryDesc"] = "El primer objetivo de la raid el cual deberia usar este icono"

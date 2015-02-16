@@ -15,11 +15,28 @@ L["bars"] = "Barre"
 L["bestTimeBar"] = "Migliore"
 L["Beware"] = "Attenti! (Algalon)"
 L["bigWigsBarStyleName_Default"] = "Predefinito"
+L["blockEmotes"] = "Blocca gli emote a mezzo-schermo"
+L["blockEmotesDesc"] = [=[Alcuni boss mostrano delle emote per determinate abilità; questi messaggi sono sia troppo lunghi che troppo descrittivi. Cerchiamo di produrre messaggi più compatti e puliti che non interferiscono con lo svolgimento del gioco, e non dicono specificatamente cosa fare.
+
+Nota bene: gli emote dei Boss sono sempre visibili nella chat se vuoi leggerli.]=]
+L["blockGarrison"] = "Blocca i popup della Guarnigione"
+L["blockGarrisonDesc"] = [=[I popup della Guarnigione appaiono per certe attività, ma principalmente quando un seguace completa una missione.
+
+Questi popup possono coprire parti critiche o importanti della tua UI durante il combattimento contro un boss, raccomandiamo quindi di bloccarli.]=]
+L["blockGuildChallenge"] = "Blocca i popup delle sfide di Gilda"
+L["blockGuildChallengeDesc"] = [=[I popup delle Sfide di Gilda vengono mostrati per vari avvisi, principalmente quando la tua gilda completa una spedizione eroica o una spedizione in modalità sfida.
+
+Questi popup possono coprire parti critiche o importanti della tua UI durante il combattimento contro un boss, raccomandiamo quindi di bloccarli.]=]
+L["blockMovies"] = "Blocca filmati già visti"
+L["blockMoviesDesc"] = "I filmati dei boss (ove presenti) verranno fatti vedere solo la prima volta che si attivano per visualizzarli; dalle volte successive questi video verranno cancellati automaticamente."
+L["blockSpellErrors"] = "Blocca i messaggi di errore degli incantesimi"
+L["blockSpellErrorsDesc"] = "Messaggi tipo \"Questo incantesimo non è ancora pronto\" che in genere vengono mostrati in alto nello schermo verranno bloccati."
+L["bossBlock"] = "Blocco Boss"
+L["bossBlockDesc"] = "Configura le varie opzioni che puoi bloccare durante gli scontri con i boss."
 L["bossDefeatDurationPrint"] = "Sconfitto '%s' dopo %s."
 L["bossStatistics"] = "Statistiche del Boss"
 L["bossStatsDescription"] = "Tiene il conto di varie statistiche relative ad ogni singolo boss, tipo il numero di volte che è stato sconfitto, il numero di tentativi falliti(wipes), quanto è durato il combattimento, o l'uccisione più veloce. Queste statistiche possono essere viste nella finestra di configurazione di ogni singolo boss, ma saranno nascoste per quei boss di cui non c'é nessuna informazione statistica."
 L["bossWipeDurationPrint"] = "Tentativo fallito su '%s' dopo %s."
-L["breakAnnounce"] = "%g |4minuto:minuti di pausa da adesso!"
 L["breakBar"] = "Tempo di pausa"
 L["breakFinished"] = "Il tempo di pausa è finito"
 L["breakMinutes"] = "La Pausa finisce tra %d |4minuto:minuti!"
@@ -101,7 +118,8 @@ L["modifierKeyDesc"] = "Lascia le barre non cliccabili a meno che non sia premut
 L["monochrome"] = "Monocromatico"
 L["monochromeDesc"] = "Abilita il flag monocromatico, rimuovendo ogni effetto di smussatura degli angoli dei caratteri."
 L["move"] = "Muovi"
-L["moveDesc"] = "Muovi le Barre Enfatizzate all'Ancoraggio di Enfatizzazione. Se questa opzione non è abilitata. le barre enfatizzate cambieranno semplicemente scalatura e colore."
+L["moveDesc"] = "Muovi le Barre Enfatizzate all'Ancoraggio di Enfatizzazione. Se questa opzione non è abilitata, le barre enfatizzate cambieranno semplicemente scalatura e colore."
+L["movieBlocked"] = "Hai già visto questo video, lo salto."
 L["Neutral"] = "Neutrale"
 L["newBestTime"] = "Nuovo record!"
 L["none"] = "Nessuno"
@@ -110,6 +128,10 @@ L["normalMessages"] = "Messaggi Normali"
 L["outline"] = "Sottolineato"
 L["output"] = "Uscita"
 L["Personal"] = "Personale"
+L["positionDesc"] = "Scrivi nel riquadro o sposta l'indicatore se devi posizionare esattamente la barra dall'ancoraggio."
+L["positionExact"] = "Posizionamento Esatto"
+L["positionX"] = "Posizione X"
+L["positionY"] = "Posizione Y"
 L["Positive"] = "Positivo"
 L["primary"] = "Primario"
 L["primaryDesc"] = "Il primo Simbolo che l'automazione del combattimento dovrebbe usare."

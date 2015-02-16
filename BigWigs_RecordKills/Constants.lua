@@ -274,43 +274,43 @@ C["RAID_LOOKUP"] = {
 				["level"] = 100,
 				["encounters"] = { 
 					[1] = {
-						eName = "Beastlord Darmac",
-						eID = 1122,
-					},
-					[2] = {
-						eName = "Flamebender Ka'graz",
-						eID = 1123,
-					},
-					[3] = {
-						eName = "Gruul the Subjugated",
+						eName = "Gruul",
 						eID = 1161,
 					},
-					[4] = {
-						eName = "Blast Furnace",
+					[2] = {
+						eName = "Oregorger",
+						eID = 1202,
+					},
+					[3] = {
+						eName = "The Blast Furnace",
 						eID = 1154,
 					},
-					[5] = {
+					[4] = {
 						eName = "Hans'gar and Franzok",
 						eID = 868,
 					},
-					[6] = {
-						eName = "Iron Maidens",
-						eID = 1203,
+					[5] = {
+						eName = "Operator Thogar",
+						eID = 1147,
 					},
-					[7] = {
+					[6] = {
 						eName = "Kromog",
 						eID = 1162,
 					},
 					[7] = {
-						eName = "Operator Thogar",
-						eID = 1147,
+						eName = "Beastlord Darmac",
+						eID = 1122,
 					},
-					[7] = {
-						eName = "Oregorger",
-						eID = 1202,
+					[8] = {
+						eName = "Flamebender Ka'graz",
+						eID = 1123,
 					},
-					[7] = {
-						eName = "Warlord Blackhand",
+					[9] = {
+						eName = "The Iron Maidens",
+						eID = 1203,
+					},
+					[10] = {
+						eName = "Blackhand",
 						eID = 959,
 					},
 				},

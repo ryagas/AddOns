@@ -15,11 +15,28 @@ L["bars"] = "Leisten"
 L["bestTimeBar"] = "Rekordzeit"
 L["Beware"] = "Hütet Euch (Algalon)"
 L["bigWigsBarStyleName_Default"] = "Standard"
+L["blockEmotes"] = "Hinweise in der Bildschirmmitte blockieren"
+L["blockEmotesDesc"] = [=[Einige Bosse zeigen sehr lange und ungenaue Hinweise für spezielle Fähigkeiten an. BigWigs versucht kürzere und passendere Mitteilungen zu erstellen, die den Spielfluss weniger beeinflussen.
+
+Hinweis: Bossmitteilungen werden weiterhin im Chat sichtbar sein und können dort gelesen werden.]=]
+L["blockGarrison"] = "Popups der Garnison blockieren"
+L["blockGarrisonDesc"] = [=[Popups der Garnison zeigen hauptsächlich abgeschlossene Missionen von Anhängern an.
+
+Da diese Popups während des Bosskampfes ablenken und das Interface überdecken können, sollten sie blockiert werden.]=]
+L["blockGuildChallenge"] = "Popups von Gildenherausforderungen blockieren"
+L["blockGuildChallengeDesc"] = [=[Popups von Gildenherausforderungen zeigen hauptsächlich den Abschluss eines heroischen Dungeons oder des Herausforderungsmodus an.
+
+Da diese Popups während des Bosskampfes ablenken und das Interface überdecken können, sollten sie blockiert werden.]=]
+L["blockMovies"] = "Wiederholte Filmsequenzen blockieren"
+L["blockMoviesDesc"] = "Filmsequenzen aus Bossbegegnungen werden einmalig wiedergegeben (sodass jede angeschaut werden kann) und danach blockiert."
+L["blockSpellErrors"] = "Hinweise zu fehlgeschlagenen Zaubern blockieren"
+L["blockSpellErrorsDesc"] = "Nachrichten wie \"Fähigkeit noch nicht bereit\", welche normalerweise oben auf dem Bildschirm auftauchen, werden blockiert."
+L["bossBlock"] = "Boss Block"
+L["bossBlockDesc"] = "Legt fest, was während einer Bossbegegnung blockiert wird."
 L["bossDefeatDurationPrint"] = "'%s' wurde nach %s besiegt."
 L["bossStatistics"] = "Boss-Statistiken"
 L["bossStatsDescription"] = "Zeichnet verschiedene Statistiken der Bossbegegnungen wie die Anzahl der Siege und Niederlagen, sowie die Kampfdauer oder die Rekordzeiten auf. Diese Statistiken können, falls vorhanden, in der Konfiguration der einzelnen Bosse eingesehen werden. Andernfalls werden diese ausgeblendet."
 L["bossWipeDurationPrint"] = "An '%s' nach %s gescheitert."
-L["breakAnnounce"] = "%g |4Minute:Minuten; Pause beginnt jetzt!"
 L["breakBar"] = "Pause"
 L["breakFinished"] = "Die Pause ist vorbei!"
 L["breakMinutes"] = "Pause endet in %d |4Minute:Minuten;!"
@@ -102,6 +119,7 @@ L["monochrome"] = "Monochrom"
 L["monochromeDesc"] = "Schaltet den Monochrom-Filter an/aus, der die Schriftenkantenglättung entfernt."
 L["move"] = "Bewegen"
 L["moveDesc"] = "Bewegt hervorgehobene Leisten zum hervorgehobenen Anker. Ist diese Option nicht aktiv, werden hervorgehobene Leisten lediglich in Größe und Farbe geändert."
+L["movieBlocked"] = "Da Du diese Zwischensequenz bereits gesehen hast, wird sie übersprungen."
 L["Neutral"] = "Neutral"
 L["newBestTime"] = "Neue Rekordzeit!"
 L["none"] = "Nichts"
@@ -110,6 +128,10 @@ L["normalMessages"] = "Normale Nachrichten"
 L["outline"] = "Kontur"
 L["output"] = "Ausgabe"
 L["Personal"] = "Persönlich"
+L["positionDesc"] = "Zur exakten Positionierung vom Ankerpunkt einen Wert in der Box eingeben oder den Schieberegler bewegen."
+L["positionExact"] = "Exakte Positionierung"
+L["positionX"] = "X-Position"
+L["positionY"] = "Y-Position"
 L["Positive"] = "Positiv"
 L["primary"] = "Erstes Symbol"
 L["primaryDesc"] = "Das erste Schlachtzugs-Symbol, das verwendet wird."

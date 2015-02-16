@@ -16,7 +16,13 @@ end
 
 L = BigWigs:NewBossLocale("The Blast Furnace", "koKR")
 if L then
+	L.custom_on_shieldsdown_marker = "보호막 소멸 징표 설정"
+	L.custom_on_shieldsdown_marker_desc = "보호막이 소멸된 원시의 정령술사를 {rt8}의 징표로 설정합니다. 공격대장이거나 권한이 필요합니다."
+
+
 	L.heat_increased_message = "열기가 증가합니다! %s초마다 폭파합니다."
+
+	L.bombs_dropped = "폭탄이 떨어졌습니다! (%d)"
 end
 
 L = BigWigs:NewBossLocale("Hans'gar and Franzok", "koKR")
@@ -59,6 +65,7 @@ if L then
 	L.adds_train = "쫄 기차"
 	L.big_add_train = "큰 쫄 기차"
 	L.cannon_train = "대포 기차"
+	--L.deforester = "Deforester" -- /dump (EJ_GetSectionInfo(10329))
 	L.random = "무작위 기차"
 end
 
@@ -66,7 +73,7 @@ L = BigWigs:NewBossLocale("The Iron Maidens", "koKR")
 if L then
 	L.ship_trigger = "무쌍호 주 대포를 쏠 준비를 합니다!"
 
-	L.ship = "배로 점프: %s"
+	L.ship = "배로 점프"
 
 	L.custom_off_heartseeker_marker = "피에 젖은 심장추적자 징표 설정"
 	L.custom_off_heartseeker_marker_desc = "피에 젖은 심장추적자의 대상을 {rt1}{rt2}{rt3}의 징표로 설정합니다. 공격대장이거나 권한이 필요합니다."

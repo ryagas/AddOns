@@ -1,0 +1,7 @@
+## Interface: 50200
+## Title: UIScaler
+## Notes: Automatic UI scaling.
+## Author: Haleth/Freethinker
+## Version: 5.2.0.4
+
+scaler.lua

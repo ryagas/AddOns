@@ -2,6 +2,11 @@ local L = LibStub("AceLocale-3.0"):NewLocale("Big Wigs: Plugins", "enUS", true)
 
 L.general = "General"
 
+L.positionX = "X Position"
+L.positionY = "Y Position"
+L.positionExact = "Exact Positioning"
+L.positionDesc = "Type in the box or move the slider if you need exact positioning from the anchor."
+
 -----------------------------------------------------------------------
 -- AltPower.lua
 --
@@ -84,10 +89,27 @@ L.sendBreak = "Sending a break timer to Big Wigs and DBM users."
 L.breakStarted = "Break timer started by %s user %s."
 L.breakStopped = "Break timer cancelled by %s."
 L.breakBar = "Break time"
-L.breakAnnounce = "%g |4minute:minutes; break starts now!"
 L.breakMinutes = "Break ends in %d |4minute:minutes;!"
 L.breakSeconds = "Break ends in %d |4second:seconds;!"
 L.breakFinished = "Break time is now over!"
+
+-----------------------------------------------------------------------
+-- BossBlock.lua
+--
+
+L.bossBlock = "Boss Block"
+L.bossBlockDesc = "Configure the various things you can block during a boss encounter."
+L.movieBlocked = "You've seen this movie before, skipping it."
+L.blockEmotes = "Block middle-screen emotes"
+L.blockEmotesDesc = "Some bosses show emotes for certain abilities, these messages are both way too long and descriptive. We try to produce smaller, more fitting messages that do not interfere with the gameplay, and don't tell you specifically what to do.\n\nPlease note: Boss emotes will still be visible in chat if you wish to read them."
+L.blockMovies = "Block repeated movies"
+L.blockMoviesDesc = "Boss encounter movies will only be allowed to play once (so you can watch each one) and will then be blocked."
+L.blockGarrison = "Block garrison popups"
+L.blockGarrisonDesc = "Garrison popups show for a few things, but mainly when a follower mission is completed.\n\nThese popups can cover up critical parts of your UI during a boss fight, so we recommend blocking them."
+L.blockGuildChallenge = "Block guild challenge popups"
+L.blockGuildChallengeDesc = "Guild challenge popups show for a few things, mainly when a group in your guild completes a heroic dungeon or a challenge mode dungeon.\n\nThese popups can cover up critical parts of your UI during a boss fight, so we recommend blocking them."
+L.blockSpellErrors = "Block spell failed messages"
+L.blockSpellErrorsDesc = "Messages such as \"Spell is not ready yet\" that usually show at the top of the screen will be blocked."
 
 -----------------------------------------------------------------------
 -- Colors.lua

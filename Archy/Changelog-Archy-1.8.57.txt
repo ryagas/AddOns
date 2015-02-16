@@ -1,0 +1,14 @@
+tag 1.8.57
+47f4425624d349031d3774135531d576f9081208
+James D. Callahan III <jcallahan@curse.com>
+2015-01-31 15:48:27 -0600
+
+
+
+--------------------
+
+James D. Callahan III:
+	- Moved "Hide Minimap Button" option from the General section to the Minimap section.
+	- Replaced all usages of 0 and 1 with false and true for calls to SetDesaturated. Ticket #527
+	- Cleanups.
+	- Do NOT fail silently on non-existent dig sites in GetContinentSites() - if there's an issue, it should be broadcast to be fixed.

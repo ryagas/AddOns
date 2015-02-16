@@ -1,0 +1,21 @@
+## Interface: 60000
+## Title: XPBarNone
+## Author: phyber
+## Notes: XP bar using Ace3.
+## Version: 60000-2
+## SavedVariables: XPBarNoneDB
+## OptionalDeps: Ace3, LibQTip-1.0, LibSharedMedia-3.0
+## X-Category: Interface Enhancements
+## X-Website: http://phyber.wowinterface.com/
+## X-Embeds: Ace3, LibQTip-1.0, LibSharedMedia-3.0
+## X-Curse-Packaged-Version: 60000-2
+## X-Curse-Project-Name: XPBarNone
+## X-Curse-Project-ID: xpbarnone
+## X-Curse-Repository-ID: wow/xpbarnone/mainline
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+Locales\locales.xml
+Core.lua

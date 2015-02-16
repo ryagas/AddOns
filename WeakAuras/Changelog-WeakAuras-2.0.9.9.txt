@@ -1,0 +1,46 @@
+tag 2.0.9.9
+7c469d5f84530622972f1c9df9687657e8ec1c64
+Benjamin Staneck <staneck@gmail.com>
+2015-01-22 15:07:05 +0100
+
+
+
+--------------------
+
+Infus:
+	- Add tristate "aggro" to threat trigger
+	Ticket-number: 243
+	- Improve performance of dynamic groups
+	Calling expand on a already visible aura called region:EnsureTrays
+	and region:DoControlChildren, which is excessive and unnecessary.
+	- Fix none sorting in dynamic groups
+	Ticket-number: 213
+	- Cooldown Progress for Spells: Replace inverse with a tristate option
+	The option allows has the options: Show On Cooldown, Show On Not Cooldown,
+	and AlwaysShow. This combines nicely with the charges support to for
+	example show a icon if we have at least one charge. That is "AlwayShow" +
+	charge > 1.
+	
+	Ticket-number: 170
+	- Guard against custom duration functions returning nil
+Benjamin Staneck:
+	- remove debug print
+Infus:
+	- Embers: Fix conditions on number of embers to use 0-40 scale
+	Instead of 0-4. Upgrade old auras.
+	- Guard against custom text functions returning non-strings
+	Lua's tostring formats nil as "nil", so special case that.
+	Previously returning tables or functions could lead to errors, this
+	ensures that we instead show e.g. "table XXXXX", which should hopefully
+	point out that the custom text function returns a table.
+Benjamin Staneck:
+	- pick up updated/reverted libcompress
+Hendrik Leppkes:
+	- Use LibButtonGlow-1.0 to avoid potential taint from using the template
+Infus:
+	- Add spellId matching for combat log trigger
+	Helps in creating cross-language triggers.
+	- Remove whitespace before importing
+	- Deleting a aura should stop its animations
+Benjamin Staneck:
+	- Fix taint while deleting auras

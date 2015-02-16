@@ -1,7 +1,7 @@
 local L = BigWigs:NewBossLocale("Gruul", "zhTW")
 if not L then return end
 if L then
-
+	--L.first_ability = "Smash or Slam"
 end
 
 L = BigWigs:NewBossLocale("Oregorger", "zhTW")
@@ -9,29 +9,24 @@ if L then
 	--L.berserk_trigger = "Oregorger has gone insane from hunger!"
 
 	--L.shard_explosion = "Explosive Shard Explosion"
-	--L.shard_explosion_desc = "Separate emphasized bar for the explosion."
+	--L.shard_explosion_desc = "A separate bar for the explosion that you may wish to enable countdown for if you are a melee class."
 
 	--L.hunger_drive_power = "%dx %s - %d ore to go!"
 end
 
 L = BigWigs:NewBossLocale("The Blast Furnace", "zhTW")
 if L then
+	--L.custom_on_shieldsdown_marker = "Shields Down marker"
+	--L.custom_on_shieldsdown_marker_desc = "Mark a vulnerable Primal Elementalist with {rt8}, requires promoted or leader."
+
 	--L.heat_increased_message = "Heat increased! Blast every %ss"
+
+	--L.bombs_dropped = "Bombs dropped! (%d)"
 end
 
 L = BigWigs:NewBossLocale("Hans'gar and Franzok", "zhTW")
 if L then
-	--L.cauterizing_bolt_message = "Your focus is casting Cauterizing Bolt!"
 
-	--L.trains = "Train warnings"
-	--L.trains_desc = "Shows timers and messages for each lane for when the next train is coming. Lanes are numbered from the boss to the entrace, ie, Boss 1 2 3 4 Entrance."
-
-	--L.lane = "Lane %s: %s"
-	--L.train = "Train"
-	--L.adds_train = "Adds train"
-	--L.big_add_train = "Big add train"
-	--L.cannon_train = "Cannon train"
-	--L.random = "Random trains"
 end
 
 L = BigWigs:NewBossLocale("Flamebender Ka'graz", "zhTW")
@@ -59,7 +54,8 @@ end
 
 L = BigWigs:NewBossLocale("Operator Thogar", "zhTW")
 if L then
-	--L.cauterizing_bolt_message = "Your focus is casting Cauterizing Bolt!"
+	--L.custom_off_firemender_marker = "Grom'kar Firemender marker"
+	--L.custom_off_firemender_marker_desc = "Marks Firemenders with {rt1}{rt2}, requires promoted or leader.\n|cFFFF0000Only 1 person in the raid should have this enabled to prevent marking conflicts.|r\n|cFFADFF2FTIP: If the raid has chosen you to turn this on, quickly mousing over the mobs is the fastest way to mark them.|r"
 
 	--L.trains = "Train warnings"
 	--L.trains_desc = "Shows timers and messages for each lane for when the next train is coming. Lanes are numbered from the boss to the entrace, ie, Boss 1 2 3 4 Entrance."
@@ -69,13 +65,15 @@ if L then
 	--L.adds_train = "Adds train"
 	--L.big_add_train = "Big add train"
 	--L.cannon_train = "Cannon train"
+	--L.deforester = "Deforester" -- /dump (EJ_GetSectionInfo(10329))
+	--L.random = "Random trains"
 end
 
 L = BigWigs:NewBossLocale("The Iron Maidens", "zhTW")
 if L then
 	--L.ship_trigger = "prepares to man the Dreadnaught's Main Cannon!"
 
-	--L.ship = "Jump to Ship: %s"
+	--L.ship = "Jump to Ship"
 
 	--L.custom_off_heartseeker_marker = "Bloodsoaked Heartseeker marker"
 	--L.custom_off_heartseeker_marker_desc = "Marks Heartseeker targets with {rt1}{rt2}{rt3}, requires promoted or leader."

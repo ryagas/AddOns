@@ -17,6 +17,8 @@ if L then
 L["adds_desc"] = "新的增援进入战斗计时器。"
 L["custom_off_barrage_marker"] = "晶化弹幕标记"
 L["custom_off_barrage_marker_desc"] = "使用 {rt1}{rt2}{rt3}{rt4}{rt5} 标记晶化弹幕目标，需要权限。"
+L["custom_on_shard_marker"] = "泰克图斯碎片标记"
+L["custom_on_shard_marker_desc"] = "使用 {rt8}{rt7} 标记2个刷新的泰克图斯碎片，需要权限。"
 L["motes"] = "微粒"
 L["shard"] = "碎片"
 
@@ -26,8 +28,13 @@ L = BigWigs:NewBossLocale("Brackenspore", "zhCN")
 if L then
 L["creeping_moss_add_heal"] = "苔藓>治疗< 大型增援"
 L["creeping_moss_boss_heal"] = "苔藓>治疗< 首领"
+L["custom_off_spore_shooter_marker"] = "孢子射手标记"
+L["custom_off_spore_shooter_marker_desc"] = [=[使用 {rt1}{rt2}{rt3}{rt4} 标记孢子射手，需要权限。
+|cFFFF0000团队中只有1名应该启用此选项以防止标记冲突。|r
+|cFFADFF2F提示：如果团队选择你打开此选项，鼠标快速指向萨满是标记他们的最快方式。|r]=]
 L["mythic_ability"] = "特殊技能"
 L["mythic_ability_desc"] = "当下一潮汐之唤或爆炸蘑菇到来时显示计时器。"
+L["mythic_ability_wave"] = "即将 >潮汐之唤<！"
 
 end
 
@@ -70,6 +77,7 @@ end
 
 L = BigWigs:NewBossLocale("Highmaul Trash", "zhCN")
 if L then
+L["arcanist"] = "高里亚奥术师"
 L["oro"] = "奥罗"
 L["ritualist"] = "毁灭者祭师"
 L["runemaster"] = "高里亚符文大师"
