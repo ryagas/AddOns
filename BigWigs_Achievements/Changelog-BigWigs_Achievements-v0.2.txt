@@ -1,0 +1,14 @@
+tag v0.2
+3e29f7456cc2e4d782741058588b7168810e01e9
+Benjamin Staneck <staneck@gmail.com>
+2015-02-24 14:55:20 +0100
+
+
+
+--------------------
+
+Benjamin Staneck:
+	- Update TOC for Patch 6.1
+	- should maybe save the file before commiting.
+	- cleanup, it actually works now \o/
+	- fixes

@@ -13,6 +13,8 @@ mod.engageId = 1704
 --
 
 local phase = 1
+local massiveSmashProximity = nil
+local oldIcon, tankName = nil, nil -- Massive Shattering Smash marker
 
 --------------------------------------------------------------------------------
 -- Localization
@@ -26,6 +28,10 @@ if L then
 	L.custom_off_markedfordeath_marker = "Marked for Death marker"
 	L.custom_off_markedfordeath_marker_desc = "Mark Marked for Death targets with {rt1}{rt2}, requires promoted or leader."
 	L.custom_off_markedfordeath_marker_icon = 1
+
+	L.custom_off_massivesmash_marker = "Massive Shattering Smash marker"
+	L.custom_off_massivesmash_marker_desc = "Mark the tank getting hit with Massive Shattering Smash with {rt6}, requires promoted or leader."
+	L.custom_off_massivesmash_marker_icon = 6
 end
 L = mod:GetLocale()
 
@@ -42,8 +48,10 @@ function mod:GetOptions()
 		"siegemaker",
 		{156653, "SAY"}, -- Fixate
 		156667, -- Blackiron Plating
-		{156728, "PROXIMITY"},
+		{156728, "PROXIMITY"}, -- Explosive Round
 		--[[ Stage Three: Iron Crucible ]]--
+		{158054, "PROXIMITY"}, -- Massive Shattering Smash
+		"custom_off_massivesmash_marker",
 		156928, -- Slag Eruption
 		{157000, "FLASH", "SAY"}, -- Attach Slag Bombs
 		--[[ General ]]--
@@ -57,7 +65,7 @@ function mod:GetOptions()
 	}, {
 		[156425] = -8814, -- Stage One: The Blackrock Forge
 		["siegemaker"] = -8816, -- Stage Two: Storage Warehouse
-		[156928] = -8818, -- Stage Three: Iron Crucible
+		[158054] = -8818, -- Stage Three: Iron Crucible
 		[155992] = "general"
 	}
 end
@@ -78,20 +86,56 @@ function mod:OnBossEnable()
 	-- Stage 3
 	self:Log("SPELL_CAST_START", "SlagEruption", 156928)
 	self:Log("SPELL_CAST_START", "MassiveShatteringSmash", 158054)
-	self:Log("SPELL_AURA_APPLIED", "AttachSlagBombs", 157000)
+	self:Log("SPELL_AURA_APPLIED", "AttachSlagBombs", 157000, 159179)
+	self:Log("SPELL_ENERGIZE", "SmashReschedule", 104915)
 end
 
 function mod:OnEngage()
 	phase = 1
+	massiveSmashProximity = nil
 	self:Bar(156030, 6) -- Throw Slag Bombs
 	self:Bar(156425, 15.5) -- Demolition
 	self:CDBar(155992, 21) -- Shattering Smash
 	self:Bar(156096, 36) -- Marked for Death
 end
 
+function mod:OnBossDisable()
+	if self.db.profile.custom_off_massivesmash_marker and tankName then
+		SetRaidTarget(tankName, oldIcon or 0)
+		tankName = nil
+		oldIcon = nil
+	end
+end
+
 --------------------------------------------------------------------------------
 -- Event Handlers
 --
+
+local function closeSmashProximity(self)
+	if self.db.profile.custom_off_massivesmash_marker then
+		SetRaidTarget(tankName, oldIcon or 0)
+		tankName = nil
+		oldIcon = nil
+	end
+
+	self:CloseProximity(158054)
+	massiveSmashProximity = nil
+end
+
+local function openSmashProximity(self)
+	if not massiveSmashProximity then
+		tankName = UnitName("boss1target")
+
+		if self.db.profile.custom_off_massivesmash_marker then
+			oldIcon = GetRaidTargetIndex(tankName)
+			SetRaidTarget(tankName, 6)
+		end
+
+		self:OpenProximity(158054, 6, tankName, true)
+		massiveSmashProximity = true
+		self:ScheduleTimer(closeSmashProximity, 5, self)
+	end
+end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(unit, spellName, _, _, spellId)
 	if spellId == 156991 then -- Throw Slag Bombs
@@ -117,26 +161,31 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(unit, spellName, _, _, spellId)
 		self:Bar("siegemaker", 16, L.siegemaker, L.siegemaker_icon)
 		self:Bar(155992, 23) -- Shattering Smash
 		self:Bar(156096, 26) -- Marked for Death
-		self:OpenProximity(156728, 7)
+		if self:Healer() or self:Damager() == "RANGED" then
+			self:OpenProximity(156728, 7) -- Explosive Round
+		end
 
 	elseif spellId == 161348 then -- Jump To Third Floor
 		self:StopBar(156030) -- Throw Slag Bombs
 		self:StopBar(L.siegemaker)
 		self:StopBar(156107) -- Impaling Throw
-		self:CloseProximity(156728)
+		if self:Healer() or self:Damager() == "RANGED" then
+			self:CloseProximity(156728) -- Explosive Round
+		end
 
 		phase = 3
 		self:Message("stages", "Neutral", nil, CL.stage:format(phase), false)
 		self:Bar(157000, 12) -- Attach Slag Bombs
 		self:Bar(156096, 16) -- Marked for Death
-		self:Bar(155992, 26) -- Shattering Smash
+		self:Bar(158054, 26) -- Massive Shattering Smash
+		self:ScheduleTimer(openSmashProximity, 23, self)
 		self:Bar(156928, 31.5) -- Slag Eruption
 	end
 end
 
 function mod:ShatteringSmash(args)
 	self:Message(155992, "Urgent", "Warning")
-	self:CDBar(155992, 45)
+	self:CDBar(155992, phase == 1 and 30 or 45)
 end
 
 do
@@ -201,27 +250,40 @@ end
 
 -- Stage 3
 
-function mod:MassiveShatteringSmash(args)
-	self:Message(155992, "Urgent", "Warning")
-	self:CDBar(155992, 25)
+do
+	local scheduled = nil
+	function mod:SmashReschedule(args)
+		if scheduled then
+			self:CancelTimer(scheduled)
+		end
+		local nextSmash = (100-UnitPower("boss1"))/4
+		scheduled = self:ScheduleTimer(openSmashProximity, nextSmash-3, self)
+		self:CDBar(158054, nextSmash)
+	end
+
+	function mod:MassiveShatteringSmash(args)
+		self:Message(args.spellId, "Urgent", "Warning")
+		self:CDBar(args.spellId, 25)
+		scheduled = self:ScheduleTimer(openSmashProximity, 22, self) -- 3 sec before + 2 sec cast should be enough
+	end
 end
 
 do
 	local list, scheduled = mod:NewTargetList(), nil
-	local function warn(self, spellId)
-		self:TargetMessage(spellId, list, "Urgent", "Alert", nil, nil, true)
+	local function warnTargets(self)
+		self:TargetMessage(157000, list, "Urgent", "Alert", nil, nil, true)
 		scheduled = nil
 	end
 	function mod:AttachSlagBombs(args)
-		if not scheduled then
-			scheduled = self:ScheduleTimer(warn, 0.6, self, args.spellId)
-			self:Bar(args.spellId, 25)
-		end
 		list[#list+1] = args.destName
 		if self:Me(args.destGUID) then
-			self:TargetBar(args.spellId, 5, args.destName, 157015) -- Slag Bomb
-			self:Flash(args.spellId)
-			self:Say(args.spellId, 157015) -- 157015 = Slag Bomb
+			self:TargetBar(157000, 5, args.destName, 157015) -- Slag Bomb
+			self:Flash(157000)
+			self:Say(157000, 157015) -- 157015 = Slag Bomb
+		end
+		if not scheduled then
+			scheduled = self:ScheduleTimer(warnTargets, 1, self)
+			self:Bar(157000, 25)
 		end
 	end
 end

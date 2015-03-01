@@ -59,8 +59,6 @@ L["closeProximityDesc"] = [=[Fecha a janela de aproximação.
 Para desativala completamente para um encontro, tem que ir nas opções deste encontro e desativar a opção de 'Aproximação'.]=]
 L["colors"] = "Cores"
 L["countDefeats"] = "Contador de vitórias "
-L["countdown"] = "Contador"
-L["countdownDesc"] = "Se um contador é relativamente maior que 5 segundos, uma conta vocal e visual será feita para os últimos 5 segundos. Imagine alguma contagem \"5... 4... 3... 2... 1... BOOM!\" e grandes números no meio da tela."
 L["countWipes"] = "Contador de derrotas"
 L["createTimeBar"] = "Mostrar barra do melhor tempo"
 L["customBarStarted"] = "Barra personalizada '%s' iniciada via %s por %s."
@@ -74,8 +72,6 @@ L["disabledDisplayDesc"] = "Desabilita o display para todos os módulos que usam
 L["disableDesc"] = "Desativa permanentemente a habilidade de encontro para que não de opção de que reapareça esta barra"
 L["displayTime"] = "Exibir tempo"
 L["displayTimeDesc"] = "Tempo para exibir uma mensagem, em segundos"
-L["doubleSize"] = "Tamanho dobrado"
-L["doubleSizeDesc"] = "Dobra o tamanho das barras super enfatizadas e as mensagens"
 L["emphasize"] = "Enfatizar"
 L["emphasizeAt"] = "Enfatizar em... (segundos)"
 L["emphasized"] = "Enfatizado"

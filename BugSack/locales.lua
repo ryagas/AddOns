@@ -464,7 +464,7 @@ L["You've received %d bugs from %s."] = "Você recebeu %d falhas de %s."
 
 elseif locale == "itIT" then
 L["All bugs"] = "Tutti i bug"
-L["All stored bugs have been exterminated painfully."] = "Tutti i bug registrati sono stati eliminati."
+L["All stored bugs have been exterminated painfully."] = "Tutti i bug registrati sono stati eliminati con dolore."
 L["autoDesc"] = "Apre automaticamente BugSack quando viene rilevato un errore, ma non se sei in combattimento."
 L["Auto popup"] = "Auto popup"
 L["|cffeda55fClick|r to open BugSack with the last bug. |cffeda55fShift-Click|r to reload the user interface. |cffeda55fAlt-Click|r to clear the sack."] = "|cffeda55fFai click|r per aprire BugSack con l'ultimo bug. |cffeda55fFai Maiusc-Click|r per ricaricare gli addon. |cffeda55fFai Alt-Click|r per eliminare i bug."
@@ -472,7 +472,7 @@ L["|cffff4411BugSack requires the |r|cff44ff44!BugGrabber|r|cffff4411 addon, whi
 L["chatFrameDesc"] = "Scrive un avvertimento sulla chat quando un errore viene rilevato. Non scrive l'errore completo, solo un messaggio di attenzione!"
 L["Chatframe output"] = "Output nella chat"
 L["Current session"] = "Sessione corrente"
-L["%d bugs have been sent to %s. He must have BugSack to be able to examine them."] = "%d bugs sono stati inviati a %s. Deve avere BugSack installato per poter esaminarli."
+L["%d bugs have been sent to %s. He must have BugSack to be able to examine them."] = "%d bugs sono stati inviati a %s. Devi avere BugSack installato per poterli esaminarli."
 L["Failure to deserialize incoming data from %s."] = "Impossibile leggere i dati inviati da %s."
 L["Filter addon mistakes"] = "Filtra errori addon"
 L["filterDesc"] = "Scegli se BugSack deve trattare gli eventi ADDON_ACTION_BLOCKED e ADDON_ACTION_FORBIDDEN come bug oppure no. Se non capisci il significato di questa opzione, ignorala."

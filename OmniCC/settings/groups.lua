@@ -28,8 +28,7 @@ function OmniCC:GetGroup(cooldown)
 end
 
 function OmniCC:FindGroup(cooldown)
-	local parent = cooldown:GetParent()
-	local name = cooldown:GetName() or (parent and parent:GetName())
+	local name = cooldown:GetName()
 	if name then
 		local groups = self.sets.groups
 		for i = #groups, 1, -1 do

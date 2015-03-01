@@ -242,6 +242,13 @@ function mod:GetOptions()
 	}
 end
 
+function mod:VerifyEnable()
+	local y = UnitPosition("player")
+	if y > 430 then
+		return true
+	end
+end
+
 function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "Enkindle", 155921)
 	self:Log("SPELL_AURA_APPLIED_DOSE", "Enkindle", 155921)
@@ -251,13 +258,14 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_START", "IronBellow", 163753)
 	self:Log("SPELL_CAST_START", "CauterizingBolt", 160140)
 	self:Log("SPELL_CAST_START", "DelayedSiegeBomb", 159481)
+	self:Log("SPELL_AURA_APPLIED", "DelayedSiegeBombApplied", 159481)
 	self:Log("SPELL_AURA_REMOVED", "DelayedSiegeBombRemoved", 159481)
 
 	self:Death("Deaths", 80791) -- Grom'kar Man-at-Arms
 end
 
 function mod:OnEngage()
-	self:CDBar(155864, 6, 135592, 155864) -- Pulse Grenade, 135592 = "Grenade"
+	self:CDBar(155864, 7, 135592, 155864) -- Pulse Grenade, 135592 = "Grenade"
 	self:CDBar(155921, 16) -- Enkindle
 	engageTime = GetTime()
 	-- bar for each lane seemed to make the most sense
@@ -267,12 +275,12 @@ function mod:OnEngage()
 	-- 15s warning on splits
 	local split = self:SpellName(143020)
 	if not self:Mythic() then
-		self:DelayedMessage("trains", 106, "Neutral", CL.custom_sec:format(CL.count:format(split, 1), 15))
-		self:DelayedMessage("trains", 356, "Neutral", CL.custom_sec:format(CL.count:format(split, 2), 15))
-		self:DelayedMessage("trains", 443, "Neutral", CL.custom_sec:format(CL.count:format(split, 3), 15))
+		self:DelayedMessage("trains", 106, "Neutral", CL.custom_sec:format(CL.count:format(split, 1), 15), false, "Long")
+		self:DelayedMessage("trains", 356, "Neutral", CL.custom_sec:format(CL.count:format(split, 2), 15), false, "Long")
+		self:DelayedMessage("trains", 443, "Neutral", CL.custom_sec:format(CL.count:format(split, 3), 15), false, "Long")
 	else
-		self:DelayedMessage("trains", 130, "Neutral", CL.custom_sec:format(CL.count:format(split, 1), 15))
-		self:DelayedMessage("trains", 286, "Neutral", CL.custom_sec:format(CL.count:format(split, 2), 15))
+		self:DelayedMessage("trains", 130, "Neutral", CL.custom_sec:format(CL.count:format(split, 1), 15), false, "Long")
+		self:DelayedMessage("trains", 286, "Neutral", CL.custom_sec:format(CL.count:format(split, 2), 15), false, "Long")
 	end
 end
 
@@ -339,7 +347,7 @@ do
 		if t-prev > 2 then
 			prev = t
 			self:Message(args.spellId, "Attention", nil, 135592, args.spellId) -- 135592 = "Grenade"
-			self:CDBar(args.spellId, 16, 135592, args.spellId) -- 135592 = "Grenade"
+			self:CDBar(args.spellId, 12, 135592, args.spellId) -- 135592 = "Grenade"
 		end
 	end
 end
@@ -364,10 +372,12 @@ do
 	local function printTarget(self, name, guid)
 		-- 119342 = Bombs
 		self:TargetMessage(159481, name, "Attention", "Warning", 119342, 159481)
-		self:TargetBar(159481, 11, name, 119342, 159481) -- also serves as a cd bar
 		if self:Me(guid) then
 			self:Flash(159481)
 			self:Say(159481, 119342)
+			self:TargetBar(159481, 4.9, name, CL.count:format(self:SpellName(155192), 1)) -- 155192 = "Bomb"
+		else
+			self:TargetBar(159481, 11, name, 119342, 159481) -- also serves as a cd bar
 		end
 	end
 
@@ -376,8 +386,35 @@ do
 	end
 end
 
-function mod:DelayedSiegeBombRemoved(args)
-	self:StopBar(119342, args.destName)
+do
+	local timer, bombCount = nil, 1
+	local function sayBombCount(self, name)
+		-- 155192 = "Bomb"
+		self:Say(159481, CL.count:format(self:SpellName(155192), bombCount), true)
+		bombCount = bombCount + 1
+		if bombCount < 4 then
+			self:TargetBar(159481, 3, name, CL.count:format(self:SpellName(155192), bombCount))
+			timer = self:ScheduleTimer(sayBombCount, bombCount == 3 and 2.8 or 3, self, name)
+		end
+	end
+
+	function mod:DelayedSiegeBombApplied(args)
+		if self:Me(args.destGUID) then
+			if timer then self:CancelTimer(timer) end
+			bombCount = 1
+			sayBombCount(self, args.destName)
+		end
+	end
+
+	function mod:DelayedSiegeBombRemoved(args)
+		if self:Me(args.destGUID) then
+			self:CancelTimer(timer)
+			timer = nil
+			self:StopBar(CL.count:format(self:SpellName(155192), bombCount), args.destName)
+		else
+			self:StopBar(119342, args.destName)
+		end
+	end
 end
 
 function mod:Deaths(args)

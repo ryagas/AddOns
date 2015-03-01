@@ -90,6 +90,7 @@ local soundOptions = {
 		},
 	},
 }
+plugin.soundOptions = soundOptions
 
 local function addKey(t, key)
 	if t.type and t.type == "select" then
@@ -102,13 +103,16 @@ local function addKey(t, key)
 	return t
 end
 
+local C = BigWigs.C
 local keyTable = {}
 function plugin:SetSoundOptions(name, key, flags)
 	wipe(keyTable)
 	keyTable[1] = name
 	keyTable[2] = key
-	if type(key) == "number" and key > 0 then key = GetSpellInfo(key) end -- XXX temp 6.1 store as id
 	local t = addKey(soundOptions, keyTable)
+	if t.args.countdown then
+		t.args.countdown.disabled = not flags or bit.band(flags, C.COUNTDOWN) == 0
+	end
 	return t
 end
 
@@ -135,11 +139,11 @@ function plugin:OnRegister()
 	media:Register(mType, "BigWigs: Victory", "Interface\\AddOns\\BigWigs\\Sounds\\Victory.ogg")
 	media:Register(mType, "BigWigs: Victory Long", "Interface\\AddOns\\BigWigs\\Sounds\\VictoryLong.ogg")
 	media:Register(mType, "BigWigs: Victory Classic", "Interface\\AddOns\\BigWigs\\Sounds\\VictoryClassic.ogg")
-	media:Register(mType, "BigWigs: 5", "Interface\\AddOns\\BigWigs\\Sounds\\5.ogg")
-	media:Register(mType, "BigWigs: 4", "Interface\\AddOns\\BigWigs\\Sounds\\4.ogg")
-	media:Register(mType, "BigWigs: 3", "Interface\\AddOns\\BigWigs\\Sounds\\3.ogg")
-	media:Register(mType, "BigWigs: 2", "Interface\\AddOns\\BigWigs\\Sounds\\2.ogg")
-	media:Register(mType, "BigWigs: 1", "Interface\\AddOns\\BigWigs\\Sounds\\1.ogg")
+	media:Register(mType, "BigWigs: 5", "Interface\\AddOns\\BigWigs\\Sounds\\Amy\\5.ogg")
+	media:Register(mType, "BigWigs: 4", "Interface\\AddOns\\BigWigs\\Sounds\\Amy\\4.ogg")
+	media:Register(mType, "BigWigs: 3", "Interface\\AddOns\\BigWigs\\Sounds\\Amy\\3.ogg")
+	media:Register(mType, "BigWigs: 2", "Interface\\AddOns\\BigWigs\\Sounds\\Amy\\2.ogg")
+	media:Register(mType, "BigWigs: 1", "Interface\\AddOns\\BigWigs\\Sounds\\Amy\\1.ogg")
 
 	-- Ingame sounds that DBM uses for DBM converts
 	media:Register(mType, "BigWigs: [DBM] ".. L.FlagTaken, "Sound\\Spells\\PVPFlagTaken.ogg")
@@ -169,9 +173,10 @@ function plugin:OnRegister()
 				name = n,
 				get = function(info)
 					local name, key = unpack(info.arg)
+					local optionName = info[#info]
 					for i, v in next, soundList do
 						-- If no custom sound exists for this option, fall back to global sound option
-						if v == (plugin.db.profile[info[#info]] and plugin.db.profile[info[#info]][name] and plugin.db.profile[info[#info]][name][key] or plugin.db.profile.media[info[#info]]) then
+						if v == (plugin.db.profile[optionName] and plugin.db.profile[optionName][name] and plugin.db.profile[optionName][name][key] or plugin.db.profile.media[optionName]) then
 							return i
 						end
 					end
@@ -206,7 +211,6 @@ do
 	local GetSpellInfo, PlaySoundFile, PlaySound, type = GetSpellInfo, PlaySoundFile, PlaySound, type
 	function plugin:BigWigs_Sound(event, module, key, sound, overwrite)
 		if bwDb.sound then
-			if type(key) == "number" and key > 0 then key = GetSpellInfo(key) end -- XXX temp 6.1 store as id
 			local sDb = db[sound]
 			if not module or not key or not sDb or not sDb[module.name] or not sDb[module.name][key] then
 				if db.defaultonly and not overwrite then

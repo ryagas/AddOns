@@ -1,6 +1,6 @@
 
 local name, addon = ...
-local isHeroic = false
+local isCompleted = false
 
 --------------------------------------------------------------------------------
 -- Locals
@@ -27,7 +27,7 @@ local journalToAchievement = {
 	-- Skyreach
 	[965] = 9033, -- Ranjit
 	[967] = 9035, -- Rukhran
-	[968] = {9034, 9036}, -- Viryx	
+	[968] = {9034, 9036}, -- High Sage Viryx	
 	--Burial Grounds
 	[1139] = 9018, -- Sadana Bloodfury
 	[1140] = 9025, -- Bonemaw	
@@ -46,8 +46,8 @@ local journalToAchievement = {
 --
 
 addon.L = {
-	achievement_hint = "I noticed that you are missing the achievement '%s' for the boss you are about to fight, %s.",
-	achievement_multi = "I noticed that you are missing a few achievements for the boss you are about to fight, %s:"
+	achievement_hint = "We noticed that you are missing the achievement '%s' for the boss you are about to fight, %s.",
+	achievement_multi = "We noticed that you are missing a few achievements for the boss you are about to fight, %s:"
 }
 local L = addon.L
 local CL = LibStub("AceLocale-3.0"):GetLocale("Big Wigs: Common")
@@ -55,26 +55,28 @@ local CL = LibStub("AceLocale-3.0"):GetLocale("Big Wigs: Common")
 --------------------------------------------------------------------------------
 -- Event Handlers
 --
--- id, name, points, completed, month, day, year, description, flags, icon, rewardText, isGuildAch, wasEarnedByMe, earnedBy = GetAchievementInfo(category, index) or GetAchievementInfo(id)
 
 local function handler(event, module)
-	local achievId = module.journalId and journalToAchievement[module.journalId]
-	local _, _, _, isCompleted = GetAchievementInfo(achievId)
-	local _, _, difficulty = GetInstanceInfo()
-    if difficulty == 2 then
-    	isHeroic = true
-    end
-	if not isCompleted and not isHeroic and achievId then
+	local achievId = journalToAchievement[module.journalId]
+	local _, _, difficulty = GetInstanceInfo()    
+	if difficulty == 2 and achievId then
 		if type(achievId) == "table" then
-			print("|cFF33FF99BigWigs:|r", L.achievement_multi:format(module.displayName))
+			local links = ""
 			for key, value in pairs(achievId) do
-				local link = GetAchievementLink(value)
-				print(link) 
+				_, _, _, isCompleted = GetAchievementInfo(value)
+				if not isCompleted then
+					links = links .. " " .. GetAchievementLink(value) 
+				end	
+			end
+			if links ~= "" then
+				print("|cFF33FF99BigWigs:|r", L.achievement_multi:format(module.displayName) .. links)
 			end
 		else
-			local link = GetAchievementLink(achievId)
-			print("|cFF33FF99BigWigs:|r", L.achievement_hint:format(link, module.displayName))
-			--print breakdown?
+			_, _, _, isCompleted = GetAchievementInfo(achievId)
+			if not isCompleted then
+				local link = GetAchievementLink(achievId)
+				print("|cFF33FF99BigWigs:|r", L.achievement_hint:format(link, module.displayName))
+			end
 		end
 	end 
 end

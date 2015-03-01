@@ -1,0 +1,11 @@
+tag 6.1.0.5
+43bfcdd1e08d77f3e42a4f7a4e7684ca9c6dc838
+James D. Callahan III <jcallahan@curse.com>
+2015-02-26 22:27:48 -0600
+
+
+
+--------------------
+
+James D. Callahan III:
+	- Corrected spellID for Draenor Clans version of Headdress of the First Shaman.

@@ -224,7 +224,7 @@ if L then
 	L.repair_desc = "Avvisa quando un Robot di Riparazione è disponibile."
 
 	L.feast = "Banchetti"
-	L.feast_desc = "Avvisa quando vengono messi a disposizione dei Festini."
+	L.feast_desc = "Avvisa quando vengono messi a disposizione dei Banchetti."
 	L.feast_cast = "%s ha preparato un %s !"
 
 	L.rebirth = "Resurrezione"
@@ -407,12 +407,11 @@ local blue = "Personal"    -- everything else
 
 local C = BigWigs.C
 local function checkFlag(key, flag)
-	if type(key) == "number" then key = GetSpellInfo(key) end
 	return bit.band(mod.db.profile[key], flag) == flag
 end
 local icons = setmetatable({}, {__index =
 	function(self, key)
-		local _, _, icon = GetSpellInfo(key)
+		local icon = GetSpellTexture(key)
 		self[key] = icon
 		return icon
 	end
@@ -538,7 +537,7 @@ end
 
 function mod:DivineProtection(_, spellId, nick, spellName)
 	message(spellId, L["used_cast"]:format(nick, spellName), blue)
-	bar(spellId, 10, nick, spellName)
+	bar(spellId, 8, nick, spellName)
 end
 
 function mod:ArdentDefender(_, spellId, nick, spellName)
@@ -548,17 +547,17 @@ end
 
 function mod:GuardianAncientKings(_, spellId, nick, spellName)
 	message(spellId, L["used_cast"]:format(nick, spellName), blue)
-	bar(spellId, 12, nick, spellName)
+	bar(spellId, 8, nick, spellName)
 end
 
 function mod:ShieldWall(_, spellId, nick, spellName)
 	message(spellId, L["used_cast"]:format(nick, spellName), blue)
-	bar(spellId, 12, nick, spellName)
+	bar(spellId, 8, nick, spellName)
 end
 
 function mod:LastStand(_, spellId, nick, spellName)
 	message(spellId, L["used_cast"]:format(nick, spellName), blue)
-	bar(spellId, 20, nick, spellName)
+	bar(spellId, 15, nick, spellName)
 end
 
 function mod:RallyingCry(_, spellId, nick, spellName)
@@ -573,7 +572,7 @@ end
 
 function mod:DemoralizingShout(_, spellId, nick, spellName)
 	message(spellId, L["used_cast"]:format(nick, spellName), blue)
-	bar(spellId, 10, nick, spellName)
+	bar(spellId, 8, nick, spellName)
 end
 
 function mod:MockingBanner(_, spellId, nick, spellName)
@@ -583,7 +582,7 @@ end
 
 function mod:IceboundFortitude(_, spellId, nick, spellName)
 	message(spellId, L["used_cast"]:format(nick, spellName), blue)
-	bar(spellId, 12, nick, spellName)
+	bar(spellId, 8, nick, spellName)
 end
 
 function mod:VampiricBlood(_, spellId, nick, spellName)
@@ -603,7 +602,7 @@ end
 
 function mod:SurvivalInstincts(_, spellId, nick, spellName)
 	message(spellId, L["used_cast"]:format(nick, spellName), blue)
-	bar(spellId, 12, nick, spellName)
+	bar(spellId, 6, nick, spellName)
 end
 
 function mod:Rebirth(target, spellId, nick, spellName)
@@ -631,7 +630,7 @@ end
 
 function mod:FortifyingBrew(_, spellId, nick, spellName)
 	message(spellId, L["used_cast"]:format(nick, spellName), blue)
-	bar(spellId, 12, nick, spellName)
+	bar(spellId, 15, nick, spellName)
 end
 
 function mod:ZenMeditation(_, spellId, nick, spellName)

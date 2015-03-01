@@ -1,0 +1,12 @@
+tag v1.5.53
+07cf72109a95eb05b3c86c2ad8a026962672dae3
+Dorwido <darkz@gmx.de>
+2015-02-13 10:18:11 +0100
+
+tagging as v1.5.53
+
+
+--------------------
+
+Dorwido:
+	- removed some wrong flight times and added new ones

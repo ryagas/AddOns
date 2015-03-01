@@ -1,6 +1,6 @@
-local pairs = pairs
-
 local MovAny = _G.MovAny
+local MOVANY = _G.MOVANY
+
 local alpha
 
 local m = {
@@ -15,11 +15,13 @@ local m = {
 			return
 		end
 		alpha = opt.alpha
+		
 		if alpha and alpha >= 0 and alpha <= 1 then
 			if opt.orgAlpha == nil then
 				opt.orgAlpha = f:GetAlpha()
 			end
 			f:SetAlpha(alpha)
+			
 			if f.attachedChildren and not f.MADontAlphaChildren then
 				for i, v in pairs(f.attachedChildren) do
 					if v:GetAlpha() ~= 1 then
@@ -45,12 +47,15 @@ local m = {
 		elseif alpha < 0 then
 			alpha = 0
 		end
+		
 		f:SetAlpha(alpha)
+		
 		if f.attachedChildren and not f.MADontAlphaChildren then
 			for i, v in pairs(f.attachedChildren) do
 				v:SetAlpha(alpha)
 			end
 		end
+		
 		if f.OnMAAlpha then
 			f.OnMAAlpha(f, alpha)
 		end
@@ -58,7 +63,7 @@ local m = {
 			opt.alpha = nil
 			opt.orgAlpha = nil
 		end
-	end
+	end,
 }
 
 MovAny:AddModule("Alpha", m)

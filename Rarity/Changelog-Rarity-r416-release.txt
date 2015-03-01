@@ -1,0 +1,29 @@
+------------------------------------------------------------------------
+r417 | allara | 2015-02-24 18:29:35 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   A /tags/r416-release (from /trunk:416)
+
+Tagging as r416-release
+------------------------------------------------------------------------
+r416 | allara | 2015-02-24 18:29:13 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Modules/Options/Rarity_Options.toc
+   M /trunk/Rarity.toc
+
+- Initial 6.1 compatibility. There may be more remaining issues to fix.
+------------------------------------------------------------------------
+r414 | allara | 2015-02-04 17:42:55 +0000 (Wed, 04 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Solar Spirehawk: Added defeat detection; turned off bonus roll
+------------------------------------------------------------------------
+r412 | allara | 2015-01-28 21:21:15 +0000 (Wed, 28 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Snowy Panda, Mountain Panda: This should fix detection issues with those pets
+------------------------------------------------------------------------

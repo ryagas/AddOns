@@ -68,8 +68,6 @@ L["custom_off_branded_marker_desc"] = "Marca alvos de Marcado com {rt3}{rt4}, re
 L["custom_off_fixate_marker"] = "Marcador do Fixar"
 L["custom_off_fixate_marker_desc"] = [=[Marca alvos de Fixar do Mago-de-Guerra Goriano com {rt1}{rt2}, requer promoção ou liderança:
 cFFFF0000Apenas uma pessoa na raide deve ter isso ativo para evitar conflitos.|r]=]
-L["gaze_target_message"] = "Glimpse atrás de VOCÊ!"
-L["phase4_trigger"] = "Você não sabe nada do poder" -- Needs review
 L["slow_fixate"] = "Retardar+Fixar"
 
 end

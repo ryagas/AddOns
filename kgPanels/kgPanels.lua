@@ -19,6 +19,10 @@ local l_not_found = " not found."
 local gsub = string.gsub
 local default_font="Fonts\\FRIZQT__.TTF"
 
+local cataFeatures = select(4, _G.GetBuildInfo()) >= 40000
+
+kgPanels.isCata = cataFeatures
+
 local defaultPanelOptions = {
 	parent = "UIParent",
 	x = 0,
@@ -74,7 +78,7 @@ local gameLocale = GetLocale()
 if gameLocale == "enGB" then
 	gameLocale = "enUS"
 end
--- Localizers add stuff here
+-- Localizaers add stuff here
 if gameLocale == "deDE" then
 	l_None = "None"
 end
@@ -167,7 +171,7 @@ local checkFrames = 0
 local testingTexture = nil
 
 kgPanels.eframe = kgPanels.eframe or CreateFrame("Frame","kgPanels_Dep_Frame")
--- default backdrop
+-- default backgrop
 local default_backdrop = {bgFile = "",edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", tile = false, tileSize = 0, edgeSize = 16, insets = {left = 0,right = 0,top = 0,bottom = 0}}
 -- some memorization data (only do the angle math once for a given angle)
 local angles = setmetatable({}, {
@@ -942,17 +946,17 @@ function kgPanels:ResetTextures(frame,frameData,name)
 	if frameData.tiling then
 		frame.bg:SetTexture(nil)
 		frame:SetBackdrop({	bgFile = fetchArt(frameData.bg_texture,"background"),edgeFile = fetchArt(frameData.border_texture,"border"),edgeSize = frameData.border_edgeSize,tile = true,tileSize = frameData.tileSize,insets = {left = frameData.bg_insets.l,right = frameData.bg_insets.r,top = frameData.bg_insets.t,bottom = frameData.bg_insets.b}})
-		
-		-- check direction
-		if frameData.vert_tile then
-			frame.bg:SetHorizTile(false)
-			frame.bg:SetVertTile(true)
+		if cataFeatures then
+			-- check direction
+			if frameData.vert_tile then
+				frame.bg:SetHorizTile(false)
+				frame.bg:SetVertTile(true)
+			end
+			if frameData.horz_tile then
+				frame.bg:SetHorizTile(true)
+				frame.bg:SetVertTile(false)
+			end
 		end
-		if frameData.horz_tile then
-			frame.bg:SetHorizTile(true)
-			frame.bg:SetVertTile(false)
-		end
-		
 	else
 		frame:SetBackdrop({	bgFile = "",edgeFile = fetchArt(frameData.border_texture,"border"),edgeSize = frameData.border_edgeSize,tile = false,tileSize = 0,insets = {left = 0,right = 0,	top = 0,bottom = 0}})
 	end
@@ -978,8 +982,11 @@ function kgPanels:ResetTextures(frame,frameData,name)
 	end
 	frame:SetFrameLevel(frameData.level)
 	frame:SetFrameStrata(frameData.strata)
-	frame.bg:SetDrawLayer("BACKGROUND",frameData.sub_level)
-	
+	if cataFeatures then
+		frame.bg:SetDrawLayer("BACKGROUND",frameData.sub_level)
+	else
+		frame.bg:SetDrawLayer("BACKGROUND")
+	end
 	if frameData.border_advanced.enable and BD then
 		for k,v in pairs(frameData.border_advanced.show) do
 			if v == false then

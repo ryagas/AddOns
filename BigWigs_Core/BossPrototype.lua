@@ -180,7 +180,6 @@ function boss:OnDisable(isWipe)
 	end
 end
 function boss:GetOption(key)
-	if type(key) == "number" and key > 0 then key = spells[key] end -- XXX temp 6.1 store as id
 	return self.db.profile[key]
 end
 function boss:Reboot(isWipe)
@@ -475,7 +474,8 @@ do
 	}
 	local function findTargetByGUID(id)
 		local isNumber = type(id) == "number"
-		for i, unit in next, unitTable do
+		for i = 1, #unitTable do
+			local unit = unitTable[i]
 			local guid = UnitGUID(unit)
 			if guid and not UnitIsPlayer(unit) then
 				if isNumber then
@@ -487,6 +487,42 @@ do
 		end
 	end
 	function boss:GetUnitIdByGUID(id) return findTargetByGUID(id) end
+
+	local function unitScanner(self, func, tankCheckExpiry, guid)
+		local elapsed = self.scheduledScansCounter[guid] + 0.05
+
+		local unit = findTargetByGUID(guid)
+		if unit then
+			local unitTarget = unit.."target"
+			local playerGUID = UnitGUID(unitTarget)
+			if playerGUID and ((not UnitDetailedThreatSituation(unitTarget, unit) and not self:Tank(unitTarget)) or elapsed > tankCheckExpiry) then
+				local name = self:UnitName(unitTarget)
+				self:CancelTimer(self.scheduledScans[guid])
+				func(self, name, playerGUID, elapsed)
+				self.scheduledScans[guid] = nil
+			end
+		end
+
+		if elapsed > 0.8 then
+			self:CancelTimer(self.scheduledScans[guid])
+			self.scheduledScans[guid] = nil
+		end
+
+		self.scheduledScansCounter[guid] = elapsed
+	end
+
+	function boss:GetUnitTarget(func, tankCheckExpiry, guid)
+		if not self.scheduledScans then
+			self.scheduledScans, self.scheduledScansCounter = {}, {}
+		end
+
+		if self.scheduledScans[guid] then
+			self:CancelTimer(self.scheduledScans[guid]) -- Should never be needed, safety
+		end
+
+		self.scheduledScansCounter[guid] = 0
+		self.scheduledScans[guid] = self:ScheduleRepeatingTimer(unitScanner, 0.05, self, func, solo and 0.1 or tankCheckExpiry, guid) -- Tiny allowance when solo
+	end
 
 	local function scan(self)
 		for mobId, entry in next, core:GetEnableMobs() do
@@ -792,7 +828,6 @@ do
 	end
 	function boss:Dispeller(dispelType, isOffensive, key)
 		if key then
-			if type(key) == "number" and key > 0 then key = spells[key] end -- XXX temp 6.1 store as id
 			if band(self.db.profile[key], C.DISPEL) ~= C.DISPEL then return true end
 		end
 		if isOffensive then
@@ -855,7 +890,6 @@ do
 		if type(key) == "nil" then core:Print(format(nilKeyError, self.name)) return end
 		if type(flag) ~= "number" then core:Print(format(invalidFlagError, self.name, type(flag), tostring(flag))) return end
 		if silencedOptions[key] then return end
-		if type(key) == "number" and key > 0 then key = spells[key] end -- XXX temp 6.1 store as id
 		if type(self.db) ~= "table" then core:Print(format(noDBError, self.name)) return end
 		if type(self.db.profile[key]) ~= "number" then
 			if not self.toggleDefaults[key] then
@@ -980,8 +1014,17 @@ do
 		return setmetatable({}, mt)
 	end
 
+	local tmp = {}
 	function boss:ColorName(player)
-		return coloredNames[player]
+		if type(player) == "table" then
+			wipe(tmp)
+			for i, v in ipairs(player) do
+				tmp[i] = coloredNames[v]
+			end
+			return tmp
+		else
+			return coloredNames[player]
+		end
 	end
 
 	function boss:StackMessage(key, player, stack, color, sound, text, icon)
@@ -1064,8 +1107,8 @@ function boss:Bar(key, length, text, icon)
 	if checkFlag(self, key, C.BAR) then
 		self:SendMessage("BigWigs_StartBar", self, key, textType == "string" and text or spells[text or key], length, icons[icon or textType == "number" and text or key])
 	end
-	if checkFlag(self, key, C.EMPHASIZE) then
-		self:SendMessage("BigWigs_StartEmphasize", self, textType == "string" and text or spells[text or key], length)
+	if checkFlag(self, key, C.COUNTDOWN) then
+		self:SendMessage("BigWigs_StartEmphasize", self, key, textType == "string" and text or spells[text or key], length)
 	end
 end
 
@@ -1074,8 +1117,8 @@ function boss:CDBar(key, length, text, icon)
 	if checkFlag(self, key, C.BAR) then
 		self:SendMessage("BigWigs_StartBar", self, key, textType == "string" and text or spells[text or key], length, icons[icon or textType == "number" and text or key], true)
 	end
-	if checkFlag(self, key, C.EMPHASIZE) then
-		self:SendMessage("BigWigs_StartEmphasize", self, textType == "string" and text or spells[text or key], length)
+	if checkFlag(self, key, C.COUNTDOWN) then
+		self:SendMessage("BigWigs_StartEmphasize", self, key, textType == "string" and text or spells[text or key], length)
 	end
 end
 
@@ -1090,8 +1133,8 @@ function boss:TargetBar(key, length, player, text, icon)
 		if checkFlag(self, key, C.BAR) then
 			self:SendMessage("BigWigs_StartBar", self, key, msg, length, icons[icon or textType == "number" and text or key])
 		end
-		if checkFlag(self, key, C.EMPHASIZE) then
-			self:SendMessage("BigWigs_StartEmphasize", self, msg, length)
+		if checkFlag(self, key, C.COUNTDOWN) then
+			self:SendMessage("BigWigs_StartEmphasize", self, key, msg, length)
 		end
 	elseif not checkFlag(self, key, C.ME_ONLY) and checkFlag(self, key, C.BAR) then
 		self:SendMessage("BigWigs_StartBar", self, key, format(L.other, textType == "string" and text or spells[text or key], gsub(player, "%-.+", "*")), length, icons[icon or textType == "number" and text or key])
@@ -1122,10 +1165,10 @@ end
 function boss:ResumeBar(key, text)
 	local msg = text or spells[key]
 	self:SendMessage("BigWigs_ResumeBar", self, msg)
-	if checkFlag(self, key, C.EMPHASIZE) then
+	if checkFlag(self, key, C.COUNTDOWN) then
 		local length = self:BarTimeLeft(msg)
 		if length > 0 then
-			self:SendMessage("BigWigs_StartEmphasize", self, msg, length)
+			self:SendMessage("BigWigs_StartEmphasize", self, key, msg, length)
 		end
 	end
 end

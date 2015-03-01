@@ -1,0 +1,22 @@
+------------------------------------------------------------------------
+r53 | thaoky | 2015-02-25 18:21:34 +0000 (Wed, 25 Feb 2015) | 3 lines
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/DataStore.lua
+   M /trunk/DataStore.toc
+   M /trunk/Options.xml
+
+6.1.001 Commit
+
+- Added support for options using <KeyValue>
+------------------------------------------------------------------------
+r52 | thaoky | 2015-01-09 16:59:48 +0000 (Fri, 09 Jan 2015) | 3 lines
+Changed paths:
+   M /trunk/DataStore.lua
+   M /trunk/Options.lua
+   M /trunk/Options.xml
+
+- Minor fix in GetMethodOwner()
+- Fixed ToggleOption()
+- XML frames cleanup
+------------------------------------------------------------------------

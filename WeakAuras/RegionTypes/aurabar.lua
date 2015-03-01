@@ -57,6 +57,7 @@ local default = {
   yOffset = 0,
   stickyDuration = false,
   icon_side = "RIGHT",
+  icon_color = {1.0, 1.0, 1.0, 1.0},
   rotateText = "NONE",
   frameStrata = 1,
   customTextUpdate = "update"
@@ -933,7 +934,8 @@ local function modify(parent, region, data)
                 or "Interface\\Icons\\INV_Misc_QuestionMark"
             );
             self.icon:SetTexture(iconPath);
-            self.icon:SetDesaturated(data.desaturate)
+            self.icon:SetDesaturated(data.desaturate);
+            self.icon:SetVertexColor(data.icon_color[1], data.icon_color[2], data.icon_color[3], data.icon_color[4]);
             region.values.icon = "|T"..iconPath..":12:12:0:0:64:64:4:60:4:60|t";
 
       -- Update text
@@ -998,7 +1000,10 @@ local function modify(parent, region, data)
     -- Save custom text function
         region.UpdateCustomText = function()
       -- Evaluate and update text
+            WeakAuras.ActivateAuraEnvironment(data.id);
             local custom = customTextFunc(region.expirationTime, region.duration, values.progress, values.duration, values.name, values.icon, values.stacks);
+            WeakAuras.ActivateAuraEnvironment(nil);
+            custom = WeakAuras.EnsureString(custom);
             if custom ~= values.custom then
                 values.custom = custom;
                 UpdateText(region, data);
@@ -1115,11 +1120,15 @@ local function modify(parent, region, data)
       -- Update via custom OnUpdate handler
             if type(customValue) == "function" then
                 local value, total = customValue(data.trigger);
+                value = type(value) == "number" and value or 0
+                total = type(value) == "number" and total or 0
                 if total > 0 and value < total then
                     self.customValueFunc = customValue;
                     self:SetScript("OnUpdate", function()
             -- Relay
             local value, total = self.customValueFunc(data.trigger);
+            value = type(value) == "number" and value or 0
+            total = type(value) == "number" and total or 0
             UpdateValue(self, data, value, total);
           end);
                 else

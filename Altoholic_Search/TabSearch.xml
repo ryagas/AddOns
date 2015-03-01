@@ -1,0 +1,263 @@
+﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="TabSearch.lua"></Script>
+	
+	<Frame name="AltoholicTabSearch" parent="AltoholicFrame" hidden="true">
+		<Size x="758" y="447" />
+		<Anchors>
+			<Anchor point="TOPLEFT"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="LevelRange" inherits="GameFontNormalSmall" text="LEVEL_RANGE">
+					<Size x="70" y="20" />
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="AltoholicFrameSearchLabel" relativePoint="RIGHT" x="33" y="0" />
+					</Anchors>
+					<Color r="255" g="255" b="255" />
+				</FontString>
+				<FontString parentKey="Rarity" inherits="GameFontNormalSmall" text="RARITY">
+					<Size x="90" y="20" />
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent.LevelRange" relativePoint="RIGHT" x="10" y="0" />
+					</Anchors>
+					<Color r="255" g="255" b="255" />
+				</FontString>
+				<FontString parentKey="Slot" inherits="GameFontNormalSmall">
+					<Size x="100" y="20" />
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent.Rarity" relativePoint="RIGHT" x="40" y="0" />
+					</Anchors>
+					<Color r="255" g="255" b="255" />
+				</FontString>
+				<FontString parentKey="Location" inherits="GameFontNormalSmall">
+					<Size x="100" y="20" />
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent.Slot" relativePoint="RIGHT" x="20" y="0" />
+					</Anchors>
+					<Color r="255" g="255" b="255" />
+				</FontString>
+				<FontString parentKey="Status" inherits="GameFontNormal" justifyH="LEFT">
+					<Size x="320" y="24" />
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" x="-250" y="13" />
+					</Anchors>
+					<Color r="255" g="255" b="255" />
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button parentKey="MenuItem1" inherits="AltoMenuItemTemplate" id="1">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="23" y="-105" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem2" inherits="AltoMenuItemTemplate" id="2">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem1" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem3" inherits="AltoMenuItemTemplate" id="3">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem2" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem4" inherits="AltoMenuItemTemplate" id="4">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem3" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem5" inherits="AltoMenuItemTemplate" id="5">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem4" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem6" inherits="AltoMenuItemTemplate" id="6">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem5" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem7" inherits="AltoMenuItemTemplate" id="7">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem6" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem8" inherits="AltoMenuItemTemplate" id="8">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem7" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem9" inherits="AltoMenuItemTemplate" id="9">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem8" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem10" inherits="AltoMenuItemTemplate" id="10">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem9" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem11" inherits="AltoMenuItemTemplate" id="11">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem10" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem12" inherits="AltoMenuItemTemplate" id="12">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem11" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem13" inherits="AltoMenuItemTemplate" id="13">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem12" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem14" inherits="AltoMenuItemTemplate" id="14">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem13" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem15" inherits="AltoMenuItemTemplate" id="15">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem14" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<ScrollFrame parentKey="ScrollFrame" inherits="AltoMenuScrollFrameTemplate">
+				<Scripts>
+					<OnVerticalScroll>
+						Altoholic.ScrollFrames:OnVerticalScroll(self, offset, 20, Altoholic.Tabs.Search.Update)
+					</OnVerticalScroll>
+					<OnShow>
+						Altoholic.Tabs.Search:Update()
+					</OnShow>
+				</Scripts>
+			</ScrollFrame>
+			
+			<EditBox parentKey="MinLevel" letters="2" numeric="true" autoFocus="false" inherits="InputBoxTemplate">
+				<Size x="25" y="16" />
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="AltoholicFrame_SearchEditBox" relativePoint="RIGHT" x="10" y="0" />
+				</Anchors>
+				<Scripts>
+					<OnEnterPressed>
+						self:ClearFocus();
+					</OnEnterPressed>
+				</Scripts>
+			</EditBox>
+			<EditBox parentKey="MaxLevel" letters="2" numeric="true" autoFocus="false" inherits="InputBoxTemplate">
+				<Size x="25" y="16" />
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.MinLevel" relativePoint="RIGHT" x="12" y="0" />
+				</Anchors>
+				<Scripts>
+					<OnEnterPressed>
+						self:ClearFocus();
+					</OnEnterPressed>
+				</Scripts>
+			</EditBox>
+			<Frame parentKey="SelectRarity" name="$parent_SelectRarity" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.MaxLevel" relativePoint="RIGHT" x="0" y="-5" />
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						UIDropDownMenu_SetWidth(self, 100) 
+						UIDropDownMenu_SetButtonWidth(self, 20)
+						Altoholic:DDM_Initialize(self, Altoholic.Tabs.Search.DropDownRarity_Initialize)
+						UIDropDownMenu_SetSelectedValue(self, 0);
+						UIDropDownMenu_SetText(self, ITEM_QUALITY_COLORS[0].hex .. _G["ITEM_QUALITY0_DESC"])
+					</OnLoad>
+				</Scripts>
+			</Frame>
+			<Frame parentKey="SelectSlot" name="$parent_SelectSlot" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.MaxLevel" relativePoint="RIGHT" x="130" y="-5" />
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						local L = LibStub("AceLocale-3.0"):GetLocale("Altoholic")
+						
+						UIDropDownMenu_SetWidth(self, 80) 
+						UIDropDownMenu_SetButtonWidth(self, 20)
+						Altoholic:DDM_Initialize(self, Altoholic.Tabs.Search.DropDownSlot_Initialize)
+						UIDropDownMenu_SetSelectedValue(self, 0);
+						UIDropDownMenu_SetText(self, L["Any"])
+					</OnLoad>
+				</Scripts>
+			</Frame>
+			<Frame parentKey="SelectLocation" name="$parent_SelectLocation" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.MaxLevel" relativePoint="RIGHT" x="250" y="-5" />
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						local L = LibStub("AceLocale-3.0"):GetLocale("Altoholic")
+						
+						UIDropDownMenu_SetWidth(self, 150) 
+						UIDropDownMenu_SetButtonWidth(self, 20)
+						Altoholic:DDM_Initialize(self, Altoholic.Tabs.Search.DropDownLocation_Initialize)
+						UIDropDownMenu_SetSelectedValue(self, 2);
+						UIDropDownMenu_SetText(self, format("%s %s(%s)", L["This realm"], "|cFF00FF00", L["This faction"]))
+					</OnLoad>
+				</Scripts>
+			</Frame>		
+			
+			<Button name="$parent_Sort1" inherits="AltoSortButtonTemplate" hidden="true" id="1">
+				<Size x="240" y="19" />
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="AltoholicFrame_SearchEditBox" relativePoint="BOTTOMRIGHT" x="10" y="-10" />
+				</Anchors>
+			</Button>
+			<Button name="$parent_Sort2" inherits="AltoSortButtonTemplate" hidden="true" id="2">
+				<Size x="160" y="19" />
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_Sort1" relativePoint="RIGHT" x="5" y="0" />
+				</Anchors>
+			</Button>
+			<Button name="$parent_Sort3" inherits="AltoSortButtonTemplate" hidden="true" id="3">
+				<Size x="150" y="19" />
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_Sort2" relativePoint="RIGHT" x="5" y="0" />
+				</Anchors>
+			</Button>
+			<Button name="$parent_Sort4" inherits="AltoSortButtonTemplate" hidden="true" id="4">
+				<Size x="50" y="19" />
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_Sort3" relativePoint="RIGHT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button name="$parent_Sort5" inherits="AltoSortButtonTemplate" hidden="true" id="5">
+				<Size x="50" y="19" />
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_Sort4" relativePoint="RIGHT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button name="$parent_Sort6" inherits="AltoSortButtonTemplate" hidden="true" id="6">
+				<Size x="50" y="19" />
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_Sort5" relativePoint="RIGHT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button name="$parent_Sort7" inherits="AltoSortButtonTemplate" hidden="true" id="7">
+				<Size x="50" y="19" />
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_Sort6" relativePoint="RIGHT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button name="$parent_Sort8" inherits="AltoSortButtonTemplate" hidden="true" id="8">
+				<Size x="50" y="19" />
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_Sort7" relativePoint="RIGHT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				Altoholic.Tabs.Search:OnLoad()
+			</OnLoad>
+			<OnShow>
+				Altoholic.Tabs.Search:Update()
+			</OnShow>
+		</Scripts>
+	</Frame>
+</Ui>

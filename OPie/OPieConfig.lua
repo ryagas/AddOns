@@ -1,14 +1,14 @@
-local L, config, _, T, KR = OneRingLib.lang, {}, ...
-OneRingLib.ext.config, KR = config, T.ActionBook:compatible("Kindred",1,0)
+local L, config = OneRingLib.lang, {}
+OneRingLib.ext.config = config
 function config.createFrame(name, parent)
 	local frame = CreateFrame("Frame", nil, UIParent)
 		frame.name, frame.parent = name, parent
-	frame.title = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLargeLeftTop")
+	frame.title = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 		frame.title:SetPoint("TOPLEFT", 16, -16)
 		frame.title:SetText(name)
 	frame.version = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmallRight")
 		frame.version:SetPoint("TOPRIGHT", -16, -16)
-	frame.desc = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmallLeftTop")
+	frame.desc = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmallLeft")
 		frame.desc:SetPoint("TOPLEFT", frame.title, "BOTTOMLEFT", 0, -8)
 		frame.desc:SetWidth(590)
 		
@@ -17,8 +17,7 @@ function config.createFrame(name, parent)
 	return frame
 end
 do -- ext.config.ui
-	config.ui = {}
-	do -- multilineInput
+	local multilineInput do
 		local function onNavigate(self, x,y, w,h)
 			local scroller = self.scroll
 			local occH, occP, y = scroller:GetHeight(), scroller:GetVerticalScroll(), -y
@@ -37,7 +36,7 @@ do -- ext.config.ui
 		local function onClick(self)
 			self.input:SetFocus()
 		end
-		function config.ui.multilineInput(name, parent, width)
+		function multilineInput(name, parent, width)
 			local scroller = CreateFrame("ScrollFrame", name .. "Scroll", parent, "UIPanelScrollFrameTemplate")
 			local input = CreateFrame("Editbox", name, scroller)
 			input:SetWidth(width)
@@ -53,7 +52,7 @@ do -- ext.config.ui
 			return input, scroller
 		end
 	end
-	function config.ui.lineInput(parent, common, width)
+	local function lineInput(parent, common, width)
 		local input = CreateFrame("EditBox", nil, parent)
 		input:SetAutoFocus(nil) input:SetSize(width or 150, 20)
 		input:SetFontObject(ChatFontNormal)
@@ -74,42 +73,19 @@ do -- ext.config.ui
 		end
 		return input
 	end
-	function config.ui.HideTooltip(self)
-		if GameTooltip:IsOwned(self) then
-			GameTooltip:Hide()
-		end
-	end
+	config.ui = {multilineInput=multilineInput, lineInput=lineInput}
 end
 do -- ext.config.bind
 	local unbindMap, activeCaptureButton = {};
 	local alternateFrame = CreateFrame("Frame", nil, UIParent) do
 		alternateFrame:SetBackdrop({ bgFile="Interface/ChatFrame/ChatFrameBackground", edgeFile="Interface/DialogFrame/UI-DialogBox-Border", tile=true, tileSize=32, edgeSize=32, insets={left=11, right=11, top=12, bottom=10}})
-		alternateFrame:SetSize(380, 115)
+		alternateFrame:SetWidth(350) alternateFrame:SetHeight(115)
 		alternateFrame:SetBackdropColor(0,0,0, 0.85)
-		alternateFrame:EnableMouse(1)
+		alternateFrame:EnableMouse()
 		alternateFrame:SetScript("OnHide", alternateFrame.Hide)
-		local extReminder = CreateFrame("BUTTON", nil, alternateFrame)
-		extReminder:SetHeight(16) extReminder:SetPoint("TOPLEFT", 12, -10) extReminder:SetPoint("TOPRIGHT", -12, -10)
-		extReminder:SetNormalTexture("Interface/Buttons/UI-OptionsButton")
-		extReminder:SetPushedTextOffset(0,0)
-		extReminder:SetText(" ") extReminder:SetNormalFontObject(GameFontHighlightSmall) do
-			local fs, tex = extReminder:GetFontString(), extReminder:GetNormalTexture()
-			fs:ClearAllPoints() tex:ClearAllPoints()
-			fs:SetPoint("LEFT", 18, -1) tex:SetSize(14,14) tex:SetPoint("LEFT")
-		end
-		alternateFrame.caption = extReminder
-		extReminder:SetScript("OnEnter", function(self)
-			GameTooltip:SetOwner(self, "ANCHOR_NONE")
-			GameTooltip:SetPoint("TOP", self, "BOTTOM")
-			GameTooltip:AddLine(L"Conditional Bindings", NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
-			GameTooltip:AddLine(L"The binding will update to reflect the value of this macro conditional.", HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b, 1)
-			GameTooltip:AddLine((L"You may use extended macro conditionals; see |cff33DDFF%s|r for details."):format("http://townlong-yak.com/opie/extended-conditionals"), HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b, 1)
-			GameTooltip:AddLine((L"Example: %s."):format(GREEN_FONT_COLOR_CODE .. "[combat] ALT-C; [nomounted] CTRL-F|r"), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
-			GameTooltip:Show()
-		end)
-		extReminder:SetScript("OnLeave", config.ui.HideTooltip)
-		extReminder:SetScript("OnHide", extReminder:GetScript("OnLeave"))
-		local input, scroll = config.ui.multilineInput("OPC_AlternateBindInput", alternateFrame, 335)
+	 	alternateFrame.caption = alternateFrame:CreateFontString("OVERLAY", nil, "GameFontHighlightSmall")
+		alternateFrame.caption:SetPoint("TOPLEFT", 13, -12)
+		local input, scroll = config.ui.multilineInput("OPC_AlternateBindInput", alternateFrame, 305)
 		alternateFrame.input, alternateFrame.scroll = input, scroll
 		scroll:SetPoint("TOPLEFT", 10, -28)
 		scroll:SetPoint("BOTTOMRIGHT", -33, 10)
@@ -157,8 +133,7 @@ do -- ext.config.bind
 			return self:GetParent().OnBindingAltClick(self, button);
 		end
 		activeCaptureButton = self;
-		self:LockHighlight();
-		self:EnableKeyboard(true);
+		self:LockHighlight();	self:EnableKeyboard(true);
 		self:SetScript("OnKeyDown", SetBind); self:SetScript("OnHide", Deactivate);
 		if unbindMap[self:GetParent()] then unbindMap[self:GetParent()]:Enable(); end
 	end
@@ -179,26 +154,24 @@ do -- ext.config.bind
 	end
 	config.bindingFormat = bindFormat
 	local function SetBindingText(self, bind, pre, post)
-		if type(bind) == "string" and bind:match("%[.*%]") then
-			return SetBindingText(self, KR:EvaluateCmdOptions(bind), pre, post or " |cff20ff20[+]|r")
+		if type(bind) == "string" and bind:match("%b[]") then
+			return SetBindingText(self, SecureCmdOptionParse(bind), pre, post or " |cff20ff20[+]|r")
 		end
 		return self:SetText((pre or "") .. bindFormat(bind) .. (post or ""))
 	end
-	local function ToggleAlternateEditor(self, bind)
+	local function ToggleAlternateEditor(self, bind, caption)
 		if alternateFrame:IsShown() and alternateFrame.owner == self then
 			alternateFrame:Hide()
 		else
 			alternateFrame.apiFrame, alternateFrame.owner = self:GetParent(), self
-			alternateFrame.caption:SetText(L"Press ENTER to save.")
+			alternateFrame.caption:SetText(caption or "")
 			alternateFrame.input:SetText(bind or "")
 			alternateFrame:SetParent(self)
 			alternateFrame:SetFrameLevel(self:GetFrameLevel()+10)
-			alternateFrame:ClearAllPoints()
-			alternateFrame:SetPoint("TOP", self, "BOTTOM", 0, 4)
-			if alternateFrame:GetLeft() < self:GetParent():GetLeft() then
+			if self:GetLeft()+(self:GetWidth()-alternateFrame:GetWidth())/2 < self:GetParent():GetLeft() then
 				alternateFrame:SetPoint("TOPLEFT", self, "BOTTOMLEFT", -8, 4)
-			elseif alternateFrame:GetRight() > self:GetParent():GetRight() then
-				alternateFrame:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 8, 4)
+			else
+				alternateFrame:SetPoint("TOP", self, "BOTTOM", 0, 4)
 			end
 			alternateFrame:Show()
 			alternateFrame.input:SetFocus()
@@ -214,7 +187,7 @@ do -- ext.config.bind
 	end
 	function config.createUnbindButton(parent)
 		local btn = CreateFrame("Button", nil, parent, "UIPanelButtonTemplate");
-		btn:Disable(); btn:SetSize(140, 22); unbindMap[parent] = btn;
+		btn:Disable(); btn:SetSize(120, 22); unbindMap[parent] = btn;
 		btn:SetScript("OnClick", UnbindClick);
 		return btn;
 	end
@@ -226,7 +199,7 @@ do -- ext.config.undo
 		local entry
 		for i=#undoStack,1,-1 do
 			entry, undoStack[i] = undoStack[i]
-			securecall(entry.func, unpack(entry, 1, entry.n))
+			EC_pcall("OPC.Undo", entry.key and ("[" .. entry.key .. "]") or "(anon)", entry.func, unpack(entry, 1, entry.n))
 		end
 	end
 	function undo.search(key)
@@ -245,7 +218,7 @@ do -- ext.config.undo
 end
 do -- ext.config.overlay
 	local container, watcher, occupant = CreateFrame("FRAME"), CreateFrame("FRAME") do
-		container:EnableMouse(1) container:EnableKeyboard(1) container:Hide()
+		container:EnableMouse() container:EnableKeyboard() container:Hide()
 		container:SetPropagateKeyboardInput(true)
 		container:SetScript("OnKeyDown", function(self, key)
 			if key == "ESCAPE" then self:Hide() end
@@ -269,7 +242,7 @@ do -- ext.config.overlay
 		local cw, ch = overlayFrame:GetSize()
 		local w2, h2 = self:GetSize()
 		local w, h, isRefresh = cw + 8, ch + 8, occupant == overlayFrame
-		w2, h2, occupant = w2 > w and (w-w2)/2 or 0, h2 > h and (h-h2)/2 or 0
+		w2, h2, occupant = w2 > w and (w-w2)/2 or 0, h2 > h and (h-h2)/2
 		container:SetSize(w, h+20)
 		container:SetHitRectInsets(w2, w2, h2, h2)
 		container:SetParent(self)
@@ -300,8 +273,11 @@ do -- ext.config.overlay
 		promptFrame.detail = promptFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
 		promptFrame.title:SetPoint("TOP")
 		promptFrame.prompt:SetPoint("TOP", promptFrame.title, "BOTTOM", 0, -8)
+		promptFrame.prompt:SetPoint("TOPRIGHT", -10, -20)
 		promptFrame.editBox:SetPoint("TOP", promptFrame.prompt, "BOTTOM", 0, -7)
 		promptFrame.detail:SetPoint("TOP", promptFrame.editBox, "BOTTOM", 0, -8)
+		promptFrame.cancel:SetWidth(125)
+		promptFrame.accept:SetWidth(125)
 		promptFrame.prompt:SetWidth(380)
 		promptFrame.detail:SetWidth(380)
 				
@@ -324,7 +300,7 @@ do -- ext.config.overlay
 		promptFrame.prompt:SetText(prompt or "")
 		promptFrame.detail:SetText(explainText or "")
 		promptFrame.editBox:SetText("")
-		promptFrame:SetHeight(55 + math.max(20, promptFrame.prompt:GetStringHeight()) + (editBoxWidth ~= false and 30 or 0) + ((explainText or "") ~= "" and 20 or 0))
+		promptFrame:SetHeight(70 + (editBoxWidth ~= false and 30 or 0) + ((explainText or "") ~= "" and 20 or 0))
 		config.overlay(frame, promptFrame)
 		if editBoxWidth ~= false then
 			promptFrame.editBox:Show()
@@ -346,12 +322,7 @@ do -- ext.config.overlay
 			promptFrame.cancel:SetText(cancelText or OKAY)
 			promptFrame.cancel:SetPoint("BOTTOM", 5, 0)
 		end
-		promptFrame.cancel:SetWidth(math.max(125, 15+promptFrame.cancel:GetFontString():GetStringWidth()))
-		promptFrame.accept:SetWidth(math.max(125, 15+promptFrame.accept:GetFontString():GetStringWidth()))
 		return promptFrame
-	end
-	function config.alert(frame, title, message, dissmissText)
-		config.prompt(frame, title, message, nil, false, nil, false, dissmissText)
 	end
 end
 
@@ -364,39 +335,35 @@ function config.undo.saveProfile(noData)
 	end
 end
 
-function config.checkSVState(frame)
-	if not OneRingLib:GetSVState() then
-		config.alert(frame, L"Changes will not be saved", L"World of Warcraft could not load OPie's saved variables due to a lack of memory. Try disabling other addons.\n\nAny changes you make now will not be saved.", L"Understood; edit anyway")
-	end
-end
-
 local OPC_OptionSets = {
 	{ "Behavior",
 		{"bool", "RingAtMouse", caption="Center rings at mouse"},
 		{"bool", "CenterAction", caption="Quick action at ring center"},
-		{"bool", "ClickPriority", caption="Make rings top-most"},
 		{"bool", "SliceBinding", caption="Per-slice bindings"},
 		{"bool", "ClickActivation", caption="Activate on left click"},
+		{"bool", "ClickPriority", caption="Make rings top-most"},
 		{"bool", "NoClose", caption="Leave open after use", depOn="ClickActivation", depValue=true, otherwise=false},
 		{"bool", "UseDefaultBindings", caption="Use default ring bindings"},
-		{"range", "IndicationOffsetX", -500, 500, 50, caption="Move rings right", suffix="(%d)"},
-		{"range", "IndicationOffsetY", -300, 300, 50, caption="Move rings down", suffix="(%d)"},
+		{"range", "IndicationOffsetX", -500, 500, 50, caption="Move rings right", suffix=" |cffffd500(%d)|r"},
+		{"range", "IndicationOffsetY", -300, 300, 50, caption="Move rings down", suffix=" |cffffd500(%d)|r"},
 		{"range", "MouseBucket", 5, 1, 1, caption="Scroll wheel sensitivity", stdLabels=true},
-		{"range", "RingScale", 0.1, 2, caption="Ring scale", suffix="(%0.1f)"},
+		{"range", "RingScale", 0.1, 2, caption="Ring Scale", suffix=" |cffffd500(%0.1f)|r"},
 	}, { "Appearance",
-		{"bool", "GhostMIRings", caption="Nested rings"},
-		{"bool", "ShowKeys", caption="Per-slice bindings", depOn="SliceBinding", depValue=true, otherwise=false},
+		{"bool", "MultiIndication", caption="Per-slice icons"},
+		{"bool", "GhostMIRings", caption="Nested rings", depOn="MultiIndication", depValue=true, otherwise=false},
+		{"bool", "ShowKeys", caption="Per-slice bindings", depOn="SliceBinding", depValue=true, depOn2="MultiIndication", depValue2=true, otherwise=false},
+		{"bool", "ShowCenterCaption", caption="Center caption"},
+		{"bool", "UseGameTooltip", caption="Show tooltips"},
 		{"bool", "ShowCooldowns", caption="Show cooldown numbers"},
 		{"bool", "ShowRecharge", caption="Show recharge numbers"},
-		{"bool", "UseGameTooltip", caption="Show tooltips"},
 		{"bool", "HideStanceBar", caption="Hide stance bar", global=true},
 	}, { "Animation",
-		{"bool", "MIScale", caption="Enlarge selected slice"},
-		{"bool", "MISpinOnHide", caption="Outward spiral on hide"},
+		{"bool", "MIScale", caption="Enlarge selected slice", depOn="MultiIndication", depValue=true, otherwise=false},
+		{"bool", "MISpinOnHide", caption="Outward spiral on hide", depOn="MultiIndication", depValue=true, otherwise=false},
 		{"range", "XTScaleSpeed", -4, 4, 0.2, caption="Scale animation speed"},
 		{"range", "XTPointerSpeed", -4, 4, 0.2, caption="Pointer rotation speed"},
-		{"range", "XTZoomTime", 0, 1, 0.1, caption="Zoom-in/out time", suffix="(%.1f sec)"},
-		{"range", "XTRotationPeriod", 1, 10, 0.2, caption="Rotation period", suffix="(%.1f sec)"}
+		{"range", "XTZoomTime", 0, 1, 0.1, caption="Zoom-in/out time", suffix=" |cffffd500(%.1f sec)|r"},
+		{"range", "XTRotationPeriod", 1, 10, 0.2, caption="Rotation period", suffix=" |cffffd500(%.1f sec)|r"}
 	}
 };
 
@@ -417,7 +384,7 @@ do -- Widget construction
 		end
 	end
 	local function OnStateChange(self)
-		local a = self:IsEnabled() and 1 or 0.6;
+		local a = self:IsEnabled() == 1 and 1 or 0.6;
 		self.text:SetVertexColor(a,a,a);
 	end
 	function build.bool(v, ofsY, halfpoint, rowHeight)
@@ -440,7 +407,6 @@ do -- Widget construction
 		if not v.stdLabels then b.lo:SetText(v[3]); b.hi:SetText(v[4]); end
 		b:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -105, ofsY-5);
 		b:SetScript("OnValueChanged", notifyChange)
-		b:SetObeyStepOnDrag(true)
 		return b, ofsY - 20, false, 0;
 	end
 
@@ -467,18 +433,14 @@ function OPC_AlterOption(widget, option, newval, ...)
 	OneRingLib:SetOption(option, newval, OR_CurrentOptionsDomain);
 	local setval = OneRingLib:GetOption(option, OR_CurrentOptionsDomain);
 	if widget:IsObjectType("Slider") then
-		local text = L(widget.desc.caption)
-		if widget.desc.suffix then
-			text = text .. " |cffffd500" .. L(widget.desc.suffix):format(setval) .. "|r"
-		end
-		widget.text:SetText(text);
+		widget.text:SetText(L(widget.desc.caption) .. (widget.desc.suffix or ""):format(setval));
 		OPC_BlockInput = true; widget:SetValue(setval * (widget.control[3] > widget.control[4] and -1 or 1)); OPC_BlockInput = false;
 	elseif setval ~= newval then
 		widget:SetChecked(setval and 1 or nil);
 	end
 	for i,set in ipairs(OPC_OptionSets) do for j=2,#set do local v = set[j]
-		if v.depOn == option then
-			local match = OneRingLib:GetOption(v.depOn, OR_CurrentOptionsDomain) == v.depValue;
+		if v.depOn == option or v.depOn2 == option then
+			local match = OneRingLib:GetOption(v.depOn, OR_CurrentOptionsDomain) == v.depValue and (v.depOn2 == nil or OneRingLib:GetOption(v.depOn2, OR_CurrentOptionsDomain) == v.depValue2);
 			v.widget:SetEnabled(match);
 			if match then
 				v.widget:SetChecked(OneRingLib:GetOption(v[2], OR_CurrentOptionsDomain) or nil);
@@ -497,7 +459,7 @@ function OPC_OptionDomain:initialize()
 	info.func, info.arg1, info.text, info.checked, info.minWidth = OPC_OptionDomain.click, nil, L"Defaults for all rings", OR_CurrentOptionsDomain == nil and 1 or nil, self:GetWidth()-40;
 	UIDropDownMenu_AddButton(info);
 	for i=1,OneRingLib:GetNumRings() do
-		local name, key, _, internal = OneRingLib:GetRingInfo(i)
+		local name, key, macro, internal = OneRingLib:GetRingInfo(i);
 		if internal == 0 or IsAltKeyDown() then
 			info.text, info.arg1, info.checked = (L"Ring: %s"):format("|cffaaffff" .. (name or key) .. "|r"), key, key == OR_CurrentOptionsDomain and 1 or nil;
 			UIDropDownMenu_AddButton(info);
@@ -506,7 +468,7 @@ function OPC_OptionDomain:initialize()
 end
 local function OPC_Profile_NewCallback(self, text, apply, frame)
 	local name = text:match("^%s*(.-)%s*$")
-	if name == "" or OneRingLib:ProfileExists(name) then
+	if name == "" or OneRingLib:ProfileExists(name) then 
 		if apply then self.editBox:SetText("") end
 		return false
 	elseif apply then
@@ -563,24 +525,19 @@ function frame.refresh()
 		local v, opttype, option = set[j], set[j][1], set[j][2];
 		if opttype == "range" then
 			v.widget:SetValue(OneRingLib:GetOption(option) * (v[3] < v[4] and 1 or -1));
-			local text = L(v.caption)
-			if v.suffix then
-				text = text .. " |cffffd500" .. L(v.suffix):format(v.widget:GetValue()) .. "|r"
-			end
-			v.widget.text:SetText(text);
+			v.widget.text:SetText(v.caption .. (v.suffix or ""):format(v.widget:GetValue()));
 		elseif opttype == "bool" then
 			v.widget:SetChecked(OneRingLib:GetOption(option, OR_CurrentOptionsDomain) or nil);
 			v.widget.text:SetText(L(v.caption))
 		end
 		if v.depOn then
-			local match = OneRingLib:GetOption(v.depOn, OR_CurrentOptionsDomain) == v.depValue;
+			local match = OneRingLib:GetOption(v.depOn, OR_CurrentOptionsDomain) == v.depValue and (v.depOn2 == nil or OneRingLib:GetOption(v.depOn2, OR_CurrentOptionsDomain) == v.depValue2);
 			v.widget:SetEnabled(match);
 			if not match then v.widget:SetChecked(v.otherwise or nil); end
 		end
 		v.widget:SetShown(not v.global or OR_CurrentOptionsDomain == nil)
 	end end
 	OPC_BlockInput = false;
-	config.checkSVState(frame)
 end
 function frame.cancel()
 	config.undo.unwind()

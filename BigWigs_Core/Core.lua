@@ -355,6 +355,18 @@ do
 	end
 end
 
+function addon:RAID_BOSS_WHISPER(_, msg) -- Purely for Transcriptor to assist in logging purposes.
+	if IsInGroup() then
+		local len = msg:len()
+		if len < 230 then -- Safety
+			SendAddonMessage("Transcriptor", msg, IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
+		else
+			local id = msg:match("spell:%d+") or ""
+			self:Print(("Detected a boss whisper with %d characters. %s"):format(len, id))
+		end
+	end
+end
+
 -------------------------------------------------------------------------------
 -- Initialization
 --
@@ -408,6 +420,8 @@ function addon:OnEnable()
 
 	self:RegisterEvent("ENCOUNTER_START")
 
+	self:RegisterEvent("RAID_BOSS_WHISPER")
+
 	pluginCore:Enable()
 	bossCore:Enable()
 
@@ -420,6 +434,8 @@ function addon:OnDisable()
 	self:UnregisterMessage("BigWigs_AddonMessage")
 
 	self:UnregisterEvent("ENCOUNTER_START")
+
+	self:UnregisterEvent("RAID_BOSS_WHISPER")
 
 	zoneChanged() -- Unregister zone events
 	bossCore:Disable()
@@ -580,7 +596,7 @@ do
 					if v > 0 then
 						local n = GetSpellInfo(v)
 						if not n then error(("Invalid spell ID %d in the toggleOptions for module %s."):format(v, module.name)) end
-						module.toggleDefaults[n] = bitflags -- XXX temp 6.1 store as id (change to v)
+						module.toggleDefaults[v] = bitflags
 					else
 						local n = EJ_GetSectionInfo(-v)
 						if not n then error(("Invalid ej ID %d in the toggleOptions for module %s."):format(-v, module.name)) end

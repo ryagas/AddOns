@@ -1,9 +1,50 @@
-local _G = _G
-
 local MovAny = _G.MovAny
 local MOVANY = _G.MOVANY
+
 local curModule
 local curElement
+
+--[[
+ListElement = {
+	name = "",
+	displayName = "",
+	hidden = nil|true,
+	disabled? = nil|true,
+	purge? = nil|true,
+	type = "Frame"|"Slider"|"Button"|"FontString"|"Texture"|etc,
+	requireSync = "" name of frame
+	vm = nil|true,
+	options = {
+		noPos
+		noScale
+		scaleWH
+		noAlpha
+		noHide
+		hideList
+	}
+	enable
+	disable
+}
+
+type
+	"Frame"|"FontString"|"Texture"
+	unregisterAllEvents
+	layers
+	scale
+]]
+--[[
+ListCategory = {a
+	name = "",
+	displayName = "",
+	hidden = nil,
+	disabled? = nil,
+	purge? = nil,
+	options = {
+	
+	}
+}
+]]
+
 local elemMetaTable
 local catMetaTable
 
@@ -12,21 +53,24 @@ local m = {
 	Init = function(self)
 		self.compile = true
 		
-		self.all = { }
+		self.all = {}
 		self.allCount = 0
 		
-		self.elems = { }
-		self.elemsN = { }
+		self.elems = {}
+		self.elemsN = {}
 		self.elemIDNext = 0
 		
-		self.cats = { }
-		self.catsN = { }
+		self.cats = {}
+		self.catsN = {}
 		self.catIDNext = 0
 	end,
-	Enable = function() end,
+	Enable = function()
+		
+	end,
 	CompileList = function(self)
 		self.allCount = 0
 		table.wipe(self.all)
+		
 		for ci, c in pairs(self.cats) do
 			if not c.hidden and not c.disabled then
 				self.allCount = self.allCount + 1
@@ -39,6 +83,7 @@ local m = {
 				end
 			end
 		end
+		
 		self.compile = nil
 	end,
 	GetItem = function(self, idx)
@@ -54,17 +99,21 @@ local m = {
 			return
 		end
 		setmetatable(e, elemMetaTable)
+		
 		self.elemIDNext = self.elemIDNext + 1
 		self.elems[self.elemIDNext] = e
 		self.elemsN[e.name] = e
+		
 		e.default = self.default
+		
 		if not e.displayName then
 			e.displayName = e.name
 		end
+		
 		local gotCat = nil
 		if select("#",...) > 0 then
 			local c
-			for i = 1, select("#",...), 1 do
+			for i=1, select("#",...), 1 do
 				c = select(i, ...)
 				if c then
 					c:AddElement(e)
@@ -75,6 +124,7 @@ local m = {
 		if not gotCat then
 			e:AddCategory(MovAny.API.customCat)
 		end
+		
 		return e
 	end,
 	GetElement = function(self, idx)
@@ -84,11 +134,13 @@ local m = {
 		local e = self:GetElement(name)
 		if not e then
 			displayName = displayName or name
+			
 			e = self:AddElement({name = name, displayName = displayName}, cat)
 			if MovAny.inited then
 				if MovAny.userData[name] then
 					e:SetUserData(MovAny.userData[name])
 				end
+				
 				self.compile = true
 				MovAny.guiLines = -1
 				MovAny:UpdateGUIIfShown()
@@ -123,27 +175,34 @@ local m = {
 			return
 		end
 		setmetatable(c, catMetaTable)
+		
 		self.catIDNext = self.catIDNext + 1
 		self.cats[self.catIDNext] = c
 		self.catsN[c.name] = c
+		
 		c.default = self.default
-		c.elems = { }
+		
+		c.elems = {}
+		
 		c.collapsed = MovAny.collapsed
+		
 		return c
 	end,
 	GetCategory = function(self, idx)
 		return type(idx) == "number" and self.cats[idx] or self.catsN[idx]
-	end
+	end,
 }
 
 elemMetaTable = {__index = {
-	--[[ToggleEnable = function(self)
+	--[[
+	ToggleEnable = function(self)
 		if self.disabled then
 			self.disabled = nil
 		else
 			self.disabled = true
 		end
-	end,]]
+	end,
+	--]]
 	AddCategory = function(self, c)
 		tinsert(c.elems, self)
 	end,
@@ -172,7 +231,7 @@ elemMetaTable = {__index = {
 		end
 	end,
 	GetCategories = function(self)
-		local res = { }
+		local res = {}
 		for ci, c in ipairs(m.cats) do
 			for i, v in ipairs(c.elems) do
 				if v == self then
@@ -211,7 +270,10 @@ elemMetaTable = {__index = {
 				if opt[var] then
 					return true
 				end
-			elseif opt.pos or opt.hidden or opt.scale ~= nil or opt.alpha ~= nil or opt.frameStrata ~= nil or opt.disableLayerArtwork ~= nil or opt.disableLayerBackground ~= nil or opt.disableLayerBorder ~= nil or opt.disableLayerHighlight ~= nil or opt.disableLayerOverlay ~= nil or opt.unregisterAllEvents ~= nil or opt.groups ~= nil or opt.forcedLock ~= nil then
+			elseif opt.pos or opt.hidden or opt.scale ~= nil or opt.alpha ~= nil or opt.frameStrata ~= nil or
+					opt.disableLayerArtwork ~= nil or opt.disableLayerBackground ~= nil or opt.disableLayerBorder ~= nil or
+					opt.disableLayerHighlight ~= nil or opt.disableLayerOverlay ~= nil or opt.unregisterAllEvents ~= nil or 
+					opt.groups ~= nil or opt.forcedLock ~= nil then
 				return true
 			end
 		end
@@ -227,6 +289,7 @@ elemMetaTable = {__index = {
 				return
 			end
 		end
+		
 		if not e.userData.disabled and not e.refuseSync then
 			if not e.runBeforeInteract or not e:runBeforeInteract() then
 				if not f then
@@ -300,34 +363,37 @@ elemMetaTable = {__index = {
 				if f.MAWasUserPlaced then
 					f.MAWasUserPlaced = nil
 				else
-					f:SetUserPlaced(false)
+					f:SetUserPlaced(nil)
 				end
 			end
 			if f:IsMovable() then
 				if f.MAWasMovable then
 					f.MAWasMovable = nil
 				else
-					f:SetMovable(false)
+					f:SetMovable(nil)
 				end
 			end
 			if f:IsResizable() then
 				if f.MAWasResizable then
 					f.MAWasResizable = nil
 				else
-					f:SetResizable(false)
+					f:SetResizable(nil)
 				end
 			end
 		end
 		if f.OnMAPreReset then
 			f:OnMAPreReset(readOnly, opt, e)
 		end
+		
 		for i, m in ipairs(MovAny.modules) do
 			--if not exclude or not exclude[v.name] then
 			if not dontResetHide or m.name ~= "Hide" then
 				m:Reset(e, f, readOnly, opt)
 			end
 		end
+		
 		f.MAHooked = nil
+		
 		if f.OnMAPostReset then
 			f:OnMAPostReset(readOnly, opt, e)
 		end
@@ -352,6 +418,7 @@ catMetaTable = {__index = {
 	end,
 	ToggleHide = function(self)
 		--store in MADB
+		
 		if self.hidden then
 			self.hidden = nil
 		else
@@ -360,10 +427,12 @@ catMetaTable = {__index = {
 	end,
 	TogglePurge = function(self)
 		--store in MADB
+		
 		if self.purge then
 			self.purge = nil
 		else
 			self.purged = true
+			
 			--purge category
 		end
 	end,

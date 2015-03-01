@@ -69,8 +69,6 @@ L["custom_off_branded_marker_desc"] = [=[使用 {rt3}{rt4} 标记烙印目标，
 L["custom_off_fixate_marker"] = "锁定标记"
 L["custom_off_fixate_marker_desc"] = [=[使用 {rt1}{rt2} 标记高里亚战争法师的锁定目标，需要权限。
 |cFFFF0000团队中只有1名应该启用此选项以防止标记冲突。|r]=]
-L["gaze_target_message"] = ">你< 深渊凝视！"
-L["phase4_trigger"] = "你根本不了解你所染指的力量，马尔高克。"
 L["slow_fixate"] = "减速+锁定"
 
 end

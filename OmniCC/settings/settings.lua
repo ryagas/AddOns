@@ -14,7 +14,6 @@ local function SetDefaults(target, defaults)
 	return setmetatable(target, defaults)
 end
 
-
 local function ToNumber(number)
 	return tonumber(number) or 0
 end
@@ -31,21 +30,20 @@ function OmniCC:StartupSettings()
 
 	self.sets = OmniCC4Config
 	self:UpgradeSettings()
-	self.sets.version = self:GetVersion()
-
+	
 	for id, group in pairs(self.sets.groupSettings) do
 		self:StartupGroup(group)
 	end
 end
 
 function OmniCC:UpgradeSettings()
-	local version = self:GetSettingsVersion()
-	if version < 60007 then
-		if self:AddGroup('Ignore') then
-			self.sets.groupSettings['Ignore'].enabled = false
-			self.sets.groups[#self.sets.groups].rules = {'LossOfControl', 'TotemFrame'}
-		end
+	local version = self:GetVersionID()
+	if version < 50201 then
+		OmniCC4Config = nil
+		self:StartupSettings()
 	end
+
+	self.sets.version = self:GetVersion()
 end
 
 function OmniCC:StartupGroup(group)
@@ -97,16 +95,13 @@ end
 
 --[[ Version ]]--
 
-function OmniCC:GetVersion()
-	return GetAddOnMetadata('OmniCC', 'Version')
+function OmniCC:GetVersionID()
+	local version = self.sets.version or self:GetVersion()
+	local expansion, patch, release = version:match('(%d+)\.(%d+)\.(%d+)')
+	
+	return ToNumber(expansion) * 10000 + ToNumber(patch) * 100 + ToNumber(release)
 end
 
-function OmniCC:GetSettingsVersion()
-	local version = self.sets.version
-	if version then
-		local expansion, patch, release = version:match('(%d+)\.(%d+)\.(%d+)')
-		return ToNumber(expansion) * 10000 + ToNumber(patch) * 100 + ToNumber(release)
-	end
-
-	return 0
+function OmniCC:GetVersion()
+	return GetAddOnMetadata('OmniCC', 'Version')
 end

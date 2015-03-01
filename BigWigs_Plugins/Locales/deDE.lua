@@ -59,8 +59,6 @@ L["closeProximityDesc"] = [=[Schließt die Anzeige naher Spieler.
 Falls du die Anzeige für alle Bosse deaktivieren willst, musst du die Option 'Nähe' seperat in den jeweiligen Bossmodulen ausschalten.]=]
 L["colors"] = "Farben"
 L["countDefeats"] = "Siege zählen"
-L["countdown"] = "Countdown"
-L["countdownDesc"] = "Falls ein zugehöriger Timer länger als 5 Sekunden dauert, wird ein visueller und auditiver Countdown die letzten 5 Sekunden begleiten. Stell dir vor, jemand würde \"5... 4... 3... 2... 1... COUNTDOWN!\" herunterzählen und große Nummern in die Mitte des Bildschirm setzen."
 L["countWipes"] = "Niederlagen zählen"
 L["createTimeBar"] = "'Rekordzeit'-Timer anzeigen"
 L["customBarStarted"] = "Custombar '%s' wurde von gestartet von %s Nutzer %s."
@@ -74,8 +72,6 @@ L["disabledDisplayDesc"] = "Deaktiviert die Anzeige für alle Module, die sie be
 L["disableDesc"] = "Deaktiviert die Option, die diese Leiste erzeugt hat, zukünftig permanent."
 L["displayTime"] = "Anzeigedauer"
 L["displayTimeDesc"] = "Bestimmt, wie lange (in Sekunden) Nachrichten angezeigt werden."
-L["doubleSize"] = "Doppelte Größe"
-L["doubleSizeDesc"] = "Verdoppelt die Größe von 'Stark hervorgehobenen' Leisten und Nachrichten."
 L["emphasize"] = "Hervorheben"
 L["emphasizeAt"] = "Hervorheben bei... (Sekunden)"
 L["emphasized"] = "Hervorgehoben"

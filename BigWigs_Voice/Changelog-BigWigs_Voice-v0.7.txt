@@ -1,0 +1,19 @@
+tag v0.7
+f3a6d1d001858aa3eee8241bfd61fa407e9170e3
+funkydude <none>
+2015-02-24 23:59:33 +0000
+
+Tagging as v0.7
+
+
+--------------------
+
+funkydude:
+	- bump version
+Martin Wallgren:
+	- Update sounds.
+funkydude:
+	- Clean up Twin Ogron.
+	- More dev files
+	- Add dev folder
+	- Sort out Brackenspore sounds.

@@ -1,8 +1,8 @@
-## Interface: 60000
+## Interface: 60100
 ## Title: Big Wigs |cffff0000+|r|cffffffffAchievements|r
 ## Notes: Achievement reminders for boss encounters.
 ## Author: Stanzilla
-## X-Curse-Packaged-Version: v0.1
+## X-Curse-Packaged-Version: v0.2
 ## X-Curse-Project-Name: BigWigs_Achievements
 ## X-Curse-Project-ID: bigwigs_achievements
 ## X-Curse-Repository-ID: wow/bigwigs_achievements/mainline

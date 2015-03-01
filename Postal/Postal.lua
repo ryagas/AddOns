@@ -44,7 +44,6 @@ local defaults = {
 			contacts = {},
 			recent = {},
 			AutoCompleteAlts = true,
-			AutoCompleteAllAlts = true,
 			AutoCompleteRecent = true,
 			AutoCompleteContacts = true,
 			AutoCompleteFriends = true,

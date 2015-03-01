@@ -69,8 +69,6 @@ L["custom_off_branded_marker_desc"] = [=[Marque les cibles de Marqué avec {rt3}
 L["custom_off_fixate_marker"] = "Marquage Fixer"
 L["custom_off_fixate_marker_desc"] = [=[Marque les cibles de Fixer du Mage de guerre gorien avec {rt1}{rt2}. Nécessite d'être assistant ou chef de raid.
 |cFFFF0000Seule 1 personne du raid doit activer ceci afin d'éviter les conflits de marquage.|r]=]
-L["gaze_target_message"] = "Un Aperçu de la folie VOUS cible !"
-L["phase4_trigger"] = "Vous ignorez tout du pouvoir auquel vous vous mêlez"
 L["slow_fixate"] = "Lenteur+Fixer"
 
 end

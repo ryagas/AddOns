@@ -1,0 +1,217 @@
+﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="TabAchievements.lua"></Script>
+	
+	<Button name="AltoTabAchievementsClassIconTemplate" inherits="AltoClassIconTemplate" virtual="true">
+		<Scripts>
+			<OnEnter>
+				Altoholic.Tabs.Achievements:Icon_OnEnter(self)
+			</OnEnter>
+		</Scripts>
+	</Button>
+	
+	<Frame name="AltoholicTabAchievements" parent="AltoholicFrame" hidden="true">
+		<Size x="758" y="447" />
+		<Anchors>
+			<Anchor point="TOPLEFT"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Label1" inherits="GameFontNormalSmall" justifyH="LEFT" text="GUILD_ROSTER_VIEW">
+					<Size x="60" y="18" />
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="AltoholicFrameSearchLabel" relativePoint="RIGHT" x="60" y="-5" />
+					</Anchors>
+					<Color r="255" g="255" b="255" />
+				</FontString>
+				<FontString parentKey="Status" inherits="GameFontNormal" justifyH="LEFT">
+					<Size x="320" y="24" />
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" x="-250" y="13" />
+					</Anchors>
+					<Color r="255" g="255" b="255" />
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="SelectRealm" name="$parent_SelectRealm" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.Label1" relativePoint="BOTTOMLEFT" x="-25" y="-2" />
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						UIDropDownMenu_SetWidth(self, 100) 
+						UIDropDownMenu_SetButtonWidth(self, 20)
+						
+						local realm = GetRealmName()
+						UIDropDownMenu_SetSelectedValue(self, "Default|".. realm)
+						UIDropDownMenu_SetText(self, realm)
+						Altoholic:DDM_Initialize(self, Altoholic.Tabs.Achievements.DropDownRealm_Initialize)
+					</OnLoad>
+				</Scripts>
+			</Frame>
+		
+			<!-- Menu Icons -->
+			<Frame parentKey="ClassIcons" name="$parent_ClassIcons">
+				<Size x="457" y="37" />
+				<Anchors>
+					<Anchor point="TOPLEFT" x="370" y="-55" />
+				</Anchors>
+				<Frames>
+					<Button parentKey="Icon1" inherits="AltoTabAchievementsClassIconTemplate" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+						</Anchors>
+					</Button>
+					<Button parentKey="Icon2" inherits="AltoTabAchievementsClassIconTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeKey="$parent.Icon1" relativePoint="TOPRIGHT" x="5" y="0" />
+						</Anchors>
+					</Button>
+					<Button parentKey="Icon3" inherits="AltoTabAchievementsClassIconTemplate" id="3">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeKey="$parent.Icon2" relativePoint="TOPRIGHT" x="5" y="0" />
+						</Anchors>
+					</Button>
+					<Button parentKey="Icon4" inherits="AltoTabAchievementsClassIconTemplate" id="4">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeKey="$parent.Icon3" relativePoint="TOPRIGHT" x="5" y="0" />
+						</Anchors>
+					</Button>
+					<Button parentKey="Icon5" inherits="AltoTabAchievementsClassIconTemplate" id="5">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeKey="$parent.Icon4" relativePoint="TOPRIGHT" x="5" y="0" />
+						</Anchors>
+					</Button>
+					<Button parentKey="Icon6" inherits="AltoTabAchievementsClassIconTemplate" id="6">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeKey="$parent.Icon5" relativePoint="TOPRIGHT" x="5" y="0" />
+						</Anchors>
+					</Button>
+					<Button parentKey="Icon7" inherits="AltoTabAchievementsClassIconTemplate" id="7">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeKey="$parent.Icon6" relativePoint="TOPRIGHT" x="5" y="0" />
+						</Anchors>
+					</Button>
+					<Button parentKey="Icon8" inherits="AltoTabAchievementsClassIconTemplate" id="8">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeKey="$parent.Icon7" relativePoint="TOPRIGHT" x="5" y="0" />
+						</Anchors>
+					</Button>
+					<Button parentKey="Icon9" inherits="AltoTabAchievementsClassIconTemplate" id="9">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeKey="$parent.Icon8" relativePoint="TOPRIGHT" x="5" y="0" />
+						</Anchors>
+					</Button>
+					<Button parentKey="Icon10" inherits="AltoTabAchievementsClassIconTemplate" id="10">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeKey="$parent.Icon9" relativePoint="TOPRIGHT" x="5" y="0" />
+						</Anchors>
+					</Button>
+					<Button parentKey="Icon11" inherits="AltoTabAchievementsClassIconTemplate" id="11">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeKey="$parent.Icon10" relativePoint="TOPRIGHT" x="5" y="0" />
+						</Anchors>
+					</Button>
+				</Frames>
+			</Frame>
+		
+			<Frame parentKey="ContextualMenu" inherits="AltoContextualMenuTemplate" />
+
+			<!-- Scroll frame items -->
+			<Button parentKey="MenuItem1" inherits="AltoMenuItemTemplate" id="1">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="23" y="-105" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem2" inherits="AltoMenuItemTemplate" id="2">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem1" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem3" inherits="AltoMenuItemTemplate" id="3">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem2" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem4" inherits="AltoMenuItemTemplate" id="4">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem3" relativePoint="BOTTOMLEFT" x="0" y="0"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem5" inherits="AltoMenuItemTemplate" id="5">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem4" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem6" inherits="AltoMenuItemTemplate" id="6">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem5" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem7" inherits="AltoMenuItemTemplate" id="7">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem6" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem8" inherits="AltoMenuItemTemplate" id="8">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem7" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem9" inherits="AltoMenuItemTemplate" id="9">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem8" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem10" inherits="AltoMenuItemTemplate" id="10">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem9" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem11" inherits="AltoMenuItemTemplate" id="11">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem10" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem12" inherits="AltoMenuItemTemplate" id="12">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem11" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem13" inherits="AltoMenuItemTemplate" id="13">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem12" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem14" inherits="AltoMenuItemTemplate" id="14">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem13" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<Button parentKey="MenuItem15" inherits="AltoMenuItemTemplate" id="15">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.MenuItem14" relativePoint="BOTTOMLEFT" x="0" y="0" />
+				</Anchors>
+			</Button>
+			<ScrollFrame parentKey="ScrollFrame" inherits="AltoMenuScrollFrameTemplate">
+				<Scripts>
+					<OnVerticalScroll>
+						Altoholic.ScrollFrames:OnVerticalScroll(self, offset, 20, Altoholic.Tabs.Achievements.Update)
+					</OnVerticalScroll>
+					<OnShow>
+						Altoholic.Tabs.Achievements:Update();
+					</OnShow>
+				</Scripts>
+			</ScrollFrame>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				Altoholic.Tabs.Achievements:OnLoad()
+			</OnLoad>
+			<OnShow>
+				Altoholic.Tabs.Achievements:UpdateClassIcons()
+				Altoholic.Tabs.Achievements:Update()
+			</OnShow>
+		</Scripts>
+	</Frame>
+</Ui>

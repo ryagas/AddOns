@@ -10,7 +10,7 @@
 --  See TjOptions.txt for documentation.
 --
 
-local THIS_VERSION = 0.43
+local THIS_VERSION = 0.42
 
 if (not TjOptions or TjOptions.Version < THIS_VERSION) then
   TjOptions = TjOptions or {};
@@ -223,11 +223,9 @@ if (not TjOptions or TjOptions.Version < THIS_VERSION) then
       GameTooltip:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
       if (type(tip) == "string") then
         local wrap = self.TjOpt_tab.tooltipWrap
-        if (not wrap) then
+        if (wrap == nil) then
           wrap = GetPanel(self).TjOpt_tab.tooltipWrap
-          if (not wrap) then
-            wrap = true
-          end
+          if (wrap == nil) then  wrap = 1;  end
         end
         GameTooltip:AddLine(tip, nil, nil, nil, wrap);
         if (self.TjOpt_tab.tooltip2) then
@@ -796,9 +794,9 @@ if (not TjOptions or TjOptions.Version < THIS_VERSION) then
 
   local function SetCheckboxVal(self, val)
     if (val) then
-      self:SetChecked(true); -- WoW v6.0.2 API change (changed from 1 to true)
+      self:SetChecked(1);
     else
-      self:SetChecked(false); -- WoW v6.0.2 API change (changed from 0 to false)
+      self:SetChecked(0);
     end
   end
 

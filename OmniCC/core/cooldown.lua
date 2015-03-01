@@ -4,6 +4,7 @@
 --]]
 
 local Cooldown = OmniCC:New('Cooldown')
+local Timer = OmniCC.Timer
 
 
 --[[ Control ]]--
@@ -24,7 +25,7 @@ function Cooldown:Setup()
 		self:HookScript('OnShow', Cooldown.OnShow)
 		self:HookScript('OnHide', Cooldown.OnHide)
 		self:HookScript('OnSizeChanged', Cooldown.OnSizeChanged)
-		self.omnicc = OmniCC.Timer:New(self)
+		self.omnicc = Timer:New(self)
 	end
 	
 	OmniCC:SetupEffect(self)
@@ -79,21 +80,14 @@ function Cooldown:OnSizeChanged(width, ...)
 end
 
 function Cooldown:OnColorSet(...)
-	if not self.omniTask then
-		self.omniR, self.omniG, self.omniB, self.omniA = ...
-		Cooldown.UpdateAlpha(self)
-	end
+	self.swipeR, self.swipeG, self.swipeB, self.swipeA = ...
 end
 
 
 --[[ Misc ]]--
 
 function Cooldown:UpdateAlpha()
-	local alpha = OmniCC:GetGroupSettingsFor(self).spiralOpacity * (self.omniA or 1)
-	
-	self.omniTask = true
-	OmniCC.Meta.SetSwipeColor(self, self.omniR or 0, self.omniG or 0, self.omniB or 0, alpha)
-	self.omniTask = nil
+	self:SetSwipeColor(self.swipeR or 0, self.swipeG or 0, self.swipeB or 0, OmniCC:GetGroupSettingsFor(self).spiralOpacity)
 end
 
 function Cooldown:ForAll(func, ...)

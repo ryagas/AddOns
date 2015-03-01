@@ -13,16 +13,7 @@ mod.engageId = 1713
 --
 
 local breathCount = 1
-
---------------------------------------------------------------------------------
--- Localization
---
-
-local L = mod:NewLocale("enUS", true)
-if L then
-
-end
-L = mod:GetLocale()
+local callOfTheMountainCount = 1
 
 --------------------------------------------------------------------------------
 -- Initialization
@@ -30,16 +21,18 @@ L = mod:GetLocale()
 
 function mod:GetOptions()
 	return {
-		173917,
-		-9706,
-		{156766, "TANK"},
-		156852,
-		156704,
-		157592,
-		-9702,
-		157060,
-		157054,
-		156861,
+		--[[ Mythic ]]--
+		173917, -- Rune of Trembling Earth
+		-9706, -- Call of the Mountain
+		--[[ General ]]--
+		{156766, "TANK"}, -- Warped Armor
+		156852, -- Stone Breath
+		156704, -- Slam
+		157592, -- Rippling Smash
+		-9702, -- Rune of Crushing Earth
+		157060, -- Rune of Grasping Earth
+		157054, -- Thundering Blows
+		156861, -- Frenzy
 		"berserk",
 		"bosskill"
 	}, {
@@ -61,17 +54,19 @@ function mod:OnBossEnable()
 	-- Mythic
 	self:Log("SPELL_CAST_SUCCESS", "TremblingEarth", 173917)
 	self:Log("SPELL_CAST_START", "CallOfTheMountain", 158217)
+	self:Log("SPELL_CAST_SUCCESS", "CallOfTheMountainBar", 158217)
 end
 
 function mod:OnEngage()
 	breathCount = 1
+	callOfTheMountainCount = 1
 	self:CDBar(156852, 9, CL.count:format(self:SpellName(156852), breathCount)) -- Stone Breath
 	self:CDBar(156766, 14) -- Warped Armor
-	self:CDBar(157592, 23) -- Rippling Smash
-	self:CDBar(156704, 39) -- Slam
+	--self:CDBar(157592, 23) -- Rippling Smash -- Varies between 23 and 38 seconds...
+	--self:CDBar(156704, 17) -- Slam -- Varies between 15 and 30 seconds...
 	self:CDBar(157060, 50) -- Grasping Earth
 	if self:Mythic() then
-		self:CDBar(173917, 81) -- Trembling Earth
+		self:CDBar(173917, 82) -- Trembling Earth
 	end
 	self:Berserk(540)
 	self:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", nil, "boss1")
@@ -84,14 +79,24 @@ end
 -- Mythic
 
 function mod:TremblingEarth(args)
+	callOfTheMountainCount = 1
 	self:Message(args.spellId, "Attention")
-	self:Bar(-9706, 26) -- Call of the Mountain
 	self:CDBar(156852, 61, CL.count:format(self:SpellName(156852), breathCount)) -- Stone Breath
 	self:CDBar(157592, 72) -- Rippling Smash
+	self:CDBar(173917, 180) -- Trembling Earth
+	self:Bar(173917, 25, CL.cast:format(self:SpellName(173917)))
 end
 
 function mod:CallOfTheMountain(args)
-	self:Message(-9706, "Important")
+	self:Message(-9706, "Important", nil, CL.casting:format(CL.count:format(self:SpellName(-9706), callOfTheMountainCount)))
+	self:Bar(-9706, 5, CL.cast:format(CL.count:format(self:SpellName(-9706), callOfTheMountainCount)))
+	callOfTheMountainCount = callOfTheMountainCount + 1
+end
+
+function mod:CallOfTheMountainBar(args)
+	if callOfTheMountainCount < 4 then
+		self:Bar(-9706, 6.5, CL.count:format(self:SpellName(-9706), callOfTheMountainCount))
+	end
 end
 
 -- General
@@ -143,14 +148,12 @@ function mod:GraspingEarth(args)
 	self:StopBar(156704) -- Slam
 	self:StopBar(157592) -- Rippling Smash
 
-	breathCount = 1
 	self:CDBar(156852, 31, CL.count:format(self:SpellName(156852), breathCount)) -- Stone Breath
 end
 
 function mod:ThunderingBlows(args)
 	self:Message(args.spellId, "Important", nil, CL.casting:format(args.spellName))
 	self:Bar(args.spellId, 7, CL.cast:format(args.spellName))
-
 end
 
 function mod:Frenzy(args)

@@ -68,8 +68,6 @@ L["custom_off_branded_marker_desc"] = "Evidenzia i bersagli marchiati con Marchi
 L["custom_off_fixate_marker"] = "Marcatore Ossessione"
 L["custom_off_fixate_marker_desc"] = [=[Evidenzia i bersagli di Ossessione dei Maghi da Guerra Gorian con {rt1}{rt2}, richiede assistente o capo-incursione.
 |cFFFF0000Solo 1 persona nell'incursione dovrebbe attivare questa opzione per evitare conflicci con l'evidenziazione.|r]=]
-L["gaze_target_message"] = "Lo Sguardo sta targettando TE!!!"
-L["phase4_trigger"] = "Non conosci il potere con cui hai a che fare, Mar'gok."
 L["slow_fixate"] = "Ossessione+Rallentamento"
 
 end

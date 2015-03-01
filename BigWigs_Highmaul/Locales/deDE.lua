@@ -69,8 +69,6 @@ L["custom_off_branded_marker_desc"] = [=[Markiert die Ziele von Gebrandmarkt mit
 L["custom_off_fixate_marker"] = "Fixieren markieren"
 L["custom_off_fixate_marker_desc"] = [=[Markiert die Ziele von Fixieren mit {rt1}{rt2}, benötigt Leiter oder Assistent.
 |cFFFF0000Um Konflikte beim Markieren zu vermeiden, sollte lediglich 1 Person im Raid diese Option aktivieren.|r]=]
-L["gaze_target_message"] = "Vorgeschmack zielt auf DICH!"
-L["phase4_trigger"] = "Ihr wisst überhaupt nicht, worauf Ihr Euch einlasst"
 L["slow_fixate"] = "Verlangsamen + Fixieren"
 
 end

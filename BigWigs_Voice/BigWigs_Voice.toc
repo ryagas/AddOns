@@ -1,8 +1,8 @@
-## Interface: 60000
+## Interface: 60100
 ## Title: Big Wigs |cffff0000+|r|cffffffffVoice|r
 ## Notes: Voice files for warnings.
 ## Author: Funkydude
-## X-Curse-Packaged-Version: v0.6
+## X-Curse-Packaged-Version: v0.7
 ## X-Curse-Project-Name: BigWigs_Voice
 ## X-Curse-Project-ID: bigwigs_voice
 ## X-Curse-Repository-ID: wow/bigwigs_voice/mainline

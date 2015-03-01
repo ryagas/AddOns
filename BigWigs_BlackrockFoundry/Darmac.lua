@@ -14,8 +14,10 @@ mod.engageId = 1694
 
 local phase = 1
 local tantrumCount = 1
+local conflagMark = 1
 local activatedMounts, currentBosses = {}, {}
-local spearList, marksUsed, markTimer = {}, {}, nil
+local spearList, spearMarksUsed = {}, {}
+local pinnedList = mod:NewTargetList()
 
 --------------------------------------------------------------------------------
 -- Localization
@@ -81,7 +83,6 @@ function mod:OnBossEnable()
 	-- Stage 1
 	self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", nil, "boss1", "boss2")
 	self:Log("SPELL_AURA_APPLIED", "PinnedDown", 154960)
-	self:Log("SPELL_SUMMON", "SpearSummon", 154956) -- no cast event, so I choose you!
 	self:Log("SPELL_CAST_START", "CallThePack", 154975)
 
 	-- Stage 2
@@ -117,12 +118,12 @@ end
 
 function mod:OnEngage(diff)
 	phase = 1
+	conflagMark = 1
 	wipe(activatedMounts)
-	wipe(spearList)
-	markTimer = nil
+	wipe(pinnedList)
 
 	self:Bar(154975, 8) -- Call the Pack
-	self:Bar(154960, 11) -- Pin Down
+	self:Bar(154960, 11) -- Pinned Down
 	self:Berserk(720)
 
 	self:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", nil, "boss1", "boss2")
@@ -233,6 +234,15 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(unit, spellName, _, _, spellId)
 	if spellId == 155365 then -- Pin Down
 		self:Message(154960, "Urgent", (self:Healer() or self:Damager() == "RANGED") and "Warning", CL.incoming:format(spellName))
+		self:CDBar(154960, 20)
+		if self.db.profile.custom_off_pinned_marker then
+			wipe(spearMarksUsed)
+			wipe(spearList)
+			self:RegisterEvent("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET")
+			self:RegisterEvent("UNIT_TARGET")
+			self:ScheduleTimer("UnregisterEvent", 10, "UPDATE_MOUSEOVER_UNIT")
+			self:ScheduleTimer("UnregisterEvent", 10, "UNIT_TARGET")
+		end
 	elseif spellId == 155221 then -- Iron Crusher's Tantrum
 		self:StopBar(CL.count:format(spellName, tantrumCount))
 		self:Message(155222, "Attention", nil, CL.count:format(spellName, tantrumCount))
@@ -256,56 +266,37 @@ do
 	function mod:UNIT_TARGET(_, firedUnit)
 		local unit = firedUnit and firedUnit.."target" or "mouseover"
 		local guid = UnitGUID(unit)
-		if spearList[guid] then
+		if spearList[guid] and spearList[guid] ~= "marked" then -- Use this method as one spear can hit multiple people
 			for i = 8, 4, -1 do
-				if not marksUsed[i] then
+				if not spearMarksUsed[i] then
 					SetRaidTarget(unit, i)
-					spearList[guid] = nil
-					marksUsed[i] = guid
-					if not next(spearList) then
-						self:UnregisterEvent("UPDATE_MOUSEOVER_UNIT")
-						self:UnregisterEvent("UNIT_TARGET")
-					end
+					spearList[guid] = "marked"
+					spearMarksUsed[i] = guid
 					return
 				end
 			end
 		end
 	end
 
-	local pinnedList, scheduled = mod:NewTargetList(), nil
-	local function warnSpear(self, spellId)
-		if #pinnedList > 0 then
-			self:TargetMessage(spellId, pinnedList, "Important", "Alarm", nil, nil, true)
-		end
-		if self.db.profile.custom_off_pinned_marker then
-			wipe(marksUsed)
-			self:RegisterEvent("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET")
-			self:RegisterEvent("UNIT_TARGET")
-		end
-		scheduled = nil
-	end
-
 	function mod:PinnedDown(args)
-		pinnedList[#pinnedList+1] = args.destName
 		if self:Me(args.destGUID) then
 			self:Say(args.spellId, 155365) -- Pin Down
 		end
-		if self.db.profile.custom_off_pinned_marker and not spearList[args.sourceGUID] then
-			spearList[args.sourceGUID] = true
-		end
-	end
 
-	function mod:SpearSummon(args)
-		if not scheduled then
-			self:CDBar(154960, 20)
-			scheduled = self:ScheduleTimer(warnSpear, 0.1, self, 154960)
+		pinnedList[#pinnedList+1] = args.destName
+		if #pinnedList == 1 then
+			self:ScheduleTimer("TargetMessage", 0.2, args.spellId, pinnedList, "Important", "Alarm", nil, nil, true)
+		end
+
+		if self.db.profile.custom_off_pinned_marker and not spearList[args.sourceGUID] then -- One spear can hit multiple people, so don't overwrite existing entries
+			spearList[args.sourceGUID] = true
 		end
 	end
 end
 
 function mod:CallThePack(args)
 	self:Message(args.spellId, "Attention")
-	self:CDBar(args.spellId, 31.5) -- can be delayed
+	self:CDBar(args.spellId, self:Normal() and 40 or 30) -- can be delayed
 end
 
 -- Stage 2
@@ -348,18 +339,21 @@ do
 end
 
 do
-	local conflagList, conflagMark, scheduled = mod:NewTargetList(), 8, nil
+	local conflagList, scheduled = mod:NewTargetList(), nil
 	local function warnConflag(self, spellId)
 		self:TargetMessage(spellId, conflagList, "Urgent", self:Dispeller("magic") and "Info")
 		scheduled = nil
+	end
+	local function resetCount()
+		conflagMark = 1
 	end
 
 	function mod:ConflagrationApplied(args)
 		conflagList[#conflagList+1] = args.destName
 		if not scheduled then
-			conflagMark = 1
 			self:Bar(args.spellId, 20)
-			scheduled = self:ScheduleTimer(warnConflag, 0.1, self, args.spellId)
+			self:ScheduleTimer(resetCount, 10)
+			scheduled = self:ScheduleTimer(warnConflag, 0.4, self, args.spellId)
 		end
 		if self.db.profile.custom_off_conflag_marker and conflagMark < 4 then
 			SetRaidTarget(args.destName, conflagMark)

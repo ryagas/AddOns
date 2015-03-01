@@ -1,11 +1,7 @@
-## Interface: 60000
+## Interface: 40300
 ## Title: !BetterReputationColors
-## Version: 6.0.2-r1
+## Version: 1.0
 ## Notes: Little tweak which is changing your reputation bar colors to the newer battle.net ones.
 ## Author: grdn
-## X-Curse-Packaged-Version: 6.0.2-r1
-## X-Curse-Project-Name: BetterReputationColors
-## X-Curse-Project-ID: betterreputationcolors
-## X-Curse-Repository-ID: wow/betterreputationcolors/mainline
 
 main.lua

@@ -1,0 +1,31 @@
+------------------------------------------------------------------------
+r255 | funkydude | 2015-02-25 05:20:49 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   A /tags/r255-release (from /trunk:254)
+
+Tagging as r255-release
+------------------------------------------------------------------------
+r254 | funkydude | 2015-02-25 05:20:15 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/CommonAuras.lua
+
+Fix option checking.
+------------------------------------------------------------------------
+r252 | funkydude | 2015-02-25 05:03:04 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/CommonAuras.lua
+
+Fix tank cooldowns.
+------------------------------------------------------------------------
+r250 | funkydude | 2015-02-24 23:43:24 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs_CommonAuras.toc
+
+bump version
+------------------------------------------------------------------------
+r249 | _yusaku_ | 2015-02-22 09:33:58 +0000 (Sun, 22 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/CommonAuras.lua
+
+itIT Translation Tweaks
+------------------------------------------------------------------------

@@ -69,8 +69,6 @@ L["custom_off_branded_marker_desc"] = [=[낙인의 대상을 {rt3}{rt4}의 징�
 L["custom_off_fixate_marker"] = "시선집중 징표 설정"
 L["custom_off_fixate_marker_desc"] = [=[고리안 전투마법사의 시선 집중의 대상을 {rt1}{rt2}의 징표로 설정합니다.
 |cFFFF0000징표 설정에서 문제가 발생하는 것을 막기 위해 공격대에서 오직 1명만 이 옵션을 활성화해야 합니다.|r]=]
-L["gaze_target_message"] = "당신은 심연의 시선의 대상자입니다!"
-L["phase4_trigger"] = "마르고크, 넌 그 힘에 대해 아무것도 모른다."
 L["slow_fixate"] = "감속+시선 집중"
 
 end
