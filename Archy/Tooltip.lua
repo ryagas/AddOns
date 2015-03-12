@@ -30,7 +30,6 @@ local LDB_object = LibStub("LibDataBroker-1.1"):NewDataObject("Archy", {
 })
 private.LDB_object = LDB_object
 
-local HasArchaeology = private.HasArchaeology
 local IsTaintable = private.IsTaintable
 
 -----------------------------------------------------------------------
@@ -233,7 +232,7 @@ local function GetArtifactsDelta(race, missing_data)
 			common_count = common_count + 1
 		end
 		total_count = total_count + 1
-		missing_data[artifactName] = artifact
+		missing_data[artifact.name] = artifact
 
 
 		-- then remove the ones we've already solved at least once so we have the actual missing.
@@ -290,7 +289,7 @@ function Archy:LDBTooltipShow()
 	tooltip:SetCell(line, 1, ("%s%s%s"):format(_G.ORANGE_FONT_COLOR_CODE, "Archy", "|r") .. "*", "CENTER", num_columns)
 	tooltip:SetCellScript(line, 1, "OnMouseDown", Archy_cell_script, "mode")
 
-	if HasArchaeology() then
+	if private.hasArchaeology then
 		if current_tooltip_mode == TooltipMode.ArtifactDigsites then
 			line = tooltip:AddLine(".")
 
@@ -319,10 +318,12 @@ function Archy:LDBTooltipShow()
 				tooltip:SetCell(line, 8, _G.NORMAL_FONT_COLOR_CODE .. L["Sockets"] .. "|r", "CENTER", 1)
 				tooltip:SetCell(line, 9, _G.NORMAL_FONT_COLOR_CODE .. L["Completed"] .. "|r", "CENTER", 2)
 
+                local currentContinentRaces = private.CONTINENT_RACES[private.CurrentContinentID]
+
 				for raceID, race in pairs(private.Races) do
 					local project = race.currentProject
 					if project then
-						local continentHasRace = not private.ProfileSettings.tooltip.filter_continent or private.CONTINENT_RACES[private.CurrentContinentID][raceID]
+						local continentHasRace = not private.ProfileSettings.tooltip.filter_continent or (currentContinentRaces and currentContinentRaces[raceID])
 
 						if continentHasRace and project.fragments_required > 0 then
 							local race = private.Races[raceID]
@@ -343,7 +344,7 @@ function Archy:LDBTooltipShow()
 							progress_data.fragments = project.fragments
 							progress_data.keystone_adjustment = project.keystone_adjustment
 							progress_data.fragments_required = project.fragments_required
-							progress_data.race_keystone_inventory = race.keystone.inventory
+							progress_data.race_keystone_inventory = race.keystonesInInventory
 							progress_data.sockets = project.sockets
 							progress_data.keystones_added = project.keystones_added
 							progress_data.canSolve = project.canSolve
@@ -352,11 +353,10 @@ function Archy:LDBTooltipShow()
 							progress_data.isRare = project.isRare
 
 							tooltip:SetCell(line, 6, progress_data, StatusBarCellProvider, 1, 0, 0)
-							tooltip:SetCell(line, 7, (race.keystone.inventory > 0) and race.keystone.inventory or "", "CENTER", 1)
+							tooltip:SetCell(line, 7, (race.keystonesInInventory > 0) and race.keystonesInInventory or "", "CENTER", 1)
 							tooltip:SetCell(line, 8, (project.sockets > 0) and project.sockets or "", "CENTER", 1)
 
-							local _, _, completionCount = race:GetArtifactCompletionDataByName(project.name)
-							tooltip:SetCell(line, 9, completionCount or _G.UNKNOWN, "CENTER", 2)
+							tooltip:SetCell(line, 9, project.completionCount or _G.UNKNOWN, "CENTER", 2)
 						end
 					end
 				end
@@ -574,11 +574,9 @@ function LDB_object:OnClick(button, down)
 			generalSettings.show = not generalSettings.show
 			Archy:LDBTooltipShow()
 
-			if generalSettings.show and generalSettings.stealthMode then
-				if not private.stealthWarned then
+			if generalSettings.show and generalSettings.stealthMode and not private.stealthWarned then
 					Archy:Print(L["In stealth mode. Shift-click the button or type /archy stealth if you wanted to show the Artifact and Digsite frames."]) -- we warn only once/session
 					private.stealthWarned = true
-				end
 			end
 
 			Archy:ConfigUpdated()

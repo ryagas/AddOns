@@ -194,8 +194,8 @@ do
 		bar.candyBarDuration:SetPoint("RIGHT", bar.candyBarBar, "RIGHT", -2, 0)
 
 		bar.candyBarLabel:ClearAllPoints()
-		bar.candyBarLabel:SetPoint("LEFT", bar.candyBarBar, "LEFT", 2, 0)
-		bar.candyBarLabel:SetPoint("RIGHT", bar.candyBarBar, "RIGHT", -2, 0)
+		bar.candyBarLabel:SetPoint("TOPLEFT", bar.candyBarBar, "TOPLEFT", 2, 0)
+		bar.candyBarLabel:SetPoint("BOTTOMRIGHT", bar.candyBarBar, "BOTTOMRIGHT", -2, 0)
 	end
 
 	local function styleBar(bar)
@@ -1386,6 +1386,7 @@ do
 			return tformat3:format(floor(t + .5))
 		end
 	end
+	local SendChatMessage = BigWigsLoader.SendChatMessage
 	clickHandlers.report = function(bar)
 		local text = ("%s: %s"):format(bar:GetLabel(), timeDetails(bar.remaining))
 		SendChatMessage(text, (IsInGroup(2) and "INSTANCE_CHAT") or (IsInRaid() and "RAID") or (IsInGroup() and "PARTY") or "SAY")
@@ -1601,7 +1602,8 @@ do
 			plugin:SendMessage("BigWigs_Sound", plugin, nil, "Alarm")
 		elseif timeLeft < 11 then
 			plugin:SendMessage("BigWigs_Message", plugin, nil, L.pullIn:format(timeLeft), "Attention")
-			if timeLeft < 6 and BigWigs.db.profile.sound then
+			local module = BigWigs:GetPlugin("Sounds", true)
+			if timeLeft < 6 and module and module.db.profile.sound then
 				plugin:SendMessage("BigWigs_PlayCountdownNumber", plugin, timeLeft)
 			end
 		end

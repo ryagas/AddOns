@@ -1,5 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\FrameXML\UI.xsd">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 	<Frame name="MovableBagFrame" virtual="true" enableMouse="false">
 		<Size>
 			<AbsDimension x="1" y="1"/>
@@ -50,7 +49,6 @@
 				end
 				self.OnMAPosition = posFunc
 				self.OnMAPreReset = posFunc
-				
 				self.OnMAPostReset = function(self, readOnly)
 					local container = MovAny:GetContainerFrame(self.realID)
 					if container then
@@ -69,10 +67,8 @@
 						mover:MAScanForChildren()
 						--mover:FoundChild(self.realID, self)
 					end
-					updateContainerFrameAnchors()
+					UpdateContainerFrameAnchors()
 				end
-				
-				
 				self.OnMAAttach = function(self)
 					local container = MovAny:GetContainerFrame(self.realID)
 					if container then
@@ -95,25 +91,21 @@
 				end
 				self.OnMAPostAttach = function(self)
 					posFunc(self)
-					--[[
-					local mover = _G.BagsMover
+					--[[local mover = _G.BagsMover
 					if mover then
 						if mover.attachedChildren then
 							table.wipe(mover.attachedChildren)
 						end
 						mover:MAScanForChildren()
-					end
-					]]
-					updateContainerFrameAnchors()
+					end]]
+					UpdateContainerFrameAnchors()
 				end
-				
 				self.OnMAAlpha = function(ref, alpha)
 					local con = MovAny:GetContainerFrame(ref.realID)
 					if con then
 						con:SetAlpha(alpha)
 					end
 				end
-				
 				self.OnMAScale = function(ref, scale)
 					if scale and scale >= 0 then
 						local con = MovAny:GetContainerFrame(ref.realID)
@@ -132,8 +124,17 @@
 	<Button name="GameMenuButtonMoveAnything" parent="GameMenuFrame" inherits="GameMenuButtonTemplate" text="MoveAnything">
 		<Scripts>
 			<OnLoad>
-				self:ClearAllPoints()
-				self:SetPoint("TOP", GameMenuButtonContinue, "BOTTOM", 0, -25)
+				if GameMenuFrame_UpdateVisibleButtons then
+					hooksecurefunc("GameMenuFrame_UpdateVisibleButtons", function()
+						GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + 25)
+					end)
+				end
+				local point, relativeTo, relativePoint, x, y = GameMenuButtonMacros:GetPoint(1)
+				if (relativeTo and relativeTo ~= self) then
+					self:SetPoint(point, relativeTo, relativePoint, x, y)
+				end
+				GameMenuButtonMacros:ClearAllPoints()
+				GameMenuButtonMacros:SetPoint("TOP", self, "BOTTOM", 0, - 1)
 			</OnLoad>
 			<OnClick>
 				if IsShiftKeyDown() and IsControlKeyDown() and IsAltKeyDown() then
@@ -174,7 +175,7 @@
 			<OnMouseDown>
 				local button = GetMouseButtonClicked()
 				if button == "RightButton" then
-					local t = _G[ self:GetParent():GetName().."Backdrop" ]
+					local t = _G[self:GetParent():GetName().."Backdrop"]
 					if IsShiftKeyDown() then
 						if t:IsVisible() then
 							t:Hide()
@@ -215,14 +216,18 @@
 		<Size>
 			<AbsDimension x="100" y="100"/>
 		</Size>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
 		<ResizeBounds>
 			<minResize>
 				<AbsDimension x="8" y="8"/>
 			</minResize>
 		</ResizeBounds>
-		<Anchors>
-			<Anchor point="BOTTOMLEFT"/>
-		</Anchors>
 		<Scripts>
 			<OnLoad>
 				self.neverShowTooltip = true
@@ -232,11 +237,10 @@
 			<OnUpdate>
 				if self.tagged and self.infoShown and self.moving then
 					local f = self.tagged
-					local str = numfor(f:GetLeft()).." , "..numfor(f:GetBottom())
+					local str = MANumFor(f:GetLeft()).." , "..MANumFor(f:GetBottom())
 					local label = _G[self:GetName().."BackdropInfoLabel"]
 					label:Show()
 					label:SetText(str)
-					
 					if self == MovAny.currentMover then
 						_G["MANudgerInfoLabel"]:Show()
 						_G["MANudgerInfoLabel"]:SetText(str)
@@ -261,7 +265,7 @@
 								MovAny:LockPoint(f)
 							end
 							if button == "LeftButton" then
-								local str = numfor(f:GetLeft()).." , "..numfor(f:GetBottom())
+								local str = MANumFor(f:GetLeft()).." , "..MANumFor(f:GetBottom())
 								_G[self:GetName().."BackdropInfoLabel"]:SetText(str)
 								if self == MovAny.currentMover then
 									_G["MANudgerInfoLabel"]:SetText(str)
@@ -372,9 +376,6 @@
 		<Size>
 			<AbsDimension x="20" y="20"/>
 		</Size>
-		<NormalText inherits="GameFontHighlight"/>
-		<DisabledText inherits="GameFontDisable"/>
-		<HighlightText inherits="GameFontHighlight"/>
 		<Scripts>
 			<OnEnter function="MovAny_TooltipShow"/>
 			<OnLeave function="MovAny_TooltipHide"/>
@@ -385,9 +386,6 @@
 		<Size>
 			<AbsDimension x="20" y="20"/>
 		</Size>
-		<NormalText inherits="GameFontHighlight"/>
-		<DisabledText inherits="GameFontDisable"/>
-		<HighlightText inherits="GameFontHighlight"/>
 		<Scripts>
 			<OnEnter function="MovAny_TooltipShow"/>
 			<OnLeave function="MovAny_TooltipHide"/>
@@ -504,7 +502,6 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
-				<NormalText inherits="GameFontHighlight"/>
 				<Scripts>
 					<OnClick>
 						MovAny:OnResetCheck(self)
@@ -515,13 +512,17 @@
 	</Frame>
 
 	<Frame name="MAOptions" toplevel="true" frameStrata="HIGH" movable="true" enableMouse="true" hidden="true" parent="UIParent">
-		<TitleRegion setAllPoints="true"/>
 		<Size>
 			<AbsDimension x="497" y="513"/>
 		</Size>
 		<Anchors>
-			<Anchor point="CENTER"/>
+			<Anchor point="CENTER">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
 		</Anchors>
+		<TitleRegion setAllPoints="true"/>
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
 			<BackgroundInsets>
 				<AbsInset left="11" right="12" top="12" bottom="11"/>
@@ -672,7 +673,7 @@
 					</OnLoad>
 					<OnClick>
 						if IsShiftKeyDown() then
-							for i,fe in pairs(MovAny.frameEditors) do
+							for i, fe in pairs(MovAny.frameEditors) do
 								fe:CloseDialog()
 							end
 						end
@@ -882,7 +883,7 @@
 				self:RegisterEvent("PLAYER_ENTERING_WORLD")
 				self:RegisterEvent("PLAYER_REGEN_DISABLED")
 				self:RegisterEvent("PLAYER_REGEN_ENABLED")
-				self:RegisterEvent("RAID_ROSTER_UPDATE")
+				self:RegisterEvent("GROUP_ROSTER_UPDATE")
 				self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 				self:RegisterEvent("PLAYER_FOCUS_CHANGED")
 			</OnLoad>
@@ -896,13 +897,17 @@
 		</Scripts>
 	</Frame>
 	<Button name="MA_NudgeButton" inherits="UIPanelButtonTemplate" virtual="true" hidden="false">
-		<Size><AbsDimension x="24" y="24"/></Size>
+		<Size>
+			<AbsDimension x="24" y="24"/>
+		</Size>
 		<Scripts>
 			<OnClick function="MANudgeButton_OnClick"/>
 		</Scripts>
 	</Button>
 	<Button name="MA_MoverButton" inherits="UIPanelButtonTemplate" virtual="true" hidden="false">
-		<Size><AbsDimension x="15" y="15"/></Size>
+		<Size>
+			<AbsDimension x="15" y="15"/>
+		</Size>
 		<Scripts>
 			<OnLoad>
 				self:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp")

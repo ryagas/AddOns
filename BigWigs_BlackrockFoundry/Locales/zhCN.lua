@@ -16,6 +16,7 @@ end
 L = BigWigs:NewBossLocale("The Blast Furnace", "zhCN")
 if L then
 L["bombs_dropped"] = "炸弹掉落！（%d）"
+L["bombs_dropped_p2"] = "工程师已击杀，炸弹掉落！"
 L["custom_off_firecaller_marker"] = "召火者标记"
 L["custom_off_firecaller_marker_desc"] = [=[使用 {rt7}{rt6} 标记召火者，需要权限。
 |cFFFF0000团队中只有1名应该启用此选项以防止标记冲突。|r
@@ -86,7 +87,7 @@ end
 L = BigWigs:NewBossLocale("Blackhand", "zhCN")
 if L then
 L["custom_off_markedfordeath_marker"] = "死亡标记标记"
-L["custom_off_markedfordeath_marker_desc"] = "使用 {rt1}{rt2} 标记死亡标记目标，需要权限。"
+L["custom_off_markedfordeath_marker_desc"] = "使用 {rt1}{rt2}{rt3} 标记死亡标记目标，需要权限。"
 L["custom_off_massivesmash_marker"] = "巨力粉碎猛击标记"
 L["custom_off_massivesmash_marker_desc"] = "使用 {rt6} 标记受到巨力粉碎猛击的坦克，需要权限。"
 
@@ -94,10 +95,15 @@ end
 
 L = BigWigs:NewBossLocale("Blackrock Foundry Trash", "zhCN")
 if L then
+L["beasttender"] = "雷神驯兽者"
+L["brute"] = "炉渣车间蛮兵"
 L["enforcer"] = "黑石执行者"
 L["furnace"] = "爆裂熔炉废气"
 L["gnasher"] = "暗裂噬咬者"
+L["guardian"] = "车间守卫"
 L["hauler"] = "独眼魔搬运工"
+L["mistress"] = "女铁匠火手"
+L["taskmaster"] = "钢铁工头"
 
 end
 

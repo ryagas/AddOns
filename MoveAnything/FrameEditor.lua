@@ -1,3 +1,5 @@
+local _G = _G
+
 local MovAny = _G.MovAny
 local MOVANY = _G.MOVANY
 
@@ -123,7 +125,9 @@ function MovAny:CreateFrameEditor(id, name)
 	fe:RegisterForDrag("LeftButton")
 	fe:SetScript("OnDragStart", fe.StartMoving)
 	fe:SetScript("OnDragStop", fe.StopMovingOrSizing)
-	fe:SetScript("OnMouseDown", function() fe:SetMovable(true) end)
+	--[[fe:SetScript("OnMouseDown", function()
+		fe:SetMovable(true)
+	end)]]
 	fe:SetBackdrop({
 		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
 		tile = "true",
@@ -132,7 +136,7 @@ function MovAny:CreateFrameEditor(id, name)
 	fe:SetBackdropColor(0, 0, 0)
 	fe:SetBackdropBorderColor(0, 0, 0)
 	
-	MovAny.API:SyncElement("MA_FEMover")
+	--MovAny.API:SyncElement("MA_FEMover")
 	
 	local pointDropDownButton = CreateFrame("Button", fn.."Point", fe, "UIDropDownMenuTemplate")
 	local pointFunc = function(self)
@@ -241,7 +245,9 @@ function MovAny:CreateFrameEditor(id, name)
 	
 	local enabledCheck = CreateFrame("CheckButton", fn.."Enabled", fe, "MACheckButtonTemplate")
 	enabledCheck:SetPoint("TOPLEFT", realNameLabel, "BOTTOMLEFT", 2, -2)
-	enabledCheck:SetScript("OnClick", function(self) MovAny:ToggleEnableFrame(fe.e.name, fe.opt) end)
+	enabledCheck:SetScript("OnClick", function(self)
+		MovAny:ToggleEnableFrame(fe.e.name, fe.opt)
+	end)
 	_G[enabledCheck:GetName().."Text"]:SetText("Enabled")
 	
 	local hideCheck = CreateFrame("CheckButton", fn.."Hide", fe, "MACheckButtonTemplate")
@@ -700,7 +706,7 @@ function MovAny:CreateFrameEditor(id, name)
 		xSlider:SetMinMaxValues(v - 200, v + 200)
 		xSlider:SetValue(v)
 		
-		v = numfor(v)
+		v = MANumFor(v)
 		_G[xSlider:GetName().."Low"]:SetText(v - 200)
 		_G[xSlider:GetName().."High"]:SetText(v + 200)
 		_G[xSlider:GetName().."Text"]:SetText(v)
@@ -736,7 +742,7 @@ function MovAny:CreateFrameEditor(id, name)
 	xSlider:SetValueStep(1)
 	xSlider:SetPoint("TOPLEFT", xEdit, "TOPRIGHT", 10, -2)
 	xSlider:SetScript("OnMouseUp", function(self)
-		local v = numfor(xSlider:GetValue())
+		local v = MANumFor(xSlider:GetValue())
 		xSlider:SetScript("OnValueChanged", nil)
 		xSlider:SetMinMaxValues(v - 200, v + 200)
 		xSlider:SetScript("OnValueChanged", xSliderFunc)
@@ -745,10 +751,10 @@ function MovAny:CreateFrameEditor(id, name)
 		_G[xSlider:GetName().."Text"]:SetText(v)
 	end)
 	xSliderFunc = function(self)
-		local v = numfor(xSlider:GetValue())
+		local v = MANumFor(xSlider:GetValue())
 		_G[xSlider:GetName().."Text"]:SetText(v)
 		
-		xEdit:SetText(numfor(xSlider:GetValue()))
+		xEdit:SetText(MANumFor(xSlider:GetValue()))
 		
 		if fe.updating then
 			return
@@ -825,7 +831,7 @@ function MovAny:CreateFrameEditor(id, name)
 		p = p[4]
 		
 		xSlider:SetScript("OnValueChanged", nil)
-		xSlider:SetMinMaxValues(p-200, p+200)
+		xSlider:SetMinMaxValues(p - 200, p + 200)
 		xSlider:SetScript("OnValueChanged", xSliderFunc)
 		xSlider:SetValue(p)
 	end)
@@ -876,7 +882,7 @@ function MovAny:CreateFrameEditor(id, name)
 		ySlider:SetMinMaxValues(v - 200, v + 200)
 		ySlider:SetValue(v)
 		
-		v = numfor(v)
+		v = MANumFor(v)
 		_G[ySlider:GetName().."Low"]:SetText(v - 200)
 		_G[ySlider:GetName().."High"]:SetText(v + 200)
 		_G[ySlider:GetName().."Text"]:SetText(v)
@@ -912,7 +918,7 @@ function MovAny:CreateFrameEditor(id, name)
 	ySlider:SetValueStep(1)
 	ySlider:SetPoint("TOPLEFT", yEdit, "TOPRIGHT", 10, -2)
 	ySlider:SetScript("OnMouseUp", function(self)
-		local v = numfor(ySlider:GetValue())
+		local v = MANumFor(ySlider:GetValue())
 		ySlider:SetScript("OnValueChanged", nil)
 		ySlider:SetMinMaxValues(v - 200, v + 200)
 		ySlider:SetScript("OnValueChanged", ySliderFunc)
@@ -922,10 +928,10 @@ function MovAny:CreateFrameEditor(id, name)
 	end)
 	
 	ySliderFunc = function(self)
-		local v = numfor(ySlider:GetValue())
+		local v = MANumFor(ySlider:GetValue())
 		_G[ySlider:GetName().."Text"]:SetText(v)
 		
-		yEdit:SetText(numfor(ySlider:GetValue()))
+		yEdit:SetText(MANumFor(ySlider:GetValue()))
 		
 		if fe.updating then
 			return
@@ -1002,7 +1008,7 @@ function MovAny:CreateFrameEditor(id, name)
 		p = p[5]
 		
 		ySlider:SetScript("OnValueChanged", nil)
-		ySlider:SetMinMaxValues(p-200, p+200)
+		ySlider:SetMinMaxValues(p - 200, p + 200)
 		ySlider:SetScript("OnValueChanged", ySliderFunc)
 		ySlider:SetValue(p)
 	end)
@@ -1057,9 +1063,9 @@ function MovAny:CreateFrameEditor(id, name)
 		widthSlider:SetMinMaxValues(lowV, lowV + 400)
 		widthSlider:SetValue(v)
 		widthSlider:SetScript("OnValueChanged", widthSliderFunc)
-		v = numfor(v)
-		_G[widthSlider:GetName().."Low"]:SetText(numfor(lowV))
-		_G[widthSlider:GetName().."High"]:SetText(numfor(lowV + 400))
+		v = MANumFor(v)
+		_G[widthSlider:GetName().."Low"]:SetText(MANumFor(lowV))
+		_G[widthSlider:GetName().."High"]:SetText(MANumFor(lowV + 400))
 		_G[widthSlider:GetName().."Text"]:SetText(v)
 		
 		if fe.updating then
@@ -1087,17 +1093,17 @@ function MovAny:CreateFrameEditor(id, name)
 		if lowV < 1 then
 			lowV = 1
 		end
-		v = numfor(v)
+		v = MANumFor(v)
 		widthSlider:SetMinMaxValues(lowV, lowV + 400)
-		_G[widthSlider:GetName().."Low"]:SetText(numfor(lowV))
-		_G[widthSlider:GetName().."High"]:SetText(numfor(lowV + 400))
+		_G[widthSlider:GetName().."Low"]:SetText(MANumFor(lowV))
+		_G[widthSlider:GetName().."High"]:SetText(MANumFor(lowV + 400))
 		_G[widthSlider:GetName().."Text"]:SetText(v)
 	end)
 	widthSliderFunc = function(self)
-		local v = numfor(widthSlider:GetValue())
+		local v = MANumFor(widthSlider:GetValue())
 		_G[widthSlider:GetName().."Text"]:SetText(v)
 		
-		widthEdit:SetText(numfor(widthSlider:GetValue()))
+		widthEdit:SetText(MANumFor(widthSlider:GetValue()))
 		
 		if fe.updating then
 			return
@@ -1113,7 +1119,7 @@ function MovAny:CreateFrameEditor(id, name)
 		if v < 1 then
 			v = 1
 		end
-		lowV = v - 200
+		local lowV = v - 200
 		if lowV < 1 then
 			lowV = 1
 		end
@@ -1127,7 +1133,7 @@ function MovAny:CreateFrameEditor(id, name)
 		if v < 1 then
 			v = 1
 		end
-		lowV = v - 200
+		local lowV = v - 200
 		if lowV < 1 then
 			lowV = 1
 		end
@@ -1158,7 +1164,8 @@ function MovAny:CreateFrameEditor(id, name)
 	widthPlusButton:SetText("+")
 	widthPlusButton:SetScript("OnClick", widthPlusFunc)
 	
-	
+	local heightSlider = CreateFrame("Slider", fn.."HeightSlider", fe, "OptionsSliderTemplate")
+
 	local widthResetButton = CreateFrame("Button", fn.."WidthResetButton", fe, "MAButtonTemplate")
 	widthResetButton:SetSize(20, 20)
 	widthResetButton:SetPoint("TOPLEFT", widthPlusButton, "TOPRIGHT", 3, 0)
@@ -1180,8 +1187,8 @@ function MovAny:CreateFrameEditor(id, name)
 		widthSlider:SetScript("OnValueChanged", widthSliderFunc)
 		widthSlider:SetValue(p)
 		
-		_G[heightSlider:GetName().."Low"]:SetText(numfor(lowV))
-		_G[heightSlider:GetName().."High"]:SetText(numfor(lowV + 400))
+		_G[heightSlider:GetName().."Low"]:SetText(MANumFor(lowV))
+		_G[heightSlider:GetName().."High"]:SetText(MANumFor(lowV + 400))
 	end)
 	
 	
@@ -1194,8 +1201,6 @@ function MovAny:CreateFrameEditor(id, name)
 	
 	
 	local heightEdit = CreateFrame("EditBox", fn.."HeightEdit", fe, "InputBoxTemplate")
-	
-	local heightSlider = CreateFrame("Slider", fn.."HeightSlider", fe, "OptionsSliderTemplate")
 	
 	heightEdit:SetFontObject("GameFontHighlightSmall")
 	heightEdit:SetMaxLetters(10)
@@ -1221,9 +1226,9 @@ function MovAny:CreateFrameEditor(id, name)
 		heightSlider:SetMinMaxValues(lowV, lowV + 400)
 		heightSlider:SetValue(v)
 		
-		v = numfor(v)
-		_G[heightSlider:GetName().."Low"]:SetText(numfor(lowV))
-		_G[heightSlider:GetName().."High"]:SetText(numfor(lowV + 400))
+		v = MANumFor(v)
+		_G[heightSlider:GetName().."Low"]:SetText(MANumFor(lowV))
+		_G[heightSlider:GetName().."High"]:SetText(MANumFor(lowV + 400))
 		_G[heightSlider:GetName().."Text"]:SetText(v)
 		heightSlider:SetScript("OnValueChanged", heightSliderFunc)
 		if fe.updating then
@@ -1251,17 +1256,17 @@ function MovAny:CreateFrameEditor(id, name)
 		if lowV < 1 then
 			lowV = 1
 		end
-		v = numfor(v)
+		v = MANumFor(v)
 		heightSlider:SetMinMaxValues(lowV, lowV + 400)
-		_G[heightSlider:GetName().."Low"]:SetText(numfor(lowV))
-		_G[heightSlider:GetName().."High"]:SetText(numfor(lowV + 400))
+		_G[heightSlider:GetName().."Low"]:SetText(MANumFor(lowV))
+		_G[heightSlider:GetName().."High"]:SetText(MANumFor(lowV + 400))
 	end)
 	
 	heightSliderFunc = function(self)
-		local v = numfor(heightSlider:GetValue())
+		local v = MANumFor(heightSlider:GetValue())
 		_G[heightSlider:GetName().."Text"]:SetText(v)
 		
-		heightEdit:SetText(numfor(heightSlider:GetValue()))
+		heightEdit:SetText(MANumFor(heightSlider:GetValue()))
 		
 		if fe.updating then
 			return
@@ -1277,7 +1282,7 @@ function MovAny:CreateFrameEditor(id, name)
 		if v < 1 then
 			v = 1
 		end
-		lowV = v - 200
+		local lowV = v - 200
 		if lowV < 1 then
 			lowV = 1
 		end
@@ -1291,7 +1296,7 @@ function MovAny:CreateFrameEditor(id, name)
 		if v < 1 then
 			v = 1
 		end
-		lowV = v - 200
+		local lowV = v - 200
 		if lowV < 1 then
 			lowV = 1
 		end
@@ -1345,8 +1350,8 @@ function MovAny:CreateFrameEditor(id, name)
 		heightSlider:SetValue(p)
 		local v = heightSlider:GetValue()
 		
-		_G[heightSlider:GetName().."Low"]:SetText(numfor(lowV))
-		_G[heightSlider:GetName().."High"]:SetText(numfor(lowV + 400))
+		_G[heightSlider:GetName().."Low"]:SetText(MANumFor(lowV))
+		_G[heightSlider:GetName().."High"]:SetText(MANumFor(lowV + 400))
 	end)
 	
 	
@@ -1398,12 +1403,12 @@ function MovAny:CreateFrameEditor(id, name)
 	
 	scaleSlider:SetScale(.75)
 	scaleSlider:SetWidth(535)
-	scaleSlider:SetMinMaxValues(0,10)
+	scaleSlider:SetMinMaxValues(0.01, 10)
 	scaleSlider:SetValue(1)
 	scaleSlider:SetValueStep(.01)
 	scaleSlider:SetPoint("TOPLEFT", scaleEdit, "TOPRIGHT", 10, -2)
 	scaleSlider:SetScript("OnMouseUp", function(self)
-		_G[self:GetName().."Text"]:SetText(numfor(self:GetValue(), 2))
+		_G[self:GetName().."Text"]:SetText(MANumFor(self:GetValue(), 2))
 	end)
 	_G[scaleSlider:GetName().."Low"]:SetText("0")
 	_G[scaleSlider:GetName().."High"]:SetText("10")
@@ -1412,7 +1417,7 @@ function MovAny:CreateFrameEditor(id, name)
 		if not self.GetValue then
 			return
 		end
-		local v = numfor(self:GetValue(), 2)
+		local v = MANumFor(self:GetValue(), 2)
 		_G[self:GetName().."Text"]:SetText(v)
 		
 		scaleEdit:SetText(v)
@@ -1543,11 +1548,11 @@ function MovAny:CreateFrameEditor(id, name)
 	alphaSlider:SetValueStep(.01)
 	alphaSlider:SetPoint("TOPLEFT", alphaEdit, "TOPRIGHT", 10, -2)
 	alphaSlider:SetScript("OnMouseUp", function(self)
-		_G[self:GetName().."Text"]:SetText(numfor(alphaSlider:GetValue() * 100, 0).."%")
+		_G[self:GetName().."Text"]:SetText(MANumFor(alphaSlider:GetValue() * 100, 0).."%")
 	end)
 	
 	alphaSliderFunc = function(self)
-		local v = numfor(alphaSlider:GetValue() * 100, 0)
+		local v = MANumFor(alphaSlider:GetValue() * 100, 0)
 		_G[self:GetName().."Text"]:SetText(v.."%")
 		alphaEdit:SetText(v)
 		
@@ -1672,7 +1677,7 @@ function MovAny:CreateFrameEditor(id, name)
 		if fe.editFrame and opt then
 			if opt.disabled then
 				opt.disableLayerArtwork = nil
-				opt.disableLayerBackground = ni
+				opt.disableLayerBackground = nil
 				opt.disableLayerBorder = nil
 				opt.disableLayerHighlight = nil
 				opt.disableLayerOverlay = nil
@@ -1751,7 +1756,7 @@ function MovAny:CreateFrameEditor(id, name)
 			MovAny:UpdateGUIIfShown(true)
 		end
 	end
-	
+
 	local strataDropDown_MenuInit = function()
 		local frameStrata = (fe.opt and fe.opt.frameStrata) or (fe.editFrame and fe.editFrame:GetFrameStrata()) or nil
 		
@@ -1770,17 +1775,14 @@ function MovAny:CreateFrameEditor(id, name)
 			UIDropDownMenu_AddButton(info)
 		end
 	end
-	
+
 	strataDropDownButton:SetPoint("TOPLEFT", strataLabel, "TOPRIGHT", -12, 1)
 	UIDropDownMenu_Initialize(strataDropDownButton, strataDropDown_MenuInit)
 	UIDropDownMenu_SetWidth(strataDropDownButton, 130)
-	--[[
-	strataDropDownButton:SetScript("OnClick", function()
+	--[[trataDropDownButton:SetScript("OnClick", function()
 		ToggleDropDownMenu(1, nil, nil, strataDropDownButton, 0, 0, nil, strataDropDownButton)
-	end)
-	]]
-	
-		
+	end)]]	
+
 	local strataResetButton = CreateFrame("Button", fn.."StrataResetButton", fe, "MAButtonTemplate")
 	strataResetButton:SetSize(20, 20)
 	strataResetButton:SetPoint("TOPLEFT", strataDropDownButton, "TOPRIGHT", 0, -2.5)
@@ -1922,8 +1924,7 @@ function MovAny:CreateFrameEditor(id, name)
 		
 		MovAny:ResetFrameConfirm(fe.e.name)
 	end)
-	
-	
+
 	local exportButton = CreateFrame("Button", fn.."ExportButton", fe, "MAButtonTemplate")
 	exportButton:SetSize(75, 22)
 	exportButton:SetPoint("TOPLEFT", resetButton, "BOTTOMLEFT", 0, -10)
@@ -2098,6 +2099,7 @@ function MovAny:CreateFrameEditor(id, name)
 		
 		fe.updating = true
 		
+		local p
 		if fe.editFrame then
 			local mover = MovAny:GetMoverByFrame(fe.e.name)
 			if mover then
@@ -2125,7 +2127,7 @@ function MovAny:CreateFrameEditor(id, name)
 		end
 		relToEdit:SetText(relativeTo)
 		
-		local v = tonumber(numfor(p[4])) or 0
+		local v = tonumber(MANumFor(p[4])) or 0
 		xSlider:SetScript("OnValueChanged", nil)
 		xSlider:SetMinMaxValues(v - 200, v + 200)
 		_G[xSlider:GetName().."Low"]:SetText(v - 200)
@@ -2135,7 +2137,7 @@ function MovAny:CreateFrameEditor(id, name)
 		xSlider:SetScript("OnValueChanged", xSliderFunc)
 		xEdit:SetText(v)
 		
-		v = tonumber(numfor(p[5])) or 0
+		v = tonumber(MANumFor(p[5])) or 0
 		ySlider:SetMinMaxValues(v - 200, v + 200)
 		ySlider:SetMinMaxValues(v - 200, v + 200)
 		_G[ySlider:GetName().."Low"]:SetText(v - 200)
@@ -2185,7 +2187,7 @@ function MovAny:CreateFrameEditor(id, name)
 		fe.fn = name
 		
 		self.initialOpt = MA_tdeepcopy(self.opt)
-		--self.initialOpt = MovAny:IsModified(name, nil, self.opt) and MA_tdeepcopy(self.opt) or {}
+		--self.initialOpt = MovAny:IsModified(name, nil, self.opt) and MA_tdeepcopy(self.opt) or { }
 		
 		MovAny.frameEditors[name] = self
 		self:UpdateEditor()
@@ -2247,7 +2249,7 @@ function MovAny:CreateFrameEditor(id, name)
 			
 			local alpha = opt and opt.alpha or 1
 			alphaSlider:SetValue(alpha)
-			_G[alphaSlider:GetName().."Text"]:SetText(numfor(alphaSlider:GetValue() * 100, 0).."%")
+			_G[alphaSlider:GetName().."Text"]:SetText(MANumFor(alphaSlider:GetValue() * 100, 0).."%")
 			
 			tinsert(tabList, alphaEdit)
 		else
@@ -2461,7 +2463,7 @@ function MovAny:CreateFrameEditor(id, name)
 			end
 			if opt.pos and scale then
 				opt.pos[4] = opt.pos[4] / scale
-				opt.pos[5] = opt.pos[5] /scale
+				opt.pos[5] = opt.pos[5] / scale
 			end
 			if opt.groups and not IsShiftKeyDown() then
 				MovAny:GroupScale(fe.e, opt.groups, scale - (opt.scale or (editFrame and editFrame:GetScale())), scale)
@@ -2658,30 +2660,30 @@ function MovAny:CreateFrameEditor(id, name)
 			end
 			
 			if editFrame:GetLeft() then
-				infoTextX:SetText(numfor(editFrame:GetLeft() * scale))
+				infoTextX:SetText(MANumFor(editFrame:GetLeft() * scale))
 			else
 				infoTextX:SetText("?")
 			end
 			if editFrame:GetBottom() then
-				infoTextY:SetText(numfor(editFrame:GetBottom() * scale))
+				infoTextY:SetText(MANumFor(editFrame:GetBottom() * scale))
 			end
 			
 			if editFrame:GetWidth() then
-				infoTextWidth:SetText(numfor(editFrame:GetWidth() * scale))
+				infoTextWidth:SetText(MANumFor(editFrame:GetWidth() * scale))
 			end
 			if editFrame:GetHeight() then
-				infoTextHeight:SetText(numfor(editFrame:GetHeight() * scale))
+				infoTextHeight:SetText(MANumFor(editFrame:GetHeight() * scale))
 			end
 			
 			infoTextScaleLabel:Show()
 			infoTextScale:Show()
-			infoTextScale:SetText(numfor(scale * 100).."%")
+			infoTextScale:SetText(MANumFor(scale * 100).."%")
 		else
-			infoTextX:SetText(numfor(editFrame:GetLeft()))
-			infoTextY:SetText(numfor(editFrame:GetBottom()))
+			infoTextX:SetText(MANumFor(editFrame:GetLeft()))
+			infoTextY:SetText(MANumFor(editFrame:GetBottom()))
 			
-			infoTextWidth:SetText(numfor(editFrame:GetWidth()))
-			infoTextHeight:SetText(numfor(editFrame:GetHeight()))
+			infoTextWidth:SetText(MANumFor(editFrame:GetWidth()))
+			infoTextHeight:SetText(MANumFor(editFrame:GetHeight()))
 			
 			infoTextScaleLabel:Hide()
 			infoTextScale:Hide()
@@ -2695,7 +2697,7 @@ function MovAny:CreateFrameEditor(id, name)
 			elseif editFrame.GetAlpha then
 				alpha = editFrame:GetAlpha()
 			end
-			infoTextAlpha:SetText(numfor(alpha * 100, 0).."%")
+			infoTextAlpha:SetText(MANumFor(alpha * 100, 0).."%")
 		else
 			infoTextAlphaLabel:Hide()
 			infoTextAlpha:Hide()
@@ -2774,13 +2776,13 @@ function MovAny:CreateFrameEditor(id, name)
 			end
 			relToEdit:SetText(relativeTo)
 			
-			local v = tonumber(numfor(p[4])) or 0
+			local v = tonumber(MANumFor(p[4])) or 0
 			xSlider:SetMinMaxValues(v - 200, v + 200)
 			_G[xSlider:GetName().."Low"]:SetText(v - 200)
 			_G[xSlider:GetName().."High"]:SetText(v + 200)
 			xSlider:SetValue(v)
 			
-			v = tonumber(numfor(p[5])) or 0
+			v = tonumber(MANumFor(p[5])) or 0
 			ySlider:SetMinMaxValues(v - 200, v + 200)
 			_G[ySlider:GetName().."Low"]:SetText(v - 200)
 			_G[ySlider:GetName().."High"]:SetText(v + 200)
@@ -2864,7 +2866,7 @@ function MovAny:CreateFrameEditor(id, name)
 			elseif fe.editFrame then
 				v = fe.editFrame:GetWidth()
 			end
-			local lowV = tonumber(numfor(v)) - 200
+			local lowV = tonumber(MANumFor(v)) - 200
 			if lowV < 1 then
 				lowV = 1
 			end
@@ -2883,7 +2885,7 @@ function MovAny:CreateFrameEditor(id, name)
 			elseif fe.editFrame then
 				v = fe.editFrame:GetHeight()
 			end
-			lowV = tonumber(numfor(v)) - 200
+			lowV = tonumber(MANumFor(v)) - 200
 			if lowV < 1 then
 				lowV = 1
 			end

@@ -1,3 +1,15 @@
+local _G = _G
+local tinsert = tinsert
+local pairs = pairs
+local table = table
+local type = type
+
+local CreateFrame = CreateFrame
+local IsShiftKeyDown = IsShiftKeyDown
+local IsControlKeyDown = IsControlKeyDown
+local IsAltKeyDown = IsAltKeyDown
+local ReloadUI = ReloadUI
+
 local MovAny = _G.MovAny
 local MOVANY = _G.MOVANY
 
@@ -282,7 +294,7 @@ function MovAny:CreatePortDialog()
 		
 		local profileDropDown_MenuInit = function()
 			local info
-			local names = {}
+			local names = { }
 			for name, profile in pairs(MADB.profiles) do
 				if name ~= "default" and name ~= MovAny:GetProfileName() then
 					if not pd.fn or (pd.mode == 1 and pd.fn and profile.frames[pd.fn]) or (pd.mode == 2) then
@@ -315,7 +327,7 @@ function MovAny:CreatePortDialog()
 		if MovAny:GetProfileName() ~= "default" and ((pd.mode == 1 and pd.fn and MADB.profiles["default"].frames[pd.fn]) or (pd.mode == 1 and not pd.fn) or pd.mode == 2) then
 			selProfile = "default"
 		else
-			local names = {}
+			local names = { }
 			for name, profile in pairs(MADB.profiles) do
 				if name ~= "default" and name ~= MovAny:GetProfileName() then
 					if not pd.fn or (pd.mode == 1 and pd.fn and profile.frames[pd.fn]) or (pd.mode == 2) then
@@ -357,6 +369,5 @@ function MovAny:CreatePortDialog()
 	pd.Reload = function(self)
 		self:PrepareDialog(self.mode, self.fn)
 	end
-	
 	return pd
 end

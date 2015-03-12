@@ -4,9 +4,10 @@ addon:SetEnabledState(false)
 addon:SetDefaultModuleState(false)
 
 -- Embed callback handler
-addon.RegisterMessage = BigWigsLoader.RegisterMessage
-addon.UnregisterMessage = BigWigsLoader.UnregisterMessage
-addon.SendMessage = BigWigsLoader.SendMessage
+local loader = BigWigsLoader
+addon.RegisterMessage = loader.RegisterMessage
+addon.UnregisterMessage = loader.UnregisterMessage
+addon.SendMessage = loader.SendMessage
 
 local GetSpellInfo = GetSpellInfo
 
@@ -22,9 +23,11 @@ local bwUtilityFrame = CreateFrame("Frame")
 local bossCore, pluginCore
 
 -- Try to grab unhooked copies of critical loading funcs (hooked by some crappy addons)
-local GetCurrentMapAreaID = BigWigsLoader.GetCurrentMapAreaID
-local SetMapToCurrentZone = BigWigsLoader.SetMapToCurrentZone
-local SendAddonMessage = BigWigsLoader.SendAddonMessage
+local GetCurrentMapAreaID = loader.GetCurrentMapAreaID
+local SetMapToCurrentZone = loader.SetMapToCurrentZone
+local SendAddonMessage = loader.SendAddonMessage
+local GetAreaMapInfo = loader.GetAreaMapInfo
+local GetInstanceInfo = loader.GetInstanceInfo
 
 -- Upvalues
 local next, type = next, type
@@ -87,8 +90,10 @@ end
 function addon:ENCOUNTER_START(_, id)
 	for _, module in next, bossCore.modules do
 		if module.engageId == id then
-			if not module.enabledState then module:Enable() end
-			--module:Engage() -- No engaging until Blizzard fixes this event
+			if not module.enabledState then
+				module:Enable()
+				module:Engage()
+			end
 		end
 	end
 end
@@ -101,7 +106,7 @@ local enablezones, enablemobs, enableyells = {}, {}, {}
 local monitoring = nil
 
 local function enableBossModule(module, noSync)
-	if not module:IsEnabled() then
+	if not module:IsEnabled() and (not module.lastKill or (GetTime() - module.lastKill) > 150) then
 		module:Enable()
 		if not noSync and not module.worldBoss then
 			module:Sync("EnableModule", module:GetName())
@@ -112,8 +117,7 @@ end
 local function shouldReallyEnable(unit, moduleName, mobId)
 	local module = bossCore:GetModule(moduleName)
 	if not module or module:IsEnabled() then return end
-	-- If we pass the Verify Enable func (or it doesn't exist) and it's been > 150 seconds since the module was disabled, then enable it.
-	if (not module.VerifyEnable or module:VerifyEnable(unit, mobId)) and (not module.lastKill or (GetTime() - module.lastKill) > 150) then
+	if (not module.VerifyEnable or module:VerifyEnable(unit, mobId)) then
 		enableBossModule(module)
 	end
 end
@@ -149,6 +153,7 @@ local function unitTargetChanged(event, target)
 end
 
 local function zoneChanged()
+	local id
 	if not IsInInstance() then
 		-- We may be hearthing whilst a module is enabled and engaged, only wipe if we're a ghost (released spirit from an old zone).
 		if UnitIsDeadOrGhost("player") then
@@ -157,11 +162,19 @@ local function zoneChanged()
 					module:Wipe()
 				end
 			end
+		elseif WorldMapFrame:IsShown() then
+			local prevId = GetCurrentMapAreaID()
+			SetMapToCurrentZone()
+			id = GetCurrentMapAreaID()
+			SetMapByID(prevId)
+		else
+			SetMapToCurrentZone()
+			id = GetCurrentMapAreaID()
 		end
 	else
-		SetMapToCurrentZone() -- Hack because Astrolabe likes to screw with map setting in rare situations, so we need to force an update.
+		local _, _, _, _, _, _, _, instanceId = GetInstanceInfo()
+		id = instanceId
 	end
-	local id = GetCurrentMapAreaID()
 	if enablezones[id] then
 		if not monitoring then
 			monitoring = true
@@ -210,26 +223,18 @@ do
 	local callbackRegistered = nil
 	local messages = {}
 	local colors = {"Important", "Personal", "Urgent", "Attention", "Positive", "Neutral"}
-	local sounds = {"Long", "Info", "Alert", "Alarm", "Victory", "Warning", false, false, false, false, false}
+	local sounds = {"Long", "Info", "Alert", "Alarm", "Warning", false, false, false, false, false}
 
 	local function barStopped(event, bar)
 		local a = bar:Get("bigwigs:anchor")
-		local key = bar.candyBarLabel:GetText()
+		local key = bar:GetLabel()
 		if a and messages[key] then
 			local color = colors[random(1, #colors)]
 			local sound = sounds[random(1, #sounds)]
-			if random(1, 3) == 2 then
+			if random(1, 4) == 2 then
 				addon:SendMessage("BigWigs_Flash", addon, key)
-				addon:SendMessage("BigWigs_Pulse", addon, key, messages[key])
-				local colors = addon:GetPlugin("Colors", true)
-				local pulseColor
-				if colors then
-					local r, g, b = colors:GetColor("flash")
-					pulseColor = ("|cFF%02x%02x%02x"):format(r*255, g*255, b*255)
-				end
-				addon:Print(L.test .." - ".. (pulseColor or "") ..L.FLASH.. (pulseColor and "|r" or "") .." - ".. L.PULSE ..": |T".. messages[key] ..":15:15:0:0:64:64:4:60:4:60|t")
 			end
-			if sound then addon:Print(L.test .." - ".. L.sound ..": ".. sound) end
+			addon:Print(L.test .." - ".. color ..": ".. key)
 			addon:SendMessage("BigWigs_Message", addon, key, color..": "..key, color, messages[key])
 			addon:SendMessage("BigWigs_Sound", addon, key, sound)
 			messages[key] = nil
@@ -257,31 +262,6 @@ do
 	end
 end
 
-
--------------------------------------------------------------------------------
--- Core syncs
---
-
--- Since this is from addon comms, it's the only place where we allow the module NAME to be passed, instead of the
--- actual module object. ALL other APIs should take module objects as arguments.
-local function coreSync(sync, moduleName, sender)
-	if sync == "EnableModule" then
-		local module = addon:GetBossModule(moduleName, true)
-		if sender ~= pName and module then
-			enableBossModule(module, true)
-		end
-	elseif sync == "Death" then
-		local mod = addon:GetBossModule(moduleName, true)
-		if mod and not mod.engageId and mod:IsEnabled() then
-			mod:Message("bosskill", "Positive", "Victory", L.defeated:format(mod.displayName), false)
-			mod.lastKill = GetTime() -- Add the kill time for the enable check.
-			if mod.OnWin then mod:OnWin() end
-			mod:SendMessage("BigWigs_OnBossWin", mod)
-			mod:Disable()
-		end
-	end
-end
-
 -------------------------------------------------------------------------------
 -- Communication
 --
@@ -291,7 +271,6 @@ do
 	local times = {}
 	local registered = {
 		BossEngaged = true,
-		Death = true,
 		EnableModule = true,
 	}
 
@@ -313,9 +292,12 @@ do
 					-- print("Engaging " .. tostring(rest) .. " based on engage sync from " .. tostring(nick) .. ".")
 					m:Engage()
 				end
-			elseif sync == "EnableModule" or sync == "Death" then
+			elseif sync == "EnableModule" then
 				if rest and (not times[sync] or t > (times[sync] + 2)) then
-					coreSync(sync, rest, nick)
+					local module = addon:GetBossModule(rest, true)
+					if nick ~= pName and module then
+						enableBossModule(module, true)
+					end
 					times[sync] = t
 				end
 			else
@@ -371,47 +353,54 @@ end
 -- Initialization
 --
 
-function addon:OnInitialize()
-	local defaults = {
-		profile = {
-			sound = true,
-			raidicon = true,
-			flash = true,
-			showZoneMessages = true,
-			fakeDBMVersion = false,
-		},
-		global = {
-			optionShiftIndexes = {},
-			watchedMovies = {},
-		},
-	}
-	local db = LibStub("AceDB-3.0"):New("BigWigs3DB", defaults, true)
-	LibStub("LibDualSpec-1.0"):EnhanceDatabase(db, "BigWigs3DB")
+do
+	local function initDb(self)
+		local defaults = {
+			profile = {
+				raidicon = true,
+				flash = true,
+				showZoneMessages = true,
+				fakeDBMVersion = false,
+			},
+			global = {
+				optionShiftIndexes = {},
+				watchedMovies = {},
+			},
+		}
+		local db = LibStub("AceDB-3.0"):New("BigWigs3DB", defaults, true)
+		LibStub("LibDualSpec-1.0"):EnhanceDatabase(db, "BigWigs3DB")
 
-	local function profileUpdate()
-		addon:SendMessage("BigWigs_ProfileUpdate")
+		local function profileUpdate()
+			addon:SendMessage("BigWigs_ProfileUpdate")
+		end
+		db.RegisterCallback(self, "OnProfileChanged", profileUpdate)
+		db.RegisterCallback(self, "OnProfileCopied", profileUpdate)
+		db.RegisterCallback(self, "OnProfileReset", profileUpdate)
+		self.db = db
+
+		-- XXX temp cleanup
+		self.db.global.seenmovies = nil
+		self.db.profile.showBlizzardWarnings = nil
+		self.db.profile.blockmovies = nil
+		self.db.profile.sound = nil
+		--
+
+		initDb = nil
 	end
-	db.RegisterCallback(self, "OnProfileChanged", profileUpdate)
-	db.RegisterCallback(self, "OnProfileCopied", profileUpdate)
-	db.RegisterCallback(self, "OnProfileReset", profileUpdate)
-	self.db = db
 
-	-- XXX temp cleanup
-	self.db.global.seenmovies = nil
-	self.db.profile.showBlizzardWarnings = nil
-	self.db.profile.blockmovies = nil
-	--
+	local addonName = ...
+	if addonName == "BigWigs_Core" then
+		initDb(addon) -- LoD user
+	end
 
-	self:RegisterBossOption("bosskill", L.bosskill, L.bosskill_desc, nil, "Interface\\Icons\\ability_rogue_feigndeath")
-	self:RegisterBossOption("berserk", L.berserk, L.berserk_desc, nil, "Interface\\Icons\\spell_shadow_unholyfrenzy")
-	self:RegisterBossOption("altpower", L.altpower, L.altpower_desc, nil, "Interface\\Icons\\spell_arcane_invocation")
-	self:RegisterBossOption("stages", L.stages, L.stages_desc)
-	self:RegisterBossOption("warmup", L.warmup, L.warmup_desc)
+	function addon:OnInitialize()
+		if initDb then initDb(self) end
 
-	-- This should ALWAYS be the last action of OnInitialize, it will trigger the loader to
-	-- enable other packs that want to be loaded when the core loads.
-	self:SendMessage("BigWigs_CoreLoaded")
-	self.OnInitialize = nil
+		-- This should ALWAYS be the last action of OnInitialize, it will trigger the loader to
+		-- enable other packs that want to be loaded when the core loads.
+		self:SendMessage("BigWigs_CoreLoaded")
+		self.OnInitialize = nil
+	end
 end
 
 function addon:OnEnable()
@@ -422,8 +411,13 @@ function addon:OnEnable()
 
 	self:RegisterEvent("RAID_BOSS_WHISPER")
 
-	pluginCore:Enable()
-	bossCore:Enable()
+	if IsLoggedIn() then
+		pluginCore:Enable()
+		bossCore:Enable()
+		self.PLAYER_LOGIN = nil
+	else
+		self:RegisterEvent("PLAYER_LOGIN")
+	end
 
 	zoneChanged()
 	self:SendMessage("BigWigs_CoreEnabled")
@@ -444,6 +438,13 @@ function addon:OnDisable()
 	self:SendMessage("BigWigs_CoreDisabled")
 end
 
+function addon:PLAYER_LOGIN()
+	-- Delay enabling until we're fully logged in
+	pluginCore:Enable()
+	bossCore:Enable()
+	self.PLAYER_LOGIN = nil
+end
+
 function addon:Print(msg)
 	print("Big Wigs: |cffffff00"..msg.."|r")
 end
@@ -453,11 +454,20 @@ end
 -- Well .. except the module API, obviously.
 --
 
-function addon:RegisterBossOption(key, name, desc, func, icon)
-	if customBossOptions[key] then
-		error("The custom boss option %q has already been registered."):format(key)
+do
+	function addon:RegisterBossOption(key, name, desc, func, icon)
+		if customBossOptions[key] then
+			error("The custom boss option %q has already been registered."):format(key)
+		end
+		customBossOptions[key] = { name, desc, func, icon }
 	end
-	customBossOptions[key] = { name, desc, func, icon }
+
+	-- Adding core generic toggles
+	addon:RegisterBossOption("bosskill", "Old", "Remove me")
+	addon:RegisterBossOption("berserk", L.berserk, L.berserk_desc, nil, "Interface\\Icons\\spell_shadow_unholyfrenzy")
+	addon:RegisterBossOption("altpower", L.altpower, L.altpower_desc, nil, "Interface\\Icons\\spell_arcane_invocation")
+	addon:RegisterBossOption("stages", L.stages, L.stages_desc)
+	addon:RegisterBossOption("warmup", L.warmup, L.warmup_desc)
 end
 
 function addon:GetCustomBossOptions()
@@ -635,8 +645,9 @@ do
 
 		self:SendMessage("BigWigs_BossModuleRegistered", module.moduleName, module)
 
-		if not enablezones[module.zoneId] then
-			enablezones[module.zoneId] = true
+		local id = module.worldBoss and module.zoneId or GetAreaMapInfo(module.zoneId)
+		if not enablezones[id] then
+			enablezones[id] = true
 			-- We fire zoneChanged() as a backup for LoD users. In rare cases,
 			-- ZONE_CHANGED_NEW_AREA fires before the first module can add its zoneId into the table,
 			-- resulting in a failed check to register UPDATE_MOUSEOVER_UNIT, etc.
@@ -657,6 +668,10 @@ do
 			module.OnRegister = nil
 		end
 		self:SendMessage("BigWigs_PluginRegistered", module.moduleName, module)
+
+		if pluginCore:IsEnabled() then
+			module:Enable() -- Support LoD plugins that load after we're enabled (e.g. zone based)
+		end
 	end
 end
 
@@ -688,4 +703,3 @@ function pluginCore:OnDisable()
 end
 
 BigWigs = addon -- Set global
-

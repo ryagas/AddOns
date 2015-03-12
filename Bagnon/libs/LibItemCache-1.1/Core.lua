@@ -1,5 +1,5 @@
 --[[
-Copyright 2011-2014 João Cardoso
+Copyright 2011-2015 João Cardoso
 LibItemCache is distributed under the terms of the GNU General Public License.
 You can redistribute it and/or modify it under the terms of the license as
 published by the Free Software Foundation.
@@ -15,7 +15,7 @@ along with this library. If not, see <http://www.gnu.org/licenses/>.
 This file is part of LibItemCache.
 --]]
 
-local Lib = LibStub:NewLibrary('LibItemCache-1.1', 16)
+local Lib = LibStub:NewLibrary('LibItemCache-1.1', 19)
 if not Lib then
 	return
 end
@@ -31,14 +31,6 @@ end
 
 
 --[[ Startup ]]--
-
-LibStub('AceEvent-3.0'):Embed(Lib)
-Lib:RegisterEvent('BANKFRAME_OPENED', function() Lib.atBank = true end)
-Lib:RegisterEvent('BANKFRAME_CLOSED', function() Lib.atBank = nil end)
-Lib:RegisterEvent('VOID_STORAGE_OPEN', function() Lib.atVault = true end)
-Lib:RegisterEvent('VOID_STORAGE_CLOSE', function() Lib.atVault = nil end)
-Lib:RegisterEvent('GUILDBANKFRAME_OPENED', function() Lib.atGuild = true end)
-Lib:RegisterEvent('GUILDBANKFRAME_CLOSED', function() Lib.atGuild = nil end)
 
 Lib.PLAYER = UnitName('player')
 Lib.FACTION = UnitFactionGroup('player')
@@ -78,7 +70,7 @@ end
 
 function Lib:GetPlayerAddress(player)
 	local player, realm = strsplit('-', player or self.PLAYER, 2)
-	return realm or self.REALM, player
+	return realm and realm:sub(2) or self.REALM, realm and player:sub(0, -2) or player
 end
 
 function Lib:IsPlayerCached(player)
@@ -87,35 +79,62 @@ end
 
 function Lib:IteratePlayers()
 	if not self.players then
-		self.players = {}
+		self.players = Cache('GetPlayers', self.REALM) or {self.PLAYER}
 
-		for i, player in ipairs(Cache('GetPlayers', self.REALM) or {self.PLAYER}) do
-			if select(4, self:GetPlayerInfo(player)) == self.FACTION then
-				tinsert(self.players, player)
-			end
-		end
-
-		for i, realm in ipairs(GetAutoCompleteRealms() or {}) do
-			if realm ~= self.REALM then
-				for i, player in ipairs(Cache('GetPlayers', realm) or {}) do
-					player = player .. '-' .. realm
-
-					if select(4, self:GetPlayerInfo(player)) == self.FACTION then
-						tinsert(self.players, player)
-					end
-				end
+		for i, realm in self:IterateRealms() do
+			for i, player in ipairs(Cache('GetPlayers', realm) or {}) do
+				tinsert(self.players, player .. ' - ' .. realm)
 			end
 		end
 
 		sort(self.players)
 	end
 
-	return pairs(self.players)
+	return ipairs(self.players)
+end
+
+function Lib:IterateAlliedPlayers()
+	if not self.allied then
+		self.allied = {}
+
+		for i, player in self:IteratePlayers() do
+			if select(4, self:GetPlayerInfo(player)) == self.FACTION then
+				tinsert(self.allied, player)
+			end
+		end
+	end
+
+	return ipairs(self.allied)
 end
 
 function Lib:DeletePlayer(player)
 	Cache('DeletePlayer', self:GetPlayerAddress(player))
-	self.players = nil
+	self.players, self.allied = nil
+end
+
+
+--[[ Realms ]]--
+
+function Lib:IterateRealms()
+	if not self.realms then
+		local autoComplete = GetAutoCompleteRealms() or {}
+		local targets = {}
+		for i, realm in ipairs(autoComplete) do
+			targets[realm] = true
+		end
+
+		self.realms = {}
+
+		for i, realm in ipairs(Cache('GetRealms') or autoComplete) do
+			if (targets[realm] or targets[gsub(realm, '%s+', '')]) and realm ~= self.REALM then
+				tinsert(self.realms, realm)
+			end
+		end
+
+		sort(self.realms)
+	end
+
+	return ipairs(self.realms)
 end
 
 
@@ -160,14 +179,14 @@ end
 
 function Lib:GetBagType(player, bag)
 	local kind = type(bag)
-	local tab = kind == 'string' and tonumber(bag:match('guild(%d+)'))
+	local tab = kind == 'string' and tonumber(bag:match('^guild(%d+)$'))
 	if tab then
-		return not self.atGuild or self:GetPlayerGuild(player) ~= self:GetPlayerGuild(self.PLAYER), nil,nil, tab
+		return not self.AtGuild or self:GetPlayerGuild(player) ~= self:GetPlayerGuild(self.PLAYER), nil,nil, tab
 	end
 
 	local vault = bag == 'vault'
 	local bank = bag == BANK_CONTAINER or bag == REAGENTBANK_CONTAINER or kind == 'number' and bag > NUM_BAG_SLOTS
-	local cached = self:IsPlayerCached(player) or vault and not self.atVault or bank and not self.atBank
+	local cached = self:IsPlayerCached(player) or vault and not self.AtVault or bank and not self.AtBank
 
 	return cached, bank, vault
 end

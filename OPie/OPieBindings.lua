@@ -11,28 +11,42 @@ local lBinding = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 	lBinding:SetPoint("TOPLEFT", 16, -125)
 	lRing:SetPoint("LEFT", lBinding, "LEFT", 215, 0)
 	lBinding:SetWidth(180)
-local bindLines = {}
-local function mClick(self) frame.showMacroPopup(self:GetParent():GetID()) end
-for i=1,19 do
-	local bind = config.createBindingButton(frame)
-	local label = bind:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-	bind:SetPoint("TOPLEFT", lBinding, "BOTTOMLEFT", 0, 16-20*i)
-	bind.macro = CreateFrame("BUTTON", nil, bind, "UIPanelButtonTemplate")
-	bind.macro:SetWidth(24) bind.macro:SetPoint("LEFT", bind, "RIGHT", 1, 0)
-	local ico = bind.macro:CreateTexture(nil, "ARTWORK")
-	ico:SetSize(23,23) ico:SetPoint("CENTER", -1, -1) ico:SetTexture("Interface\\RaidFrame\\UI-RaidFrame-Arrow")
-	bind.macro:SetScript("OnClick", mClick)
-	bind:SetWidth(180) bind:GetFontString():SetWidth(170)
-	label:SetPoint("LEFT", 215, 2)
-	bind:SetNormalFontObject(GameFontNormalSmall)
-	bind:SetHighlightFontObject(GameFontHighlightSmall)
-	bindLines[i], bind.label = bind, label
+local bindLines = {} do
+	local function onMacroClick(self)
+		frame.showMacroPopup(self:GetParent():GetID())
+	end
+	local function onEnter(self)
+		if self.tooltipTitle then
+			local c1, c2 = HIGHLIGHT_FONT_COLOR, NORMAL_FONT_COLOR
+			GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT")
+			GameTooltip:AddLine(self.tooltipTitle, c1.r, c1.g, c1.b)
+			GameTooltip:AddLine(self.tooltipText or "", c2.r, c2.g, c2.b, 1)
+			GameTooltip:Show()
+		end
+	end
+	for i=1,19 do
+		local bind = config.createBindingButton(frame)
+		local label = bind:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+		bind:SetPoint("TOPLEFT", lBinding, "BOTTOMLEFT", 0, 16-20*i)
+		bind.macro = CreateFrame("BUTTON", nil, bind, "UIPanelButtonTemplate")
+		bind.macro:SetWidth(24) bind.macro:SetPoint("LEFT", bind, "RIGHT", 1, 0)
+		local ico = bind.macro:CreateTexture(nil, "ARTWORK")
+		ico:SetSize(23,23) ico:SetPoint("CENTER", -1, -1) ico:SetTexture("Interface\\RaidFrame\\UI-RaidFrame-Arrow")
+		bind.macro:SetScript("OnClick", onMacroClick)
+		bind:SetScript("OnEnter", onEnter)
+		bind:SetScript("OnLeave", config.ui.HideTooltip)
+		bind:SetWidth(180) bind:GetFontString():SetWidth(170)
+		label:SetPoint("LEFT", 215, 2)
+		bind:SetNormalFontObject(GameFontNormalSmall)
+		bind:SetHighlightFontObject(GameFontHighlightSmall)
+		bindLines[i], bind.label = bind, label
+	end
 end
 local btnUnbind = config.createUnbindButton(frame)
 	btnUnbind:SetPoint("TOP", bindLines[#bindLines], "BOTTOM", 0, -3)
-local btnUp = CreateFrame("Button", "OPC_SUp", frame, "UIPanelScrollUpButtonTemplate")
+local btnUp = CreateFrame("Button", nil, frame, "UIPanelScrollUpButtonTemplate")
 	btnUp:SetPoint("RIGHT", btnUnbind, "LEFT", -10)
-local btnDown = CreateFrame("Button", "OPC_SDown", frame, "UIPanelScrollDownButtonTemplate")
+local btnDown = CreateFrame("Button", nil, frame, "UIPanelScrollDownButtonTemplate")
 	btnDown:SetPoint("LEFT", btnUnbind, "RIGHT", 10)
 local cap = CreateFrame("Frame", nil, frame)
 	cap:SetPoint("TOP", OBC_Profile, "BOTTOM", 0, 0)
@@ -59,9 +73,33 @@ function ringBindings:refresh()
 	self.count = #map
 end
 function ringBindings:get(id)
-	local name, key, macro, internal = OneRingLib:GetRingInfo(self.map[id])
-	local bind, isOverride, isActive, cBind, enabled = OneRingLib:GetRingBinding(key)
-	return bind, name or key or "?", enabled and ((cBind and isActive == false and (isOverride and "|cffFA2800" or "|cffa0a0a0")) or (isOverride and "|cffffffff") or "") or "|cffa0a0a0"
+	local name, key = OneRingLib:GetRingInfo(self.map[id])
+	local bind, cBind, isOverride, isActiveInt, isActiveExt = OneRingLib:GetRingBinding(key)
+	local prefix, tipTitle, tipText
+	if not isOverride and not OneRingLib:GetOption("UseDefaultBindings", key) then
+		if bind then
+			prefix, tipTitle = "|cffa0a0a0", L"Default binding disabled"
+			tipText = (L"Choose a binding for this ring, or enable the %s option in OPie options."):format("|cffffffff" .. L"Use default ring bindings" .. "|r")
+		end
+	elseif cBind and isActiveExt ~= true then
+		tipTitle = L"Binding conflict"
+		if isActiveInt == false then
+			prefix = isOverride and "|cfffa2800" or "|cffa0a0a0"
+			tipText = L"This binding is not currently active because it conflicts with another."
+		else
+			prefix, tipText = "|cfffa2800", L"This binding is currently used by another addon."
+		end
+		if isActiveExt then
+			local lab = _G["BINDING_NAME_" .. isActiveExt]
+			if not (lab and type(lab) == "string" and lab:match("%S")) then lab = tostring(isActiveExt) end
+			tipText = tipText .. "\n\n" .. (L"Conflicts with: %s"):format("|cffe0e0e0" .. lab .. "|r")
+		end
+	elseif cBind and not isActiveInt then
+		prefix, tipTitle = "|cffa0a0a0", tostring(isActiveInt) .. "/" .. tostring(cBind)
+	elseif isOverride then
+		prefix = "|cffffffff"
+	end
+	return bind, name or key or "?", prefix, cBind, tipTitle, tipText
 end
 function ringBindings:set(id, key)
 	id = self.map[id]
@@ -79,12 +117,12 @@ function ringBindings:default()
 	OneRingLib:ResetRingBindings()
 end
 function ringBindings:altClick() -- self is the binding button
-	self:ToggleAlternateEditor(OneRingLib:GetRingBinding(ringBindings.map[self:GetID()]), (L"Example: %s."):format(GREEN_FONT_COLOR_CODE .. "[combat] ALT-C; CTRL-F|r") .. " " .. L"Press ENTER to save.")
+	self:ToggleAlternateEditor(OneRingLib:GetRingBinding(ringBindings.map[self:GetID()]))
 end
 
 local sysBindings = {count=5, name="Other Bindings", caption="Action",
 	options={"PrimaryButton", "SecondaryButton", "OpenNestedRingButton", "ScrollNestedRingUpButton", "ScrollNestedRingDownButton"},
-	optionNames={"Primary default binding button", "Secondary default binding button", "Open nested ring", "Scroll nested nested ring (up)", "Scroll nested ring (down)"}}
+	optionNames={"Primary default binding button", "Secondary default binding button", "Open nested ring", "Scroll nested ring (up)", "Scroll nested ring (down)"}}
 function sysBindings:get(id)
 	local value, setting = OneRingLib:GetOption(self.options[id])
 	return value, self.optionNames[id], setting and "|cffffffff" or nil
@@ -111,11 +149,11 @@ function subBindings:refresh(scope)
 end
 function subBindings:get(id)
 	if id == 1 then
-		return OneRingLib:GetOption("SelectedSliceBind", scope), "Selected slice (keep ring open)"
+		return OneRingLib:GetOption("SelectedSliceBind", self.scope), "Selected slice (keep ring open)"
 	else
 		id = id - 1
 	end
-	return self.t[id] == "false" and "" or self.t[id], "Slice #" .. id
+	return self.t[id] == "false" and "" or self.t[id], (L"Slice #%d"):format(id)
 end
 function subBindings:set(id, bind)
 	if id == 1 then
@@ -144,7 +182,7 @@ function subBindings:set(id, bind)
 	t[id] = bind
 	for j=#t,1,-1 do if t[j] == "false" then t[j] = nil else break end end
 	self.count = #t+2
-	local _, _, ring, global, default = OneRingLib:GetOption("SliceBindingString", self.scope)
+	local _, _, _, global, default = OneRingLib:GetOption("SliceBindingString", self.scope)
 	local v = table.concat(t, " ")
 	if self.scope == nil and v == default then v = nil
 	elseif self.scope ~= nil and v == (global or default) then v = nil end
@@ -174,21 +212,22 @@ end
 
 local currentOwner, currentBase, bindingTypes = ringBindings,0, {ringBindings, subBindings, sysBindings}
 local function updatePanelContent()
-	local m, arrowShowHide = currentOwner.count, bindLines[1].macro[currentOwner.arrow and "Show" or "Hide"]
+	local m = currentOwner.count
 	for i=1,#bindLines do
 		local j, e = currentBase+i, bindLines[i]
 		if j > m then
 			e:Hide()
 		else
-			local binding, text, prefix = currentOwner:get(j)
+			local binding, text, prefix, _, title, tip = currentOwner:get(j)
+			e.tooltipTitle, e.tooltipText = title, tip
 			e.label:SetText(text)
-			arrowShowHide(e.macro)
+			e.macro:SetShown(currentOwner.arrow)
 			e:SetBindingText(binding, prefix)
 			e:SetID(j) e:Hide() e:Show()
 		end
 	end
-	btnDown[#bindLines + currentBase < m and "Enable" or "Disable"](btnDown)
-	btnUp[currentBase > 0 and "Enable" or "Disable"](btnUp)
+	btnDown:SetEnabled(#bindLines + currentBase < m)
+	btnUp:SetEnabled(currentBase > 0)
 	lRing:SetText(L(currentOwner.caption or "Action"))
 	frame.OnBindingAltClick = currentOwner.altClick
 	UIDropDownMenu_SetText(bindSet, L(currentOwner.name) .. (currentOwner.nameSuffix or ""))
@@ -226,7 +265,8 @@ function bindSet:set(owner, scope)
 end
 
 function frame.localize()
-	frame.title:SetText(L"Ring Bindings")
+	frame.name = L"Ring Bindings"
+	frame.title:SetText(frame.name)
 	frame.desc:SetText(L"Customize OPie key bindings below. |cffa0a0a0Gray|r and |cffFA2800red|r bindings conflict with others and are not currently active." .. "\n" ..
 		(L"Alt+Left Click on a button to set a conditional binding, indicated by %s."):format("|cff4CFF40[+]|r"))
 	lBinding:SetText(L"Binding")
@@ -239,6 +279,7 @@ function frame.refresh()
 	end
 	frame.localize()
 	updatePanelContent()
+	config.checkSVState(frame)
 end
 function frame.default()
 	config.undo.saveProfile()

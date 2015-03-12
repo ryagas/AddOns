@@ -94,8 +94,9 @@ _G.BINDING_NAME_DIGSITESARCHY = L["BINDING_NAME_DIGSITES"]
 local continent_digsites = {}
 private.continent_digsites = continent_digsites
 
-local keystoneIDToRaceID = {}
-local keystoneLootRaceID -- this is to force a refresh after the BAG_UPDATE event
+local KeystoneIDToRace = {}
+
+local lootedKeystoneRace -- this is to force a refresh after the BAG_UPDATE event
 local digsitesTrackingID -- set in Archy:OnEnable()
 
 local nearestDigsite
@@ -208,14 +209,6 @@ local function ToggleDigsiteVisibility(show)
 	end
 end
 
--- Returns true if the player has the archaeology secondary skill
-local function HasArchaeology()
-	local _, _, archaeologyIndex = _G.GetProfessions()
-	return archaeologyIndex and true or false
-end
-
-private.HasArchaeology = HasArchaeology
-
 local function HideFrames()
 	DigSiteFrame:Hide()
 	ArtifactFrame:Hide()
@@ -283,21 +276,17 @@ end
 
 private.IsTaintable = IsTaintable
 
-local function SolveRaceArtifact(raceID, useStones)
-	-- The check for raceID exists because its absence means we're calling this function from the default UI and should NOT perform any of the actions within the block.
-	if raceID then
-		local race = private.Races[raceID]
+local function SolveRaceArtifact(race, useKeystones)
+	-- The check for race exists because its absence means we're calling this function from the default UI and should NOT perform any of the actions within the block.
+	if race then
 		local artifact = race.currentProject
 
-		_G.SetSelectedArtifact(raceID)
-		keystoneLootRaceID = raceID
+		_G.SetSelectedArtifact(race.ID)
+		lootedKeystoneRace = race
 
-		if _G.type(useStones) == "boolean" then
-			if useStones then
-				artifact.keystones_added = math.min(race.keystone.inventory, artifact.sockets)
-			else
-				artifact.keystones_added = 0
-			end
+		-- Override keystones that have already been added if true or false were passed.
+		if _G.type(useKeystones) == "boolean" then
+			artifact.keystones_added = useKeystones and math.min(race.keystonesInInventory, artifact.sockets) or 0
 		end
 
 		if artifact.keystones_added > 0 then
@@ -320,14 +309,14 @@ end
 Dialog:Register("ArchyConfirmSolve", {
 	text = "",
 	on_show = function(self, data)
-		self.text:SetFormattedText(L["Your Archaeology skill is at %d of %d.  Are you sure you would like to solve this artifact before visiting a trainer?"], data.rank, data.max_rank)
+		self.text:SetFormattedText(L["Your Archaeology skill is at %d of %d.  Are you sure you would like to solve this artifact before visiting a trainer?"], data.rank, data.maxRank)
 	end,
 	buttons = {
 		{
 			text = _G.YES,
 			on_click = function(self, data)
-				if data.race_index then
-					SolveRaceArtifact(data.race_index, data.use_stones)
+				if data.race then
+					SolveRaceArtifact(data.race, data.useKeystones)
 				else
 					Blizzard_SolveArtifact()
 				end
@@ -436,12 +425,12 @@ function Archy:ConfigUpdated(namespace, option)
 	end
 end
 
-function Archy:SolveAnyArtifact(use_stones)
+function Archy:SolveAnyArtifact(useKeystones)
 	local found = false
 	for raceID, race in pairs(private.Races) do
 		local artifact = race.currentProject
-		if not race:IsOnArtifactBlacklist() and (artifact.canSolve or (use_stones and artifact.canSolveInventory)) then
-			SolveRaceArtifact(raceID, use_stones)
+		if not race:IsOnArtifactBlacklist() and (artifact.canSolve or (useKeystones and artifact.canSolveInventory)) then
+			SolveRaceArtifact(race, useKeystones)
 			found = true
 			break
 		end
@@ -605,7 +594,7 @@ do
 	local lastUpdatedDigsite
 
 	function UpdateMinimapIcons(isForced)
-		if not HasArchaeology() or _G.WorldMapButton:IsVisible() or (lastUpdatedDigsite == nearestDigsite and not isForced) then
+		if not private.hasArchaeology or _G.WorldMapButton:IsVisible() or (lastUpdatedDigsite == nearestDigsite and not isForced) then
 			return
 		end
 
@@ -799,7 +788,7 @@ function Archy:OnEnable()
 	self:RegisterEvent("PLAYER_STARTED_MOVING")
 	self:RegisterEvent("PLAYER_STOPPED_MOVING")
 	self:RegisterEvent("QUEST_LOG_UPDATE")
-	self:RegisterEvent("SKILL_LINES_CHANGED", "UpdateSkillBar")
+	self:RegisterEvent("SKILL_LINES_CHANGED")
 	self:RegisterEvent("TAXIMAP_CLOSED")
 	self:RegisterEvent("TAXIMAP_OPENED")
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
@@ -809,6 +798,8 @@ function Archy:OnEnable()
 	self:RegisterEvent("UNIT_SPELLCAST_SENT")
 
 	self:RegisterBucketEvent("ARTIFACT_HISTORY_READY", 0.2)
+
+    self:SKILL_LINES_CHANGED()
 
 	Archy:UpdateFramePositions()
 	DigSiteFrame:UpdateChrome()
@@ -838,7 +829,7 @@ function Archy:OnEnable()
 
 	for raceID = 1, _G.GetNumArchaeologyRaces() do
 		local race = private.AddRace(raceID)
-		keystoneIDToRaceID[race.keystone.ID] = raceID
+		KeystoneIDToRace[race.keystone.ID] = race
 	end
 
 	-----------------------------------------------------------------------
@@ -1052,7 +1043,7 @@ do
 	}
 
 	local function FindCrateable(bag, slot)
-		if not HasArchaeology() then
+		if not private.hasArchaeology then
 			return
 		end
 
@@ -1167,7 +1158,7 @@ do
 end -- do-block
 
 function Archy:UpdateSkillBar()
-	if not ArtifactFrame.skillBar or not private.CurrentContinentID or not HasArchaeology() then
+	if private.notInWorld or not ArtifactFrame.skillBar or not private.CurrentContinentID or not private.hasArchaeology then
 		return
 	end
 
@@ -1180,7 +1171,7 @@ end
 
 --[[ Positional functions ]] --
 function Archy:UpdatePlayerPosition(force)
-	if not HasArchaeology() or _G.IsInInstance() or _G.UnitIsGhost("player") or (not force and not private.ProfileSettings.general.show) then
+	if not private.hasArchaeology or _G.IsInInstance() or _G.UnitIsGhost("player") or (not force and not private.ProfileSettings.general.show) then
 		return
 	end
 
@@ -1246,7 +1237,7 @@ end
 
 --[[ UI functions ]] --
 function Archy:UpdateTracking()
-	if not HasArchaeology() or private.ProfileSettings.general.manualTrack then
+	if not private.hasArchaeology or private.ProfileSettings.general.manualTrack then
 		return
 	end
 
@@ -1414,10 +1405,7 @@ function Archy:ARTIFACT_HISTORY_READY()
 	for raceID, race in pairs(private.Races) do
 		local project = race.currentProject
 		if project then
-			local _, _, completionCount = race:GetArtifactCompletionDataByName(project.name)
-			if completionCount then
-				project.completionCount = completionCount
-			end
+				project.completionCount = race:GetArtifactCompletionCountByName(project.name)
 		end
 	end
 
@@ -1427,12 +1415,13 @@ end
 function Archy:BAG_UPDATE_DELAYED()
 	self:ScanBags()
 
-	if not private.CurrentContinentID or not keystoneLootRaceID then
+	if not private.CurrentContinentID or not lootedKeystoneRace then
 		return
 	end
-	private.Races[keystoneLootRaceID]:UpdateCurrentProject()
+	lootedKeystoneRace:UpdateCurrentProject()
+	lootedKeystoneRace = nil
+
 	ArtifactFrame:RefreshDisplay()
-	keystoneLootRaceID = nil
 end
 
 do
@@ -1465,18 +1454,20 @@ do
 	end
 
 	function Archy:CHAT_MSG_LOOT(event, msg)
-		local _, itemLink, amount = ParseLootMessage(msg)
+        if not currentDigsite then
+            return
+        end
 
-		if not itemLink then
-			return
-		end
-		local itemID = GetItemIDFromLink(itemLink)
-		local raceID = keystoneIDToRaceID[itemID]
+        local _, itemLink, amount = ParseLootMessage(msg)
+        if itemLink then
+            return
+        end
 
-		if raceID then
-			currentDigsite.stats.keystones = currentDigsite.stats.keystones + 1
-			keystoneLootRaceID = raceID
-		end
+        local race = KeystoneIDToRace[GetItemIDFromLink(itemLink)]
+        if race then
+            currentDigsite.stats.keystones = currentDigsite.stats.keystones + 1
+            lootedKeystoneRace = race
+        end
 	end
 end -- do-block
 
@@ -1527,25 +1518,9 @@ function Archy:GET_ITEM_INFO_RECEIVED(event)
 		end
 	end
 
-	for data, race in next, private.RaceArtifactProcessingQueue, nil do
-		local itemName = _G.GetItemInfo(data.itemID)
-		local projectName = _G.GetSpellInfo(data.spellID)
-		if itemName and projectName then
-			local artifact = race.Artifacts[projectName]
-			if artifact then
-				artifact.isRare = data.isRare
-				artifact.itemID = data.itemID
-				artifact.spellID = data.spellID
-			else
-				race.Artifacts[projectName] = {
-					completionCount = 0,
-					isRare = data.isRare,
-					itemID = data.itemID,
-					name = projectName,
-					spellID = data.spellID,
-				}
-			end
-			private.RaceArtifactProcessingQueue[data] = nil
+	for template, race in next, private.RaceArtifactProcessingQueue, nil do
+        if race:AddOrUpdateArtifactFromTemplate(template) then
+			private.RaceArtifactProcessingQueue[template] = nil
 		end
 	end
 
@@ -1579,7 +1554,7 @@ do
 				if itemLink then
 					local itemID = GetItemIDFromLink(itemLink)
 
-					if itemID and (keystoneIDToRaceID[itemID] or QUEST_ITEM_IDS[itemID]) then
+					if itemID and (KeystoneIDToRace[itemID] or QUEST_ITEM_IDS[itemID]) then
 						_G.LootSlot(slotID)
 					end
 				end
@@ -1631,10 +1606,8 @@ end
 function Archy:PLAYER_ENTERING_WORLD()
 	private.notInWorld = nil
 
-	-- If TomTom is configured to automatically set a waypoint to the closest quest objective, that will interfere with Archy. Warn, if applicable.
-	if TomTomHandler.hasPOIIntegration and _G.TomTom.profile.poi.setClosest then
-		TomTomHandler:DisplayConflictError()
-	end
+    -- If TomTom is configured to automatically set a waypoint to the closest quest objective, that will interfere with Archy. Warn, if applicable.
+    TomTomHandler:CheckForConflict()
 
 	if _G.IsInInstance() then
 		HideFrames()
@@ -1726,20 +1699,25 @@ function Archy:QUEST_LOG_UPDATE()
 			local loaded, reason = _G.LoadAddOn("Blizzard_ArchaeologyUI")
 			if not loaded then
 				self:Print(L["ArchaeologyUI not loaded: %s SolveArtifact hook not installed."]:format(_G["ADDON_" .. reason]))
+				return
 			end
 		end
+
 		Blizzard_SolveArtifact = _G.SolveArtifact
-		function _G.SolveArtifact(race_index, use_stones)
-			local rank, max_rank = GetArchaeologyRank()
-			if private.ProfileSettings.general.confirmSolve and max_rank < MAX_ARCHAEOLOGY_RANK and (rank + 25) >= max_rank then
+
+		function _G.SolveArtifact(raceID, useKeystones)
+			local rank, maxRank = GetArchaeologyRank()
+			local race = private.Races[raceID]
+
+			if private.ProfileSettings.general.confirmSolve and maxRank < MAX_ARCHAEOLOGY_RANK and (rank + 25) >= maxRank then
 				Dialog:Spawn("ArchyConfirmSolve", {
-					race_index = race_index,
-					use_stones = use_stones,
+					race = race,
+					useKeystones = useKeystones,
 					rank = rank,
-					max_rank = max_rank
+					maxRank = maxRank
 				})
 			else
-				return SolveRaceArtifact(race_index, use_stones)
+				return SolveRaceArtifact(race, useKeystones)
 			end
 		end
 	end
@@ -1747,6 +1725,27 @@ function Archy:QUEST_LOG_UPDATE()
 	self:ConfigUpdated()
 	self:UnregisterEvent("QUEST_LOG_UPDATE")
 	self.QUEST_LOG_UPDATE = nil
+end
+
+function Archy:SKILL_LINES_CHANGED()
+    local _, _, archaeologyIndex = _G.GetProfessions()
+    private.hasArchaeology = archaeologyIndex and true or false
+
+    self:UpdateSkillBar()
+end
+
+function Archy:TAXIMAP_CLOSED()
+    private.isTaxiMapOpen = nil
+end
+
+function Archy:TAXIMAP_OPENED()
+    private.isTaxiMapOpen = true
+end
+
+function Archy:UNIT_SPELLCAST_SENT(event, unit, spell, rank, target)
+    if unit == "player" and spell == private.CRATE_SPELL_NAME then
+        private.busy_crating = true
+    end
 end
 
 do
@@ -1773,17 +1772,3 @@ do
 		end
 	end
 end -- do-block
-
-function Archy:TAXIMAP_CLOSED()
-	private.isTaxiMapOpen = nil
-end
-
-function Archy:TAXIMAP_OPENED()
-	private.isTaxiMapOpen = true
-end
-
-function Archy:UNIT_SPELLCAST_SENT(event, unit, spell, rank, target)
-	if unit == "player" and spell == private.CRATE_SPELL_NAME then
-		private.busy_crating = true
-	end
-end

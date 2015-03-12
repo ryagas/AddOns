@@ -1,0 +1,12 @@
+tag v1.5.55
+b06d1d0df5ab5d5a23ea6c87aea06f579b73fbd4
+Dorwido <darkz@gmx.de>
+2015-03-07 22:34:11 +0100
+
+tagging as v1.5.55
+
+
+--------------------
+
+Dorwido:
+	- -fixed a bug which happened with patch 6.1 which made the addon think all flight masters are discovered which bugged the missing flight master module and also the world map click feature

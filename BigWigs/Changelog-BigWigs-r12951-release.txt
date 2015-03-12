@@ -1,0 +1,1947 @@
+------------------------------------------------------------------------
+r12951 | funkydude | 2015-03-11 18:18:56 +0000 (Wed, 11 Mar 2015) | 1 line
+Changed paths:
+   A /tags/r12951-release (from /trunk:12950)
+
+Tagging as r12951-release
+------------------------------------------------------------------------
+r12950 | funkydude | 2015-03-11 18:16:07 +0000 (Wed, 11 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+
+bump version
+------------------------------------------------------------------------
+r12949 | funkydude | 2015-03-11 17:21:30 +0000 (Wed, 11 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/Core/libs.xml
+   M /trunk/embeds.xml
+
+Move AceAddon into the loader for testing purposes.
+------------------------------------------------------------------------
+r12948 | nebula169 | 2015-03-11 07:52:52 +0000 (Wed, 11 Mar 2015) | 3 lines
+Changed paths:
+   M /trunk/Loader.lua
+   M /trunk/Options/Options.lua
+   M /trunk/Plugins/BigWigs_Plugins.toc
+
+X-BigWigs-LoadOn-Slash: register a handler per slash instead of per addon.
+Add back in loading on BigWigs_Plugins slashes.
+Don't always open the options panel when BigWigs_Options gets enabled.
+------------------------------------------------------------------------
+r12946 | funkydude | 2015-03-11 03:43:20 +0000 (Wed, 11 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+
+bump version
+------------------------------------------------------------------------
+r12945 | funkydude | 2015-03-11 00:49:53 +0000 (Wed, 11 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+   M /trunk/Loader.lua
+
+Add the zonozz marker to the list of addons to be removed.
+------------------------------------------------------------------------
+r12944 | funkydude | 2015-03-10 22:58:32 +0000 (Tue, 10 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: Prep for LFR trains
+------------------------------------------------------------------------
+r12943 | funkydude | 2015-03-10 21:50:17 +0000 (Tue, 10 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Options/Options.lua
+
+Options: Also error for good measure.
+------------------------------------------------------------------------
+r12942 | funkydude | 2015-03-10 21:37:42 +0000 (Tue, 10 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/BigWigs_Plugins.toc
+
+Remove slash loading from plugins addon.
+------------------------------------------------------------------------
+r12941 | funkydude | 2015-03-10 21:05:01 +0000 (Tue, 10 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Options/Options.lua
+
+Options: add some debug to try solve an error people are having with opening the config. I wish more people would use bugsack.
+------------------------------------------------------------------------
+r12940 | elvador | 2015-03-10 19:26:44 +0000 (Tue, 10 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: Fix mythic demolition timers and add messages
+------------------------------------------------------------------------
+r12939 | funkydude | 2015-03-10 17:30:16 +0000 (Tue, 10 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Bars.lua
+
+Bars: Fix label anchoring reset.
+------------------------------------------------------------------------
+r12938 | funkydude | 2015-03-10 17:16:00 +0000 (Tue, 10 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+   M /trunk/Options/Options.lua
+
+Fix a rare error when opening the config.
+------------------------------------------------------------------------
+r12937 | funkydude | 2015-03-10 16:31:43 +0000 (Tue, 10 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Options/Options.lua
+
+Options: Fix modules with no zone id not showing their config panel (CommonAuras plugin).
+------------------------------------------------------------------------
+r12936 | elvador | 2015-03-10 14:46:16 +0000 (Tue, 10 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: Add superheated bar
+------------------------------------------------------------------------
+r12934 | funkydude | 2015-03-09 02:54:25 +0000 (Mon, 09 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+   M /trunk/Options/Options.lua
+
+Hopefully that last fix for world boss content.
+------------------------------------------------------------------------
+r12933 | funkydude | 2015-03-09 01:57:41 +0000 (Mon, 09 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Trash.lua
+
+Trash: Add Spinning Blade & Lumbering Strength.
+------------------------------------------------------------------------
+r12932 | funkydude | 2015-03-08 22:59:29 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: Missed a Mythic check.
+------------------------------------------------------------------------
+r12931 | funkydude | 2015-03-08 21:57:16 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+Remove an old flex raid check in the role setting function.
+------------------------------------------------------------------------
+r12930 | funkydude | 2015-03-08 21:36:32 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: Fix event registering.
+------------------------------------------------------------------------
+r12929 | funkydude | 2015-03-08 21:03:13 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Core/Core.lua
+
+Attempt to fix a DB issue some users are experiencing by initializing the DB faster for LoD users.
+------------------------------------------------------------------------
+r12928 | funkydude | 2015-03-08 17:49:36 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Core/BossPrototype.lua
+
+BossPrototype: Print & error on no db.
+------------------------------------------------------------------------
+r12927 | funkydude | 2015-03-08 16:45:29 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Core/BossPrototype.lua
+
+BossPrototype: error for a nil db, don't just print.
+------------------------------------------------------------------------
+r12926 | funkydude | 2015-03-08 16:41:25 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+   M /trunk/BlackrockFoundry/Gruul.lua
+   M /trunk/BlackrockFoundry/Kagraz.lua
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+Minimum 0.2s for multi target messages.
+------------------------------------------------------------------------
+r12925 | funkydude | 2015-03-08 16:35:11 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: Slag Bomb > Bomb.
+------------------------------------------------------------------------
+r12924 | funkydude | 2015-03-08 16:23:59 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Bump version.
+------------------------------------------------------------------------
+r12923 | funkydude | 2015-03-08 15:50:12 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+Should now be able to reload in combat without hitting the in-combat restriction due to loading earlier, hopefully.
+------------------------------------------------------------------------
+r12922 | funkydude | 2015-03-08 15:43:31 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+Don't load indoor content when outdoors.
+------------------------------------------------------------------------
+r12921 | funkydude | 2015-03-08 15:32:11 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+Fix content messages showing up outdoors since the loading changes.
+------------------------------------------------------------------------
+r12920 | funkydude | 2015-03-08 04:24:07 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: Fix mythic demolition, count smash.
+------------------------------------------------------------------------
+r12919 | funkydude | 2015-03-08 01:50:43 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Oregorger.lua
+
+Oregorger: Fix blackrock under you warning.
+------------------------------------------------------------------------
+r12918 | funkydude | 2015-03-08 01:45:58 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: Volatile Fire varies per difficulty, just scan the debuff when showing the bar.
+------------------------------------------------------------------------
+r12917 | elvador | 2015-03-08 00:00:34 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: Fix P3 Massive Smash Proximity
+------------------------------------------------------------------------
+r12916 | funkydude | 2015-03-07 22:53:31 +0000 (Sat, 07 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Core/Core.lua
+   M /trunk/Loader.lua
+
+Delaying enabling plugins/modules until we're fully logged in, fixes anchor placement issues since the loading changes.
+------------------------------------------------------------------------
+r12915 | funkydude | 2015-03-07 22:09:23 +0000 (Sat, 07 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Core/Core.lua
+
+Core: engage on ENCOUNTER_START if a module was enabled by it.
+------------------------------------------------------------------------
+r12914 | funkydude | 2015-03-07 19:25:49 +0000 (Sat, 07 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Core/Core.lua
+   M /trunk/Loader.lua
+   M /trunk/Options/Options.lua
+
+Loading tweaks.
+------------------------------------------------------------------------
+r12913 | funkydude | 2015-03-07 17:45:09 +0000 (Sat, 07 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Core/Core.lua
+   M /trunk/Loader.lua
+   M /trunk/Options/Options.lua
+
+Experiment with using instance ids for loading, and map ids as a fallback for world bosses. No API changes.
+------------------------------------------------------------------------
+r12912 | nebula169 | 2015-03-07 16:36:22 +0000 (Sat, 07 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/BigWigs_Plugins.toc
+
+Plugins: load on slashes
+------------------------------------------------------------------------
+r12911 | funkydude | 2015-03-07 04:05:42 +0000 (Sat, 07 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+   M /trunk/BlackrockFoundry/Darmac.lua
+   M /trunk/BlackrockFoundry/Gruul.lua
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+   M /trunk/BlackrockFoundry/Kagraz.lua
+   M /trunk/BlackrockFoundry/Kromog.lua
+   M /trunk/BlackrockFoundry/Oregorger.lua
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+   M /trunk/BlackrockFoundry/Thogar.lua
+   M /trunk/Core/BossPrototype.lua
+   M /trunk/Highmaul/Brackenspore.lua
+   M /trunk/Highmaul/KargathBladefist.lua
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/Margok.lua
+   M /trunk/Highmaul/Tectus.lua
+   M /trunk/Highmaul/TheButcher.lua
+   M /trunk/Highmaul/TwinOgron.lua
+
+Revert fallbacks, ENCOUNTER_END is fixed apparently.
+------------------------------------------------------------------------
+r12910 | elvador | 2015-03-06 20:14:27 +0000 (Fri, 06 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: Add cast bar to slag bomb
+------------------------------------------------------------------------
+r12908 | funkydude | 2015-03-06 11:07:46 +0000 (Fri, 06 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Core/BossPrototype.lua
+   M /trunk/Loader.lua
+   M /trunk/Options/Options.lua
+   M /trunk/Plugins/Bars.lua
+
+tweaks
+------------------------------------------------------------------------
+r12907 | nebula169 | 2015-03-06 10:42:13 +0000 (Fri, 06 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Darmac.lua
+
+Darmac: tweaks
+------------------------------------------------------------------------
+r12906 | funkydude | 2015-03-05 21:13:33 +0000 (Thu, 05 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: add Massive Explosion and Falling Debris.
+------------------------------------------------------------------------
+r12905 | funkydude | 2015-03-05 17:44:11 +0000 (Thu, 05 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+   M /trunk/Loader.lua
+
+TheBlastFurnace: Fix initial operator timer.
+------------------------------------------------------------------------
+r12904 | funkydude | 2015-03-05 02:01:07 +0000 (Thu, 05 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+   M /trunk/BlackrockFoundry/Trash.lua
+
+TheBlastFurnace: operator timer tweak.
+------------------------------------------------------------------------
+r12903 | elvador | 2015-03-05 01:36:34 +0000 (Thu, 05 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: Add/fix mythic stuff
+------------------------------------------------------------------------
+r12902 | funkydude | 2015-03-05 01:26:05 +0000 (Thu, 05 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Trash.lua
+
+Trash: add Held to Task enrage alert.
+------------------------------------------------------------------------
+r12901 | funkydude | 2015-03-05 00:34:58 +0000 (Thu, 05 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Core/Core.lua
+
+Support LoD plugins that load after we're enabled.
+------------------------------------------------------------------------
+r12900 | funkydude | 2015-03-04 23:35:49 +0000 (Wed, 04 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kagraz.lua
+
+Kagraz: Fix Lava Slash under you message.
+------------------------------------------------------------------------
+r12899 | funkydude | 2015-03-04 22:44:52 +0000 (Wed, 04 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Trash.lua
+
+Highmaul/Trash: remove some duplicate code.
+------------------------------------------------------------------------
+r12898 | funkydude | 2015-03-04 21:55:59 +0000 (Wed, 04 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Trash.lua
+
+Trash: Add electrical storm and remove some duplicate code.
+------------------------------------------------------------------------
+r12897 | funkydude | 2015-03-04 18:10:50 +0000 (Wed, 04 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Draenor/Drov.lua
+   M /trunk/Draenor/Rukhmar.lua
+   M /trunk/Plugins/Sound.lua
+
+Tweaks.
+------------------------------------------------------------------------
+r12896 | nebula169 | 2015-03-04 10:55:47 +0000 (Wed, 04 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Darmac.lua
+
+Darmac: rework mounting code, add dismount message, move Inferno Breath to an event
+------------------------------------------------------------------------
+r12895 | funkydude | 2015-03-04 04:42:14 +0000 (Wed, 04 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+   M /trunk/Core/Core.lua
+   M /trunk/Loader.lua
+   M /trunk/Locales/enUS.lua
+   M /trunk/Options/Options.lua
+   M /trunk/Plugins/Bars.lua
+   M /trunk/Plugins/Locales/enUS.lua
+   M /trunk/Plugins/Proximity.lua
+   M /trunk/Plugins/Sound.lua
+
+Move the sound option from the main panel to the sound options. Remove the "default only" option from the sound options as that can be done by setting all the sounds to raid warning. Remove pulse from bar testing function.
+------------------------------------------------------------------------
+r12893 | funkydude | 2015-03-03 21:17:44 +0000 (Tue, 03 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Sound.lua
+
+Sound: Stop adding the countdown sounds to LSM.
+------------------------------------------------------------------------
+r12892 | nebula169 | 2015-03-03 21:09:39 +0000 (Tue, 03 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: Update Marked for Death marker description to include the extra mark for mythic
+------------------------------------------------------------------------
+r12891 | funkydude | 2015-03-03 18:09:53 +0000 (Tue, 03 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+   M /trunk/BlackrockFoundry/Trash.lua
+
+bump version
+------------------------------------------------------------------------
+r12890 | funkydude | 2015-03-03 05:07:25 +0000 (Tue, 03 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Darmac.lua
+
+Darmac: cleanup pin down.
+------------------------------------------------------------------------
+r12889 | funkydude | 2015-03-03 04:03:19 +0000 (Tue, 03 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Trash.lua
+
+Trash: comma fix
+------------------------------------------------------------------------
+r12888 | funkydude | 2015-03-03 03:28:50 +0000 (Tue, 03 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Locales/enUS.lua
+   M /trunk/Plugins/Victory.lua
+
+Victory: Move locale to wowace.
+------------------------------------------------------------------------
+r12887 | funkydude | 2015-03-03 03:17:56 +0000 (Tue, 03 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Victory.lua
+
+Victory: Fix sound selection
+------------------------------------------------------------------------
+r12886 | funkydude | 2015-03-03 03:00:51 +0000 (Tue, 03 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Locales/enUS.lua
+   M /trunk/Plugins/Sound.lua
+   M /trunk/Plugins/Victory.lua
+
+Move the victory sound selection to the victory module.
+------------------------------------------------------------------------
+r12885 | funkydude | 2015-03-03 02:28:58 +0000 (Tue, 03 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Trash.lua
+   M /trunk/Loader.lua
+
+Trash: add Living Blaze & Burning.
+------------------------------------------------------------------------
+r12884 | funkydude | 2015-03-03 01:07:29 +0000 (Tue, 03 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: add sound for slag bombs, faster p2 warning.
+------------------------------------------------------------------------
+r12883 | funkydude | 2015-03-02 18:34:55 +0000 (Mon, 02 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+Store the slash handlers by addon index.
+------------------------------------------------------------------------
+r12882 | funkydude | 2015-03-02 17:52:16 +0000 (Mon, 02 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+Tweaks
+------------------------------------------------------------------------
+r12881 | funkydude | 2015-03-02 17:05:49 +0000 (Mon, 02 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: Bump proximity radius to 9 yards due to heavy movement.
+------------------------------------------------------------------------
+r12880 | nebula169 | 2015-03-02 16:45:50 +0000 (Mon, 02 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+only nil out the slash handler if the addon isn't loaded yet
+------------------------------------------------------------------------
+r12879 | nebula169 | 2015-03-02 08:03:33 +0000 (Mon, 02 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+handle invalidating X-LoadOn-Slash commands internally
+------------------------------------------------------------------------
+r12878 | funkydude | 2015-03-02 04:39:38 +0000 (Mon, 02 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+   M /trunk/BlackrockFoundry/Darmac.lua
+   M /trunk/BlackrockFoundry/Gruul.lua
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+   M /trunk/BlackrockFoundry/Kagraz.lua
+   M /trunk/BlackrockFoundry/Kromog.lua
+   M /trunk/BlackrockFoundry/Oregorger.lua
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+   M /trunk/BlackrockFoundry/Thogar.lua
+   M /trunk/Core/BossPrototype.lua
+   M /trunk/Core/Core.lua
+   M /trunk/Highmaul/Brackenspore.lua
+   M /trunk/Highmaul/KargathBladefist.lua
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/Margok.lua
+   M /trunk/Highmaul/Tectus.lua
+   M /trunk/Highmaul/TheButcher.lua
+   M /trunk/Highmaul/TwinOgron.lua
+
+Thanks to ~2% chance of ENCOUNTER_END failing since patch 6.1, fall back to deaths/CheckBossStatus.
+------------------------------------------------------------------------
+r12877 | funkydude | 2015-03-02 02:18:27 +0000 (Mon, 02 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Draenor/Drov.lua
+   M /trunk/Draenor/Rukhmar.lua
+   M /trunk/Draenor/Tarlna.lua
+   M /trunk/Highmaul/Brackenspore.lua
+   M /trunk/Highmaul/KargathBladefist.lua
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/Margok.lua
+   M /trunk/Highmaul/Tectus.lua
+   M /trunk/Highmaul/TheButcher.lua
+   M /trunk/Highmaul/TwinOgron.lua
+
+Finish off bosskill option removal.
+------------------------------------------------------------------------
+r12876 | funkydude | 2015-03-02 00:54:37 +0000 (Mon, 02 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+bump DBM faker
+------------------------------------------------------------------------
+r12875 | funkydude | 2015-03-01 23:46:07 +0000 (Sun, 01 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Victory.lua
+
+dem commas
+------------------------------------------------------------------------
+r12874 | funkydude | 2015-03-01 22:41:07 +0000 (Sun, 01 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: scan duration of all bomb types, not just the picked up one.
+------------------------------------------------------------------------
+r12873 | funkydude | 2015-03-01 20:59:32 +0000 (Sun, 01 Mar 2015) | 2 lines
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+   M /trunk/BlackrockFoundry/Darmac.lua
+   M /trunk/BlackrockFoundry/Gruul.lua
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+   M /trunk/BlackrockFoundry/Kagraz.lua
+   M /trunk/BlackrockFoundry/Kromog.lua
+   M /trunk/BlackrockFoundry/Oregorger.lua
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+   M /trunk/BlackrockFoundry/Thogar.lua
+   M /trunk/Core/BossPrototype.lua
+   M /trunk/Core/Core.lua
+   M /trunk/Locales/enUS.lua
+   M /trunk/Plugins/Locales/enUS.lua
+   A /trunk/Plugins/Victory.lua
+   M /trunk/Plugins/modules.xml
+
+Victory: Initial module import, handle victory messages/sound here rather than per boss. Includes ability to disable blizz victory message.
+BossPrototype: Add a check for invalid spell ids being sent to :Dispeller.
+------------------------------------------------------------------------
+r12872 | funkydude | 2015-03-01 18:28:53 +0000 (Sun, 01 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Draenor/Tarlna.lua
+
+Tarlna: spell id option fix
+------------------------------------------------------------------------
+r12871 | funkydude | 2015-03-01 15:17:39 +0000 (Sun, 01 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/modules.xml
+
+Sort our modules in the dropdown menu according to popular mythic progression.
+------------------------------------------------------------------------
+r12870 | funkydude | 2015-03-01 13:45:07 +0000 (Sun, 01 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+Pass any further text to the new slash handler
+------------------------------------------------------------------------
+r12869 | funkydude | 2015-03-01 13:33:04 +0000 (Sun, 01 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+Remove unnecessary LoD check.
+------------------------------------------------------------------------
+r12868 | elvador | 2015-03-01 01:05:52 +0000 (Sun, 01 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+fix X-BigWigs-LoadOn-Slash
+------------------------------------------------------------------------
+r12867 | funkydude | 2015-02-28 21:10:37 +0000 (Sat, 28 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+tweak comments
+------------------------------------------------------------------------
+r12866 | funkydude | 2015-02-28 17:01:10 +0000 (Sat, 28 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+Support 2 slash handlers.
+------------------------------------------------------------------------
+r12865 | funkydude | 2015-02-28 16:35:51 +0000 (Sat, 28 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+Initial support for X-BigWigs-LoadOn-Slash for LoD zone based plugins to show their configs.
+------------------------------------------------------------------------
+r12864 | funkydude | 2015-02-27 12:05:58 +0000 (Fri, 27 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Core/Core.lua
+
+Core: use bar:GetLabel in our test function.
+------------------------------------------------------------------------
+r12863 | nebula169 | 2015-02-26 22:16:31 +0000 (Thu, 26 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: don't count mc Bombs
+------------------------------------------------------------------------
+r12862 | nebula169 | 2015-02-26 21:14:01 +0000 (Thu, 26 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: add mc Bomb spell id to REMOVED, too
+------------------------------------------------------------------------
+r12861 | nebula169 | 2015-02-26 20:44:38 +0000 (Thu, 26 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: add mc Bomb spell id
+------------------------------------------------------------------------
+r12860 | funkydude | 2015-02-26 20:41:47 +0000 (Thu, 26 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kagraz.lua
+
+Kagraz: spell id fix.
+------------------------------------------------------------------------
+r12858 | funkydude | 2015-02-26 06:49:37 +0000 (Thu, 26 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+
+HansgarAndFranzok: Remove phases remnant.
+------------------------------------------------------------------------
+r12857 | funkydude | 2015-02-26 00:44:25 +0000 (Thu, 26 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+
+bump version
+------------------------------------------------------------------------
+r12856 | funkydude | 2015-02-26 00:28:40 +0000 (Thu, 26 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: LFR timers also changed, let's assume firecaller/guard timers are now the same on all difficulties.
+------------------------------------------------------------------------
+r12855 | funkydude | 2015-02-25 23:16:19 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: Fix Heroic guard/firecaller timers for 6.1
+------------------------------------------------------------------------
+r12854 | funkydude | 2015-02-25 22:44:46 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+Fix invalid spellId option
+------------------------------------------------------------------------
+r12853 | funkydude | 2015-02-25 20:41:11 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/KargathBladefist.lua
+
+KargathBladefist: Add APPLIED events.
+------------------------------------------------------------------------
+r12852 | nebula169 | 2015-02-25 19:31:06 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Gruul.lua
+
+Gruul: fix Petrifying Slam bar
+------------------------------------------------------------------------
+r12850 | funkydude | 2015-02-25 16:18:32 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: Mythic phase fix.
+------------------------------------------------------------------------
+r12849 | funkydude | 2015-02-25 16:11:22 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Remove old yell string.
+------------------------------------------------------------------------
+r12848 | funkydude | 2015-02-25 16:03:03 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+   M /trunk/Highmaul/Margok.lua
+
+Margok: Final cleanups
+------------------------------------------------------------------------
+r12847 | funkydude | 2015-02-25 15:40:16 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: cleanups
+------------------------------------------------------------------------
+r12846 | nebula169 | 2015-02-25 15:28:39 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: fix Gaze close proximity call, remove the extra Branded checks
+------------------------------------------------------------------------
+r12845 | nebula169 | 2015-02-25 15:12:25 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: tweaks
+------------------------------------------------------------------------
+r12844 | funkydude | 2015-02-25 14:56:21 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Margok.lua
+
+Margok: tweaks
+------------------------------------------------------------------------
+r12843 | funkydude | 2015-02-25 14:42:17 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/KargathBladefist.lua
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/Tectus.lua
+   M /trunk/Highmaul/TwinOgron.lua
+
+More cleanups.
+------------------------------------------------------------------------
+r12842 | funkydude | 2015-02-25 13:14:00 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+   M /trunk/Highmaul/Brackenspore.lua
+   M /trunk/Highmaul/KargathBladefist.lua
+   M /trunk/Highmaul/Margok.lua
+   M /trunk/Highmaul/TheButcher.lua
+
+Cleanups
+------------------------------------------------------------------------
+r12841 | funkydude | 2015-02-25 11:59:16 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+bump DBM version
+------------------------------------------------------------------------
+r12840 | nebula169 | 2015-02-25 08:49:04 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+
+HansgarAndFranzok: tweak Crippling Suplex
+------------------------------------------------------------------------
+r12839 | nebula169 | 2015-02-25 06:43:56 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+TheIronMaidens: fix option keys
+------------------------------------------------------------------------
+r12837 | funkydude | 2015-02-24 23:37:40 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: Fix normal mode adds.
+------------------------------------------------------------------------
+r12836 | funkydude | 2015-02-24 23:18:59 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Trash.lua
+
+Trash: Stop the smash bar on death.
+------------------------------------------------------------------------
+r12835 | funkydude | 2015-02-24 22:48:32 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Core/Constants.lua
+
+Constants: Fix spellid options
+------------------------------------------------------------------------
+r12834 | funkydude | 2015-02-24 22:34:40 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Darmac.lua
+
+Darmac: quick fix for conflag marking.
+------------------------------------------------------------------------
+r12833 | funkydude | 2015-02-24 22:17:34 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+   M /trunk/BlackrockFoundry/BigWigs_BlackrockFoundry.toc
+   M /trunk/Core/BigWigs_Core.toc
+   M /trunk/Core/BossPrototype.lua
+   M /trunk/Core/Core.lua
+   M /trunk/Core/PluginPrototype.lua
+   M /trunk/Draenor/BigWigs_Draenor.toc
+   M /trunk/Highmaul/BigWigs_Highmaul.toc
+   M /trunk/Loader.lua
+   M /trunk/Options/BigWigs_Options.toc
+   M /trunk/Plugins/BigWigs_Plugins.toc
+   M /trunk/Plugins/Colors.lua
+   M /trunk/Plugins/Emphasize.lua
+   M /trunk/Plugins/Sound.lua
+
+Pull the trigger on the DB reset and bump toc to 60100.
+------------------------------------------------------------------------
+r12832 | funkydude | 2015-02-24 12:13:28 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Core/Core.lua
+
+Core: tweak boss whisper code.
+------------------------------------------------------------------------
+r12831 | funkydude | 2015-02-24 11:59:18 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: localization moved.
+------------------------------------------------------------------------
+r12830 | funkydude | 2015-02-24 11:48:05 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: p3 bar cancellation.
+------------------------------------------------------------------------
+r12829 | funkydude | 2015-02-24 11:41:39 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+TheIronMaidens: Fix heartseeker on you flash/say.
+------------------------------------------------------------------------
+r12828 | funkydude | 2015-02-24 03:57:44 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: description tweak
+------------------------------------------------------------------------
+r12827 | funkydude | 2015-02-24 03:40:33 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: Throttle bomb on you message/say/flash.
+------------------------------------------------------------------------
+r12826 | funkydude | 2015-02-24 03:30:02 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Core/Core.lua
+
+Core: Sync boss whisper for Transcriptor logging.
+------------------------------------------------------------------------
+r12825 | funkydude | 2015-02-24 03:27:04 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: Show rupture to everyone.
+------------------------------------------------------------------------
+r12824 | funkydude | 2015-02-24 03:12:15 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: Fix LFR and Mythic add timers.
+------------------------------------------------------------------------
+r12823 | funkydude | 2015-02-24 02:19:32 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Trash.lua
+
+Trash: typo fix.
+------------------------------------------------------------------------
+r12822 | funkydude | 2015-02-24 02:07:06 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Trash.lua
+
+Trash: add Overhead Smash tank alert.
+------------------------------------------------------------------------
+r12821 | funkydude | 2015-02-24 00:45:06 +0000 (Tue, 24 Feb 2015) | 4 lines
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: Added disabled Firecaller marker
+Restrict Cauterize warnings to target/focus
+Tweak operator timers
+Added guard, engineer and firecaller timers.
+------------------------------------------------------------------------
+r12820 | elvador | 2015-02-24 00:42:10 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+Iron Maidens: Improve Blade Dash and Convulsive Shadows handling
+------------------------------------------------------------------------
+r12819 | funkydude | 2015-02-23 22:18:36 +0000 (Mon, 23 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Emphasize.lua
+
+Emphasize: Fix resetting countdown after a wipe.
+------------------------------------------------------------------------
+r12818 | funkydude | 2015-02-23 15:32:19 +0000 (Mon, 23 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/deDE.lua
+   M /trunk/BlackrockFoundry/Locales/esES.lua
+   M /trunk/BlackrockFoundry/Locales/frFR.lua
+   M /trunk/BlackrockFoundry/Locales/itIT.lua
+   M /trunk/BlackrockFoundry/Locales/koKR.lua
+   M /trunk/BlackrockFoundry/Locales/ptBR.lua
+   M /trunk/BlackrockFoundry/Locales/ruRU.lua
+   M /trunk/BlackrockFoundry/Locales/zhCN.lua
+   M /trunk/BlackrockFoundry/Locales/zhTW.lua
+   M /trunk/BlackrockFoundry/Oregorger.lua
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+   M /trunk/Highmaul/Margok.lua
+
+BRF: Move localization to wowace.
+------------------------------------------------------------------------
+r12817 | funkydude | 2015-02-23 13:02:13 +0000 (Mon, 23 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+   M /trunk/BlackrockFoundry/Kromog.lua
+   M /trunk/BlackrockFoundry/Locales/deDE.lua
+   M /trunk/BlackrockFoundry/Locales/esES.lua
+   M /trunk/BlackrockFoundry/Locales/frFR.lua
+   M /trunk/BlackrockFoundry/Locales/itIT.lua
+   M /trunk/BlackrockFoundry/Locales/koKR.lua
+   M /trunk/BlackrockFoundry/Locales/ptBR.lua
+   M /trunk/BlackrockFoundry/Locales/ruRU.lua
+   M /trunk/BlackrockFoundry/Locales/zhCN.lua
+   M /trunk/BlackrockFoundry/Locales/zhTW.lua
+
+BRF: locale cleanups, prep for move.
+------------------------------------------------------------------------
+r12816 | nebula169 | 2015-02-23 08:44:08 +0000 (Mon, 23 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: fix p1 Shattering Smash cd
+------------------------------------------------------------------------
+r12815 | funkydude | 2015-02-22 21:02:57 +0000 (Sun, 22 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Trash.lua
+
+Trash: fix stray comma.
+------------------------------------------------------------------------
+r12814 | funkydude | 2015-02-22 20:52:01 +0000 (Sun, 22 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+TheIronMaidens: PrimaryIcon for Penetrating Shot and Rapid fire, SecondaryIcon for Blood Ritual.
+------------------------------------------------------------------------
+r12813 | funkydude | 2015-02-22 19:10:31 +0000 (Sun, 22 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Trash.lua
+
+Trash: add extra enable id.
+------------------------------------------------------------------------
+r12812 | elvador | 2015-02-21 13:27:42 +0000 (Sat, 21 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: Fix Massive Shattering Smash proximity
+------------------------------------------------------------------------
+r12811 | nebula169 | 2015-02-20 12:12:40 +0000 (Fri, 20 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+TheIronMaidens: add icon to Deadly Throw, add Detonation Sequence times for boat group, tweaks
+------------------------------------------------------------------------
+r12810 | funkydude | 2015-02-18 23:52:36 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Sounds/Alarm.ogg
+   M /trunk/Sounds/Alert.ogg
+   M /trunk/Sounds/Amy/1.ogg
+   M /trunk/Sounds/Amy/10.ogg
+   M /trunk/Sounds/Amy/2.ogg
+   M /trunk/Sounds/Amy/3.ogg
+   M /trunk/Sounds/Amy/4.ogg
+   M /trunk/Sounds/Amy/5.ogg
+   M /trunk/Sounds/Amy/6.ogg
+   M /trunk/Sounds/Amy/7.ogg
+   M /trunk/Sounds/Amy/8.ogg
+   M /trunk/Sounds/Amy/9.ogg
+   M /trunk/Sounds/David/1.ogg
+   M /trunk/Sounds/David/10.ogg
+   M /trunk/Sounds/David/2.ogg
+   M /trunk/Sounds/David/3.ogg
+   M /trunk/Sounds/David/4.ogg
+   M /trunk/Sounds/David/5.ogg
+   M /trunk/Sounds/David/6.ogg
+   M /trunk/Sounds/David/7.ogg
+   M /trunk/Sounds/David/8.ogg
+   M /trunk/Sounds/David/9.ogg
+   M /trunk/Sounds/Jim/1.ogg
+   M /trunk/Sounds/Jim/10.ogg
+   M /trunk/Sounds/Jim/2.ogg
+   M /trunk/Sounds/Jim/3.ogg
+   M /trunk/Sounds/Jim/4.ogg
+   M /trunk/Sounds/Jim/5.ogg
+   M /trunk/Sounds/Jim/6.ogg
+   M /trunk/Sounds/Jim/7.ogg
+   M /trunk/Sounds/Jim/8.ogg
+   M /trunk/Sounds/Jim/9.ogg
+   M /trunk/Sounds/Long.ogg
+   M /trunk/Sounds/Victory.ogg
+   M /trunk/Sounds/VictoryClassic.ogg
+   M /trunk/Sounds/VictoryLong.ogg
+
+Some more compression on our sounds.
+------------------------------------------------------------------------
+r12809 | funkydude | 2015-02-18 21:56:49 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Trash.lua
+
+Trash: add Fire Bomb
+------------------------------------------------------------------------
+r12808 | funkydude | 2015-02-18 21:12:51 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Emphasize.lua
+
+Emphasize: Also reset invalid voice selections for specific abilities.
+------------------------------------------------------------------------
+r12807 | funkydude | 2015-02-18 20:14:05 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: Add enable verification.
+------------------------------------------------------------------------
+r12806 | andar1l | 2015-02-18 19:19:40 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/ruRU.lua
+
+ruRu update
+------------------------------------------------------------------------
+r12805 | funkydude | 2015-02-18 17:06:08 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Emphasize.lua
+
+Emphasize: rename voices to align better in the dropdown.
+------------------------------------------------------------------------
+r12804 | nebula169 | 2015-02-18 16:43:07 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kagraz.lua
+
+Kagraz: tweaks
+------------------------------------------------------------------------
+r12803 | nebula169 | 2015-02-18 16:41:20 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Core/BossPrototype.lua
+
+BossPrototype: allow :ColorName to take/return a table to be used with :TargetMessage
+------------------------------------------------------------------------
+r12802 | nebula169 | 2015-02-18 16:24:26 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kagraz.lua
+
+Kagraz: i never committed that
+------------------------------------------------------------------------
+r12801 | nebula169 | 2015-02-18 16:20:14 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kagraz.lua
+
+Kagraz: two Blazing Radiance targets in mythic
+------------------------------------------------------------------------
+r12800 | funkydude | 2015-02-18 16:13:03 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/Koragh.lua
+
+Koragh: Add Fel under you warning.
+------------------------------------------------------------------------
+r12799 | funkydude | 2015-02-18 15:40:56 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Bars.lua
+
+Bars: Fire BigWigs_BarCreated and BigWigs_BarEmphasized callbacks.
+------------------------------------------------------------------------
+r12798 | andar1l | 2015-02-18 15:27:59 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/ruRU.lua
+
+ruRu update
+------------------------------------------------------------------------
+r12797 | funkydude | 2015-02-18 13:32:57 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+   M /trunk/Highmaul/Koragh.lua
+   M /trunk/Highmaul/Margok.lua
+
+Whitespace cleanup.
+------------------------------------------------------------------------
+r12796 | nebula169 | 2015-02-18 13:30:50 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: add sounds to the split warnings
+------------------------------------------------------------------------
+r12795 | elvador | 2015-02-18 13:15:28 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: use existing API functions instead of imaginary ones
+------------------------------------------------------------------------
+r12794 | elvador | 2015-02-18 13:07:05 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/deDE.lua
+   M /trunk/BlackrockFoundry/Locales/esES.lua
+   M /trunk/BlackrockFoundry/Locales/frFR.lua
+   M /trunk/BlackrockFoundry/Locales/itIT.lua
+   M /trunk/BlackrockFoundry/Locales/koKR.lua
+   M /trunk/BlackrockFoundry/Locales/ptBR.lua
+   M /trunk/BlackrockFoundry/Locales/ruRU.lua
+   M /trunk/BlackrockFoundry/Locales/zhCN.lua
+   M /trunk/BlackrockFoundry/Locales/zhTW.lua
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: tweak Delayed Siege Bomb, use a spell id instead of a locale
+------------------------------------------------------------------------
+r12793 | elvador | 2015-02-18 11:01:54 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/deDE.lua
+   M /trunk/BlackrockFoundry/Locales/esES.lua
+   M /trunk/BlackrockFoundry/Locales/frFR.lua
+   M /trunk/BlackrockFoundry/Locales/itIT.lua
+   M /trunk/BlackrockFoundry/Locales/koKR.lua
+   M /trunk/BlackrockFoundry/Locales/ptBR.lua
+   M /trunk/BlackrockFoundry/Locales/ruRU.lua
+   M /trunk/BlackrockFoundry/Locales/zhCN.lua
+   M /trunk/BlackrockFoundry/Locales/zhTW.lua
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: Count delayed siege bombs and say them
+------------------------------------------------------------------------
+r12792 | nebula169 | 2015-02-18 09:22:57 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: fix options
+------------------------------------------------------------------------
+r12791 | nebula169 | 2015-02-18 09:13:02 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: fix p3 proximity, add tank debuff to Attach Slag Bombs
+------------------------------------------------------------------------
+r12790 | nebula169 | 2015-02-18 07:51:48 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Darmac.lua
+
+Darmac: increase Call the Pack cd for normal
+------------------------------------------------------------------------
+r12789 | elvador | 2015-02-18 00:46:33 +0000 (Wed, 18 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: Fix Pulse Grenade CD
+------------------------------------------------------------------------
+r12788 | jongt23 | 2015-02-17 15:30:31 +0000 (Tue, 17 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/esES.lua
+
+esES update
+------------------------------------------------------------------------
+r12787 | funkydude | 2015-02-17 11:23:52 +0000 (Tue, 17 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Highmaul/TwinOgron.lua
+
+TwinOgron: Fix countdown.
+------------------------------------------------------------------------
+r12786 | funkydude | 2015-02-17 11:05:50 +0000 (Tue, 17 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+   M /trunk/Locales/enUS.lua
+
+Commented out db reset code.
+------------------------------------------------------------------------
+r12785 | funkydude | 2015-02-17 10:33:59 +0000 (Tue, 17 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Emphasize.lua
+
+Emphasize: Reset voice if we failed to find it.
+------------------------------------------------------------------------
+r12784 | nebula169 | 2015-02-17 02:59:00 +0000 (Tue, 17 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Emphasize.lua
+
+fix error
+------------------------------------------------------------------------
+r12783 | nebula169 | 2015-02-17 02:47:32 +0000 (Tue, 17 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Emphasize.lua
+   A /trunk/Sounds/Heroes/koKR
+   A /trunk/Sounds/Heroes/koKR/1.ogg
+   A /trunk/Sounds/Heroes/koKR/2.ogg
+   A /trunk/Sounds/Heroes/koKR/3.ogg
+   A /trunk/Sounds/Heroes/koKR/4.ogg
+   A /trunk/Sounds/Heroes/koKR/5.ogg
+
+add koKR countdown and update chinese names to match the locale name
+------------------------------------------------------------------------
+r12782 | MysticalOS | 2015-02-16 23:53:14 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+DBM version
+------------------------------------------------------------------------
+r12781 | funkydude | 2015-02-16 22:39:17 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: Add enable check.
+------------------------------------------------------------------------
+r12780 | funkydude | 2015-02-16 20:46:57 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Bars.lua
+   M /trunk/Plugins/Emphasize.lua
+
+Use the chosen countdown voice for pulling.
+------------------------------------------------------------------------
+r12779 | pettigrow | 2015-02-16 20:42:42 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/frFR.lua
+
+frFR Update
+------------------------------------------------------------------------
+r12778 | funkydude | 2015-02-16 19:16:28 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Trash.lua
+   M /trunk/Plugins/Emphasize.lua
+   M /trunk/Sounds/Amy/license.txt
+   M /trunk/Sounds/David/license.txt
+   A /trunk/Sounds/Heroes
+   A /trunk/Sounds/Heroes/deDE
+   A /trunk/Sounds/Heroes/deDE/1.ogg
+   A /trunk/Sounds/Heroes/deDE/2.ogg
+   A /trunk/Sounds/Heroes/deDE/3.ogg
+   A /trunk/Sounds/Heroes/deDE/4.ogg
+   A /trunk/Sounds/Heroes/deDE/5.ogg
+   A /trunk/Sounds/Heroes/enUS
+   A /trunk/Sounds/Heroes/enUS/1.ogg
+   A /trunk/Sounds/Heroes/enUS/2.ogg
+   A /trunk/Sounds/Heroes/enUS/3.ogg
+   A /trunk/Sounds/Heroes/enUS/4.ogg
+   A /trunk/Sounds/Heroes/enUS/5.ogg
+   A /trunk/Sounds/Heroes/esES
+   A /trunk/Sounds/Heroes/esES/1.ogg
+   A /trunk/Sounds/Heroes/esES/2.ogg
+   A /trunk/Sounds/Heroes/esES/3.ogg
+   A /trunk/Sounds/Heroes/esES/4.ogg
+   A /trunk/Sounds/Heroes/esES/5.ogg
+   A /trunk/Sounds/Heroes/frFR
+   A /trunk/Sounds/Heroes/frFR/1.ogg
+   A /trunk/Sounds/Heroes/frFR/2.ogg
+   A /trunk/Sounds/Heroes/frFR/3.ogg
+   A /trunk/Sounds/Heroes/frFR/4.ogg
+   A /trunk/Sounds/Heroes/frFR/5.ogg
+   A /trunk/Sounds/Heroes/itIT
+   A /trunk/Sounds/Heroes/itIT/1.ogg
+   A /trunk/Sounds/Heroes/itIT/2.ogg
+   A /trunk/Sounds/Heroes/itIT/3.ogg
+   A /trunk/Sounds/Heroes/itIT/4.ogg
+   A /trunk/Sounds/Heroes/itIT/5.ogg
+   A /trunk/Sounds/Heroes/license.txt
+   A /trunk/Sounds/Heroes/ptBR
+   A /trunk/Sounds/Heroes/ptBR/1.ogg
+   A /trunk/Sounds/Heroes/ptBR/2.ogg
+   A /trunk/Sounds/Heroes/ptBR/3.ogg
+   A /trunk/Sounds/Heroes/ptBR/4.ogg
+   A /trunk/Sounds/Heroes/ptBR/5.ogg
+   A /trunk/Sounds/Heroes/ruRU
+   A /trunk/Sounds/Heroes/ruRU/1.ogg
+   A /trunk/Sounds/Heroes/ruRU/2.ogg
+   A /trunk/Sounds/Heroes/ruRU/3.ogg
+   A /trunk/Sounds/Heroes/ruRU/4.ogg
+   A /trunk/Sounds/Heroes/ruRU/5.ogg
+   A /trunk/Sounds/Heroes/zhCN
+   A /trunk/Sounds/Heroes/zhCN/1.ogg
+   A /trunk/Sounds/Heroes/zhCN/2.ogg
+   A /trunk/Sounds/Heroes/zhCN/3.ogg
+   A /trunk/Sounds/Heroes/zhCN/4.ogg
+   A /trunk/Sounds/Heroes/zhCN/5.ogg
+   A /trunk/Sounds/Heroes/zhTW
+   A /trunk/Sounds/Heroes/zhTW/1.ogg
+   A /trunk/Sounds/Heroes/zhTW/2.ogg
+   A /trunk/Sounds/Heroes/zhTW/3.ogg
+   A /trunk/Sounds/Heroes/zhTW/4.ogg
+   A /trunk/Sounds/Heroes/zhTW/5.ogg
+   M /trunk/Sounds/Jim/license.txt
+
+Add localized countdowns.
+------------------------------------------------------------------------
+r12777 | ananhaid | 2015-02-16 18:41:50 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/zhCN.lua
+
+- zhCN update.
+------------------------------------------------------------------------
+r12776 | stanzilla | 2015-02-16 18:24:51 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Bars.lua
+
+fix path to sound files for pull timer, we use Amy for that.
+------------------------------------------------------------------------
+r12775 | elvador | 2015-02-16 14:42:25 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kromog.lua
+
+Kromog: Fix bar message for Call of the Mountain
+------------------------------------------------------------------------
+r12774 | elvador | 2015-02-16 14:39:51 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kromog.lua
+
+Kromog: Improve Trembling Earth and Call of the Mountain handling
+------------------------------------------------------------------------
+r12773 | funkydude | 2015-02-16 14:17:20 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/Plugins/Emphasize.lua
+   M /trunk/Plugins/Sound.lua
+   D /trunk/Sounds/1.ogg
+   D /trunk/Sounds/10.ogg
+   D /trunk/Sounds/12345_countdown_license.txt
+   D /trunk/Sounds/12345_countdown_source.wav
+   D /trunk/Sounds/2.ogg
+   D /trunk/Sounds/3.ogg
+   D /trunk/Sounds/4.ogg
+   D /trunk/Sounds/5.ogg
+   D /trunk/Sounds/6.ogg
+   D /trunk/Sounds/7.ogg
+   D /trunk/Sounds/8.ogg
+   D /trunk/Sounds/9.ogg
+   A /trunk/Sounds/Amy
+   A /trunk/Sounds/Amy/1.ogg
+   A /trunk/Sounds/Amy/10.ogg
+   A /trunk/Sounds/Amy/2.ogg
+   A /trunk/Sounds/Amy/3.ogg
+   A /trunk/Sounds/Amy/4.ogg
+   A /trunk/Sounds/Amy/5.ogg
+   A /trunk/Sounds/Amy/6.ogg
+   A /trunk/Sounds/Amy/7.ogg
+   A /trunk/Sounds/Amy/8.ogg
+   A /trunk/Sounds/Amy/9.ogg
+   A /trunk/Sounds/Amy/countdown.wav
+   A /trunk/Sounds/Amy/license.txt
+
+Move main countdown sounds into a subdirectory.
+------------------------------------------------------------------------
+r12772 | elvador | 2015-02-16 14:09:14 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+   M /trunk/BlackrockFoundry/Locales/deDE.lua
+   M /trunk/BlackrockFoundry/Locales/esES.lua
+   M /trunk/BlackrockFoundry/Locales/frFR.lua
+   M /trunk/BlackrockFoundry/Locales/itIT.lua
+   M /trunk/BlackrockFoundry/Locales/koKR.lua
+   M /trunk/BlackrockFoundry/Locales/ptBR.lua
+   M /trunk/BlackrockFoundry/Locales/ruRU.lua
+   M /trunk/BlackrockFoundry/Locales/zhCN.lua
+   M /trunk/BlackrockFoundry/Locales/zhTW.lua
+
+Blackhand: Add locales for massive smash, fix smash icon OnBossDisable
+------------------------------------------------------------------------
+r12771 | nebula169 | 2015-02-16 13:58:50 +0000 (Mon, 16 Feb 2015) | 5 lines
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/Core/BossPrototype.lua
+   M /trunk/Core/Constants.lua
+   M /trunk/Locales/enUS.lua
+   M /trunk/Options/Options.lua
+   M /trunk/Plugins/Emphasize.lua
+   M /trunk/Plugins/Locales/enUS.lua
+   M /trunk/Plugins/Sound.lua
+   M /trunk/Sounds/1.ogg
+   A /trunk/Sounds/10.ogg
+   M /trunk/Sounds/2.ogg
+   M /trunk/Sounds/3.ogg
+   M /trunk/Sounds/4.ogg
+   M /trunk/Sounds/5.ogg
+   A /trunk/Sounds/6.ogg
+   A /trunk/Sounds/7.ogg
+   A /trunk/Sounds/8.ogg
+   A /trunk/Sounds/9.ogg
+   A /trunk/Sounds/David
+   A /trunk/Sounds/David/1.ogg
+   A /trunk/Sounds/David/10.ogg
+   A /trunk/Sounds/David/2.ogg
+   A /trunk/Sounds/David/3.ogg
+   A /trunk/Sounds/David/4.ogg
+   A /trunk/Sounds/David/5.ogg
+   A /trunk/Sounds/David/6.ogg
+   A /trunk/Sounds/David/7.ogg
+   A /trunk/Sounds/David/8.ogg
+   A /trunk/Sounds/David/9.ogg
+   A /trunk/Sounds/David/countdown.wav
+   A /trunk/Sounds/David/license.txt
+   A /trunk/Sounds/Jim
+   A /trunk/Sounds/Jim/1.ogg
+   A /trunk/Sounds/Jim/10.ogg
+   A /trunk/Sounds/Jim/2.ogg
+   A /trunk/Sounds/Jim/3.ogg
+   A /trunk/Sounds/Jim/4.ogg
+   A /trunk/Sounds/Jim/5.ogg
+   A /trunk/Sounds/Jim/6.ogg
+   A /trunk/Sounds/Jim/7.ogg
+   A /trunk/Sounds/Jim/8.ogg
+   A /trunk/Sounds/Jim/9.ogg
+   A /trunk/Sounds/Jim/countdown.wav
+   A /trunk/Sounds/Jim/license.txt
+
+- Split the Super Emphasize option into Emphasize messages and Countdown (you'll need to set Countdown on options you had Emphasized to get both again), options moved to Messages -> Emphasized messages
+- Allow changing the countdown voice globally as well as per-ability
+- Add an API to register more countdown voices (new voices require a minimum of 5 seconds)
+- Allow counting at 10 seconds
+- Add an option to disable the Emphasized Countdown text
+------------------------------------------------------------------------
+r12770 | elvador | 2015-02-16 13:57:24 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: Add Massive Shattering Smash proximity and marker
+------------------------------------------------------------------------
+r12769 | funkydude | 2015-02-16 13:25:23 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kromog.lua
+
+Kromog: Add spell comments.
+------------------------------------------------------------------------
+r12768 | funkydude | 2015-02-16 13:07:08 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+TheIronMaidens: add a comment about the spell name
+------------------------------------------------------------------------
+r12767 | nebula169 | 2015-02-16 08:17:42 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: only open p2 proximity for ranged
+------------------------------------------------------------------------
+r12766 | nebula169 | 2015-02-16 08:15:37 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+TheIronMaidens: split ship and bombardment into their own options, tweak Blood Ritual and Deadly Throw
+------------------------------------------------------------------------
+r12765 | dreamtears1 | 2015-02-16 06:22:07 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/koKR.lua
+
+koKR update
+------------------------------------------------------------------------
+r12764 | funkydude | 2015-02-16 01:22:42 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kromog.lua
+
+Kromog: Comment out on-engage bars for Slam and Rippling Smash, the ~15 second variances makes it somewhat pointless. It's possible something delays it, not sure what.
+------------------------------------------------------------------------
+r12763 | funkydude | 2015-02-16 00:54:58 +0000 (Mon, 16 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Darmac.lua
+
+Darmac: Move the pin down bar to the cast so that it expires on the cast start, not the debuff application. Cleanup marking code.
+------------------------------------------------------------------------
+r12762 | funkydude | 2015-02-15 23:41:39 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+TheIronMaidens: Use GetUnitTarget for Deadly Throw.
+------------------------------------------------------------------------
+r12761 | funkydude | 2015-02-15 23:40:05 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Core/BossPrototype.lua
+
+BossPrototype: Add :GetUnitTarget, same as :GetBossTarget, but less efficient in that it scans all the things, not just boss units.
+------------------------------------------------------------------------
+r12760 | elvador | 2015-02-15 20:59:44 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kromog.lua
+
+Kromog: Add trembling earth timer, don't reset breath count
+------------------------------------------------------------------------
+r12759 | funkydude | 2015-02-15 19:06:20 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kromog.lua
+
+Kromog: Cancel the previous breath bar when grasp happens.
+------------------------------------------------------------------------
+r12758 | ananhaid | 2015-02-15 17:26:39 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/zhCN.lua
+   M /trunk/BlackrockFoundry/Locales/zhTW.lua
+
+- zhCN update.
+------------------------------------------------------------------------
+r12756 | funkydude | 2015-02-15 16:24:26 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Loader.lua
+
+tweaks.
+------------------------------------------------------------------------
+r12755 | funkydude | 2015-02-15 16:21:42 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kromog.lua
+
+Kromog: Fix initial breath bar, add counter to all the breath bars, reset on grasp.
+------------------------------------------------------------------------
+r12754 | elvador | 2015-02-15 16:14:04 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kromog.lua
+
+Kromog: Add breath count
+------------------------------------------------------------------------
+r12753 | funkydude | 2015-02-15 15:21:12 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: Attempt to fix new heroic train times after the 7.5 min mark.
+------------------------------------------------------------------------
+r12752 | funkydude | 2015-02-15 13:56:15 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+
+bump version
+------------------------------------------------------------------------
+r12751 | nebula169 | 2015-02-15 13:21:52 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: add p2 proximity
+------------------------------------------------------------------------
+r12750 | funkydude | 2015-02-15 13:03:25 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Plugins/Proximity.lua
+
+Proximity: Remove color when setting a raid icon blip.
+------------------------------------------------------------------------
+r12749 | nebula169 | 2015-02-15 11:33:13 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+
+HansgarAndFranzok: comment out berserk
+------------------------------------------------------------------------
+r12748 | nebula169 | 2015-02-15 03:21:58 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+   M /trunk/BlackrockFoundry/Oregorger.lua
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+tweaks
+------------------------------------------------------------------------
+r12747 | nebula169 | 2015-02-15 03:10:01 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kagraz.lua
+
+Kagraz: only show one Fixate bar
+------------------------------------------------------------------------
+r12746 | nebula169 | 2015-02-15 02:55:11 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Darmac.lua
+
+Darmac: Inferno Breath cd
+------------------------------------------------------------------------
+r12745 | pettigrow | 2015-02-14 11:20:42 +0000 (Sat, 14 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/frFR.lua
+
+frFR: Small fix for Blackrock trash module
+------------------------------------------------------------------------
+r12744 | pettigrow | 2015-02-14 11:13:21 +0000 (Sat, 14 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/frFR.lua
+
+frFR Update
+------------------------------------------------------------------------
+r12743 | nebula169 | 2015-02-14 05:15:32 +0000 (Sat, 14 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: show bars for the next trains after the randoms right away instead of waiting until they come
+------------------------------------------------------------------------
+r12742 | funkydude | 2015-02-13 20:10:12 +0000 (Fri, 13 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+
+HansgarAndFranzok: Fix berserk option key typo
+------------------------------------------------------------------------
+r12741 | andar1l | 2015-02-13 16:18:39 +0000 (Fri, 13 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/ruRU.lua
+
+ruRu update
+------------------------------------------------------------------------
+r12740 | ananhaid | 2015-02-13 15:25:41 +0000 (Fri, 13 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/zhCN.lua
+
+- zhCN update.
+------------------------------------------------------------------------
+r12739 | funkydude | 2015-02-13 13:49:28 +0000 (Fri, 13 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/deDE.lua
+   M /trunk/BlackrockFoundry/Locales/esES.lua
+   M /trunk/BlackrockFoundry/Locales/frFR.lua
+   M /trunk/BlackrockFoundry/Locales/itIT.lua
+   M /trunk/BlackrockFoundry/Locales/koKR.lua
+   M /trunk/BlackrockFoundry/Locales/ptBR.lua
+   M /trunk/BlackrockFoundry/Locales/ruRU.lua
+   M /trunk/BlackrockFoundry/Locales/zhCN.lua
+   M /trunk/BlackrockFoundry/Locales/zhTW.lua
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: Translate deforester
+------------------------------------------------------------------------
+r12738 | andar1l | 2015-02-13 12:37:04 +0000 (Fri, 13 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/ruRU.lua
+
+ruRu update
+------------------------------------------------------------------------
+r12737 | andar1l | 2015-02-13 12:27:10 +0000 (Fri, 13 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/ruRU.lua
+
+ruRu update
+------------------------------------------------------------------------
+r12736 | nebula169 | 2015-02-13 08:42:52 +0000 (Fri, 13 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+   M /trunk/BlackrockFoundry/Kromog.lua
+
+Blackhand: don't show Throw Slag Bombs during p3, increase the Attach Slag Bomb throttle to catch both, tweaks
+------------------------------------------------------------------------
+r12735 | nebula169 | 2015-02-13 03:14:54 +0000 (Fri, 13 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kromog.lua
+
+Kromog: bump berserk to 9min
+------------------------------------------------------------------------
+r12733 | funkydude | 2015-02-13 00:18:36 +0000 (Fri, 13 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+
+bump version
+------------------------------------------------------------------------
+r12732 | funkydude | 2015-02-13 00:06:36 +0000 (Fri, 13 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Oregorger.lua
+
+Oregorger: Count torrents.
+------------------------------------------------------------------------
+r12731 | nebula169 | 2015-02-12 20:21:44 +0000 (Thu, 12 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Gruul.lua
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: fix icons
+------------------------------------------------------------------------
+r12730 | nebula169 | 2015-02-12 20:11:36 +0000 (Thu, 12 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: mythic datas, throttle Pulse Grenade, warn early for group splits
+------------------------------------------------------------------------
+r12729 | elvador | 2015-02-12 14:25:07 +0000 (Thu, 12 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+Iron Maidens: Add say to Blood Ritual, Penetrating Shot and Heartseeker
+------------------------------------------------------------------------
+r12728 | nebula169 | 2015-02-12 13:41:36 +0000 (Thu, 12 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+TheIronMaidens: fix say on Rapid Fire
+------------------------------------------------------------------------
+r12727 | nebula169 | 2015-02-12 12:31:53 +0000 (Thu, 12 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+
+HansgarAndFranzok: add berserk
+------------------------------------------------------------------------
+r12726 | nebula169 | 2015-02-12 12:29:46 +0000 (Thu, 12 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: add Superheated (again), tweak damage sounds
+------------------------------------------------------------------------
+r12725 | nebula169 | 2015-02-12 08:35:20 +0000 (Thu, 12 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+TheIronMaidens: fix extra Heartseeker targets if you're on the boat
+------------------------------------------------------------------------
+r12724 | nebula169 | 2015-02-12 01:08:23 +0000 (Thu, 12 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Darmac.lua
+
+Darmac: remove Cannonball Barrage, add Unstoppable, fix Epicenter
+------------------------------------------------------------------------
+r12723 | funkydude | 2015-02-11 21:12:24 +0000 (Wed, 11 Feb 2015) | 1 line
+Changed paths:
+   A /trunk/BlackrockFoundry/Trash.lua
+   M /trunk/BlackrockFoundry/modules.xml
+
+Initial BRF trash module.
+------------------------------------------------------------------------
+r12721 | funkydude | 2015-02-11 17:06:43 +0000 (Wed, 11 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: Back to using GetBossTarget.
+------------------------------------------------------------------------
+r12720 | funkydude | 2015-02-11 17:05:12 +0000 (Wed, 11 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Core/BossPrototype.lua
+
+BossPrototype: Base the GetBossTarget id off the passed GUID rather than the destination function.
+------------------------------------------------------------------------
+r12719 | dreamtears1 | 2015-02-11 13:50:23 +0000 (Wed, 11 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/koKR.lua
+
+koKR update
+------------------------------------------------------------------------
+r12718 | nebula169 | 2015-02-11 12:50:53 +0000 (Wed, 11 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: tweak
+------------------------------------------------------------------------
+r12717 | nebula169 | 2015-02-11 09:34:25 +0000 (Wed, 11 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: custom scanner to fix spam
+------------------------------------------------------------------------
+r12716 | nebula169 | 2015-02-11 08:42:18 +0000 (Wed, 11 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kagraz.lua
+
+Kagraz: Summon Enchanted Armaments -> Enchanted Weapon
+------------------------------------------------------------------------
+r12715 | nebula169 | 2015-02-11 08:19:46 +0000 (Wed, 11 Feb 2015) | 2 lines
+Changed paths:
+   M /trunk/BlackrockFoundry/Kagraz.lua
+   M /trunk/BlackrockFoundry/Oregorger.lua
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: add berserk
+Kagraz: restrict Fixate bar to ranged
+------------------------------------------------------------------------
+r12714 | nebula169 | 2015-02-11 08:04:35 +0000 (Wed, 11 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Oregorger.lua
+
+Oregorger: warn for Acid Maw at 3+ stacks
+------------------------------------------------------------------------
+r12713 | nebula169 | 2015-02-11 07:49:03 +0000 (Wed, 11 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Darmac.lua
+
+Darmac: add the dismounted Rend and Tear id, don't reset Tantrum count on dismount, tweak Tantrum cd
+------------------------------------------------------------------------
+r12712 | funkydude | 2015-02-11 07:34:34 +0000 (Wed, 11 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kagraz.lua
+
+Kagraz: comment out bars for lava slash and radiance for now.
+------------------------------------------------------------------------
+r12711 | funkydude | 2015-02-11 07:31:41 +0000 (Wed, 11 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+   M /trunk/Core/Core.lua
+
+bump version
+------------------------------------------------------------------------
+r12710 | nebula169 | 2015-02-11 06:49:13 +0000 (Wed, 11 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Oregorger.lua
+
+Oregorger: fix Berserk soon message and add sound, add sound to Acid Maw stacks
+------------------------------------------------------------------------
+r12709 | ananhaid | 2015-02-10 20:17:01 +0000 (Tue, 10 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/zhCN.lua
+
+- zhCN update.
+------------------------------------------------------------------------
+r12708 | cremor | 2015-02-10 18:21:02 +0000 (Tue, 10 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/deDE.lua
+
+deDE: Fixed encoding to be UTF-8.
+------------------------------------------------------------------------
+r12707 | nebula169 | 2015-02-10 08:00:41 +0000 (Tue, 10 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: shorten Delayed Siege Bomb to just "Bombs"
+------------------------------------------------------------------------
+r12706 | nebula169 | 2015-02-10 07:52:07 +0000 (Tue, 10 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: earlier Delayed Siege Bomb warning
+------------------------------------------------------------------------
+r12705 | funkydude | 2015-02-09 21:10:24 +0000 (Mon, 09 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kromog.lua
+
+Kromog: Fix heroic berserk.
+------------------------------------------------------------------------
+r12704 | ananhaid | 2015-02-09 13:01:49 +0000 (Mon, 09 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/zhCN.lua
+
+- zhCN update.
+------------------------------------------------------------------------
+r12703 | nebula169 | 2015-02-09 08:28:48 +0000 (Mon, 09 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: don't spam Reactive Earth Shield on spell steal
+------------------------------------------------------------------------
+r12702 | nebula169 | 2015-02-09 06:34:20 +0000 (Mon, 09 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/deDE.lua
+   M /trunk/BlackrockFoundry/Locales/esES.lua
+   M /trunk/BlackrockFoundry/Locales/frFR.lua
+   M /trunk/BlackrockFoundry/Locales/itIT.lua
+   M /trunk/BlackrockFoundry/Locales/koKR.lua
+   M /trunk/BlackrockFoundry/Locales/ptBR.lua
+   M /trunk/BlackrockFoundry/Locales/ruRU.lua
+   M /trunk/BlackrockFoundry/Locales/zhCN.lua
+   M /trunk/BlackrockFoundry/Locales/zhTW.lua
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: add Cluster of Lit Bombs
+------------------------------------------------------------------------
+r12701 | nebula169 | 2015-02-09 05:08:31 +0000 (Mon, 09 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheBlastFurnace.lua
+
+TheBlastFurnace: fix Engineer bomb drop message
+------------------------------------------------------------------------
+r12699 | funkydude | 2015-02-09 02:56:12 +0000 (Mon, 09 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+   M /trunk/Loader.lua
+
+bump version
+------------------------------------------------------------------------
+r12698 | funkydude | 2015-02-09 02:51:50 +0000 (Mon, 09 Feb 2015) | 2 lines
+Changed paths:
+   M /trunk/BlackrockFoundry/Darmac.lua
+   M /trunk/BlackrockFoundry/Kromog.lua
+
+Darmac: Add berserk
+Kromog: Fix normal Berserk
+------------------------------------------------------------------------
+r12697 | nebula169 | 2015-02-09 01:07:41 +0000 (Mon, 09 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: add one more set
+------------------------------------------------------------------------
+r12696 | funkydude | 2015-02-09 01:02:16 +0000 (Mon, 09 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kagraz.lua
+
+Kagraz: add APPLIED for Lava Slash damage.
+------------------------------------------------------------------------
+r12695 | funkydude | 2015-02-09 00:42:13 +0000 (Mon, 09 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: Remove icon marking on bomb
+------------------------------------------------------------------------
+r12694 | funkydude | 2015-02-09 00:30:15 +0000 (Mon, 09 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Another data fix
+------------------------------------------------------------------------
+r12693 | funkydude | 2015-02-08 23:19:43 +0000 (Sun, 08 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: Remove a wrong lane 2 train and add a missed lane 2 train.
+------------------------------------------------------------------------
+r12692 | funkydude | 2015-02-08 16:00:43 +0000 (Sun, 08 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+
+HansgarAndFranzok: Use the tested id for Body Slam, can test the earlier one another time.
+------------------------------------------------------------------------
+r12691 | funkydude | 2015-02-08 15:54:58 +0000 (Sun, 08 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/HansgarAndFranzok.lua
+
+HansgarAndFranzok: Drycoded attempt at Body Slam warnings.
+------------------------------------------------------------------------
+r12690 | funkydude | 2015-02-08 14:17:20 +0000 (Sun, 08 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Kagraz.lua
+
+Kagraz: Count firestorm.
+------------------------------------------------------------------------
+r12689 | funkydude | 2015-02-08 12:38:05 +0000 (Sun, 08 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BigWigs.toc
+   M /trunk/BlackrockFoundry/Gruul.lua
+
+Gruul: add berserk option key.
+------------------------------------------------------------------------
+r12688 | elvador | 2015-02-08 11:55:32 +0000 (Sun, 08 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Gruul.lua
+
+Gruul: Fix me not being awake
+------------------------------------------------------------------------
+r12687 | elvador | 2015-02-08 11:52:32 +0000 (Sun, 08 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Gruul.lua
+
+Gruul: Add normal berserk
+------------------------------------------------------------------------
+r12686 | nevcairiel | 2015-02-08 11:43:43 +0000 (Sun, 08 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Gruul.lua
+
+Gruul: Add 6-minute berserk
+------------------------------------------------------------------------
+r12685 | nebula169 | 2015-02-08 09:05:58 +0000 (Sun, 08 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/TheIronMaidens.lua
+
+TheIronMaidens: add Earthen Barrier and Deadly Throw
+------------------------------------------------------------------------
+r12684 | nebula169 | 2015-02-08 08:15:52 +0000 (Sun, 08 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: guess I didn't need that second Throw Slag Bombs id
+------------------------------------------------------------------------
+r12683 | nebula169 | 2015-02-08 07:50:17 +0000 (Sun, 08 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+
+Blackhand: fix Fixate
+------------------------------------------------------------------------
+r12682 | jongt23 | 2015-02-08 02:07:34 +0000 (Sun, 08 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Locales/esES.lua
+
+esES update
+------------------------------------------------------------------------
+r12681 | nebula169 | 2015-02-07 20:24:17 +0000 (Sat, 07 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry/Blackhand.lua
+   M /trunk/BlackrockFoundry/Thogar.lua
+
+Thogar: add a say to Delayed Siege Bomb and handle marking for two cannon trains
+------------------------------------------------------------------------

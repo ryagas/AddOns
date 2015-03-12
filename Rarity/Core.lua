@@ -1,5 +1,5 @@
 Rarity = LibStub("AceAddon-3.0"):NewAddon("Rarity", "AceConsole-3.0", "AceEvent-3.0", "AceTimer-3.0", "LibSink-2.0", "AceBucket-3.0", "LibBars-1.0")
-Rarity.MINOR_VERSION = tonumber(("$Revision: 416 $"):match("%d+"))
+Rarity.MINOR_VERSION = tonumber(("$Revision: 425 $"):match("%d+"))
 local FORCE_PROFILE_RESET_BEFORE_REVISION = 1 -- Set this to one higher than the Revision on the line above this
 local L = LibStub("AceLocale-3.0"):GetLocale("Rarity")
 local R = Rarity
@@ -18,7 +18,7 @@ local lbz = LibStub("LibBabble-Zone-3.0"):GetUnstrictLookupTable()
 local lbsz = LibStub("LibBabble-SubZone-3.0"):GetUnstrictLookupTable()
 local lbct = LibStub("LibBabble-CreatureType-3.0"):GetUnstrictLookupTable()
 local lbb = LibStub("LibBabble-Boss-3.0"):GetUnstrictLookupTable()
----
+--
 
 
 --[[
@@ -2195,7 +2195,7 @@ do
 
 		tooltip2:AddHeader(itemLink or item.name, "|T"..itemTexture..":22|t")
 		scanTip:ClearLines()
-		if toys[item.itemId] then scanTip:SetToyByItemID(item.itemId) else scanTip:SetItemByID(item.itemId) end
+		if item.isToy then scanTip:SetToyByItemID(item.itemId) else scanTip:SetItemByID(item.itemId) end
 		for i = 2, scanTip:NumLines() do
 			local myLeft = _G["__Rarity_ScanTipTextLeft"..i]
 			local txtLeft = myLeft:GetText()
@@ -3066,6 +3066,7 @@ end
 
 
 function R:ScanToys(reason)
+	if InCombatLockdown() then return end
  self:Debug("Scanning toys ("..reason..")")
 
 	if not Rarity.toysScanned then

@@ -1,62 +1,65 @@
-local RingKeeper, assert, copy = {}, OneRingLib.xlu.assert, OneRingLib.xlu.copy
-local RK_RingDesc, RK_CollectionIDs, RK_Version, RK_Rev, SV = {}, {}, 2, 36
+local RingKeeper, _, T = {}, ...
+local RK_RingDesc, RK_CollectionIDs, RK_Version, RK_Rev, EV, SV = {}, {}, 2, 43, T.Evie
 local unlocked, queue, RK_DeletedRings, RK_FlagStore, sharedCollection = false, {}, {}, {}, {}
+_ = T.Toboe and T.Toboe()
 
-local AB = assert(OneRingLib.ext.ActionBook:compatible(1,7), "A compatible version of ActionBook is required")
+local function assert(condition, text, level, ...)
+	return (not condition) and error(tostring(text):format(...), 1 + (level or 1)) or condition
+end
+
+local AB = assert(T.ActionBook:compatible(2,14), "A compatible version of ActionBook is required")
 local ORI = OneRingLib.ext.OPieUI
 
-local RK_ParseMacro, RK_QuantizeMacro, RK_SetMountPreference do
+local RK_ParseMacro, RK_QuantizeMacro do -- +RingKeeper:SetMountPreference(groundSpellID, airSpellID)
 	local castAlias = {[SLASH_CAST1]=1,[SLASH_CAST2]=1,[SLASH_CAST3]=1,[SLASH_CAST4]=1,[SLASH_USE1]=1,[SLASH_USE2]=1,["#show"]=1,["#showtooltip"]=1,["#rkrequire"]=0,[SLASH_CASTSEQUENCE1]=2,[SLASH_CASTSEQUENCE2]=2,[SLASH_CASTRANDOM1]=3,[SLASH_CASTRANDOM2]=3}
 	local function replaceSpellID(sidlist, prefix)
 		for id in sidlist:gmatch("%d+") do
-			local sname, srank = GetSpellInfo(tonumber(id))
+			local sname = GetSpellInfo(tonumber(id))
 			if sname and GetSpellInfo(sname) then
 				return prefix .. sname
 			end
 		end
 	end
 	local replaceMountTag do
-		local gmSid, gmId, gmPref, fmSid, fmId, fmPref
-		local req = {127170,123992,127156,123993,127169,127161,127164,127165,127158,113199,127154,129918,139442,124408,132036,25953,26056,26054,26055}
-		for i=#req,1,-1 do req[req[i]], req[i] = i <= 15 and 130487 or 1 end
-		local function searchList(p, m, t)
-			local cv, cs, ci = 0
-			for i=1, GetNumCompanions("MOUNT") do
-				local _, _, sid, _, _, mtype = GetCompanionInfo("MOUNT", i)
-				if mtype % m >= t then
-					if req[sid] == nil or IsSpellKnown(req[sid]) then
-						if sid == p or not p then
-							return sid, i
-						elseif mtype % 16 > 7 and cv < 1 then
-							cv, cs, ci = 1, sid, i
-						else
-							cs, ci = sid, i
+		local skip, gmSid, gmPref, fmSid, fmPref = {[44153]=1, [44151]=1, [61451]=1, [75596]=1, [61309]=1,}
+		local function IsKnownSpell(sid)
+			local sn, sr = GetSpellInfo(sid or 0)
+			return GetSpellInfo(sn, sr) ~= nil and sid
+		end
+		local function findMount(prefSID, mtype)
+			local myFactionId, nc, cs = UnitFactionGroup("player") == "Horde" and 0 or 1, 0
+			for i=1, C_MountJournal.GetNumMounts() do
+				local _1, sid, _3, _4, _5, _6, _7, factionLocked, factionId, hide, have = C_MountJournal.GetMountInfo(i)
+				if have and not hide and (not factionLocked or factionId == myFactionId) and GetSpellInfo((GetSpellInfo(sid))) then
+					local _, _, _, _, t = C_MountJournal.GetMountInfoExtra(i)
+					if sid == prefSID then
+						return sid
+					elseif t == mtype and not skip[sid] then
+						nc = nc + 1
+						if math.random(1,nc) == 1 then
+							cs = sid
 						end
 					end
 				end
 			end
-			return cs, ci
+			return cs
 		end
 		function replaceMountTag(tag, prefix)
 			if tag == "ground" then
-				if (gmId == nil or GetCompanionInfo("MOUNT", gmId) ~= gmSid) then
-					gmSid, gmId = searchList(gmPref, 32, 16)
-				end
+				gmSid = gmSid and IsKnownSpell(gmSid) or findMount(gmPref or gmSid, 230)
 				return replaceSpellID(tostring(gmSid), prefix)
 			elseif tag == "air" then
-				if (fmId == nil or GetCompanionInfo("MOUNT", fmId) ~= fmSid) then
-					fmSid, fmId = searchList(fmPref, 4, 2)
-				end
+				fmSid = fmSid and IsKnownSpell(fmSid) or findMount(fmPref or fmSid, 248)
 				return replaceSpellID(tostring(fmSid), prefix)
 			end
 			return ""
 		end
-		function RK_SetMountPreference(groundSpellID, airSpellID)
-			if groundSpellID ~= nil then
-				gmPref, gmSid, gmId = groundSpellID
+		function RingKeeper:SetMountPreference(groundSpellID, airSpellID)
+			if type(groundSpellID) == "number" then
+				gmPref = groundSpellID
 			end
-			if airSpellID ~= nil then
-				fmPref, fmSid, fmId = airSpellID
+			if type(airSpellID) == "number" then
+				fmPref = airSpellID
 			end
 		end
 	end
@@ -113,7 +116,7 @@ local RK_ParseMacro, RK_QuantizeMacro, RK_SetMountPreference do
 			end
 			return value
 		end)
-		local spells, scantip = {}, CreateFrame("GameTooltip", "OPieCustomRingTT", nil, "GameTooltipTemplate")
+		local spells, nSpec = {}
 		quantizeLine = genLineParser(function(value)
 			local mark, name = value:match("^%s*(!?)(.-)%s*$")
 			local sid = spells[name:lower()]
@@ -123,23 +126,23 @@ local RK_ParseMacro, RK_QuantizeMacro, RK_SetMountPreference do
 		function prepareQuantizer(reuse)
 			if reuse and next(spells) then return end
 			wipe(spells)
-			scantip:SetOwner(UIParent, "ANCHOR_NONE")
-			for i=1,GetNumCompanions("MOUNT") do
-				local _, _, sid = GetCompanionInfo("MOUNT", i)
-				local sname = sid and GetSpellInfo(sid)
+			for i=1, C_MountJournal.GetNumMounts() do
+				local _, sid = C_MountJournal.GetMountInfo(i)
+				local sname = GetSpellInfo(sid)
 				if sname then
 					spells[sname:lower()] = sid
 				end
 			end
-			for i=1,GetNumTalents() do
-				scantip:SetTalent(i)
-				local name, rank, id = scantip:GetSpell()
-				if id and type(name) == "string" then
-					spells[name:lower()] = id
+			for j=1,nSpec or GetNumSpecializations() do
+				for i=1,GetNumTalents() do
+					local name, _, id = GetTalentSpellForSpecialization(i, j)
+					if id and type(name) == "string" then
+						spells[name:lower()] = id
+					end
 				end
 			end
 			for i=GetNumSpellTabs()+12,1,-1 do
-				local n, _, ofs, c, _, sid = GetSpellTabInfo(i)
+				local _, _, ofs, c, _, sid = GetSpellTabInfo(i)
 				for j=ofs+1,sid == 0 and (ofs+c) or 0 do
 					local n, st, id = GetSpellBookItemName(j, "spell"), GetSpellBookItemInfo(j, "spell")
 					if type(n) ~= "string" or not id then
@@ -283,93 +286,116 @@ local encodeMacro, decodeMacro do
 		return ("\n" .. m):gsub("\n!(.-)!(%S*)", slash_l10n):sub(2)
 	end
 end
+local copy do
+	local copies = {}
+	function copy(t, isInnerCall)
+		if not isInnerCall then wipe(copies) end
+		local into = {} copies[t] = into
+		for k,v in pairs(t) do
+			into[type(k) == "table" and (copies[k] or copy(k, true)) or k] = type(v) == "table" and (copies[v] or copy(v, true)) or v
+		end
+		if not isInnerCall then wipe(copies) end
+		return into
+	end
+end
 
-local sReg = {__index={nil, nil, "name", "hotkey", "offset", "noOpportunisticCA", "noPersistentCA", "internal", "limit", "id", "skipSpecs", "caption", "icon", "show"}}
-local sRegMap = {__index={}} for k,v in pairs(sReg.__index) do sRegMap.__index[v] = k end
+local sReg, sRegRev, sSign = {__index={nil, nil, "name", "hotkey", "offset", "noOpportunisticCA", "noPersistentCA", "internal", "limit", "id", "skipSpecs", "caption", "icon", "show"}}, {__index={}}, string.char(111,101,116,111,104,72,55)
+for k,v in pairs(sReg.__index) do sRegRev.__index[v] = k end
 
 local function pullOptions(e, a, ...)
 	if a then return e[a], pullOptions(e, ...) end
 end
 local function unpackABAction(e, s)
 	if e[s] then return e[s], unpackABAction(e, s+1) end
-	return pullOptions(e, AB:options(e[1]))
+	return pullOptions(e, AB:GetActionOptions(e[1]))
 end
 local function RK_SyncRing(name, force, tok)
-	local desc, changed, cid = RK_RingDesc[name], (force == true), RK_CollectionIDs[name];
+	local desc, changed, cid = RK_RingDesc[name], (force == true), RK_CollectionIDs[name]
 	if not RK_IsRelevantRingDescription(desc) then return; end
-	tok = tok or AB:lastupdate("*")
-	if not force and tok == desc.lastUpdateToken then return end
-	desc.lastUpdateToken = tok
-	
-	local curSpec = " " .. (GetSpecializationInfo(GetSpecialization() or 0) or CLASS) .. " "
+	tok = tok or AB:GetLastObserverUpdateToken("*")
+	if not force and tok == desc._lastUpdateToken then return end
+	desc._lastUpdateToken = tok
 	
 	for i, e in ipairs(desc) do
-		local ident, fc, action = e[1], e.fcSlice and true or nil
-		if e.skipSpecs and e.skipSpecs:match(curSpec) then
-		elseif ident == "macrotext" then
+		local ident, action = e[1]
+		if ident == "macrotext" then
 			local m = RK_ParseMacro(e[2])
-			if m:match("%S") then action = AB:get("macrotext", m) end
+			if m:match("%S") then action = AB:GetActionSlot("macrotext", m) end
 		elseif type(ident) == "string" then
-			action = AB:get(unpackABAction(e, 1))
+			action = AB:GetActionSlot(unpackABAction(e, 1))
 		end
-		e.action, e.fastClick, changed = action, fc, changed or (action ~= e.action) or (e.fastClick ~= fc) or (action and (e.show ~= e._show))
+		changed = changed or (action ~= e._action) or (e.fastClick ~= e._fastClick) or (e.lockRotation ~= e._lockRotation) or (action and (e.show ~= e._show))
+		e._action, e._fastClick, e._lockRotation = action, e.fastClick, e.lockRotation
 	end
 	
-	if cid and not changed then return end
+	if cid and not changed and not force then return end
 	local collection, cn = sharedCollection, 1
 	wipe(collection)
 	for i, e in ipairs(desc) do
-		if e.action then
-			collection[e.sliceToken], collection[cn], cn = e.action, e.sliceToken, cn + 1
+		if e._action then
+			collection[e.sliceToken], collection[cn], cn = e._action, e.sliceToken, cn + 1
 			collection['__visibility-' .. e.sliceToken], e._show = e.show or nil, e.show
-			ORI:SetDisplayOptions(e.sliceToken, e.icon, e.caption, e.r, e.g, e.b)
+			ORI:SetDisplayOptions(e.sliceToken, e.icon, e.caption, e._r, e._g, e._b)
 		end
 	end
 	if cid then
-		AB:update(cid, collection)
+		AB:UpdateActionSlot(cid, collection)
 	else
-		cid = AB:create("collection", nil, collection)
+		cid = AB:CreateActionSlot(nil, nil, "collection", collection)
 		RK_CollectionIDs[name], RK_CollectionIDs[cid] = cid, name
 	end
-	desc.action = cid
-	OneRingLib:SetRing(name, desc)
+	OneRingLib:SetRing(name, cid, desc)
+end
+local function dropUnderscoreKeys(t)
+	for k in pairs(t) do
+		if type(k) == "string" and k:sub(1,1) == "_" then
+			t[k] = nil
+		end
+	end
 end
 local function RK_SanitizeDescription(props)
-	local uprefix = type(props.ux) == "string" and props.ux
-	for i, v in ipairs(props) do
-		if v.c and not (v.r and v.g and v.b) then
-			local r,g,b = v.c:match("^(%x%x)(%x%x)(%x%x)$");
+	local uprefix = type(props._u) == "string" and props._u
+	for i=#props,1,-1 do
+		local v = props[i]
+		if type(v.c) == "string" then
+			local r,g,b = v.c:match("^(%x%x)(%x%x)(%x%x)$")
 			if r then
-				v.r, v.g, v.b = tonumber(r, 16)/255, tonumber(g, 16)/255, tonumber(b, 16)/255;
+				v._r, v._g, v._b = tonumber(r, 16)/255, tonumber(g, 16)/255, tonumber(b, 16)/255
 			end
-			v.c = nil
 		end
 		local rt, id = v.rtype, v.id
-		if (rt == nil or rt == "companion") and type(id) == "number" then
-			v[1], v[2] = "spell", id
-		elseif rt == nil and type(id) == "string" then
-			v[1], v[2] = "macrotext", id
-		elseif rt and id then
-			v[1], v[2] = rt, id
+		if rt and id then
+			v[1], v[2], v.rtype, v.id = rt, id
+		elseif type(id) == "number" then
+			v[1], v[2], v.rtype, v.id = "spell", id
+		elseif type(id) == "string" then
+			v[1], v[2], v.rtype, v.id = "macrotext", id
+		elseif v[1] == nil then
+			table.remove(props, i)
 		end
-		v.sliceToken, v.action, v.onlyWhilePresent, v.rtype, v.id = v.sliceToken or (uprefix and type(v.ux) == "string" and (uprefix .. v.ux)) or AB:uniq()
+		if type(v.skipSpecs) == "string" then -- TEMP[<Q1]: transition skipSpecs to [spec:] conditional
+			local ss = v.skipSpecs:gsub("%D+", "/"):match("%d[%d/]*%d")
+			v.show, v.skipSpecs = (ss and ("[spec:" .. ss .. "] hide;") or "") .. (v.show or "")
+		end
+		v.show = v.show ~= "" and v.show or nil
+		v.fastClick, v.fcSlice, v.onlyWhilePresent = v.fastClick or v.fcSlice -- TEMP[<L8]
+		v.sliceToken, v._action = v.sliceToken or (uprefix and type(v._u) == "string" and (uprefix .. v._u)) or AB:CreateToken()
 	end
-	return props;
+	return props
 end
 local function RK_SerializeDescription(props)
 	for i, slice in ipairs(props) do
-		slice.c = slice.r and slice.g and slice.b and ("%02x%02x%02x"):format(slice.r * 255, slice.g * 255, slice.b * 255) or slice.c or nil
-		slice.action, slice.b, slice.g, slice.r, slice.ux, slice.fastClick, slice._show = nil
 		if slice[1] == "spell" or slice[1] == "macrotext" then
 			slice.id, slice[1], slice[2] = slice[2]
 		end
+		dropUnderscoreKeys(slice)
 	end
-	props.lastUpdateToken, props.ux, props.action = nil
+	dropUnderscoreKeys(props)
 	return props
 end
 local function RK_SoftSyncAll()
 	for k,v in pairs(RK_RingDesc) do
-		EC_pcall("RK.Sync", "Ring " .. k, RK_SyncRing, k);
+		securecall(RK_SyncRing, k)
 	end
 end
 local function abPreOpen(_, _, id)
@@ -397,7 +423,7 @@ local function svInitializer(event, name, sv)
 		for k, v in pairs(queue) do
 			if v.hotkey then v.hotkey = v.hotkey:gsub("[^-; ]+", mousemap) end
 			if deleted[k] == nil and SV[k] == nil then
-				EC_pcall("RingKeeper", k .. ".SetRingQ", RingKeeper.SetRing, RingKeeper, k, v)
+				securecall(RingKeeper.SetRing, RingKeeper, k, v)
 				SV[k] = nil
 			elseif deleted[k] then
 				RK_DeletedRings[k] = true
@@ -412,22 +438,19 @@ local function svInitializer(event, name, sv)
 					end
 				end
 			end
-			EC_pcall("RingKeeper", k .. ".SetRingSV", RingKeeper.SetRing, RingKeeper, k, v)
+			securecall(RingKeeper.SetRing, RingKeeper, k, v)
 		end
 		RK_FlagStore.FlushedDefaultColors = true
 		collectgarbage("collect")
 	end
 end
-local function ringIterator(_, k)
-	local nk, v = next(RK_RingDesc, k)
-	if not nk then return nil end
-	return nk, v.name or nk, RK_CollectionIDs[nk] ~= nil, #v, v.internal, v.limit
-end
-local function deletedRingIterator(_, k)
-	local nk, v = next(RK_DeletedRings, k)
-	if not nk then return nil end
-	if not queue[nk] or not RK_IsRelevantRingDescription(queue[nk]) then return deletedRingIterator(_, nk) end
-	return nk
+local function ringIterator(isDeleted, k)
+	local nk, v = next(isDeleted and RK_DeletedRings or RK_RingDesc, k)
+	if nk and isDeleted then
+		return RK_IsRelevantRingDescription(queue[nk]) and nk or ringIterator(isDeleted, nk)
+	elseif nk then
+		return nk, v.name or nk, RK_CollectionIDs[nk] ~= nil, #v, v.internal, v.limit
+	end
 end
 
 -- Public API
@@ -450,10 +473,10 @@ function RingKeeper:SetRing(name, desc)
 	end
 end
 function RingKeeper:GetManagedRings()
-	return ringIterator, nil, nil
+	return ringIterator, false, nil
 end
 function RingKeeper:GetDeletedRings()
-	return deletedRingIterator, nil, nil
+	return ringIterator, true, nil
 end
 function RingKeeper:GetRingDescription(name, serialize)
 	assert(type(name) == "string", 'Syntax: desc = RingKeeper:GetRingDescription("name"[, serialize])', 2)
@@ -485,7 +508,7 @@ function RingKeeper:GenFreeRingName(base, t)
 	base = base:gsub("[^%a%d]", ""):sub(-10)
 	if base:match("^OPie") or not base:match("^%a") then base = "x" .. base end
 	local suffix, c = "", 1
-	while RK_RingDesc[base .. suffix] or SV[base .. suffix] or (t and t[base .. suffix] ~= nil) or OneRingLib:GetRingInfo(base .. suffix) do
+	while RK_RingDesc[base .. suffix] or SV[base .. suffix] or (t and t[base .. suffix] ~= nil) or OneRingLib:IsKnownRingName(base .. suffix) do
 		suffix, c = math.random(2^c), c < 30 and (c + 1) or c
 	end
 	return base .. suffix
@@ -499,37 +522,37 @@ function RingKeeper:UnpackABAction(slice)
 	end
 end
 function RingKeeper:IsRingSliceActive(ring, slice)
-	return RK_RingDesc[ring] and RK_RingDesc[ring][slice] and RK_RingDesc[ring][slice].action and true or false
+	return RK_RingDesc[ring] and RK_RingDesc[ring][slice] and RK_RingDesc[ring][slice]._action and true or false
 end
 function RingKeeper:SoftSync(name)
-	assert(type(name) == "string", 'Syntax: RingKeeper:SoftSync("name")')
-	EC_pcall("RK.Sync", "Ring " .. name, RK_SyncRing, name);
+	assert(type(name) == "string", 'Syntax: RingKeeper:SoftSync("name")', 2)
+	securecall(RK_SyncRing, name)
 end
 function RingKeeper:GetRingSnapshot(name)
 	assert(type(name) == "string", 'Syntax: snapshot = RingKeeper:GetRingSnapshot("name")', 2)
 	local ring, first = RK_RingDesc[name] and RK_SerializeDescription(copy(RK_RingDesc[name])) or false, true
 	if ring then
-		ring.limit, ring.ux, ring.save = type(ring.limit) == "string" and ring.limit:match("[^A-Z]") and "PLAYER" or ring.limit
+		ring.limit, ring.save = type(ring.limit) == "string" and ring.limit:match("[^A-Z]") and "PLAYER" or ring.limit
 		for i=1,#ring do
 			local v = ring[i]
 			if v[1] == nil and type(v.id) == "string" then
 				v.id, first = encodeMacro(RK_QuantizeMacro(v.id, not first)), false
 			end
-			v.sliceToken, v.ux = nil
+			v.sliceToken = nil
 		end
 	end
-	return ring and serialize(ring, "oetohH7", sRegMap)
+	return ring and serialize(ring, sSign, sRegRev)
 end
 function RingKeeper:GetSnapshotRing(snap)
 	assert(type(snap) == "string", 'Syntax: desc = RingKeeper:GetSnapshotRing("snapshot")', 2)
-	local ok, ret, e2 = pcall(unserialize, snap, "oetohH7", sReg)
+	local ok, ret = pcall(unserialize, snap, sSign, sReg)
 	if ok and type(ret) == "table" and type(ret.name) == "string" and #ret > 0 then
 		for i=1,#ret do
 			local v = ret[i]
 			if not v then
 				return
 			else
-				v.caption = type(v.caption) == "string" and caption:gsub("|?|", "||") or nil
+				v.caption = type(v.caption) == "string" and v.caption:gsub("|?|", "||") or nil
 				if v[1] == nil and type(v.id) == "string" then
 					v.id = decodeMacro(v.id)
 				end
@@ -542,11 +565,7 @@ end
 function RingKeeper:QuantizeMacro(macrotext)
 	return RK_QuantizeMacro(macrotext)
 end
-function RingKeeper:SetMountPreference(groundSpellID, airSpellID)
-	RK_SetMountPreference(groundSpellID, airSpellID)
-end
 
-OneRingLib.ext.RingKeeper = RingKeeper
-SV = OneRingLib:RegisterPVar("RingKeeper", SV, svInitializer)
-EC_Register("PLAYER_REGEN_DISABLED", "RingKeeper.CombatSync", RK_SoftSyncAll)
-AB:observe("internal.collection.preopen", abPreOpen)
+SV, OneRingLib.ext.RingKeeper = OneRingLib:RegisterPVar("RingKeeper", SV, svInitializer), RingKeeper
+EV.RegisterEvent("PLAYER_REGEN_DISABLED", RK_SoftSyncAll)
+AB:AddObserver("internal.collection.preopen", abPreOpen)

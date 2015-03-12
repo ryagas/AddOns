@@ -21,8 +21,6 @@ L["berserk_desc"] = "Muestra un contador que avisa cuando el jefe entrará en ra
 L["best"] = "El mejor:"
 L["blizzRestrictionsConfig"] = "Debido a las restricciones de Blizzard la configuración debe abrirse primero fuera de combate, antes se podia acceder en combate."
 L["blizzRestrictionsZone"] = "Esperando a que acabe el combate parra terminar de cargar debido a las restricciones de combate de Blizzard."
-L["bosskill"] = "Jefe muerto"
-L["bosskill_desc"] = "Avisa cuando el jefe ha sido derrotado."
 L["chatMessages"] = "Chat frame messages"
 L["chatMessagesDesc"] = "Todos los mensajes de salida de Big Wigs a la ventana de chat por defecto en adición a los ajustes mostrados"
 L["colors"] = "Colores"
@@ -34,7 +32,6 @@ L["COUNTDOWN_desc"] = "Si está activo, una cuenta atrás vocal y visual será a
 L["dbmFaker"] = "Fingir que estoy usando DBM"
 L["dbmFakerDesc"] = "Si un usuario de DBM hace un chequeo de versión para ver quien está usando DBM, ellos te verán a ti en la lista. Muy útil para guilds que forzan a usar DBM."
 L["dbmUsers"] = "Jugadores con DBM:"
-L["defeated"] = "%s ha sido derrotado"
 L["developers"] = "Desarrolladores"
 L["DISPEL"] = "Dispeleables únicamente"
 L["DISPEL_desc"] = "Si quieres ver avisos para esta habilidad incluso cuando no puedas dispelearla, desactiva esta opción."
@@ -103,9 +100,6 @@ L["slashDescRange"] = "|cFFFED000/range:|r Abre el indicador de rango."
 L["slashDescTitle"] = "|cFFFED000Atajo de comandos:|r"
 L["slashDescVersion"] = "|cFFFED000/bwv:|r Realiza un chequeo de versiónes de Big Wigs."
 L["sound"] = "Sonido"
-L["soundDesc"] = [=[Los mensajes podrían llegar con un sonido. A algunas personas les resulta más fácil escucahr. Cuando aprenden que 'tal' sonido va con 'cual' mensaje, en vez de leer dicho mensaje. 
-
-|cffff4411Incluso cuando está apagado, el sonido por defecto de aviso de raid será usado para avisar a los otros jugadores. Este sonido, sin embargo, es diferente de los sonidos que usamos.|r]=]
 L["sourceCheckout"] = "Estás usando la versión de Big Wigs %s directamente del repositorio."
 L["stages"] = "Fases"
 L["stages_desc"] = "Habilita funciones relacionadas con varias etapas/fases del jefe como proximidad, barras, etc."

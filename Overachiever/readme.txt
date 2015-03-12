@@ -1,5 +1,5 @@
 
-Overachiever v0.80
+Overachiever v0.82
 ==============================
 
 Author: Tuhljin
@@ -106,6 +106,19 @@ Change log
 ==========
 
 The change log lists changes of particular note to users, not every change made.
+
+v0.82
+- Updated for WoW patch 6.1.
+- Suggestions Tab: Added suggestions for Ashran.
+- Attempt to fix an error that appeared upon completion of achievements and certain instances.
+- Fixed the options panels not being populated when first shown.
+- Fixed "/oa" and related slash commands not opening the correct options panel if the UI options window hadn't been opened before in that session.
+
+v0.81
+- Suggestions Tab: Added new Darkmoon Faire suggestions.
+- Fixed issue where all checkboxes start as checked in the Overachiever options panels even if the saved option was really false/disabled.
+- Fixed an error related to auto-tracking. (This resulted in error messages when traveling from zone to zone if the exploration auto-tracking option was enabled.)
+- "Auto-track timed achievements" option is now enabled by default. (No change if not using a fresh install of the addon.)
 
 v0.80
 - Initial updates for WoW patch 6.0.x. Fixes the most common errors.

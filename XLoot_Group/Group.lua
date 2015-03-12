@@ -60,9 +60,9 @@ local defaults = {
 			y = AlertFrame:GetTop()
 		},
 
-		track_all = true,
+		track_all = false,
 		track_player_roll = false,
-		track_by_threshold = false,
+		track_by_threshold = true,
 		track_threshold = 3,
 
 		expire_won = 20,
@@ -227,10 +227,16 @@ function addon:START_LOOT_ROLL(id, length, uid, ongoing)
 		frame.text_time:Hide()
 	end
 
+	frame.need.texture_special:SetTexture()
+	frame.greed.texture_special:SetTexture()
+
 	if opt.equip_prefix then
 		local canequip, isupgrade = CanEquipItem(link), IsItemUpgrade(link)
 		if canequip or isupgrade then
-			name = string_format("|cFF%s%s|r%s", isupgrade and "FF4422" or "BBBBBB", is_upgrade and opt.prefix_upgrade or opt.prefix_equippable, name)
+			name = string_format("|cFF%s%s|r%s", isupgrade and "44FF22" or "BBBBBB", is_upgrade and opt.prefix_upgrade or opt.prefix_equippable, name)
+			if isupgrade then
+				(need and frame.need or frame.greed).texture_special:SetTexture([[Interface\AddOns\Pawn\Textures\UpgradeArrow.tga]])
+			end
 		end
 	end
 	frame.need:Toggle(need)
@@ -242,10 +248,10 @@ function addon:START_LOOT_ROLL(id, length, uid, ongoing)
 	frame.pass:SetText()
 	frame.disenchant:SetText()
 
-	frame.need.reason = reason_need
-	frame.greed.reason = reason_greed
-	frame.disenchant.reason = reason_de
-	frame.disenchant.skill = de_skill
+	frame.need.reason = reason_need ~= 0 and reason_need or nil
+	frame.greed.reason = reason_greed ~= 0 and reason_greed or nil
+	frame.disenchant.reason = reason_de ~= 0 and reason_de or nil
+	frame.disenchant.skill = de_skill ~= 0 and de_skill or nil
 
 	local bar = frame.bar
 	bar.length = length
@@ -651,15 +657,15 @@ do
 		if show_all then
 			GameTooltip:AddLine('.', 0, 0, 0)
 		end
-		if next(tneed) and (show_all or show == 1) then
+		if #tneed ~= 0 and (show_all or show == 1) then
 			GameTooltip:AddLine(NEED, .2, 1, .1)
 			RollLines(tneed, hid)
 		end
-		if next(tgreed) and (show_all or (show == 2 or show == 3)) then
+		if #tgreed ~= 0 and (show_all or (show == 2 or show == 3)) then
 			GameTooltip:AddLine(GREED, .1, .2, 1)
 			RollLines(tgreed, hid)
 		end
-		if next(tpass) and (show_all or show == 0) then
+		if #tpass ~= 0 and (show_all or show == 0) then
 			GameTooltip:AddLine(PASS, .7, .7, .7)
 			RollLines(tpass, hid)
 		end
@@ -738,6 +744,11 @@ do
 				b:GetHighlightTexture():SetAlpha(0.5)
 			end
 			b.parent = parent
+
+			local texture_special = b:CreateTexture(nil, 'OVERLAY')
+			texture_special:SetAllPoints(b)
+			texture_special:SetAlpha(0.5)
+			b.texture_special = texture_special
 
 			local text = b:CreateFontString(nil, 'OVERLAY')
 			text:SetFont(STANDARD_TEXT_FONT, 12, 'THICKOUTLINE')

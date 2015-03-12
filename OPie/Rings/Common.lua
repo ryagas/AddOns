@@ -1,5 +1,5 @@
-local AB = assert(OneRingLib.ext.ActionBook:compatible(1,5), "Requires a compatible version of ActionBook")
-local ORI = OneRingLib.ext.OPieUI
+local AB, _, T = assert(OneRingLib.ext.ActionBook:compatible(2,14), "Requires a compatible version of ActionBook"), ...
+local ORI, EV = OneRingLib.ext.OPieUI, T.Evie
 
 local function generateColor(c, n)
 	local hue, v, s = (15+(c-1)*360/n) % 360, 1, 0.85
@@ -16,25 +16,22 @@ local function generateColor(c, n)
 end
 
 do -- OPieTrinkets
-	OneRingLib:SetRing("OPieTrinkets", {
-		action=AB:create("collection", nil, { "OPieBundleTrinket0", "OPieBundleTrinket1",
-			OPieBundleTrinket0 = AB:get("item", (GetInventorySlotInfo("Trinket0Slot")), false, true),
-			OPieBundleTrinket1 = AB:get("item", (GetInventorySlotInfo("Trinket1Slot")), false, true),
-		}), name="Trinkets"
-	});
+	OneRingLib:SetRing("OPieTrinkets", AB:CreateActionSlot(nil,nil, "collection", { "OPieBundleTrinket0", "OPieBundleTrinket1",
+		OPieBundleTrinket0 = AB:GetActionSlot("item", (GetInventorySlotInfo("Trinket0Slot")), false, true),
+		OPieBundleTrinket1 = AB:GetActionSlot("item", (GetInventorySlotInfo("Trinket1Slot")), false, true),
+	}), {name="Trinkets"});
 end
 do -- OPieTracker
-	local collectionData, map = {}, {}
+	local collectionData = {}
 	local function setTracking(id)
 		SetTracking(id, not select(3, GetTrackingInfo(id)));
 	end
-	local function hint(aid)
-		local name, tex, on, typ = GetTrackingInfo(map[aid]);
+	local function hint(k)
+		local name, tex, on = GetTrackingInfo(k)
 		return not not name, on and 1 or 0, tex, name, 0,0,0
 	end
 	local trackerActions = setmetatable({}, {__index=function(t, k)
-		t[k] = AB:create("func", hint, setTracking, k)
-		map[t[k]] = k
+		t[k] = AB:CreateActionSlot(hint, k, "func", setTracking, k)
 		return t[k]
 	end})
 	local function preClick(selfId, _, updatedId)
@@ -49,13 +46,13 @@ do -- OPieTracker
 			for i=n+1,#collectionData do
 				collectionData[i] = nil
 			end
-			AB:update(selfId, collectionData)
+			AB:UpdateActionSlot(selfId, collectionData)
 		end
 	end
-	local col = AB:create("collection", nil, collectionData)
-	OneRingLib:SetRing("OPieTracking", {name="Minimap Tracking", hotkey="ALT-F", action=col})
-	AB:observe("internal.collection.preopen", preClick, col)
-	EC_Register("PLAYER_ENTERING_WORLD", "OPie.AutoTrackerInit", function() return "remove", preClick(col, nil, col) end)
+	local col = AB:CreateActionSlot(nil,nil, "collection", collectionData)
+	OneRingLib:SetRing("OPieTracking", col, {name="Minimap Tracking", hotkey="ALT-F"})
+	AB:AddObserver("internal.collection.preopen", preClick, col)
+	EV.RegisterEvent("PLAYER_ENTERING_WORLD", function() return "remove", preClick(col, nil, col) end)
 end
 do -- OPieAutoQuest
 	local whitelist, questItems, collection, inring, colId, ctok, current, changed = {[33634]=true, [35797]=true, [37888]=true, [37860]=true, [37859]=true, [37815]=true, [46847]=true, [47030]=true, [39213]=true, [42986]=true, [49278]=true, [86425]={31332, 31333, 31334, 31335, 31336, 31337}, [87214]={31752}, [90006]=true, [86536]=true, [86534]=true, [97268]=true}, {[30148]="72986 72985"}, {}, {}
@@ -67,7 +64,7 @@ do -- OPieAutoQuest
 				return scanQuests(i+1), CollapseQuestHeader(i)
 			elseif questItems[qid] and not isComplete then
 				for id in questItems[qid]:gmatch("%d+") do
-					local act = AB:get("item", tonumber(id))
+					local act = AB:GetActionSlot("item", tonumber(id))
 					if act then
 						local tok = "OpieBundleQuest" .. id
 						if not inring[tok] then
@@ -86,12 +83,12 @@ do -- OPieAutoQuest
 
 		-- Search quest log
 		for i=1,GetNumQuestLogEntries() do
-			local link, icon, charges, showWhenComplete = GetQuestLogSpecialItemInfo(i);
-			if link and (showWhenComplete or not select(7, GetQuestLogTitle(i))) then
+			local link, _, _, showWhenComplete = GetQuestLogSpecialItemInfo(i)
+			if link and (showWhenComplete or not select(6, GetQuestLogTitle(i))) then
 				local iid = tonumber(link:match("item:(%d+)"))
 				local tok = "OPieBundleQuest" .. iid
 				if not inring[tok] then
-					collection[#collection+1], collection[tok], changed = tok, AB:get("item", iid), true
+					collection[#collection+1], collection[tok], changed = tok, AB:GetActionSlot("item", iid), true
 				end
 				inring[tok] = current
 			end
@@ -114,7 +111,7 @@ do -- OPieAutoQuest
 				if isQuest then
 					local tok = "OPieBundleQuest" .. iid
 					if not inring[tok] then
-						collection[#collection+1], collection[tok], changed = tok, AB:get("item", iid), true
+						collection[#collection+1], collection[tok], changed = tok, AB:GetActionSlot("item", iid), true
 					end
 					ORI:SetQuestHint(tok, startQuestId and not isQuestActive)
 					inring[tok] = current
@@ -141,11 +138,11 @@ do -- OPieAutoQuest
 		ctok = current
 		
 		if changed or freePos <= oldCount then
-			AB:update(colId, collection)
+			AB:UpdateActionSlot(colId, collection)
 		end
 	end
-	colId = AB:create("collection", nil, collection)
-	OneRingLib:SetRing("OPieAutoQuest", {name="Quest Items", hotkey="ALT-Q", action=colId})
-	AB:observe("internal.collection.preopen", syncRing)
-	EC_Register("PLAYER_REGEN_DISABLED", "OPie.AutoQuest", function() syncRing(nil, nil, colId) end);
+	colId = AB:CreateActionSlot(nil,nil, "collection",collection)
+	OneRingLib:SetRing("OPieAutoQuest", colId, {name="Quest Items", hotkey="ALT-Q"})
+	AB:AddObserver("internal.collection.preopen", syncRing)
+	EV.RegisterEvent("PLAYER_REGEN_DISABLED", function() syncRing(nil, nil, colId) end);
 end

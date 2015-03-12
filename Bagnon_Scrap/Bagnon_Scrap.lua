@@ -22,21 +22,8 @@ local r, g, b  = GetItemQualityColor(0)
 
 
 -- Glow and Icon
-local function CreateIcon(slot)
-	local icon = slot:CreateTexture(nil, 'OVERLAY')
-	icon:SetTexture('Interface\\Buttons\\UI-GroupLoot-Coin-Up')
-	icon:SetPoint('TOPLEFT', 2, -2)
-	icon:SetSize(15, 15)
-
-  	slot.ScrapIcon = icon
-	return icon
-end
-
-
 function ItemSlot:UpdateBorder()
 	local link = select(7, self:GetInfo())
-	local icon = self.ScrapIcon or CreateIcon(self)
-
 	if link then
 		local id = tonumber(strmatch(link, 'item:(%d+)'))
 		local bag, slot
@@ -47,15 +34,14 @@ function ItemSlot:UpdateBorder()
 		
 		if Scrap:IsJunk(id, bag, slot) then
 			self:HideBorder()
-			self.Border:SetVertexColor(r, g, b, self:GetHighlightAlpha())
-			self.Border:SetShown(Scrap_Glow)
+			self:SetBorderColor(r, g, b)
 
-			return icon:SetShown(Scrap_Icons)
+			return self.JunkIcon:SetShown(Scrap_Icons)
 		end
 	end
 
 	UpdateBorder(self)
-	icon:Hide()
+	self.JunkIcon:Hide()
 end
 
 

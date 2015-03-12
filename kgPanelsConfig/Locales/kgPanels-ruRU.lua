@@ -32,7 +32,7 @@ L["Anchor To"] = "Якорь к"
 L["Are you sure?"] = "Вы уверены?"
 L["Are you sure you wish to delete this panel? This can not be undone."] = "Вы действительно хотите удалить эту панель? Функция необратима."
 L["Art Library"] = "Библиотека оформления"
-L["ART_PREVIEW"] = "Below is a preview of the artwork you just added. If you dont see the artwork, please reload your UI to ensure it is in the WoW path." -- Requires localization
+L["ART_PREVIEW"] = "Внизу находится предварительный просмотр оформления, которое вы сейчас добавили. Если вы не видите оформления, пожалуйста перезагрузите интерфейс и убедитесь, что оно находится в директории WoW." -- Needs review
 L["Artwork"] = "Оформление"
 L["Artwork already exists. Overwrite?"] = "Оформление уже существует. Перезаписать?"
 L["Artwork Name"] = "Имя оформления"
@@ -62,7 +62,7 @@ L["Border edge size, see the FAQ."] = "Размер контура границ,
 L["Borders"] = "Границы"
 L["Border Texture"] = "Текстура границы"
 L["Bottom"] = "Внизу"
-L["Bottom background inset."] = "Bottom background inset." -- Requires localization
+L["Bottom background inset."] = "Вкладка нижнего фона" -- Needs review
 L["Bottom Left"] = "Внизу слева"
 L["Bottom Left Corner"] = "Bottom Left Corner" -- Requires localization
 L["Bottom Right"] = "Внизу справа"
@@ -123,7 +123,7 @@ L["FAQ_1_2"] = [=[
 |cffffffffI want to add a panel, but the create button(s) are greyed out. What am I doing wrong?|r
 
 You have to have a layout selected. In the layout menu, click the layout you want to use, and activate it.
-]=] -- Requires localization
+]=] -- Needs review
 L["FAQ_1_3"] = [=[
 |cffffffffParenting and Anchoring|r
 
@@ -267,8 +267,8 @@ L["Font to use for this panel."] = "Шрифт для использования
 L["For help using kgPanels, please see the FAQ section."] = "Для помощи используйте kgPanels, пожалуйста посмотрите FAQ данной секции"
 L["Frame Finder"] = "Поисковик рамок"
 L["Frames"] = "Рамки"
-L["Frame strata to set this in, Background is the lowest strata."] = "Frame strata to set this in, Background is the lowest strata." -- Requires localization
-L["Frame you wish to anchor this panel to."] = "Frame you wish to anchor this panel to." -- Requires localization
+L["Frame strata to set this in, Background is the lowest strata."] = "Слой, к которому будет привязан этот фрейм. Фон является самым нижним слоем." -- Needs review
+L["Frame you wish to anchor this panel to."] = "Фрейм, к которому будет привязана эта панель." -- Needs review
 L["Frame you wish to parent against. NOTE: To parent against a panel you have already defined, simply use that name."] = "Frame you wish to parent against. NOTE: To parent against a panel you have already defined, simply use that name." -- Requires localization
 L["From"] = "От"
 L["General Options"] = "Главные опции"
@@ -363,9 +363,9 @@ L["Rename"] = "Переименовать"
 L["Rename Layout"] = "Переименовать вёрстку"
 L["Rename Panel"] = "Переименовать панель"
 L["Right"] = "Право"
-L["Right background inset."] = "Right background inset." -- Requires localization
+L["Right background inset."] = "Вкладка правого фона." -- Needs review
 L["Rotate"] = "Повернуть"
-L["Rotate the artwork centered on the middle point."] = "Rotate the artwork centered on the middle point." -- Requires localization
+L["Rotate the artwork centered on the middle point."] = "Вращать оформление по оси в центре." -- Needs review
 L["Scaling"] = "Масштабирование"
 L["Scripts"] = "Скрипты"
 L["Scripts Dependency"] = "Зависимость скриптов"
@@ -373,8 +373,8 @@ L["Set as Active Layout"] = "Установить как активную вёр
 L["Set the opacity of this panel."] = "Установка полупрозрачности для данной панели."
 L["Set this layout as your active layout."] = "Установка данной вёрстки как вашей активной вёрсткой."
 L["Setup custom Text Coords for your texture."] = "Setup custom Text Coords for your texture." -- Requires localization
-L["Size of each tile."] = "Size of each tile." -- Requires localization
-L["Size of the text in points."] = "Size of the text in points." -- Requires localization
+L["Size of each tile."] = "Размер каждой мозаики." -- Needs review
+L["Size of the text in points."] = "Размер текста в пунктах." -- Needs review
 L["Solid"] = "Solid" -- Requires localization
 L["Strata"] = "Слой"
 L["Sublevel"] = "Sublevel" -- Requires localization

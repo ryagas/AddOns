@@ -3,10 +3,6 @@ local L = LibStub("AceLocale-3.0"):NewLocale("Big Wigs", "enUS", true, "raw")
 L.temp61Reset = "Due to a change in making my database more efficient, your custom colors, sounds and boss-specific settings will have reset, sorry :(" -- XXX temp 6.1
 
 -- Core.lua
-L.defeated = "%s has been defeated"
-
-L.bosskill = "Boss death"
-L.bosskill_desc = "Announce when the boss has been defeated."
 L.berserk = "Berserk"
 L.berserk_desc = "Show a bar and timed warnings for when the boss will go berserk."
 L.altpower = "Alternate power display"
@@ -55,7 +51,6 @@ L.toggleAnchorsBtn_desc = "Toggle showing or hiding of all the anchors."
 L.testBarsBtn = "Create Test Bar"
 L.testBarsBtn_desc = "Creates a bar for you to test your current display settings with."
 L.sound = "Sound"
-L.soundDesc = "Messages might come with a sound. Some people find it easier to listen for these after they've learned which sound goes with which message, as opposed to reading the actual messages.\n\n|cffff4411Even when off, the default raid warning sound might be played by incoming raid warnings from other players. That sound, however, is different from the sounds we use.|r"
 L.flashScreen = "Flash Screen"
 L.flashScreenDesc = "Certain abilities are important enough to need your full attention. When these abilities affect you Big Wigs can flash the screen."
 L.raidIcons = "Raid icons"

@@ -1,0 +1,65 @@
+------------------------------------------------------------------------
+r247 | kunda | 2015-02-26 20:26:49 +0000 (Thu, 26 Feb 2015) | 1 line
+Changed paths:
+   A /tags/60100-1 (from /trunk:246)
+
+Tagging as 60100-1
+------------------------------------------------------------------------
+r245 | kunda | 2015-02-26 20:23:34 +0000 (Thu, 26 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets.toc
+
+toc update
+------------------------------------------------------------------------
+r243 | kunda | 2015-02-02 20:05:43 +0000 (Mon, 02 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets-localization-enUS.lua
+   M /trunk/BattlegroundTargets.lua
+   M /trunk/BattlegroundTargets.toc
+
+fix for unspecified player names [GetBattlefieldScore()]
+------------------------------------------------------------------------
+r241 | kunda | 2015-01-31 19:59:11 +0000 (Sat, 31 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets.lua
+
+update
+------------------------------------------------------------------------
+r240 | kunda | 2015-01-30 14:59:59 +0000 (Fri, 30 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets.lua
+
+update
+------------------------------------------------------------------------
+r239 | kunda | 2015-01-29 21:44:59 +0000 (Thu, 29 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets.lua
+
+update
+------------------------------------------------------------------------
+r238 | kunda | 2015-01-28 20:33:33 +0000 (Wed, 28 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets.lua
+
+update
+------------------------------------------------------------------------
+r237 | kunda | 2015-01-27 18:28:41 +0000 (Tue, 27 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets.lua
+
+update Target of Target
+------------------------------------------------------------------------
+r236 | kunda | 2015-01-26 18:13:46 +0000 (Mon, 26 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets-localization-enUS.lua
+   M /trunk/BattlegroundTargets.lua
+
+added Target of Target [Disabled by default]
+------------------------------------------------------------------------
+r235 | kunda | 2015-01-26 17:41:02 +0000 (Mon, 26 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets.lua
+   M /trunk/BattlegroundTargets.toc
+
+minor fix, optimizations, clean-up
+------------------------------------------------------------------------

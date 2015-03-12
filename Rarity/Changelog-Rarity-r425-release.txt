@@ -1,0 +1,53 @@
+------------------------------------------------------------------------
+r426 | allara | 2015-03-10 17:44:59 +0000 (Tue, 10 Mar 2015) | 1 line
+Changed paths:
+   A /tags/r425-release (from /trunk:425)
+
+Tagging as r425-release
+------------------------------------------------------------------------
+r425 | allara | 2015-03-09 21:21:46 +0000 (Mon, 09 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+- Rarity will no longer scan your toy box in combat
+------------------------------------------------------------------------
+r424 | allara | 2015-03-06 19:16:53 +0000 (Fri, 06 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Options_Defaults.lua
+
+- Garn Steelmaw, Giant Coldsnout, Shadowhide Pearltusk, Smoky Direwolf: Added Platinum garrison invasion victory to the detection criteria
+------------------------------------------------------------------------
+r422 | allara | 2015-02-28 19:34:54 +0000 (Sat, 28 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options_Defaults.lua
+
+- Rarity's extended tooltip for toys should now always use the toy version of the tooltip, thereby always showing where the toy can be obtained from
+------------------------------------------------------------------------
+r420 | allara | 2015-02-27 17:46:57 +0000 (Fri, 27 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Options_Defaults.lua
+
+- Added the following pets from the Raiding With Leashes III achievement (thanks Urtgard!): Fragment of Anger, Fragment of Desire, Fragment of Suffering, Grotesque Statue, Hyjal Wisp, Leviathan Egg, Servant's Bell, Shard of Supremus, Smelly Gravestone, Sultry Grimoire, Sunblade Rune of Activation, Void Collar
+------------------------------------------------------------------------
+r418 | allara | 2015-02-25 18:35:33 +0000 (Wed, 25 Feb 2015) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Locales.lua
+   M /trunk/Options_Defaults.lua
+
+- Half-Empty Food Container: Corrected this item so it no longer might show up as a duplicate listing of Satyr Charm
+- Added Bone Serpent, Slithershock Elver, Young Talbuk from the Critters of Draenor quest with placeholder drop rates (thanks Urtgard)
+------------------------------------------------------------------------
+r416 | allara | 2015-02-24 18:29:13 +0000 (Tue, 24 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Modules/Options/Rarity_Options.toc
+   M /trunk/Rarity.toc
+
+- Initial 6.1 compatibility. There may be more remaining issues to fix.
+------------------------------------------------------------------------

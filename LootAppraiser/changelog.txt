@@ -1,0 +1,110 @@
+*****************************************************************************	
+*** KNOWN BUGS ***
+*****************************************************************************
+	- N/A
+
+
+*****************************************************************************
+*** CHANGE LOG ***
+*****************************************************************************
+V0.76 Beta RC2
+
+	-Bug: Resolved - unable to load UIs when main UI is closed via slash cmd(s)
+	-Bug: Resolved - duplicating values under certain criteria corrected
+	-Removed ability to receive multiple LootAppraiser prompts if it is ignored
+	
+*****************************************************************************
+0.75 Beta RC2
+
+	-Button: LAYOUT - refreshes the UI layout to default if resized by accident
+	-Button: DESTROY - destroys grays in the bag
+	-Button: DOCK - hides/unhides Main UI which still keeps track while not shown
+	-Button: Mini map - loads all UIs for LootAppraiser including /timer natively
+	-Left clicking mini-map icon loads UIs
+	-Right clicking mini-map loads help information
+	-Gold Alert Threshold UI will load if the gold alert value is changed
+	-Yes/No prompt to load LootAppraiser when something is looted
+	-Timer automatically resumes/starts upon the next loot if you forget to restart it
+	-Adjusted Gold Alert Threshold bar position for better layout with LA Lite gold counter
+	-Bug: Resolved bug in reporting gold pricing on uncommon items with slider set to 3
+	-Bug: Resolved bug with gray item button equipping grays if vendor windows is not open
+
+*****************************************************************************
+V0.70 Beta RC2
+
+	-Slider quality bar bug resolved when using clear button
+	-Removed Currency looted message from Looted window
+	-Added Total Currency Looted label
+	-White listed common food/drink items to VendorSell to avoid pricing spikes
+	-Sell gray/junk feature included
+	-Capitalized Labels for easier reading
+
+*****************************************************************************
+V0.62 Beta RC2
+
+	-Resolved bug with tf global variable erroring out
+	-Resolved bug with eb global variable erroring out
+	-Resolved comparison nil value error
+	-Resolved garrison looting issues with addon not opened
+
+*****************************************************************************
+V0.61 Beta RC2
+
+	-Resolved bug with bsc global variable erroring out
+	-Resolved bug with til global variable erroring out
+	-Resolved logical bug when looting currency
+	-Added VendorSell cost to price sources
+	-Added containers, crates, and bag support
+	-Added slash command for Help text via /lah
+	-Clear now resets Gold Alert Threshold
+	-Clear now resets Price Source back to default value "AuctionDB: Global Market Value Avg"
+	-Embedded Ace3 Lib into Addon package
+
+*****************************************************************************
+V0.60 Beta RC2
+
+	-Looted items will now display from the latest to the oldest (top down)
+	-Added new slash command /laa which will load the Gold Alert Threshold frame
+	-Added notification sound when items looted over x amount of gold which you enter
+	-Added bag slot counter to show the # of empty slots available
+
+*****************************************************************************
+v0.50 Beta RC1
+
+	-Resolved global var issues
+	-Resolve garrison gray item/unique loot issues with zero values
+	-Now sending message to chat window with item and asset value based upon price source selected
+	-Updated total items looted counter to include eaches
+	-Adjusted to work with auto-loot only for farming purposes/mass aoe looting
+	-Changed reporting of item value to color based syntax for gold, silver, copper
+	-Values of total loot remain preserved until clear button is pressed even if UI is closed
+
+*****************************************************************************
+Alpha release v0.45
+
+	-Resolved global var issues
+	-Resolve garrison gray item/unique loot issues with zero values
+	-Now sending message to chat window with item and asset value based upon price source selected
+	-Updated total items looted counter to include eaches
+	-Adjusted to work with auto-loot only for farming purposes/mass aoe looting
+	-Changed reporting of item value to color based syntax for gold, silver, copper
+
+*****************************************************************************
+Alpha release v0.44
+
+	-Updated pricing to reflect stacks of items in total value where qty > 1
+	-Resolved bug of multiple frames being opened with same command
+	-Added LootAppraiserLite frame for only showing gold. usage: /lal
+	-Added message help text on load to state the slash commands
+
+*****************************************************************************
+Alpha release v0.42
+
+	-Added quality filtering
+	-Adjusted size/proportions
+	-Added support for Soulbound items
+	-Added Clear button for clearing session/values
+	-Added support for gray items with no AH value
+	-Changed default pricing to use "DBGlobalMarketAvg"
+	-Added Support for various pricing sources leveraging the TSMAPI (pending TUJ)
+*****************************************************************************

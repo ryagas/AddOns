@@ -1,0 +1,12 @@
+tag 1.7.1
+6ba0746be6595ffe4207826de5a2af41d05d9155
+Steffen Buehl <sb@sbuehl.com>
+2015-03-11 21:39:20 +0100
+
+tagging as 1.7.1
+
+
+--------------------
+
+Steffen Buehl:
+	- allow multiple trackings per building add indicator for "scrap meltdown" daily

@@ -76,7 +76,6 @@ function mod:GetOptions()
 		156601, -- Sanguine Strikes
 		-- [[ General ]]--
 		159336, -- Iron Will
-		"bosskill"
 	}, {
 		["ship"] = -10019, -- Dreadnaught
 		[156631] = -10025, -- Gar'an
@@ -87,7 +86,7 @@ function mod:GetOptions()
 end
 
 function mod:OnBossEnable()
-	self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", nil, "boss1", "boss2", "boss3")
+	self:Death("Deaths", 77477, 77557, 77231)
 
 	self:Log("SPELL_AURA_APPLIED", "IronWill", 159336)
 	-- Gar'an
@@ -432,7 +431,7 @@ do
 			else
 				self:CDBar(args.spellId, 70)
 			end
-			scheduled = self:ScheduleTimer(warnTargets, 0.1, self, args.spellId)
+			scheduled = self:ScheduleTimer(warnTargets, 0.2, self, args.spellId)
 		end
 	end
 	function mod:HeartseekerRemoved(args)
@@ -446,10 +445,7 @@ function mod:SanguineStrikes(args)
 	self:Message(args.spellId, "Important")
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(unit, spellName, _, _, spellId)
-	if spellId == 70628 then -- Permanent Feign Death
-		local mobId = self:MobId(UnitGUID(unit))
-		stopBars(mobId)
-	end
+function mod:Deaths(args)
+	stopBars(args.mobId)
 end
 

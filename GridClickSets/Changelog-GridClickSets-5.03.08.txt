@@ -1,0 +1,22 @@
+------------------------------------------------------------------------
+r32 | warbaby | 2015-03-08 13:44:02 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   A /tags/5.03.08 (from /trunk:31)
+
+Tagging as 5.03.08
+------------------------------------------------------------------------
+r31 | warbaby | 2015-03-08 13:43:09 +0000 (Sun, 08 Mar 2015) | 1 line
+Changed paths:
+   D /trunk/CompactUnitFrameClickSets.lua
+   M /trunk/DefaultClickSets.lua
+   D /trunk/GridClickSets.lua
+   M /trunk/GridClickSets.toc
+   M /trunk/GridClickSetsFrame.lua
+   M /trunk/GridClickSetsFrame.xml
+   A /trunk/SetupCompactUnitFrame.lua
+   A /trunk/SetupGrid.lua
+   A /trunk/SetupGrid2.lua
+   D /trunk/embeds.xml
+
+- support Grid2
+------------------------------------------------------------------------

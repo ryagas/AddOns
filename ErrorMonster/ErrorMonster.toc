@@ -1,0 +1,29 @@
+## Interface: 60100
+## Author: Funkydude
+## Notes: Redirecter for errors, system messages and information messages.
+## X-Credits: Allara, Rabbit
+## X-Category: Combat
+## X-License: All Rights Reserved
+## SavedVariables: ErrorMonsterDB
+## OptionalDeps: Ace3, LibSink-2.0
+## X-Curse-Packaged-Version: r102-release
+## X-Curse-Project-Name: ErrorMonster
+## X-Curse-Project-ID: error-monster
+## X-Curse-Repository-ID: wow/error-monster/mainline
+
+embeds.xml
+
+Locales\enUS.lua
+Locales\ptBR.lua
+Locales\frFR.lua
+Locales\deDE.lua
+Locales\itIT.lua
+Locales\koKR.lua
+Locales\esMX.lua
+Locales\ruRU.lua
+Locales\zhCN.lua
+Locales\esES.lua
+Locales\zhTW.lua
+
+ErrorMonster.lua
+

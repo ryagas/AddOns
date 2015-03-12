@@ -16,6 +16,7 @@ end
 L = BigWigs:NewBossLocale("The Blast Furnace", "ruRU")
 if L then
 L["bombs_dropped"] = "Бомб упало! (%d)"
+L["bombs_dropped_p2"] = "Инженер убит, бомбы упали!"
 L["custom_off_firecaller_marker"] = "Маркировка Призывателя огня"
 L["custom_off_firecaller_marker_desc"] = [=[Отмечать Призывателей огня метками {rt7}{rt6}, требуется быть помощником или лидером рейда.
 |cFFFF0000Только 1 человек в рейде должен включить эту опцию, чтобы предотвратить конфликты.|r
@@ -86,7 +87,7 @@ end
 L = BigWigs:NewBossLocale("Blackhand", "ruRU")
 if L then
 L["custom_off_markedfordeath_marker"] = "Маркировка Метки смерти"
-L["custom_off_markedfordeath_marker_desc"] = "Отмечать людей с Меткой смерти {rt1}{rt2}, требуется быть помощником или лидером рейда."
+L["custom_off_markedfordeath_marker_desc"] = "Отмечать людей с Меткой смерти {rt1}{rt2}{rt3}, требуется быть помощником или лидером рейда."
 L["custom_off_massivesmash_marker"] = "Маркировка Мощного крушащего удара"
 L["custom_off_massivesmash_marker_desc"] = "Отмечать танка, который получит Мощный крушащий удар меткой {rt6}, требуется быть помощником или лидером рейда."
 
@@ -94,10 +95,18 @@ end
 
 L = BigWigs:NewBossLocale("Blackrock Foundry Trash", "ruRU")
 if L then
+L["beasttender"] = "Звериный сторож Громоборцев"
+L["brute"] = "Громила шлакового цеха"
 L["enforcer"] = "Головорез из клана Черной горы"
 L["furnace"] = "Выхлопное отверстие Горнила"
+L["furnace_msg1"] = "Хмм, ты поджаренный на вид, не?"
+L["furnace_msg2"] = "Пришло время для шашлычка!"
+L["furnace_msg3"] = "Это не к добру..."
 L["gnasher"] = "Темноскол-костеглод"
+L["guardian"] = "Страж мастерской"
 L["hauler"] = "Огрон-грузчик"
+L["mistress"] = "Начальница кузни Огненная Рука"
+L["taskmaster"] = "Железный надсмотрщик"
 
 end
 

@@ -1,7 +1,6 @@
-local MovAny = _G.MovAny
-local MOVANY = _G.MOVANY
+local _G, pairs, type = _G, pairs, type
 
-local emptyTable = {}
+local MovAny = _G.MovAny
 
 local m = {
 	var = "scale",
@@ -57,17 +56,14 @@ local m = {
 			if not opt.orgScale then
 				opt.orgScale = f:GetScale()
 			end
-			
 			f:SetScale(opt.scale)
 			MovAny:LockScale(f)
-			
 			if f == e.f then
 				if e.hideOnScale then
 					for i, v in pairs(e.hideOnScale) do
 						MovAny:LockVisibility(v)
 					end
 				end
-
 				if f.attachedChildren and not f.MADontScaleChildren then
 					local le
 					for i, v in pairs(f.attachedChildren) do
@@ -77,11 +73,10 @@ local m = {
 						end
 					end
 				end
-				
 				if e.linkedScaling then
 					for i, v in pairs(e.linkedScaling) do
 						if not MovAny:IsModified(v) then
-							self:Apply(e, _G[v], readOnly)
+							self:Apply(e, _G[v])
 						end
 					end
 				end
@@ -195,12 +190,11 @@ local m = {
 		if not mode and e.scaleWH then
 			return true
 		end
-		
 		if not f or not f.GetScale or e.noScale or f:GetObjectType() == "FontString" then
 			return nil
 		end
 		return true
-	end,
+	end
 }
 
 MovAny:AddModule("Scale", m)

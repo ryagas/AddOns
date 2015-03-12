@@ -1,0 +1,23 @@
+﻿## Interface: 60100
+## Title: GridClickSets
+## Title-zhCN: |cff880303[网易有爱]|r Grid点击施法
+## Notes: Set the clicking action for Grid buttons
+## Author: Warbaby
+## Version: 5.03.08
+## OptionalDeps: Grid
+## SavedVariablesPerCharacter: GridClickSetsForTalents
+## X-Curse-Packaged-Version: 5.03.08
+## X-Curse-Project-Name: GridClickSets
+## X-Curse-Project-ID: gridclicksets
+## X-Curse-Repository-ID: wow/gridclicksets/mainline
+
+locale-enUS.lua
+locale-zhCN.lua
+locale-zhTW.lua
+locale-koKR.lua
+
+DefaultClickSets.lua
+GridClickSetsFrame.xml
+SetupGrid.lua
+SetupGrid2.lua
+SetupCompactUnitFrame.lua

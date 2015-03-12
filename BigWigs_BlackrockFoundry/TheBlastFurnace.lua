@@ -12,6 +12,7 @@ mod.engageId = 1690
 -- Locals
 --
 
+local startTime = nil
 local regulatorDeaths = 0
 local shamanDeaths = 0
 local blastTime = 30
@@ -25,6 +26,7 @@ local engiTimer = nil
 local securityTimer = nil
 local firecallerTimer = nil
 local markedFirecallers = {}
+local fixateOnMe = nil
 
 --------------------------------------------------------------------------------
 -- Localization
@@ -43,22 +45,23 @@ if L then
 	L.heat_increased_message = "Heat increased! Blast every %ss"
 
 	L.bombs_dropped = "Bombs dropped! (%d)"
+	L.bombs_dropped_p2 = "Engineer killed, bombs dropped!"
 
 	L.operator = "Bellows Operator spawns"
 	L.operator_desc = "During phase one, 2 Bellows Operators will repeatedly spawn, 1 on each side of the room."
-	L.operator_icon = 155181 -- inv_gizmo_fuelcell
+	L.operator_icon = 155181 -- inv_gizmo_fuelcell / Loading
 
 	L.engineer = "Furnace Engineer spawns"
 	L.engineer_desc = "During phase one, 2 Furnace Engineers will repeatedly spawn, 1 on each side of the room."
-	L.engineer_icon = 63603 -- inv_misc_wrench_02
+	L.engineer_icon = 63603 -- inv_misc_wrench_02 / Hit it With a Wrench!
 
 	L.guard = "Security Guard spawns"
 	L.guard_desc = "During phase one, 2 Security Guards will repeatedly spawn, 1 on each side of the room. During phase two, 1 Security Guard will repeatedly spawn at the entrance of the room."
-	L.guard_icon = 160382 -- inv_shield_32
+	L.guard_icon = 160382 -- inv_shield_32 / Defense
 
 	L.firecaller = "Firecaller spawns"
 	L.firecaller_desc = "During phase two, 2 Firecallers will repeatedly spawn, 1 on each side of the room."
-	L.firecaller_icon = 24826 -- spell_fire_incinerate
+	L.firecaller_icon = 24826 -- spell_fire_incinerate / Infernal Fire
 end
 L = mod:GetLocale()
 
@@ -91,6 +94,8 @@ function mod:GetOptions()
 		{155173, "DISPEL"}, -- Reactive Earth Shield
 		--[[ Slag Elemental ]]--
 		-10324, -- Fixate
+		{177744, "PROXIMITY"}, -- Burn on fixated target (Mythic)
+		176141, -- Hardened Slag (Mythic)
 		176133, -- Slag Bomb
 		--[[ Heart of the Mountain ]]--
 		155209, -- Blast
@@ -100,7 +105,6 @@ function mod:GetOptions()
 		--[[ General ]]--
 		"stages",
 		"berserk",
-		"bosskill"
 	}, {
 		["operator"] = CL.adds,
 		["firecaller"] = -9659, -- Firecaller
@@ -128,11 +132,14 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "ReactiveEarthShield", 155173)
 	-- Slag Elemental
 	self:Log("SPELL_AURA_APPLIED", "Fixate", 155196)
+	self:Log("SPELL_AURA_REMOVED", "FixateRemoved", 155196)
 	self:Log("SPELL_CAST_START", "SlagBomb", 176133)
+	self:Log("SPELL_AURA_REMOVED", "HardenedSlagRemoved", 176141) -- Mythic
 	-- Furnace Engineer
 	self:Log("SPELL_CAST_START", "Repair", 155179)
-	self:Log("SPELL_AURA_APPLIED", "Bomb", 155192, 174716) -- Bomb, Cluster of Lit Bombs
-	self:Log("SPELL_AURA_REMOVED", "BombRemoved", 155192, 174716)
+	self:Log("SPELL_AURA_APPLIED", "Bomb", 155192, 174716, 159558) -- Bomb, Cluster of Lit Bombs, MC'd Engineer Bomb
+	self:Log("SPELL_AURA_REFRESH", "Bomb", 155192, 174716, 159558)
+	self:Log("SPELL_AURA_REMOVED", "BombRemoved", 155192, 174716, 159558)
 	-- Firecaller
 	self:Log("SPELL_CAST_START", "CauterizeWounds", 155186)
 	self:Log("SPELL_AURA_APPLIED", "VolatileFireApplied", 176121)
@@ -147,7 +154,7 @@ function mod:OnBossEnable()
 	-- Heart of the Mountain
 	self:Log("SPELL_AURA_APPLIED", "Heat", 155242)
 	self:Log("SPELL_AURA_APPLIED_DOSE", "Heat", 155242)
-	self:Log("SPELL_AURA_APPLIED", "Melt", 155225) -- player will spawn puddle when the debuff expires
+	self:Log("SPELL_AURA_APPLIED", "Melt", 155225)
 	self:Log("SPELL_PERIODIC_DAMAGE", "MeltDamage", 155223)
 	self:Log("SPELL_PERIODIC_MISSED", "MeltDamage", 155223)
 	self:Log("SPELL_AURA_APPLIED", "Superheated", 163776)
@@ -156,6 +163,7 @@ function mod:OnBossEnable()
 end
 
 function mod:OnEngage()
+	startTime = GetTime()
 	regulatorDeaths, shamanDeaths = 0, 0
 	blastTime = 30
 
@@ -166,11 +174,13 @@ function mod:OnEngage()
 	bombOnMe = nil
 	firstOperators = nil
 	wipe(engineerBombs)
+	fixateOnMe = nil
 
 	self:Bar(155209, blastTime) -- Blast
 	local timer = self:LFR() and 65 or self:Mythic() and 40 or self:Heroic() and 55 or 60
 	self:CDBar("engineer", timer, -9649, L.engineer_icon) -- Furnace Engineer
 	self:CDBar("guard", timer, -10803, L.guard_icon) -- Security Guard
+	self:CDBar("operator", timer+0.5, -9650, L.operator_icon) -- Bellows Operator
 	engiTimer = self:ScheduleTimer("EngineerRepeater", timer)
 	securityTimer = self:ScheduleTimer("SecurityRepeater", timer)
 	self:RegisterUnitEvent("UNIT_POWER_FREQUENT", nil, "boss1")
@@ -191,16 +201,19 @@ end
 local function updateProximity()
 	-- open in reverse order so if you disable one it doesn't block others from showing
 	if #volatileFireTargets > 0 then
-		mod:OpenProximity(176121, 8, volatileFireTargets)
+		mod:OpenProximity(176121, 9, volatileFireTargets)
 	end
 	if #bombTargets > 0 then -- someone shouldn't be standing there without a bomb, so this might not be needed
-		mod:OpenProximity(155192, 8, bombTargets) -- how big is the radius? i have no idea
+		mod:OpenProximity(155192, 9, bombTargets) -- how big is the radius? i have no idea
+	end
+	if mod:Mythic() and fixateOnMe then
+		mod:OpenProximity(177744, 5)
 	end
 	if volatileFireOnMe then
-		mod:OpenProximity(176121, 8)
+		mod:OpenProximity(176121, 9)
 	end
 	if bombOnMe then
-		mod:OpenProximity(155192, 8) -- how big is the radius? i have no idea
+		mod:OpenProximity(155192, 9) -- how big is the radius? i have no idea
 	end
 end
 
@@ -215,10 +228,10 @@ do
 			prev = t
 			if not firstOperators then
 				firstOperators = true
-				self:CDBar("operator", 53, -9650, L.operator_icon) -- Bellows Operator
+				-- We fire the first bar on engage, this event fires a few seconds after engage
 			else
 				self:Message("operator", "Attention", "Info", CL.incoming:format(self:SpellName(-9650)), L.operator_icon) -- Bellows Operator
-				self:CDBar("operator", 58, -9650, L.operator_icon) -- Bellows Operator
+				self:CDBar("operator", 59, -9650, L.operator_icon) -- Bellows Operator
 			end
 		end
 	end
@@ -291,18 +304,20 @@ do
 
 	local prev = 0
 	function mod:Bomb(args)
-		engineerBombs[args.sourceGUID] = (engineerBombs[args.sourceGUID] or 5) - 1
+		if args.spellId ~= 159558 then -- mc bombs don't count?
+			engineerBombs[args.sourceGUID] = (engineerBombs[args.sourceGUID] or 5) - 1
+		end
 
 		if self:Me(args.destGUID) then
-			local t = 15
-			if args.spellId == 174716 then -- from the bomb sack
-				local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
-				t = expires - GetTime()
+			local t = GetTime()
+			local cd = 15
+			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
+			if expires and expires > 0 then
+				cd = expires - t
 			end
-			self:TargetBar(155192, t, args.destName)
+			self:TargetBar(155192, cd, args.destName)
 			bombOnMe = true
 
-			local t = GetTime()
 			if t-prev > 3 then
 				prev = t
 				self:Message(155192, "Positive", "Alarm", CL.you:format(args.spellName)) -- is good thing
@@ -337,10 +352,10 @@ end
 
 function mod:ShieldsDown(args)
 	self:Message(-10325, "Positive", "Info", CL.removed:format(self:SpellName(155176))) -- Damage Shield Removed!
-	self:Bar(-10325, self:Normal() and 40 or 30)
+	self:Bar(-10325, self:Mythic() and 20 or self:Normal() and 40 or 30)
 
 	if self.db.profile.custom_on_shieldsdown_marker then
-		for i = 1, 5 do -- i have no idea if this works
+		for i = 2, 5 do -- boss1 is always Heart of the Mountain
 			local boss = ("boss%d"):format(i)
 			if UnitBuff(boss, args.spellName) then -- Shields Down
 				SetRaidTarget(boss, 8)
@@ -352,7 +367,7 @@ end
 
 function mod:DamageShield(args)
 	if self.db.profile.custom_on_shieldsdown_marker then
-		for i = 1, 5 do
+		for i = 2, 5 do -- boss1 is always Heart of the Mountain
 			local boss = ("boss%d"):format(i)
 			if UnitGUID(boss) == args.sourceGUID and GetRaidTargetIndex(boss) == 8 then
 				SetRaidTarget(boss, 0)
@@ -366,11 +381,26 @@ function mod:Fixate(args)
 	if self:Me(args.destGUID) then
 		self:Message(-10324, "Personal", "Alarm", CL.you:format(args.spellName))
 		self:Flash(-10324)
+		fixateOnMe = true
 	end
+	updateProximity()
+end
+
+function mod:FixateRemoved(args)
+	if self:Me(args.destGUID) then
+		fixateOnMe = nil
+		self:CloseProximity(177744)
+	end
+	updateProximity()
 end
 
 function mod:SlagBomb(args)
 	self:Message(args.spellId, "Important", "Alarm", CL.casting:format(args.spellName))
+	self:Bar(args.spellId, 2, CL.cast:format(args.spellName))
+end
+
+function mod:HardenedSlagRemoved(args)
+	self:Message(args.spellId, "Positive", nil, CL.removed:format(args.spellName))
 end
 
 function mod:ReactiveEarthShield(args)
@@ -382,12 +412,18 @@ end
 function mod:VolatileFireApplied(args)
 	if self:Me(args.destGUID) then
 		self:Message(args.spellId, "Personal", "Alarm", CL.you:format(args.spellName))
-		self:Bar(args.spellId, 8, CL.you:format(args.spellName))
 		if not self:LFR() then
 			self:Say(args.spellId)
 		end
 		self:Flash(args.spellId)
 		volatileFireOnMe = true
+
+		local cd, t = 8, GetTime()
+		local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
+		if expires and expires > 0 then
+			cd = expires - t
+		end
+		self:Bar(args.spellId, cd, CL.you:format(args.spellName))
 	end
 
 	if not tContains(volatileFireTargets, args.destName) then -- SPELL_AURA_REFRESH
@@ -478,7 +514,7 @@ do
 		if power > 80 and power < 100 and not warned then
 			if blastTime > 10 then
 				-- XXX added this because there is an emote for it, not sure if needed since we have a bar
-				self:Message(155209, "Urgent", "Alarm", CL.soon:format(self:SpellName(155209)))
+				self:Message(155209, "Urgent", self:Healer() and "Alarm", CL.soon:format(self:SpellName(155209)))
 			end
 			warned = true
 		elseif power == 0 and warned then
@@ -532,10 +568,14 @@ end
 function mod:Deaths(args)
 	if args.mobId == 88820 or args.mobId == 76810 then
 		if regulatorDeaths < 2 then -- p1: pick up bombs
-			local bombs = engineerBombs[args.destGUID] or 5
-			self:Message(174731, "Positive", "Info", L.bombs_dropped:format(bombs))
+			local bombs = self:Mythic() and 3 or engineerBombs[args.destGUID] or 5
+			if bombs > 0 then
+				self:Message(174731, "Positive", "Info", L.bombs_dropped:format(bombs))
+			end
 			engineerBombs[args.destGUID] = nil
-		end
+		else -- p2: care
+			self:Message(174731, "Important", nil, L.bombs_dropped_p2)
+ 		end
 	elseif args.mobId == 76808 then
 		regulatorDeaths = regulatorDeaths + 1
 		self:Message("stages", "Neutral", "Info", CL.mob_killed:format(args.destName, regulatorDeaths, 2), false)
@@ -552,6 +592,7 @@ function mod:Deaths(args)
 		end
 	elseif args.mobId == 76815 then
 		shamanDeaths = shamanDeaths + 1
+		self:StopBar(-10325) -- Shields down
 		self:Message("stages", "Neutral", "Info", CL.mob_killed:format(args.destName, shamanDeaths, 4), false)
 		if shamanDeaths > 3 then
 			-- The Fury is free! (after the next Blast cast?)
@@ -559,6 +600,9 @@ function mod:Deaths(args)
 			self:CancelTimer(firecallerTimer)
 			self:StopBar(-10803) -- Security Guard
 			self:StopBar(-9659) -- Firecaller
+			if startTime then
+				self:Bar(163776, 600-(GetTime()-startTime))
+			end
 		end
 	end
 end

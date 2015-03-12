@@ -264,8 +264,10 @@ local ACHID_ZONE_MISC = {
 	["Zul'Drak"] = { "1576:2", "1596:2" },	-- "Of Blood and Anguish", "Guru of Drakuru"
 	["Wintergrasp"] = { 1752, 2199, 1717, 1751, 1755, 1727, 1723 },
 -- Darkmoon Faire
-	["Darkmoon Island"] = { 6020, 6021, 6022, 6023, 6026, 6027, 6028, 6029, IsAlliance and 6030 or 6031, 6032, 6025 },
-	["Darkmoon Faire"] = { 6020, 6021, 6022, 6023, 6026, 6027, 6028, 6029, IsAlliance and 6030 or 6031, 6032, 6025 },
+	["Darkmoon Island"] = { 6020, 6021, 6022, 6023, 6026, 6027, 6028, 6029, IsAlliance and 6030 or 6031, 6032, 6025,
+		9250, 6019, 6332 },
+	["Darkmoon Faire"] = { 6020, 6021, 6022, 6023, 6026, 6027, 6028, 6029, IsAlliance and 6030 or 6031, 6032, 6025,
+		9250, 6019, 6332 },
 	-- !! not 100% certain which is needed; may be both; test when the faire's available
 -- Other Cataclysm-related
 	["Deepholm"] = { 5445, 5446, 5447, 5449 },	-- "Fungalophobia", "The Glop Family Line",
@@ -322,6 +324,22 @@ local ACHID_ZONE_MISC = {
 	["Timeless Isle"] = {
 		8715, 8726, 8725, 8728, 8712, 8723, 8533, 8724, 8730, 8717
 	},
+-- Draenor
+	["Ashran"] = {
+		9102, -- Ashran Victory
+		IsAlliance and 9104 or 9103, -- Bounty Hunter
+		9105, -- Tour of Duty
+		9106, -- Just for Me
+		9216, -- High-value Targets
+		IsAlliance and 9408 or 9217, -- Operation Counterattack
+		IsAlliance and 9225 or 9224, -- Take Them Out
+		9218, -- Grand Theft, 1st Degree
+		9222, -- Divide and Conquer
+		9223, -- Weed Whacker
+		IsAlliance and 9256 or 9257, -- Rescue Operation
+		IsAlliance and 9214 or 9215, -- Hero of Stormshield / Hero of Warspear
+		IsAlliance and 9714 or 9715, -- Thy Kingdom Come
+	},
 }
 if (IsAlliance) then
   tinsert(ACHID_ZONE_MISC["Grizzly Hills"], 2016) -- "Grizzled Veteran"
@@ -345,6 +363,8 @@ if (IsAlliance) then
   -- "A Silver Confidant", "Champion of the Alliance":
   tinsert(ACHID_ZONE_MISC["Icecrown"], 3676)
   tinsert(ACHID_ZONE_MISC["Icecrown"], 2782)
+  -- "Down Goes Van Rook" (currently no Horde equivalent?)
+  tinsert(ACHID_ZONE_MISC["Ashran"], 9228)
 else
   tinsert(ACHID_ZONE_MISC["Azshara"], 5454) -- "Joy Ride"
   tinsert(ACHID_ZONE_MISC["Grizzly Hills"], 2017) -- "Grizzled Veteran"
@@ -780,6 +800,8 @@ local frame, panel, sortdrop
 local LocationsList, EditZoneOverride, subzdrop, subzdrop_menu, subzdrop_Update = {}
 local diffdrop, raidsizedrop
 local RefreshBtn, ResetBtn, NoSuggestionsLabel, ResultsLabel
+
+WHAT = LocationsList
 
 local function SortDrop_OnSelect(self, value)
   VARS.SuggestionsSort = value
@@ -1419,7 +1441,7 @@ function Overachiever.Debug_GetIDsInCat(cat)
 end
 --]]
 
---[[
+--[[ --]]
 -- /run Overachiever.Debug_GetMissingAch()
 local function getAchIDsFromTab(from, to)
   for k,v in pairs(from) do

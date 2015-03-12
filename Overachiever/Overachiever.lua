@@ -181,7 +181,15 @@ do
     local id, ret, anyFound
     for i=1,GetCategoryNumAchievements(category) do
       id, ret = get_arg1_argN(argnum, GetAchievementInfo(category, i))
-      if (anyCase) then  ret = strlower(ret);  end
+      if (anyCase) then
+        if (not ret) then
+			chatprint("getAchievementID_cat: ret is nil.", "["..THIS_TITLE.." DEBUG]")
+			print("category:",category, "index:",i, "argnum:",argnum)
+			ret = ''
+		else
+			ret = strlower(ret)
+		end
+      end
       if ( strfind(ret, pattern, 1, true) ) then
         if (getAll) then
           found[#(found) + 1] = id;
@@ -282,7 +290,7 @@ end
 
 
 local function canTrackAchievement(id, allowCompleted)
-  if ( GetNumTrackedAchievements() < WATCHFRAME_MAXACHIEVEMENTS and
+  if (GetNumTrackedAchievements() < MAX_TRACKED_ACHIEVEMENTS and  -- WATCHFRAME_MAXACHIEVEMENTS renamed to MAX_TRACKED_ACHIEVEMENTS
        (allowCompleted or not select(4, GetAchievementInfo(id))) ) then
     return true
   end
@@ -657,7 +665,7 @@ local function AutoTrackCheck_Explore(noClearing)
              getAchievementID(CATEGORIES_EXPLOREZONES, ACHINFO_NAME, zone, true)
       end
     end
-    if (id) then
+    if (id and id > 0) then
       local tracked
       if (GetNumTrackedAchievements() > 0) then
         tracked = AutoTrackedAch_explore and IsTrackedAchievement(AutoTrackedAch_explore) and AutoTrackedAch_explore or
@@ -888,6 +896,7 @@ end
 -----------------------
 
 function Overachiever.OnEvent(self, event, arg1, ...)
+  --chatprint(event)
   if (event == "PLAYER_ENTERING_WORLD") then
     Overachiever.MainFrame:UnregisterEvent("PLAYER_ENTERING_WORLD")
     Overachiever.MainFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
@@ -969,19 +978,21 @@ function Overachiever.OnEvent(self, event, arg1, ...)
     AutoTrackCheck_Explore()
 
   elseif (event == "TRACKED_ACHIEVEMENT_UPDATE") then
-    local criteriaID, elapsed, duration = ...
-    if (duration and elapsed < duration) then
-      Overachiever.RecentReminders[arg1] = time()
-      if (Overachiever_Settings.Tracker_AutoTimer and
-          not setTracking(arg1) and AutoTrackedAch_explore and IsTrackedAchievement(AutoTrackedAch_explore)) then
-        -- If failed to track this, remove an exploration achievement that was auto-tracked and try again:
-        RemoveTrackedAchievement(AutoTrackedAch_explore)
-        if (not setTracking(arg1)) then
-          -- If still didn't successfully track new achievement, track previous achievement again:
-          AddTrackedAchievement(AutoTrackedAch_explore)
+    if (arg1 and arg1 > 0) then  -- Attempt to work around an apparent WoW bug. May prevent errors but if the given ID is 0, we have no way of knowing what the achievement really was so we can't track it (unless there's another call with the correct data).
+      local criteriaID, elapsed, duration = ...
+      if (duration and elapsed < duration) then
+        Overachiever.RecentReminders[arg1] = time()
+        if (Overachiever_Settings.Tracker_AutoTimer and
+            not setTracking(arg1) and AutoTrackedAch_explore and IsTrackedAchievement(AutoTrackedAch_explore)) then
+          -- If failed to track this, remove an exploration achievement that was auto-tracked and try again:
+          RemoveTrackedAchievement(AutoTrackedAch_explore)
+          if (not setTracking(arg1)) then
+            -- If still didn't successfully track new achievement, track previous achievement again:
+            AddTrackedAchievement(AutoTrackedAch_explore)
+          end
         end
       end
-    end
+	end
 
   elseif (event == "ADDON_LOADED" and arg1 == "Blizzard_AchievementUI") then
     Overachiever.MainFrame:UnregisterEvent("ADDON_LOADED")
@@ -1187,6 +1198,8 @@ local function slashHandler(msg, self, silent, func_nomsg)
 end
 
 local function openOptions()
+  InterfaceOptionsFrame_OpenToCategory(OptionsPanel)
+  -- Working around a Blizzard bug by calling this twice:
   InterfaceOptionsFrame_OpenToCategory(OptionsPanel)
 end
 

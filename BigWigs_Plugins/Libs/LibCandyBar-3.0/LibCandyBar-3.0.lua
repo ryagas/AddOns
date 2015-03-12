@@ -20,7 +20,7 @@ local CreateFrame, error, setmetatable, UIParent = CreateFrame, error, setmetata
 if not LibStub then error("LibCandyBar-3.0 requires LibStub.") end
 local cbh = LibStub:GetLibrary("CallbackHandler-1.0")
 if not cbh then error("LibCandyBar-3.0 requires CallbackHandler-1.0") end
-local lib, old = LibStub:NewLibrary("LibCandyBar-3.0", 87) -- Bump minor on changes
+local lib, old = LibStub:NewLibrary("LibCandyBar-3.0", 89) -- Bump minor on changes
 if not lib then return end
 lib.callbacks = lib.callbacks or cbh:New(lib)
 local cb = lib.callbacks
@@ -319,10 +319,10 @@ function lib:New(texture, width, height)
 		duration:SetPoint("RIGHT", statusbar, "RIGHT", -2, 0)
 		bar.candyBarDuration = duration
 
-		local name = statusbar:CreateFontString(nil, "OVERLAY", GameFontHighlightSmallOutline)
-		name:SetPoint("LEFT", statusbar, "LEFT", 2, 0)
-		name:SetPoint("RIGHT", statusbar, "RIGHT", -2, 0)
-		bar.candyBarLabel = name
+		local label = statusbar:CreateFontString(nil, "OVERLAY", GameFontHighlightSmallOutline)
+		label:SetPoint("TOPLEFT", statusbar, "TOPLEFT", 2, 0)
+		label:SetPoint("BOTTOMRIGHT", statusbar, "BOTTOMRIGHT", -2, 0)
+		bar.candyBarLabel = label
 
 		local updater = bar:CreateAnimationGroup()
 		updater:SetLooping("REPEAT")

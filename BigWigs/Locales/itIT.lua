@@ -21,8 +21,6 @@ L["berserk_desc"] = "Visualizza un timer e un avviso quando il boss si infurier�
 L["best"] = "Migliore:"
 L["blizzRestrictionsConfig"] = "A causa di restrizioni Blizzard, la configurazione deve essere aperta fuori combattimento, prima che vi si possa accedere durante il combattimento."
 L["blizzRestrictionsZone"] = "Aspetto fino alla fine del combattimento a completare il caricamento a causa di restrizioni al combattimento di Blizzard."
-L["bosskill"] = "Morte del Boss"
-L["bosskill_desc"] = "Annuncia quando il boss viene ucciso."
 L["chatMessages"] = "Messaggi Riquadro Chat"
 L["chatMessagesDesc"] = "Invia tutti i messaggi di Big Wigs alla chat oltre che nei settaggi di visualizzazione."
 L["colors"] = "Colori"
@@ -34,7 +32,6 @@ L["COUNTDOWN_desc"] = "Se abilitato, un conto alla rovescia vocasle e visuale ve
 L["dbmFaker"] = "Fingi di usare DBM"
 L["dbmFakerDesc"] = "Se un'utente DBM effettua un controllo di versione per vedere chi usa DBM, ti vedranno nella lista. Utile per quelle gilde che obbligano ad usare DBM."
 L["dbmUsers"] = "Utilizzatori DBM:"
-L["defeated"] = "%s è stato sconfitto!"
 L["developers"] = "Sviluppatori"
 L["DISPEL"] = "Solo Dissolutori"
 L["DISPEL_desc"] = "Se vuoi vedere gli avvisi per questa abilità, anche se non puoi dissiparla, disabilita questa opzione."
@@ -103,9 +100,6 @@ L["slashDescRange"] = "|cFFFED000/range:|r Apri l'indicatore di porossimità."
 L["slashDescTitle"] = "|cFFFED000Comandi Slash:|r"
 L["slashDescVersion"] = "|cFFFED000/bwv:|r Esegui un controllo di versione di Big Wigs."
 L["sound"] = "Suoni"
-L["soundDesc"] = [=[I messaggi possono essere visualizzati insieme a dei suoni. Alcuni trovano più semplice associare il suono all'abilità che viene mostrata nel messaggio piuttosto che leggere il messaggio stesso.
-
-|cffff4411Anche quando disattivato, il suono può essere lanciato dagli avvisi incursione. Quel suono è comunque diverso da quello che usiamo noi.|r]=]
 L["sourceCheckout"] = "Stai usando una versione di Big Wigs %s presa direttamente dal repository."
 L["stages"] = "Fasi"
 L["stages_desc"] = "Abilita funzioni relative alle varie fasi del boss come la prossimità, le barre, ecc."

@@ -15,7 +15,10 @@ mod.worldBoss = 81535
 
 function mod:GetOptions()
 	return {
-		175973, 175979, 176013, {176004, "DISPEL"}, "bosskill"
+		175973, -- Colossal Blow
+		175979, -- Genesis
+		176013, -- Grow Untamed Mandragora
+		{176004, "DISPEL"} -- Savage Vines
 	}
 end
 
@@ -43,8 +46,8 @@ function mod:ColossalBlow(args)
 end
 
 function mod:Genesis(args)
-	self:Message(args.spellId, "Attention", "Long")
-	self:Bar(args.spellId, 17, CL.cast:format(args.spellName))
+	self:Message(175979, "Attention", "Long")
+	self:Bar(175979, 17, CL.cast:format(args.spellName))
 end
 
 function mod:GrowMandragora(args)

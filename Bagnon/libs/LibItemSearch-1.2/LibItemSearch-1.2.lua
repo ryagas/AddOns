@@ -4,7 +4,8 @@
 --]]
 
 local Search = LibStub('CustomSearch-1.0')
-local Lib = LibStub:NewLibrary('LibItemSearch-1.2', 5)
+local Unfit = LibStub('Unfit-1.0')
+local Lib = LibStub:NewLibrary('LibItemSearch-1.2', 10)
 if Lib then
 	Lib.Filters = {}
 else
@@ -16,6 +17,14 @@ end
 
 function Lib:Matches(link, search)
 	return Search(link, search, self.Filters)
+end
+
+function Lib:Tooltip(link, search)
+	return link and self.Filters.tip:match(link, nil, search)
+end
+
+function Lib:TooltipPhrase(link, search)
+	return link and self.Filters.tipPhrases:match(link, nil, search)
 end
 
 function Lib:InSet(link, search)
@@ -69,6 +78,21 @@ Lib.Filters.level = {
 	end
 }
 
+Lib.Filters.requiredlevel = {
+	tags = {'r', 'req', 'rl', 'reql', 'reqlvl'},
+
+	canSearch = function(self, _, search)
+		return tonumber(search)
+	end,
+
+	match = function(self, link, operator, num)
+		local lvl = select(5, GetItemInfo(link))
+		if lvl then
+			return Search:Compare(operator, lvl, num)
+		end
+	end
+}
+
 
 --[[ Quality ]]--
 
@@ -95,13 +119,51 @@ Lib.Filters.quality = {
 }
 
 
+--[[ Usable ]]--
+
+Lib.Filters.quality = {
+	tags = {},
+
+	canSearch = function(self, operator, search)
+		return not operator and search == 'usable'
+	end,
+
+	match = function(self, link)
+		if not Unfit:IsItemUnusable(link) then
+			local lvl = select(5, GetItemInfo(link))
+			return lvl and (lvl == 0 or lvl > UnitLevel('player'))
+		end
+	end	
+}
+
+
 --[[ Tooltip Searches ]]--
 
 local scanner = LibItemSearchTooltipScanner or CreateFrame('GameTooltip', 'LibItemSearchTooltipScanner', UIParent, 'GameTooltipTemplate')
-local line2 = LibItemSearchTooltipScannerTextLeft2
-local line3 = LibItemSearchTooltipScannerTextLeft3
 
-Lib.Filters.bind = {
+Lib.Filters.tip = {
+	tags = {'tt', 'tip', 'tooltip'},
+	onlyTags = true,
+
+	canSearch = function(self, _, search)
+		return search
+	end,
+
+	match = function(self, link, _, search)
+		if link:find('item:') then
+			scanner:SetOwner(UIParent, 'ANCHOR_NONE')
+			scanner:SetHyperlink(link)
+
+			for i = 1, scanner:NumLines() do
+				if Search:Find(search, _G[scanner:GetName() .. 'TextLeft' .. i]:GetText()) then
+					return true
+				end
+			end
+		end
+	end
+}
+
+Lib.Filters.tipPhrases = {
 	canSearch = function(self, _, search)
 		return self.keywords[search]
 	end,
@@ -134,36 +196,22 @@ Lib.Filters.bind = {
 
 	cache = setmetatable({}, {__index = function(t, k) local v = {} t[k] = v return v end}),
 	keywords = {
-    	['soulbound'] = ITEM_BIND_ON_PICKUP,
+    	[ITEM_SOULBOUND:lower()] = ITEM_BIND_ON_PICKUP,
     	['bound'] = ITEM_BIND_ON_PICKUP,
+    	['bop'] = ITEM_BIND_ON_PICKUP,
 		['boe'] = ITEM_BIND_ON_EQUIP,
-		['bop'] = ITEM_BIND_ON_PICKUP,
 		['bou'] = ITEM_BIND_ON_USE,
-		['quest'] = ITEM_BIND_QUEST,
-		['boa'] = ITEM_BIND_TO_BNETACCOUNT
+		['boa'] = ITEM_BIND_TO_BNETACCOUNT,
+		[BATTLE_PET_SOURCE_2:lower()] = ITEM_BIND_QUEST,
+		[QUESTS_LABEL:lower()] = ITEM_BIND_QUEST,
+		[TOY:lower()] = TOY,
+		[MINIMAP_TRACKING_VENDOR_REAGENT:lower()] = PROFESSIONS_USED_IN_COOKING,
+		['reagent'] = PROFESSIONS_USED_IN_COOKING,
+		['crafting'] = PROFESSIONS_USED_IN_COOKING,
+		['follower'] = 'follower',
+		['followe'] = 'follower',
+		['follow'] = 'follower'
 	}
-}
-
-Lib.Filters.tooltip = {
-	tags = {'tt', 'tip', 'tooltip'},
-	onlyTags = true,
-
-	canSearch = function(self, _, search)
-		return search
-	end,
-
-	match = function(self, link, _, search)
-		if link:find('item:') then
-			scanner:SetOwner(UIParent, 'ANCHOR_NONE')
-			scanner:SetHyperlink(link)
-
-			for i = 1, scanner:NumLines() do
-				if Search:Find(search, _G[scanner:GetName() .. 'TextLeft' .. i]:GetText()) then
-					return true
-				end
-			end
-		end
-	end
 }
 
 

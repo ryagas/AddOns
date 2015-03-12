@@ -1,3 +1,9 @@
+local _G = _G
+local pairs = pairs
+local string = string
+local table = table
+local type = type
+
 local MovAny = _G.MovAny
 local MOVANY = _G.MOVANY
 
@@ -257,16 +263,13 @@ end
 
 function MovAny:ChangeProfile(profile)
 	self:ResetProfile(true)
-	--self:VerifyData()
 	local char = MADB.characters[self:GetCharacterIndex()]
 	if not char then
-		char = {}
+		char = { }
 		MADB.characters[self:GetCharacterIndex()] = char
 	end
-	
 	char.profile = profile ~= "default" and profile or nil
 	self.userData = MADB.profiles[self:GetProfileName()].frames
-	
 	local e, f
 	for i, v in pairs(self.userData) do
 		e = self.API:GetElement(i)
@@ -276,7 +279,6 @@ function MovAny:ChangeProfile(profile)
 			e = self.API:AddElementIfNew(i)
 		end
 	end
-	
 	self:SyncAllFrames(true)
 	self:UpdateGUIIfShown(true)
 end

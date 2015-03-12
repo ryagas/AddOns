@@ -1,0 +1,23 @@
+tag 2.1.0.1
+23a80e6ed303288f7f74b1ee9ed418204d590b15
+Benjamin Staneck <staneck@gmail.com>
+2015-03-05 16:39:34 +0100
+
+
+
+--------------------
+
+Benjamin Staneck:
+	- GetPetActionInfo() returns true/false instead of 1/0 now, thanks to Extremity for the discovery!
+Infus:
+	- Guard against yOffset being nil
+	Can apparently happen.
+	
+	Ticket-number: 278
+	- Fix %p display
+	If we are called with a remaining time of 0, we still need to update
+	region.values, otherwise %p will return a wrong value.
+	
+	Ticket-number: 250
+	- Fix ownOnly aura, unitCaster can be nil
+	Ticket-number: 279

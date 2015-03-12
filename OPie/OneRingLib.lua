@@ -1,39 +1,50 @@
-local versionMajor, versionRev, L, OR_AddonName, T, AB, ORI = 3, 68, newproxy(true), ...
-local OR_Rings, OR_ModifierLockState, OneRing = {}, {}, {ext={},lang=L}
+local versionMajor, versionRev, L, OR_AddonName, T, ORI = 3, 81, newproxy(true), ...
+local OneRing, OR_Rings, OR_ModifierLockState, TL, EV, OR_LoadedState = {ext={ActionBook=T.ActionBook},lang=L}, {}, nil, T.L, T.Evie, 1
 local defaultConfig = {ClickActivation=false, IndicationOffsetX=0, IndicationOffsetY=0, RingAtMouse=false, RingScale=1, ClickPriority=true, CenterAction=false, MouseBucket=1, NoClose=false, SliceBinding=false, SliceBindingString="1 2 3 4 5 6 7 8 9 0", SelectedSliceBind="", PrimaryButton="BUTTON4", SecondaryButton="BUTTON5", OpenNestedRingButton="BUTTON3", ScrollNestedRingUpButton="", ScrollNestedRingDownButton="", UseDefaultBindings=true}
 local configRoot, configInstance, activeProfile, PersistentStorageInfo, optionValidators, optionsMeta = {}, nil, nil, {}, {}, {__index=defaultConfig}
+local charId = ("%s-%s"):format(GetRealmName(), UnitName("player"))
 
--- Some basic utility methods
 local function assert(condition, text, level, ...)
-	return (not condition) and error(tostring(text):format(...), 1 + (level or 1)) or condition;
+	return (not condition) and error(tostring(text):format(...), 1 + (level or 1)) or condition
 end
-local function copy(t, lib, into)
-	assert((lib == nil or type(lib) == "table"), "Syntax: copy(t[, tLib[, into]])", 2);
-	local nt, lib = type(into) == "table" and into or {}, lib or (t and {});
-	if type(into) == "table" then for k, v in pairs(nt) do if t == nil or t[k] == nil then nt[k] = nil; end end end
-	if t == nil then return nt; end lib[t] = nt;
-	for k, v in pairs(t) do
-		if type(v) == "table" then
-			nt[k] = lib[v] or copy(v, lib, nt[k]);
-		else nt[k] = v; end
+local copy do -- (tbl, into) -> into
+	local copies = {}
+	local function icopy(t, into)
+		if type(into) == "table" then
+			for k,v in pairs(into) do
+				if not (type(k) ~= "table" and type(v) == "table" and type(t[k]) == "table") then
+					into[k] = nil
+				end
+			end
+		else
+			into = {}
+		end
+		copies[t] = into
+		for k,v in pairs(t) do
+			into[type(k) == "table" and (copies[k] or icopy(k)) or k] = type(v) == "table" and (copies[v] or icopy(v, into[k])) or v
+		end
+		return into
 	end
-	return nt;
+	function copy(t, into)
+		assert(type(t) == "table" and (into == nil or type(into) == "table"), "Syntax: copy(tbl[, into])")
+		local _, ret = wipe(copies), icopy(t, into), wipe(copies)
+		return ret
+	end
 end
-OneRing.xlu = {copy=copy, assert=assert, charId=("%s-%s-%s"):format(GetCVar("realmList"):match("^([^.]+)"):upper(), GetRealmName(), UnitName("player"))};
-local function tostringb(b)
-	return b and "true" or "false";
+local function tostringf(b)
+	return b and "true" or "nil"
 end
 local function getSpecCharIdent()
-	local tg = GetActiveSpecGroup();
-	return (tg == 1 and "%s" or "%s-%d"):format(OneRing.xlu.charId, tg);
+	local tg = GetActiveSpecGroup()
+	return (tg == 1 and "%s" or "%s-%d"):format(charId, tg)
 end
-local isConditionalBinding = setmetatable({}, {__mode="k", __index=function(t, b)
-	if type(b) == "string" then
-		t[b] = b:upper():gsub("^ALT%-", ""):gsub("^CTRL%-", ""):gsub("^SHIFT%-", ""):gsub("^BUTTON%d*", ""):gsub(".$", "") ~= "";
-		return t[b];
+local safequote do
+	local r = {u="\\117", ["{"]="\\123", ["}"]="\\125"}
+	function safequote(s)
+		return (("%q"):format(s):gsub("[{}u]", r))
 	end
-end});
-getmetatable(L).__call = T.LocalizeText or function(self, k) return k end
+end
+getmetatable(L).__call = TL and function(self,k) return TL[k] or k end or function(self,k) return k end
 
 local function OR_GetRingOption(ringName, option)
 	if not configInstance then return defaultConfig[option], nil, nil, nil, defaultConfig[option] end
@@ -45,22 +56,27 @@ local function OR_GetRingOption(ringName, option)
 	return value, setting, ring, global, default
 end
 
+local AB = assert(T.ActionBook:compatible(2,14), "A compatible version of ActionBook is required") do
+	local ringIcon = ([[Interface\AddOns\%s\gfx\opie_ring_icon]]):format(OR_AddonName)
+	AB:RegisterActionType("ring", function(name)
+		return type(name) == "string" and OR_Rings[name] and OR_Rings[name].action or nil
+	end, function(name)
+		return "OPie Ring", OR_Rings[name] and OR_Rings[name].name or name, ringIcon
+	end)
+	AB:AugmentCategory("OPie rings", function(_, add)
+		for i=1,#OR_Rings do
+			add("ring", OR_Rings[i])
+		end
+	end)
+end
+
 -- Here be (Secure) Dragons
 local OR_SecCore = CreateFrame("Button", "ORL_RTrigger", UIParent, "SecureActionButtonTemplate,SecureHandlerAttributeTemplate")
 local OR_OpenProxy = CreateFrame("Button", "ORLOpen", nil, "SecureActionButtonTemplate")
-local OR_SecEnv, OR_ActiveRingName, OR_ActiveCollectionID, OR_ActiveSliceCount = {};
-OR_SecCore:SetSize(9001*4, 9001*4); OR_SecCore:SetFrameStrata("FULLSCREEN"); OR_SecCore:RegisterForClicks("AnyUp", "AnyDown"); OR_SecCore:EnableMouseWheel(); OR_SecCore:Hide();
-local function OR_InitAB()
-	AB = assert(OneRingLib.ext.ActionBook:compatible(1, 6), "A compatible version of ActionBook is required");
-	AB:register("ring", function(name)
-		return type(name) == "string" and OR_Rings[name] and OR_Rings[name].action or nil
-	end, function(name)
-		return "OPie Ring", OR_Rings[name] and OR_Rings[name].name or name, [[Interface\AddOns\OPie\gfx\opie_ring_icon]];
-	end)
-	AB:category("OPie rings", function() return #OR_Rings; end, function(i) return "ring", OR_Rings[i] end)
-	OR_SecCore:SetFrameRef("AB", AB:seclib())
-	OR_SecCore:Execute('AB = self:GetFrameRef("AB")')
-end
+local OR_SecEnv, OR_ActiveRingName, OR_ActiveCollectionID, OR_ActiveSliceCount
+OR_SecCore:SetSize(9001*4, 9001*4); OR_SecCore:SetFrameStrata("FULLSCREEN_DIALOG"); OR_SecCore:RegisterForClicks("AnyUp", "AnyDown"); OR_SecCore:EnableMouseWheel(1); OR_SecCore:Hide();
+OR_SecCore:SetFrameRef("AB", AB:seclib())
+OR_SecCore:SetFrameRef("KR", T.ActionBook:compatible("Kindred",1,3):seclib())
 local OR_DeferExecute do
 	local queue, qc, qpos = {}, 0
 	function OR_DeferExecute(block, ...)
@@ -78,13 +94,15 @@ do -- Click dispatcher
 	OR_SecCore:SetFrameRef("sliceBindProxy", CreateFrame("Frame", "ORL_BindProxySlice", nil, "SecureFrameTemplate"))
 	OR_SecCore:SetFrameRef("overBindProxy", CreateFrame("Frame", "ORL_BindProxyOverride", nil, "SecureFrameTemplate"))
 	OR_SecCore:Execute([=[-- OR_SecCore
-		ORL_GlobalOptions, ORL_RingData, ORL_KnownCollections, ORL_StoredCA = newtable(), newtable(), newtable(), newtable()
-		collections, ctokens, rotation, rtokens, fcIgnore, emptyTable = newtable(), newtable(), newtable(), newtable(), newtable(), newtable()
+		ORL_GlobalOptions, ORL_RingData, ORL_RingDataN = newtable(), newtable(), newtable()
+		ORL_KnownCollections, ORL_StoredCA = newtable(), newtable()
+		collections, ctokens, rotation, rtokens, fcIgnore, rotIgnore, emptyTable = newtable(), newtable(), newtable(), newtable(), newtable(), newtable(), newtable()
 		modState, sizeSq, bindProxy, sliceProxy, overProxy = "", 16*9001^2, self:GetFrameRef("bindProxy"), self:GetFrameRef("sliceBindProxy"), self:GetFrameRef("overBindProxy")
+		AB, KR = self:GetFrameRef("AB"), self:GetFrameRef("KR")
 
 		PrepareCollection = [==[-- PrepareCollection
 			wipe(collections) wipe(ctokens)
-			local firstFC, root, colData, openAction = nil, ..., AB:RunAttribute("collection", ...)
+			local firstFC, root, colData, openAction = nil, ..., AB:RunAttribute("GetCollectionContent", ...)
 			for cid, i, aid, tok in (colData or ""):gmatch("\n(%d+) (%d+) (%d+) (%S+)") do
 				cid, i, aid = tonumber(cid), tonumber(i), tonumber(aid)
 				if not collections[cid] then collections[cid], ctokens[cid] = newtable(), newtable() end
@@ -95,19 +113,19 @@ do -- Click dispatcher
 				for i, aid in pairs(list) do
 					if collections[aid] then
 						local tok = ctokens[cid][i]
-						rotation[tok] = ctokens[aid][rtokens[tok]] or 1
+						rotation[tok] = not rotIgnore[ctokens[cid][i]] and ctokens[aid][rtokens[tok]] or 1
 					end
 				end
 			end
 			return openAction, firstFC
 		]==]
 		ORL_CloseActiveRing = [[-- CloseActiveRing
-			local old, shouldKeepOwner = activeRing, ...;
+			local old, shouldKeepOwner, selSliceIndex, selSliceAction = activeRing, ...;
 			if not shouldKeepOwner then	owner:Hide();	end
 			bindProxy:ClearBindings()
 			sliceProxy:ClearBindings()
 			activeRing, activeBind, openCollection, openCollectionID = nil;
-			owner:CallMethod("NotifyState", "close", old.name, old.action);
+			owner:CallMethod("NotifyState", "close", old.name, old.action, selSliceIndex, selSliceAction);
 		]]
 		ORL_RegisterVariations = [[-- RegisterVariations
 			local binding, mapkey, downmix = ...;
@@ -125,7 +143,7 @@ do -- Click dispatcher
 			openCollection, openCollectionID = collections[cid], cid
 			activeRing, activeBind = ring, leftActivation and "BUTTON1" or (fastSwitch and activeBind or interactBinding)
 			if ORL_StoredCA[ring.name] and not ring.fcToken then ring.fcToken, ORL_StoredCA[ring.name] = ORL_StoredCA[ring.name] end
-			fastClick = ring.CenterAction and ctokens[cid][ring.fcToken] or (ring.OpprotunisticCA and ctokens[cid][firstFC]) or nil
+			fastClick = ring.CenterAction and ((not fcIgnore[ring.fcToken] and ctokens[cid][ring.fcToken]) or (ring.OpprotunisticCA and ctokens[cid][firstFC])) or nil
 			
 			if interactBinding ~= "BUTTON2" then bindProxy:SetBindingClick(true, "BUTTON2", owner, "close") end
 			bindProxy:SetBindingClick(true, "ESCAPE", owner, "close")
@@ -191,7 +209,7 @@ do -- Click dispatcher
 			local action = ...
 			if action then
 				self:SetAttribute("type", "macro")
-				self:SetAttribute("macrotext", "/click ActionBookTrigger " .. action)
+				self:SetAttribute("macrotext", AB:RunAttribute("UseAction", action))
 			end
 			return action or false, 0;
 		]]
@@ -199,7 +217,7 @@ do -- Click dispatcher
 			local pureSlice, shouldUpdateFastClick, noClose = ...
 			local pureToken, action = ctokens[openCollectionID][pureSlice], owner:Run(ORL_GetSlice, openCollectionID, pureSlice)
 			activeRing.fcToken = shouldUpdateFastClick and activeRing.CenterAction and not fcIgnore[pureToken] and pureToken or activeRing.fcToken
-			if not (leftActivation and activeRing.NoClose or noClose) then owner:Run(ORL_CloseActiveRing) end
+			if not (leftActivation and activeRing.NoClose or noClose) then owner:Run(ORL_CloseActiveRing, nil, pureSlice, action) end
 			return owner:RunFor(self, ORL_PerformAB, action)
 		]];
 		ORL_OnWheel = [==[-- OnWheel (delta)
@@ -278,7 +296,7 @@ do -- Click dispatcher
 			return false
 		]==];
 		ORL_OpenClick = [[-- OpenClick
-			local rdata, cur = ORL_RingData[...], activeRing
+			local rdata, cur = ORL_RingDataN[...], activeRing
 			if not rdata then
 				return print("|cffff0000[ORL] Unknown ring alias: ".. tostring((...)))
 			elseif cur then
@@ -294,15 +312,15 @@ do -- Click dispatcher
 	OR_SecEnv = GetManagedEnvironment(OR_SecCore)
 end
 do -- Binding management
-	function OR_SecCore:SpawnProxy(id)
+	function OR_SecCore:SpawnProxy(id, rkey)
 		local f = CreateFrame("Button", "ORL_RProxy" .. id, nil, "SecureActionButtonTemplate")
 		f:RegisterForClicks("AnyUp", "AnyDown")
 		OR_SecCore:WrapScript(f, "OnClick", "return owner:RunFor(self, ORL_OnClick, button, down)", 'self:SetAttribute("type", nil)')
 		OR_SecCore:SetFrameRef("proxy" .. id, f)
-		_G["BINDING_NAME_CLICK ".. f:GetName() .. ":r" .. id] = L"An OPie ring"
+		_G["BINDING_NAME_CLICK ".. f:GetName() .. ":r" .. id] = (L"OPie ring: %s"):format(OR_Rings[rkey] and OR_Rings[rkey].name or "?")
 	end
 	OR_SecCore:Execute([=[-- BindingInit
-		bindOwners, bindRingKeys, bindAlias, bindOverrides = newtable(), newtable(), newtable(), newtable()
+		bindOwners, bindRingKeys, bindAlias, bindOverrides, bindSoftStop = newtable(), newtable(), newtable(), newtable(), newtable()
 		bindAlias.SEMICOLON, bindAlias.OPEN, bindAlias.CLOSE = ';', '[', ']'
 		RegisterStateDriver(self, "combat", "[combat] combat; nocombat")
 		ORL_RegisterOverride = [[-- RegisterOverride
@@ -312,118 +330,139 @@ do -- Binding management
 			if bind then
 				overProxy:SetBindingClick(true, bind, self:GetFrameRef("proxy" .. id), "ro" .. id)
 				bindOverrides[bind] = ring
-			end			
+			end
 			bindOverrides[id] = bind
 		]]
+		ORL_ReassertBindings = [[-- ORL_ReassertBindings
+			for _, link in pairs(bindOwners) do
+				local attr = "state-" .. link.rkey
+				self:SetAttribute(attr, self:GetAttribute(attr))
+			end
+		]]
 	]=]);
-	OR_SecCore:SetAttribute("_onattributechanged", [=[-- bindUpdate
+	OR_SecCore:SetAttribute("_onattributechanged", [=[-- ORL_UpdateBinding
 		if name == "state-combat" and value == "combat" then
 			overProxy:ClearBindings()
 			wipe(bindOverrides)
 			return
 		end
-		local rkey, id = name:match("state%-(r(%d+))");
-		if not id then return; end
-		local proxy, data = self:GetFrameRef("proxy" .. id), ORL_RingData[tonumber(id)];
-		if not (proxy and data) then return; end
-		local newbind, link = value and value ~= "" and rtgsub(value, "[^-]+$", bindAlias) or nil, bindRingKeys[rkey];
-		if link and link.active then
-			-- This ring was registered for a binding; remove it from that queue (relinquishing ownership)
-			local parent, child = link.parent, link.child;
-			if parent then parent.child = child; else bindOwners[link.bind] = child; end
-			if child then child.parent = parent; end
-			if child and not parent then
-				self:SetBindingClick(false, child.bind, child.proxy, child.rkey);
-				child.data.bind, child.data.bindMatch = child.bind, child.bind:gsub("[%-%[%]%*%+%?%.]", "%%%1") .. "$";
+		local rkey, id = name:match("state%-(r(%d+))")
+		if not id then return end
+		local proxy, data, link = self:GetFrameRef("proxy" .. id), ORL_RingData[tonumber(id)], bindRingKeys[rkey]
+		if not (proxy and data) then return end
+		local newbind, isSoft = value and value ~= "" and rtgsub(value, "[^-]+$", bindAlias) or nil
+		if newbind and newbind:match("^SOFT%-") then newbind, isSoft = newbind:sub(6), true end
+		if link and link.active then -- ring was bound to something; relinquish that
+			local parent, child = link.parent, link.child
+			if parent then parent.child = child else bindOwners[link.bind] = child end
+			if child then child.parent = parent end
+			if child and not parent and not (child.soft and bindSoftStop[child.bind]) then
+				self:SetBindingClick(false, child.bind, child.proxy, child.rkey)
+				child.data.bind, child.data.bindMatch = child.bind, child.bind:gsub("[%-%[%]%*%+%?%.]", "%%%1") .. "$"
 			elseif not parent then
-				self:ClearBinding(link.bind);
+				self:ClearBinding(link.bind)
 			end
-			link.active = false;
+			link.active = false
 		end
-		if newbind then
-			-- This ring should be registered for newbind; give it newbind, and queue its old owner
+		data.bind, data.bindMatch = nil, nil
+		if newbind then -- acquire new binding
 			local link, child = link or newtable(), bindOwners[newbind]
-			self:SetBindingClick(false, newbind, proxy, rkey);
-			link.active, link.child, link.parent = true, child, nil;
-			link.bind, link.proxy, link.rkey, link.data = newbind, proxy, rkey, data;
-			if child then child.parent, child.data.bind, child.data.bindMatch = link, nil, nil; end
-			bindOwners[newbind], bindRingKeys[rkey] = link, link;
+			link.active, link.child, link.soft, link.parent = true, child, isSoft
+			link.bind, link.proxy, link.rkey, link.data = newbind, proxy, rkey, data
+			if not (isSoft and child and not child.soft) then
+				if not (isSoft and bindSoftStop[newbind]) then
+					self:SetBindingClick(false, newbind, proxy, rkey)
+					data.bind, data.bindMatch = newbind, newbind and newbind:gsub("[%-%[%]%*%+%?%.]", "%%%1") .. "$"
+				end
+				if child then child.parent, child.data.bind, child.data.bindMatch = link, nil, nil end
+				bindOwners[newbind], bindRingKeys[rkey] = link, link
+			else
+				local parent, child = child, child.child
+				while child and not child.soft do
+					parent, child = child, parent
+				end
+				link.parent, link.child, parent.child = parent, child, link
+				if child then child.parent = link end
+			end
 		end
-		data.bind, data.bindMatch = newbind, newbind and newbind:gsub("[%-%[%]%*%+%?%.]", "%%%1") .. "$";
-	]=]);
+	]=])
 end
 local bindingEncodeChars, internalFreeId = {["["]="OPEN", ["]"]="CLOSE", [";"]="SEMICOLON"}, 420
-local function OR_SyncRing(name, newprops)
+local function OR_SyncRing(name, actionId, newprops)
 	local props = OR_Rings[name] or {}
 	if not OR_Rings[name] then
 		OR_Rings[name], OR_Rings[#OR_Rings+1], props.internalID, internalFreeId = props, name, internalFreeId, internalFreeId+1
 	end
 	if newprops then
-		props.offset, props.name, props.action, props.hotkey, props.internal = newprops.offset or 0, newprops.name, newprops.action, newprops.hotkey, newprops.internal
+		props.action, props.offset, props.name, props.hotkey, props.internal = actionId, newprops.offset or 0, newprops.name or name, newprops.hotkey, newprops.internal
 		local fcBlock = ""
 		for i=1,#newprops do
 			if newprops[i].sliceToken then
-				fcBlock = fcBlock .. ("fcIgnore[%q] = %s "):format(newprops[i].sliceToken, newprops[i].fastClick and "nil" or "true")
+				fcBlock = fcBlock .. ("fcIgnore[%s], rotIgnore[%1$s] = %s, %s "):format(safequote(newprops[i].sliceToken), tostringf(not newprops[i].fastClick), tostringf(newprops[i].lockRotation))
 			end
 		end
 		props.fcBlock, props.opportunisticCA, props.noPersistentCA = fcBlock, not newprops.noOpportunisticCA, newprops.noPersistentCA
 	end
 
-	local sliceBindTable = "false"
+	local sliceBindTable, softBindUpdate = "false", ""
 	if OR_GetRingOption(name, "SliceBinding") then
 		local bound = false
 		for s in OR_GetRingOption(name, "SliceBindingString"):gmatch("%S+") do
 			local u = s:upper();
 			if u:match("BUTTON[123]$") or u:match("ESCAPE$") then s = "false"; end
 			if sliceBindTable == "false" then
-				sliceBindTable = ("newtable(%q"):format(s)
+				sliceBindTable = ("newtable(%s"):format(safequote(s))
 			else
-				sliceBindTable = ("%s, %q"):format(sliceBindTable, s)
+				sliceBindTable = ("%s, %s"):format(sliceBindTable, safequote(s))
 			end
 			bound = bound or (s ~= "false")
 		end
 		sliceBindTable = bound and (sliceBindTable .. ")") or "false";
 	end
 
-	local hotkey = configInstance and configInstance.Bindings[name]
-	if hotkey == nil and type(props.hotkey) == "string" and GetBindingAction(props.hotkey) == "" and OR_GetRingOption(name, "UseDefaultBindings") then
-		hotkey = props.hotkey
-		for i, k in ipairs(OR_Rings) do
-			if configInstance and configInstance.Bindings[k] == hotkey then
-				hotkey = nil
-				break
+	local hotkey, isSoftBinding = configInstance and configInstance.Bindings[name], false
+	if hotkey == nil and type(props.hotkey) == "string" and OR_GetRingOption(name, "UseDefaultBindings") then
+		hotkey, isSoftBinding = props.hotkey, true
+	end
+	if hotkey then
+		if not hotkey:match("%[.*%]") then
+			hotkey = "[] " .. hotkey:gsub("([^-]+)%s*$", bindingEncodeChars)
+		end
+		if isSoftBinding then
+			hotkey = (hotkey .. ";"):gsub("([^%s%[%];]+%s*;)", "SOFT-%1")
+			for k in hotkey:gmatch("SOFT%-([^;%s]+)") do
+				softBindUpdate = ("bindSoftStop[%s] = %s\n%s"):format(safequote(k), GetBindingAction(k) ~= "" and "true" or "false", softBindUpdate)
 			end
 		end
 	end
-	if hotkey and not isConditionalBinding[hotkey] then
-		hotkey = hotkey:gsub("[^-]+$", bindingEncodeChars)
-	end
 
 	OR_DeferExecute([[-- SyncRing
-		local ringName, internalId, actionId = %q, %d, %d
+		local ringName, internalId, actionId = %s, %d, %d
 		local data = ORL_RingData[internalId] or newtable()
-		ORL_KnownCollections[actionId], ORL_RingData[internalId], ORL_RingData[ringName], data.action, data.name, data.id = ringName, data, data, actionId, ringName, internalId
-		data.name, data.ofs, data.ofsx, data.ofsy, data.ofsRad = ringName, %q, %d, %d, %f
+		ORL_KnownCollections[actionId], ORL_RingData[internalId], ORL_RingDataN[ringName], data.action, data.name, data.id = internalId, data, data, actionId, ringName, internalId
+		data.name, data.ofs, data.ofsx, data.ofsy, data.ofsRad = ringName, "%s", %d, %d, %f
 		data.CenterAction, data.ClickActivation, data.ClickPriority, data.NoClose, data.scale, data.bucket =  %s, %s, %s, %s, %f, %d
-		data.SliceBinding, data.SelectedSliceBind, data.OpprotunisticCA = %s, %q, %s
+		data.SliceBinding, data.SelectedSliceBind, data.OpprotunisticCA = %s, %s, %s
 		%s
-		if not self:GetFrameRef("proxy" .. internalId) then self:CallMethod("SpawnProxy", internalId) end
-		RegisterStateDriver(self, "r" .. internalId, %q)
-	]], name, props.internalID, props.action, 
+		%s
+		if not self:GetFrameRef("proxy" .. internalId) then self:CallMethod("SpawnProxy", internalId, ringName) end
+		self:SetAttribute("state-r" .. internalId, nil)
+		KR:SetAttribute("frameref-RegisterStateDriver-frame", self)
+		KR:RunAttribute("RegisterStateDriver", "r" .. internalId, %s)
+	]], safequote(name), props.internalID, props.action,
 		OR_GetRingOption(name, "RingAtMouse") and "$cursor" or "$screen", OR_GetRingOption(name, "IndicationOffsetX"), -OR_GetRingOption(name, "IndicationOffsetY"), props.offset,
-		tostringb(OR_GetRingOption(name, "CenterAction")), tostringb(OR_GetRingOption(name, "ClickActivation")), tostringb(OR_GetRingOption(name, "ClickPriority")), tostringb(OR_GetRingOption(name, "NoClose")), math.max(0.1, (OR_GetRingOption(name, "RingScale"))), (OR_GetRingOption(name, "MouseBucket")),
-		sliceBindTable, OR_GetRingOption(name, "SelectedSliceBind") or "", tostringb(props.opportunisticCA), 
-		props.fcBlock or "", (hotkey or "") .. ";")
-		
-	if newprops and AB then AB:notify("ring") end
+		tostringf(OR_GetRingOption(name, "CenterAction")), tostringf(OR_GetRingOption(name, "ClickActivation")), tostringf(OR_GetRingOption(name, "ClickPriority")), tostringf(OR_GetRingOption(name, "NoClose")), math.max(0.1, (OR_GetRingOption(name, "RingScale"))), (OR_GetRingOption(name, "MouseBucket")),
+		sliceBindTable, safequote(OR_GetRingOption(name, "SelectedSliceBind") or ""), tostringf(props.opportunisticCA),
+		props.fcBlock or "", softBindUpdate, safequote((hotkey or "") .. ";"))
+	if newprops and AB then AB:NotifyObservers("ring") end
 end
 local function OR_DeleteRing(name, data)
 	OR_DeferExecute([[-- DeleteRing
-		local ringName, internalId, actionId = %q, %d, %d
+		local ringName, internalId, actionId = %s, %d, %d
 		self:SetAttribute("state-r" .. internalId, nil)
-		ORL_KnownCollections[actionId], ORL_RingData[internalId], ORL_RingData[ringName] = nil
+		ORL_KnownCollections[actionId], ORL_RingData[internalId], ORL_RingDataN[ringName] = nil
 		UnregisterStateDriver(self, "r" .. internalId)
-	]], name, data.internalID, data.action or 0)
+	]], safequote(name), data.internalID, data.action or 0)
 
 	local bind = configInstance and configInstance.Bindings[name]
 	if configRoot and configRoot.ProfileStorage then
@@ -461,9 +500,9 @@ local function OR_SecProfilePull()
 end
 local function OR_SecProfilePush()
 	if InCombatLockdown() or (activeProfile == OR_SecEnv.activeProfile) then return end
-	local e = ("-- SecProfilePush\n activeProfile = %q"):format(activeProfile)
+	local e = ("-- SecProfilePush\n activeProfile = %s"):format(safequote(activeProfile))
 	for k,v in pairs(configInstance.RotationTokens) do
-		e = e .. ("\n rtokens[%q] = %q"):format(k, v)
+		e = e .. ("\n rtokens[%s] = %s"):format(safequote(k), safequote(v))
 	end
 	OR_SecCore:Execute(e)
 end
@@ -473,11 +512,8 @@ local function OR_PullCAs()
 		t[k] = v
 	end
 	for i, k in ipairs(OR_Rings) do
-		if OR_Rings[k] and OR_Rings[k].noPersistentCA then
-			t[k] = nil
-		elseif OR_SecEnv.ORL_RingData[k] then
-			t[k] = OR_SecEnv.ORL_RingData[k].fcToken or t[k]
-		end
+		local rt = OR_SecEnv.ORL_RingDataN[k] and OR_SecEnv.ORL_RingDataN[k].fcToken or t[k]
+		t[k] = not ((OR_Rings[k] and OR_Rings[k].noPersistentCA) or OR_SecEnv.fcIgnore[rt]) and rt or nil
 	end
 	return next(t) and t or nil
 end
@@ -504,20 +540,21 @@ local OR_FindFinalAction do
 end
 function OR_SecCore:NotifyState(state, ringName, collection, ...)
 	if state == "open" then
+		MouselookStop()
 		local bind, fastClick, fastOpen, ms = OR_SecEnv.activeBind or "", ...
-		OR_ModifierLockState[1], OR_ModifierLockState[2], OR_ModifierLockState[3] = (ms:match("A") and true) or (bind:match("ALT%-") and false), (ms:match("S") and true) or (bind:match("SHIFT%-") and false), (ms:match("C") and true) or (bind:match("CTRL%-") and false)
+		OR_ModifierLockState = (ms:match("A") or bind:match("ALT%-") and "a" or "-") .. (ms:match("S") or bind:match("SHIFT%-") and "s" or "-") .. (ms:match("C") or bind:match("CTRL%-") and "c" or "-")
 		OR_ActiveCollectionID, OR_ActiveRingName, OR_ActiveSliceCount = collection, OR_SecEnv.activeRing.name, #OR_SecEnv.openCollection
-		if ORI then 
-			EC_pcall("OPie", "ORI_Show", ORI.Show, ORI, collection, fastClick, fastOpen)
+		if ORI then
+			securecall(ORI.Show, ORI, collection, fastClick, fastOpen)
 		end
 	elseif state == "switch" then
 		OR_ActiveCollectionID, OR_ActiveSliceCount = collection, #OR_SecEnv.openCollection
 		if ORI then
-			EC_pcall("OPie", "ORI_Show", ORI.Show, ORI, collection, (...), true)
+			securecall(ORI.Show, ORI, collection, ..., true)
 		end
 	elseif state == "close" then
 		if ORI then
-			EC_pcall("OPie", "ORI_Hide", ORI.Hide, ORI)
+			securecall(ORI.Hide, ORI, ...)
 		end
 		OR_ActiveSliceCount, OR_ActiveCollectionID, OR_ActiveRingName = 0
 	end
@@ -527,7 +564,7 @@ end
 local function OR_NotifyPVars(event, filter, perProfile)
 	for k, v in pairs(PersistentStorageInfo) do
 		if type(v.f) == "function" and v.t == (filter or v.t) and (perProfile == nil or perProfile == v.perProfile) then
-			EC_pcall("OPie", "NotifyPVar:" .. k, v.f, event, k, v.t);
+			securecall(v.f, event, k, v.t);
 		end
 	end
 end
@@ -539,17 +576,21 @@ local function OR_ForceResync(filter)
 	end
 	if (filter or true) == true then
 		OR_DeferExecute([[-- SyncGlobalOptions
-			ORL_GlobalOptions.OpenNestedRingButton, ORL_GlobalOptions.ScrollNestedRingUpButton, ORL_GlobalOptions.ScrollNestedRingDownButton = %q,%q,%q
-		]], OR_GetRingOption(nil, "OpenNestedRingButton"), OR_GetRingOption(nil, "ScrollNestedRingUpButton"), OR_GetRingOption(nil, "ScrollNestedRingDownButton"))
+			ORL_GlobalOptions.OpenNestedRingButton, ORL_GlobalOptions.ScrollNestedRingUpButton, ORL_GlobalOptions.ScrollNestedRingDownButton = %s, %s, %s
+		]], safequote(OR_GetRingOption(nil, "OpenNestedRingButton")), safequote(OR_GetRingOption(nil, "ScrollNestedRingUpButton")), safequote(OR_GetRingOption(nil, "ScrollNestedRingDownButton")))
 	end
 end
 local function OR_CheckBindings()
-	if InCombatLockdown() or not configInstance then return; end
-	for k, v in pairs(OR_Rings) do
-		local key = v.hotkey;
-		if configInstance.Bindings[k] == nil and type(key) == "string" and not isConditionalBinding[key] and ((GetBindingAction(key) == "") == (OR_SecEnv.bindOwners[key] == nil)) then
-			OR_SyncRing(k)
+	if InCombatLockdown() then return end
+	local up = ""
+	for k, v in rtable.pairs(OR_SecEnv.bindSoftStop) do
+		if (GetBindingAction(k) ~= "") ~= v then
+			up = ("bindSoftStop[%s] = %s\n%s"):format(safequote(k), v and "false" or "true", up)
 		end
+	end
+	if up ~= "" then
+		OR_DeferExecute("-- CheckBindingsSync\n" .. up)
+		OR_DeferExecute(OR_SecEnv.ORL_ReassertBindings)
 	end
 end
 local function OR_LockdownEnd(event)
@@ -562,20 +603,20 @@ local function OR_UnserializeConfigInstance(profile)
 	for t in ("RingOptions Bindings RotationTokens"):gmatch("%S+") do
 		if type(newCI[t]) ~= "table" then newCI[t] = {} end
 	end
-	for k,v in pairs(PersistentStorageInfo) do if v.perProfile then	copy(newCI[k], nil, v.t); end end
+	for k,v in pairs(PersistentStorageInfo) do if v.perProfile then	copy(newCI[k], v.t) end end
 	configInstance = setmetatable(newCI, optionsMeta)
 end
 local function OR_NotifyOptions()
 	for option, func in pairs(optionValidators) do
 		if func then
-			EC_pcall("OPie", "optionNotifier: " .. option, func, option, configInstance[option]);
+			securecall(func, option, configInstance[option]);
 		end
 	end
 end
 local function OR_InitConfigState()
 	if type(OneRing_Config) == "table" then
 		for k, v in pairs(OneRing_Config) do
-			configRoot[k] = v;
+			configRoot[k] = v
 		end
 	end
 	if GetCVarBool("enableWowMouse") then
@@ -585,21 +626,27 @@ local function OR_InitConfigState()
 	for t in ("CharProfiles PersistentStorage ProfileStorage"):gmatch("%S+") do
 		if type(configRoot[t]) ~= "table" then configRoot[t] = {}; end
 	end
-	local gameVersion = GetBuildInfo()
-	for k,v in pairs(configRoot.ProfileStorage) do
-		if type(v) == "table" and (type(v.RotationTokens) ~= "table" or v.RotationTokens._GameVersion ~= gameVersion) then
-			v.RotationTokens = nil
+	
+	local gameVersion = ("%s.%s"):format(GetBuildInfo())
+	if configRoot._GameVersion ~= gameVersion then
+		for k,v in pairs(configRoot.ProfileStorage) do
+			if type(v) == "table" then
+				v.RotationTokens = nil
+			end
 		end
 	end
+	configRoot._GameVersion, configRoot._GameLocale = gameVersion, GetLocale()
+	configRoot._OPieVersion = ("%s (%d.%d)"):format(OneRing:GetVersion())
+	
 	if type(configRoot.ProfileStorage.default) ~= "table" then
 		configRoot.ProfileStorage.default = {Bindings=configRoot.Bindings or {}, RingOptions=configRoot.RingOptions or {}};
 	end
-	OR_UnserializeConfigInstance(configRoot.CharProfiles[getSpecCharIdent()] or configRoot.CharProfiles[OneRing.xlu.charId]);
+	OR_UnserializeConfigInstance(configRoot.CharProfiles[getSpecCharIdent()] or configRoot.CharProfiles[charId])
 
 	if type(configRoot.CenterActions) == "table" then
 		local exec = "-- InitCA"
 		for name, tok in pairs(configRoot.CenterActions) do
-			exec = ("%s\nORL_StoredCA[%q] = %q"):format(exec, name, tok)
+			exec = ("%s\nORL_StoredCA[%s] = %s"):format(exec, safequote(name), safequote(tok))
 		end
 		OR_SecCore:Execute(exec)
 	end
@@ -607,7 +654,7 @@ local function OR_InitConfigState()
 	-- Load variables into relevant tables, unlock core and fire notifications.
 	for k, v in pairs(configRoot.PersistentStorage) do
 		if PersistentStorageInfo[k] and not PersistentStorageInfo[k].perProfile then
-			copy(v, nil, PersistentStorageInfo[k].t)
+			copy(v, PersistentStorageInfo[k].t)
 		end
 	end
 	OneRing_Config, configRoot.CenterActions = nil
@@ -619,13 +666,16 @@ end
 local function OR_LibState(event, addon)
 	if event == "ADDON_LOADED" then
 		if addon ~= OR_AddonName then return end
-		OR_InitAB();
-		OR_InitConfigState();
+		ORI, OR_LoadedState = T.OPieUI, OR_LoadedState == 1 and 2 or OR_LoadedState
+		OR_InitConfigState()
 		OR_ForceResync(true)
+	elseif event == "SAVED_VARIABLES_TOO_LARGE" then
+		if addon ~= OR_AddonName then return end
+		OR_LoadedState = false
 	elseif event == "PLAYER_LOGIN" then
-		OR_NotifyPVars("LOGIN");
-		-- Blizzard tends to load bindings between A_L and P_L, so let's reaffirm our overrides.
-		OR_SecCore:Execute("for k, v in pairs(bindOwners) do self:SetBindingClick(false, k, v.proxy, v.rkey);	end");
+		OR_LoadedState = OR_LoadedState == 1 and 3 or OR_LoadedState
+		OR_NotifyPVars("LOGIN")
+		OR_SecCore:Execute(OR_SecEnv.ORL_ReassertBindings)
 	elseif event == "PLAYER_LOGOUT" then
 		OneRing_Config = configRoot
 		OR_NotifyPVars("LOGOUT")
@@ -637,16 +687,13 @@ local function OR_LibState(event, addon)
 			end
 		end
 		for k, v in pairs(PersistentStorageInfo) do
-			local store = v.perProfile and configInstance or configRoot.PersistentStorage;
+			local store = v.perProfile and configInstance or configRoot.PersistentStorage
 			store[k] = next(v.t) ~= nil and v.t or nil;
 		end
 		for k, v in pairs(configRoot.ProfileStorage) do
-			if v.RingOptions and next(v.RingOptions) == nil then v.RingOptions = nil; end
-			if v.Bindings and next(v.Bindings) == nil then v.Bindings = nil; end
-			if v.RotationTokens then
-				v.RotationTokens._GameVersion = GetBuildInfo()
-			 	v.RotationTokens = (next(v.RotationTokens) ~= "_GameVersion" or next(v.RotationTokens, "_GameVersion")) and v.RotationTokens or nil
-			end
+			if v.RingOptions and next(v.RingOptions) == nil then v.RingOptions = nil end
+			if v.Bindings and next(v.Bindings) == nil then v.Bindings = nil end
+			if v.RotationTokens and next(v.RotationTokens) == nil then v.RotationTokens = nil end
 		end
 	end
 	return "remove";
@@ -676,11 +723,10 @@ local function OR_TalentProfileSwitch(event, newGroup, oldGroup)
 end
 
 -- Public API
-function OneRing:SetRing(name, props)
-	assert(type(name) == "string" and (type(props) == "table" or props == nil), 'Syntax: OneRing:SetRing("ringName", propsTable or nil)', 2)
-	if props then
-		assert(type(props.name) == "string" and type(props.action) == "number", 'Invalid name/action property keys for ring %q', 2, name)
-		OR_SyncRing(name, props)
+function OneRing:SetRing(name, actionId, props)
+	assert(type(name) == "string" and (actionId == nil or (type(props) == "table" or type(actionId) == "number")), 'Syntax: OneRing:SetRing("ringName"[, actionId, propsTable])', 2)
+	if actionId then
+		OR_SyncRing(name, actionId, props)
 	elseif OR_Rings[name] then
 		OR_DeleteRing(name, OR_Rings[name])
 	end
@@ -694,6 +740,16 @@ function OneRing:GetRingInfo(id)
 	if not key then return end
 	local props = OR_Rings[key]
 	return props.name, key, "/click "..OR_OpenProxy:GetName().." "..key, (props.internal and 1 or 0)
+end
+function OneRing:IsKnownRingName(ringName)
+	assert(type(ringName) == "string", 'Syntax: isKnown = OneRing:IsKnownRingName("ringName")', 2)
+	if OR_Rings[ringName] then return true end
+	for _, v in pairs(configRoot.ProfileStorage) do
+		if type(v.Bindings) == "table" and v.Bindings[ringName] then
+			return true
+		end
+	end
+	return false
 end
 function OneRing:GetOption(option, ringName)
 	assert(type(option) == "string" and (ringName == nil or type(ringName) == "string"), 'Syntax: value, setting, ring, global, default = OneRing:GetOption("option"[, "ringName"])', 2)
@@ -716,10 +772,10 @@ function OneRing:SetRingBinding(ringName, bind)
 	assert(type(ringName) == "string" and (type(bind) == "string" or bind == false or bind == nil), 'Syntax: OneRing:SetRingBinding("ringName", "binding" or false or nil)', 2);
 	assert(OR_Rings[ringName], "Ring %q is not defined", 2, ringName);
 	if bind == configInstance.Bindings[ringName] then return; end
-	local obind = OneRing:GetRingBinding(ringName);
+	local obind = OneRing:GetRingBinding(ringName)
 	configInstance.Bindings[ringName] = bind
 	for i=1,#OR_Rings do
-		local ikey, cbind, over = OR_Rings[i], OneRing:GetRingBinding(OR_Rings[i]);
+		local ikey, cbind, _, over = OR_Rings[i], OneRing:GetRingBinding(OR_Rings[i]);
 		if ikey ~= ringName and (cbind == bind or cbind == obind) then
 			if over and cbind == bind and cbind then
 				configInstance.Bindings[ikey] = nil
@@ -730,20 +786,21 @@ function OneRing:SetRingBinding(ringName, bind)
 	OR_SyncRing(ringName)
 end
 function OneRing:GetRingBinding(ringName)
-	assert(type(ringName) == "string", 'Syntax: binding, override, active, cndbinding, enabled = OneRing:GetRingBinding("ringName")', 2);
+	assert(type(ringName) == "string", 'Syntax: binding, currentKey, isUserBinding, isActiveInternal, isActiveExternal = OneRing:GetRingBinding("ringName")', 2)
 	assert(OR_Rings[ringName], 'Ring %q is not defined', 2, ringName)
-	local key, over, enabled = configInstance.Bindings[ringName], true, true;
-	if key == nil then key, over = OR_Rings[ringName].hotkey, false; end
-	local link, key2 = OR_SecEnv.bindRingKeys["r" .. OR_Rings[ringName].internalID], key;
-	if isConditionalBinding[key] then key2 = link and link.active and link.bind; end
-	if over == false and not OR_GetRingOption(ringName, "UseDefaultBindings") then enabled = false end
-	return key, over, not not (link and link.active and not link.parent), key2, enabled;
+	local binding, isUser = configInstance.Bindings[ringName], true
+	if binding == nil then binding, isUser = OR_Rings[ringName].hotkey, false end
+	local link = OR_SecEnv.bindRingKeys["r" .. OR_Rings[ringName].internalID]
+	local curKey = link and link.active and link.bind or nil
+	local curAct, id = curKey and GetBindingAction(curKey, 1), OR_Rings[ringName].internalID
+	curAct = (curKey == nil) or (curAct == ("CLICK ORL_RProxy" .. id .. ":r" .. id)) or curAct
+	return binding, curKey, isUser, not not (link and link.active and link.data and link.data.bind), curAct
 end
 function OneRing:OverrideRingBinding(ringName, bind)
 	assert(type(ringName) == "string" and (bind == nil or type(bind) == "string"), 'Syntax: OneRing:OverrideRingBinding("ringName", "binding")', 2)
 	assert(OR_Rings[ringName], 'Ring %q is not defined', 2, ringName)
 	if OR_SecEnv.bindOverrides[OR_Rings[ringName].internalID] ~= bind then
-		OR_SecCore:Execute(("owner:Run(ORL_RegisterOverride, %d, %q%s)"):format(OR_Rings[ringName].internalID, bind or "", bind and "" or " and nil"))
+		OR_SecCore:Execute(("owner:Run(ORL_RegisterOverride, %d, %s)"):format(OR_Rings[ringName].internalID, bind and safequote(bind) or "nil"))
 	end
 end
 function OneRing:ResetOptions(includePerRing)
@@ -830,16 +887,12 @@ function OneRing:GetOpenRingSlice(id)
 	return act, tok, sbt and sbt[id], nt and #nt or 0;
 end
 function OneRing:GetOpenRingSliceAction(id, id2)
-	if id < 1 or id > OR_ActiveSliceCount then return end	
-	local s, tok = OR_FindFinalAction(OR_ActiveCollectionID, id, OR_SecEnv.ctokens[OR_ActiveCollectionID][id], (id2 or 1)-1);
+	if id < 1 or id > OR_ActiveSliceCount then return end
+	local s, tok = OR_FindFinalAction(OR_ActiveCollectionID, id, OR_SecEnv.ctokens[OR_ActiveCollectionID][id], (id2 or 1)-1)
 	if type(s) == "number" then
-		return tok, AB:info(s, OR_ModifierLockState[1], OR_ModifierLockState[2], OR_ModifierLockState[3])
+		return tok, AB:GetSlotInfo(s, OR_ModifierLockState)
 	end
-	return tok, false, 0, [[Interface\AddOns\OPie\gfx\opie_ring_icon]], "Unknown Slice", 0, 0, 0;
-end
-function OneRing:SetAnimator(animator)
-	assert(type(animator) == "table" and type(animator.Show) == "function" and type(animator.Hide) == "function", "Syntax: OneRing:SetAnimator(animationHandler)", 2);
-	ORI = animator
+	return tok, false, 0, [[Interface\Icons\INV_Misc_QuestionMark]], "Unknown Slice", 0, 0, 0
 end
 function OneRing:RegisterOption(name, default, validator)
 	assert(type(name) == "string" and default ~= nil and (validator == nil or type(validator) == "function"), 'Syntax: OneRing:RegisterOption("name", defaultValue[, validatorFunc])', 2);
@@ -853,7 +906,7 @@ function OneRing:RegisterPVar(name, into, notifier, perProfile)
 	local store, into = ((perProfile == true) and configInstance or configRoot.PersistentStorage), into or {};
 	PersistentStorageInfo[name] = {t=into, f=notifier, perProfile=perProfile == true};
 	if configInstance then
-		if store and store[name] then copy(store[name], nil, into); end
+		if store and store[name] then copy(store[name], into) end
 		OR_NotifyPVars("LOADED", into);
 	end
 	return into;
@@ -861,12 +914,15 @@ end
 function OneRing:GetVersion()
 	return GetAddOnMetadata(OR_AddonName, "Version") or "?", versionMajor, versionRev;
 end
+function OneRing:GetSVState()
+	return OR_LoadedState
+end
 
-EC_Register("ADDON_LOADED", "ORL.State", OR_LibState);
-EC_Register("PLAYER_LOGIN", "ORL.State", OR_LibState);
-EC_Register("PLAYER_LOGOUT", "ORL.State", OR_LibState);
-EC_Register("PLAYER_REGEN_ENABLED", "ORL.OutOfCombat", OR_LockdownEnd);
-EC_Register("UPDATE_BINDINGS", "ORL.Bindings", OR_CheckBindings);
-EC_Register("ACTIVE_TALENT_GROUP_CHANGED", "ORL.ProfileSwap", OR_TalentProfileSwitch);
-
-_G.OneRingLib = OneRing;
+EV.RegisterEvent("ADDON_LOADED", OR_LibState)
+EV.RegisterEvent("SAVED_VARIABLES_TOO_LARGE", OR_LibState)
+EV.RegisterEvent("PLAYER_LOGIN", OR_LibState)
+EV.RegisterEvent("PLAYER_LOGOUT", OR_LibState)
+EV.RegisterEvent("PLAYER_REGEN_ENABLED", OR_LockdownEnd)
+EV.RegisterEvent("UPDATE_BINDINGS", OR_CheckBindings)
+EV.RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", OR_TalentProfileSwitch)
+_G.OneRingLib = OneRing

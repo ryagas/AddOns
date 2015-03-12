@@ -1,0 +1,12 @@
+tag 6.1.0.10
+a000dd1757d0f26987d000de85d43e5b80dda78b
+James D. Callahan III <jcallahan@curse.com>
+2015-03-07 20:23:01 -0600
+
+
+
+--------------------
+
+James D. Callahan III:
+	- Use artifact.name as the key for the missing_data table, so matches will be found. Fixes ticket #552
+	- Use the original string for artifact.name instead of the lowercased table lookup version.

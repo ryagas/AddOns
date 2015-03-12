@@ -3,9 +3,9 @@
 --
 
 local L = LibStub("AceLocale-3.0"):GetLocale("Big Wigs: Common")
-local BW_L = LibStub("AceLocale-3.0"):GetLocale("Big Wigs")
 local UnitAffectingCombat, UnitIsPlayer, UnitGUID, UnitPosition, UnitDistanceSquared, UnitIsConnected = UnitAffectingCombat, UnitIsPlayer, UnitGUID, UnitPosition, UnitDistanceSquared, UnitIsConnected
 local EJ_GetSectionInfo, GetSpellInfo, GetSpellTexture = EJ_GetSectionInfo, GetSpellInfo, GetSpellTexture
+local SendChatMessage = BigWigsLoader.SendChatMessage
 local format, sub, gsub, band = string.format, string.sub, string.gsub, bit.band
 local type, next, tonumber = type, next, tonumber
 local core = BigWigs
@@ -447,7 +447,7 @@ do
 		local hasBoss = UnitHealth("boss1") > 0 or UnitHealth("boss2") > 0 or UnitHealth("boss3") > 0 or UnitHealth("boss4") > 0 or UnitHealth("boss5") > 0
 		if not hasBoss and self.isEngaged then
 			if debug then dbg(self, ":CheckBossStatus wipeCheck scheduled.") end
-			self:ScheduleTimer(wipeCheck, 4, self)
+			self:ScheduleTimer(wipeCheck, 6, self)
 		elseif not self.isEngaged and hasBoss then
 			if debug then dbg(self, ":CheckBossStatus Engage called.") end
 			self:CheckForEncounterEngage()
@@ -591,17 +591,12 @@ do
 		end
 	end
 
-	function boss:Win(args, direct)
+	function boss:Win()
 		if debug then dbg(self, ":Win") end
-		if direct then
-			self:Message("bosskill", "Positive", "Victory", BW_L.defeated:format(self.displayName), false)
-			self.lastKill = GetTime() -- Add the kill time for the enable check.
-			if self.OnWin then self:OnWin() end
-			self:SendMessage("BigWigs_OnBossWin", self)
-			self:Disable()
-		else
-			self:Sync("Death", self.moduleName)
-		end
+		self.lastKill = GetTime() -- Add the kill time for the enable check.
+		if self.OnWin then self:OnWin() end
+		self:SendMessage("BigWigs_OnBossWin", self)
+		self:Disable()
 		wipe(icons) -- Wipe icon cache
 		wipe(spells)
 	end
@@ -658,7 +653,7 @@ end
 function boss:EncounterEnds(event, id, name, difficulty, size, status)
 	if self.engageId == id and self.enabledState then
 		if status == 1 then
-			self:Win(nil, true)
+			self:Win()
 		elseif status == 0 then
 			self:ScheduleTimer("Wipe", 6) -- XXX Delayed for now due to issues with certain encounters and using IEEU for engage. Can be removed if we swap to ENCOUNTER_START.
 		end
@@ -828,7 +823,9 @@ do
 	end
 	function boss:Dispeller(dispelType, isOffensive, key)
 		if key then
-			if band(self.db.profile[key], C.DISPEL) ~= C.DISPEL then return true end
+			local o = self.db.profile[key]
+			if not o then core:Print(format("Module %s uses %q as a dispel lookup, but it doesn't exist in the module options.", self.name, key)) return end
+			if band(o, C.DISPEL) ~= C.DISPEL then return true end
 		end
 		if isOffensive then
 			if offDispel:find(dispelType, nil, true) then
@@ -890,7 +887,7 @@ do
 		if type(key) == "nil" then core:Print(format(nilKeyError, self.name)) return end
 		if type(flag) ~= "number" then core:Print(format(invalidFlagError, self.name, type(flag), tostring(flag))) return end
 		if silencedOptions[key] then return end
-		if type(self.db) ~= "table" then core:Print(format(noDBError, self.name)) return end
+		if type(self.db) ~= "table" then local msg = format(noDBError, self.name) core:Print(msg) error(msg) return end
 		if type(self.db.profile[key]) ~= "number" then
 			if not self.toggleDefaults[key] then
 				core:Print(format(noDefaultError, self.name, key))

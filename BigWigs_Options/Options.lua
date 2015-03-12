@@ -31,6 +31,10 @@ local acr = LibStub("AceConfigRegistry-3.0")
 local acd = LibStub("AceConfigDialog-3.0")
 local AceGUI = LibStub("AceGUI-3.0")
 
+local loader = BigWigsLoader
+local GetAreaMapInfo = loader.GetAreaMapInfo
+local fakeWorldZones = loader.fakeWorldZones
+
 local colorModule
 local soundModule
 local translateZoneID
@@ -135,13 +139,6 @@ local acOptions = {
 					name = " ",
 					order = 14,
 					width = "full",
-				},
-				sound = {
-					type = "toggle",
-					name = L.sound,
-					desc = L.soundDesc,
-					order = 21,
-					width = "half",
 				},
 				flash = {
 					type = "toggle",
@@ -320,7 +317,7 @@ function options:OnInitialize()
 	--	local noteKey = "Notes"
 	--	if GetAddOnMetadata("BigWigs", "Notes-" .. GetLocale()) then noteKey = "Notes-" .. GetLocale() end
 	--	local notes = GetAddOnMetadata("BigWigs", noteKey)
-	--	subtitle:SetText(notes .. " |cff44ff44" .. BigWigsLoader:GetReleaseString() .. "|r")
+	--	subtitle:SetText(notes .. " |cff44ff44" .. loader:GetReleaseString() .. "|r")
     --
 	--	local anchor = nil
 	--	for i, field in next, fields do
@@ -365,6 +362,8 @@ function options:OnInitialize()
 	soundModule = BigWigs:GetPlugin("Sounds")
 	acr:RegisterOptionsTable("Big Wigs: Colors Override", colorModule:SetColorOptions("dummy", "dummy"), true)
 	acr:RegisterOptionsTable("Big Wigs: Sounds Override", soundModule:SetSoundOptions("dummy", "dummy"), true)
+
+	self.OnInitialize = nil
 end
 
 function options:OnEnable()
@@ -382,7 +381,7 @@ function options:OnEnable()
 	self:RegisterMessage("BigWigs_StopConfigureMode")
 
 	local tmp, tmpZone = {}, {}
-	for k in next, BigWigsLoader:GetZoneMenus() do
+	for k in next, loader:GetZoneMenus() do
 		local zone = translateZoneID(k)
 		if zone then
 			tmp[zone] = k
@@ -394,10 +393,15 @@ function options:OnEnable()
 		local zone = tmpZone[i]
 		self:GetZonePanel(tmp[zone])
 	end
-end
 
-function options:Open()
-	acd:Open("BigWigs")
+	if self.OnInitialize then
+		print("BigWigs: WARNING, CONFIG INITIALIZATION DID NOT FIRE!")
+		error("BigWigs: WARNING, CONFIG INITIALIZATION DID NOT FIRE!")
+	end
+	function self:Open()
+		acd:Open("BigWigs")
+	end
+	self.OnEnable = nil
 end
 
 -------------------------------------------------------------------------------
@@ -694,6 +698,7 @@ end
 
 local listAbilitiesInChat = nil
 do
+	local SendChatMessage = loader.SendChatMessage
 	local function output(channel, ...)
 		if channel then
 			SendChatMessage(strjoin(" ", ...), channel)
@@ -1097,12 +1102,15 @@ end
 
 local function onZoneShow(frame)
 	local zoneId = frame.id
+	if zoneId then
+		local instanceId = fakeWorldZones[zoneId] and zoneId or GetAreaMapInfo(zoneId)
 
-	-- Make sure all the bosses for this zone are loaded.
-	BigWigsLoader:LoadZone(zoneId)
+		-- Make sure all the bosses for this zone are loaded.
+		loader:LoadZone(instanceId)
+	end
 
 	-- Does this zone have a module list?
-	local moduleList = BigWigsLoader:GetZoneMenus()[zoneId]
+	local moduleList = loader:GetZoneMenus()[zoneId]
 
 	-- This zone has no modules, nor is the panel related to a module.
 	if not moduleList and not frame.module then
@@ -1245,7 +1253,8 @@ do
 
 	function options:GetZonePanel(zoneId)
 		local zoneName = translateZoneID(zoneId)
-		local parent = BigWigsLoader.zoneTbl[zoneId] and addonNameToHeader[BigWigsLoader.zoneTbl[zoneId]] or addonNameToHeader.BigWigs_WarlordsOfDraenor
+		local instanceId = fakeWorldZones[zoneId] and zoneId or GetAreaMapInfo(zoneId)
+		local parent = loader.zoneTbl[instanceId] and addonNameToHeader[loader.zoneTbl[instanceId]] or addonNameToHeader.BigWigs_WarlordsOfDraenor
 		local panel, justCreated = self:GetPanel(zoneName, parent, zoneId)
 		if justCreated then
 			panel:SetScript("OnShow", onZoneShow)

@@ -1,0 +1,105 @@
+------------------------------------------------------------------------
+r1206 | funkydude | 2015-03-03 22:52:18 +0000 (Tue, 03 Mar 2015) | 1 line
+Changed paths:
+   A /tags/r1206-release (from /trunk:1205)
+
+Tagging as r1206-release
+------------------------------------------------------------------------
+r1205 | funkydude | 2015-03-03 03:57:04 +0000 (Tue, 03 Mar 2015) | 1 line
+Changed paths:
+   M /trunk/MoP/BlackTempleSolo/EssenceOfOrder.lua
+   M /trunk/MoP/BlackTempleSolo/Kanrethad.lua
+   M /trunk/MoP/MogushanPalace/Gekkan.lua
+   M /trunk/MoP/MogushanPalace/TrialOfTheKing.lua
+   M /trunk/MoP/MogushanPalace/XinTheWeaponmaster.lua
+   M /trunk/MoP/ScarletHalls/ArmsmasterHarlan.lua
+   M /trunk/MoP/ScarletHalls/FlameweaverKoegler.lua
+   M /trunk/MoP/ScarletHalls/HoundmasterBraun.lua
+   M /trunk/MoP/ScarletMonastery/BrotherKorloff.lua
+   M /trunk/MoP/ScarletMonastery/HighInquisitorWhitemane.lua
+   M /trunk/MoP/ScarletMonastery/ThalnosTheSoulrender.lua
+   M /trunk/MoP/ShadoPanMonastery/GuCloudstrike.lua
+   M /trunk/MoP/ShadoPanMonastery/MasterSnowdrift.lua
+   M /trunk/MoP/ShadoPanMonastery/ShaOfViolence.lua
+   M /trunk/MoP/ShadoPanMonastery/TaranZhu.lua
+   M /trunk/MoP/TempleOfTheJadeSerpent/LiuFlameheart.lua
+   M /trunk/MoP/TempleOfTheJadeSerpent/LorewalkerStonestep.lua
+   M /trunk/MoP/TempleOfTheJadeSerpent/ShaOfDoubt.lua
+   M /trunk/MoP/TempleOfTheJadeSerpent/WiseMari.lua
+   M /trunk/WoD/Auchindoun/Azzakel.lua
+   M /trunk/WoD/Auchindoun/Kaathar.lua
+   M /trunk/WoD/Auchindoun/Nyami.lua
+   M /trunk/WoD/Auchindoun/Terongor.lua
+   M /trunk/WoD/BloodmaulSlagMines/Crushto.lua
+   M /trunk/WoD/BloodmaulSlagMines/Gugrokk.lua
+   M /trunk/WoD/BloodmaulSlagMines/Magmolatus.lua
+   M /trunk/WoD/BloodmaulSlagMines/Roltall.lua
+   M /trunk/WoD/GrimrailDepot/NitroggThundertower.lua
+   M /trunk/WoD/GrimrailDepot/Rocketspark.lua
+   M /trunk/WoD/GrimrailDepot/SkylordTovra.lua
+   M /trunk/WoD/IronDocks/Enforcers.lua
+   M /trunk/WoD/IronDocks/Nokgar.lua
+   M /trunk/WoD/IronDocks/Oshir.lua
+   M /trunk/WoD/IronDocks/Skulloc.lua
+   M /trunk/WoD/ShadowmoonBurialGrounds/Bonemaw.lua
+   M /trunk/WoD/ShadowmoonBurialGrounds/Nerzhul.lua
+   M /trunk/WoD/ShadowmoonBurialGrounds/Nhallish.lua
+   M /trunk/WoD/ShadowmoonBurialGrounds/Sadana.lua
+   M /trunk/WoD/Skyreach/Araknath.lua
+   M /trunk/WoD/Skyreach/Ranjit.lua
+   M /trunk/WoD/Skyreach/Rukhran.lua
+   M /trunk/WoD/Skyreach/Viryx.lua
+   M /trunk/WoD/TheEverbloom/AncientProtectors.lua
+   M /trunk/WoD/TheEverbloom/ArchmageSol.lua
+   M /trunk/WoD/TheEverbloom/Witherbark.lua
+   M /trunk/WoD/TheEverbloom/Xeritac.lua
+   M /trunk/WoD/TheEverbloom/Yalnu.lua
+   M /trunk/WoD/UpperBlackrockSpire/Gorashan.lua
+   M /trunk/WoD/UpperBlackrockSpire/Kyrak.lua
+   M /trunk/WoD/UpperBlackrockSpire/Ragewing.lua
+   M /trunk/WoD/UpperBlackrockSpire/Tharbek.lua
+   M /trunk/WoD/UpperBlackrockSpire/Zaela.lua
+
+Remove bosskill options.
+------------------------------------------------------------------------
+r1203 | funkydude | 2015-02-26 01:23:28 +0000 (Thu, 26 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/WoD/ShadowmoonBurialGrounds/Bonemaw.lua
+   M /trunk/WoD/ShadowmoonBurialGrounds/Nerzhul.lua
+   M /trunk/WoD/ShadowmoonBurialGrounds/Nhallish.lua
+   M /trunk/WoD/ShadowmoonBurialGrounds/Sadana.lua
+
+ShadowmoonBurialGrounds: add commented out BOSS_KILL ids.
+------------------------------------------------------------------------
+r1202 | funkydude | 2015-02-26 00:37:35 +0000 (Thu, 26 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/WoD/ShadowmoonBurialGrounds/Sadana.lua
+   M /trunk/WoD/TheEverbloom/Witherbark.lua
+
+6.1 cleanups.
+------------------------------------------------------------------------
+r1200 | funkydude | 2015-02-25 00:02:03 +0000 (Wed, 25 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/LittleWigs.toc
+
+bump version
+------------------------------------------------------------------------
+r1199 | funkydude | 2015-02-21 13:16:07 +0000 (Sat, 21 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/WoD/Skyreach/Rukhran.lua
+
+Skyreach/Rukhran: Tweak for wowNext/6.2
+------------------------------------------------------------------------
+r1198 | funkydude | 2015-02-15 23:54:53 +0000 (Sun, 15 Feb 2015) | 1 line
+Changed paths:
+   M /trunk/WoD/Auchindoun/Terongor.lua
+   M /trunk/WoD/ShadowmoonBurialGrounds/Sadana.lua
+
+Use GetUnitTarget.
+------------------------------------------------------------------------
+r1197 | funkydude | 2015-01-10 03:07:37 +0000 (Sat, 10 Jan 2015) | 1 line
+Changed paths:
+   M /trunk/WoD/TheEverbloom/Witherbark.lua
+
+Tweaks.
+------------------------------------------------------------------------

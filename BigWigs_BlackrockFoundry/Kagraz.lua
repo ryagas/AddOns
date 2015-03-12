@@ -56,7 +56,6 @@ function mod:GetOptions()
 		{155074, "TANK_HEALER"}, -- Charring Breath
 		155064, -- Rekindle
 		"berserk",
-		"bosskill"
 	}, {
 		[156018] = -9354, -- Aknor Steelbringer
 		[155318] = -9350, -- Ka'graz
@@ -74,8 +73,8 @@ function mod:OnBossEnable()
 	-- Ka'graz
 	self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", nil, "boss1")
 	self:Log("SPELL_AURA_APPLIED", "LavaSlashDamage", 155314)
-	self:Log("SPELL_DAMAGE", "LavaSlashDamage", 155318)
-	self:Log("SPELL_MISSED", "LavaSlashDamage", 155318)
+	self:Log("SPELL_PERIODIC_DAMAGE", "LavaSlashDamage", 155314)
+	self:Log("SPELL_PERIODIC_MISSED", "LavaSlashDamage", 155314)
 	self:Log("SPELL_AURA_APPLIED", "MoltenTorrentApplied", 154932)
 	self:Log("SPELL_AURA_REMOVED", "MoltenTorrentRemoved", 154932)
 	self:Log("SPELL_CAST_SUCCESS", "CinderWolves", 155776)
@@ -100,7 +99,7 @@ function mod:OnEngage()
 	wipe(blazingTargets)
 	firestormCount = 1
 	--self:Bar(155318, 11) -- Lava Slash
-	self:Bar(154938, 31) -- Molten Torrent
+	self:Bar(154932, 31) -- Molten Torrent
 	self:Bar(155776, 60) -- Summon Cinder Wolves
 end
 
@@ -221,7 +220,7 @@ do
 			fixateOnMe = true
 		end
 		if not scheduled then
-			scheduled = self:ScheduleTimer(startBar, 0.1, self, args.spellId)
+			scheduled = self:ScheduleTimer(startBar, 0.2, self, args.spellId)
 		end
 	end
 end
@@ -269,7 +268,7 @@ do
 		end
 		blazingTargets[#blazingTargets+1] = args.destName
 		if not scheduled then
-			scheduled = self:ScheduleTimer(warnTargets, 0.1, self, args.spellId)
+			scheduled = self:ScheduleTimer(warnTargets, 0.2, self, args.spellId)
 		end
 	end
 end
@@ -303,8 +302,8 @@ function mod:DropTheHammer(args)
 	--self:CDBar(args.spellId, 11) -- 11.3-14.4
 end
 
-function mod:AknorDeath(args)
-	self:StopBar(156018)
-	self:StopBar(156040)
-end
+--function mod:AknorDeath(args)
+--	self:StopBar(156018)
+--	self:StopBar(156040)
+--end
 

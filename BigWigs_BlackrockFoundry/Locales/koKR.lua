@@ -69,7 +69,7 @@ end
 L = BigWigs:NewBossLocale("Blackhand", "koKR")
 if L then
 L["custom_off_markedfordeath_marker"] = "죽음의 표적 징표 설정"
-L["custom_off_markedfordeath_marker_desc"] = "죽음의 징표의 대상을 {rt1}{rt2}의 징표로 설정합니다. 공격대장이거나 권한이 필요합니다."
+L["custom_off_markedfordeath_marker_desc"] = "죽음의 징표의 대상을 {rt1}{rt2}{rt3}의 징표로 설정합니다. 공격대장이거나 권한이 필요합니다." -- Needs review
 
 end
 

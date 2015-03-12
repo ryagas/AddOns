@@ -16,6 +16,7 @@ end
 L = BigWigs:NewBossLocale("The Blast Furnace", "frFR")
 if L then
 L["bombs_dropped"] = "Bombes lâchées ! (%d)"
+L["bombs_dropped_p2"] = "Ingénieur tué, bombes lâchées !" -- Needs review
 L["custom_off_firecaller_marker"] = "Marquage Mandefeu"
 L["custom_off_firecaller_marker_desc"] = [=[Marque les Mandefeux avec {rt7}{rt6}. Nécessite d'être assistant ou chef de raid.
 |cFFFF0000Seule 1 personne du raid doit activer ceci afin d'éviter les conflits de marquage.|r
@@ -86,7 +87,7 @@ end
 L = BigWigs:NewBossLocale("Blackhand", "frFR")
 if L then
 L["custom_off_markedfordeath_marker"] = "Marquage Désigné pour mourir"
-L["custom_off_markedfordeath_marker_desc"] = "Marque les cibles de Désigné pour mourir avec {rt1}{rt2}. Nécessite d'être assistant ou chef de raid."
+L["custom_off_markedfordeath_marker_desc"] = "Marque les cibles de Désigné pour mourir avec {rt1}{rt2}{rt3}. Nécessite d'être assistant ou chef de raid."
 L["custom_off_massivesmash_marker"] = "Marquage Frappe fracassante massive"
 L["custom_off_massivesmash_marker_desc"] = "Marque le tank touché par Frappe fracassante massive avec {rt6}. Nécessite d'être assistant ou chef de raid."
 
@@ -94,10 +95,15 @@ end
 
 L = BigWigs:NewBossLocale("Blackrock Foundry Trash", "frFR")
 if L then
+L["beasttender"] = "Soigne-bête sire-tonnerre"
+L["brute"] = "Brute de l’atelier des scories"
 L["enforcer"] = "Massacreur rochenoire"
 L["furnace"] = "Tuyau d’échappement du haut-fourneau"
 L["gnasher"] = "Grinceur sombréclat"
+L["guardian"] = "Gardien de l’atelier"
 L["hauler"] = "Hâleur ogron"
+L["mistress"] = "Maître-forgeronne Main-de-Flammes"
+L["taskmaster"] = "Sous-chef de Fer"
 
 end
 

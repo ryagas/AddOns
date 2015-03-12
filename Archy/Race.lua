@@ -78,10 +78,10 @@ function private.AddRace(raceID)
 		texture = raceTexture,
 		keystone = {
 			ID = keystoneItemID,
-			inventory = 0,
 			name = keystoneName,
 			texture = keystoneTexture,
 		},
+		keystonesInInventory = 0,
 	}, raceMetatable)
 
 	Races[raceID] = race
@@ -91,7 +91,6 @@ function private.AddRace(raceID)
 		Archy:RegisterEvent("GET_ITEM_INFO_RECEIVED")
 	end
 
-	local artifactNameToInfoIndexMapping = {}
 	for artifactIndex = 1, _G.GetNumArtifactsByRace(raceID) do
 		local artifactName, artifactDescription, artifactRarity, artifactIcon, hoverDescription, keystoneCount, bgTexture, firstCompletionTime, completionCount = _G.GetArtifactInfoByRace(raceID, artifactIndex)
 		local artifact = {
@@ -102,31 +101,12 @@ function private.AddRace(raceID)
 			texture = artifactIcon,
 		}
 
-		race.Artifacts[artifactName] = artifact
-		artifactNameToInfoIndexMapping[artifactName] = artifactIndex
+		race.Artifacts[artifactName:lower()] = artifact
 	end
-	race.ArtifactNameToInfoIndexMapping = artifactNameToInfoIndexMapping
 
-	for itemID, data in pairs(private.ARTIFACT_TEMPLATES[raceID]) do
-		local itemName = _G.GetItemInfo(itemID)
-		local projectName = _G.GetSpellInfo(data.spellID)
-		if itemName and projectName then
-			local artifact = race.Artifacts[projectName]
-			if artifact then
-				artifact.isRare = data.isRare
-				artifact.itemID = data.itemID
-				artifact.spellID = data.spellID
-			else
-				race.Artifacts[projectName] = {
-					completionCount = 0,
-					isRare = data.isRare,
-					itemID = data.itemID,
-					name = projectName,
-					spellID = data.spellID,
-				}
-			end
-		else
-			RaceArtifactProcessingQueue[data] = race
+	for itemID, template in pairs(private.ARTIFACT_TEMPLATES[raceID]) do
+        if not race:AddOrUpdateArtifactFromTemplate(template) then
+			RaceArtifactProcessingQueue[template] = race
 			Archy:RegisterEvent("GET_ITEM_INFO_RECEIVED")
 		end
 	end
@@ -139,18 +119,45 @@ end
 -----------------------------------------------------------------------
 -- Race methods.
 -----------------------------------------------------------------------
-function Race:GetArtifactCompletionDataByName(artifactName)
-	if not artifactName or artifactName == "" then
+function Race:AddOrUpdateArtifactFromTemplate(template)
+    local itemName = _G.GetItemInfo(template.itemID)
+    local projectName = _G.GetSpellInfo(template.spellID)
+
+    if itemName and projectName then
+		local projectNameLower = projectName:lower()
+        local artifact = self.Artifacts[projectNameLower]
+        if artifact then
+            artifact.isRare = template.isRare
+            artifact.itemID = template.itemID
+            artifact.spellID = template.spellID
+        else
+            self.Artifacts[projectNameLower] = {
+                completionCount = self:GetArtifactCompletionCountByName(projectName),
+                isRare = template.isRare,
+                itemID = template.itemID,
+                name = projectName,
+                spellID = template.spellID,
+            }
+        end
+
+        return true
+    end
+
+    return false
+end
+
+function Race:GetArtifactCompletionCountByName(targetArtifactName)
+	if not targetArtifactName or targetArtifactName == "" then
 		return
 	end
 
-	local artifactIndex = self.ArtifactNameToInfoIndexMapping[artifactName]
-	if not artifactIndex then
-		return 0, 0, 0
+	for artifactIndex = 1, _G.GetNumArtifactsByRace(self.ID) do
+		local artifactName, _, _, _, _, _, _, _, completionCount = _G.GetArtifactInfoByRace(self.ID, artifactIndex)
+		if artifactName == targetArtifactName then
+			return completionCount
+		end
 	end
-
-	local _, _, _, _, _, _, _, firstCompletionTime, completionCount = _G.GetArtifactInfoByRace(self.ID, artifactIndex)
-	return artifactIndex, firstCompletionTime, completionCount
+	return 0
 end
 
 function Race:IsOnArtifactBlacklist()
@@ -160,7 +167,7 @@ end
 function Race:KeystoneSocketOnClick(mouseButtonName)
 	local artifact = self.currentProject
 
-	if mouseButtonName == "LeftButton" and artifact.keystones_added < artifact.sockets and artifact.keystones_added < self.keystone.inventory then
+	if mouseButtonName == "LeftButton" and artifact.keystones_added < artifact.sockets and artifact.keystones_added < self.keystonesInInventory then
 		artifact.keystones_added = artifact.keystones_added + 1
 	elseif mouseButtonName == "RightButton" and artifact.keystones_added > 0 then
 		artifact.keystones_added = artifact.keystones_added - 1
@@ -180,16 +187,17 @@ function Race:UpdateCurrentProject()
 
 	_G.SetSelectedArtifact(self.ID)
 
-	local artifactName, _, rarity, icon, spellDescription, numSockets = _G.GetSelectedArtifactInfo()
-	local artifact = self.Artifacts[artifactName]
+	local artifactName, artifactDescription, rarity, icon, spellDescription, numSockets = _G.GetSelectedArtifactInfo()
+	local artifact = self.Artifacts[artifactName:lower()]
 	if not artifact then
-		local errorMessage = "Missing data for artifact \"%s\""
-		private.DebugPour(errorMessage, artifactName)
-		Archy:Printf(errorMessage, artifactName)
+		local errorMessage = "Missing data for %s artifact \"%s\""
+		private.DebugPour(errorMessage, self.name, artifactName)
+		Archy:Printf(errorMessage, self.name, artifactName)
+		self.currentProject = nil
 		return
 	end
 
-	local _, completionCount
+	local completionCount
 	local project = self.currentProject or artifact
 	if project then
 		if project.name ~= artifactName then
@@ -197,11 +205,12 @@ function Race:UpdateCurrentProject()
 				project.hasAnnounced = nil
 				project.hasPinged = nil
 
-				_, _, completionCount = self:GetArtifactCompletionDataByName(project.name)
-				Archy:Pour(L["You have solved |cFFFFFF00%s|r Artifact - |cFFFFFF00%s|r (Times completed: %d)"]:format(self.name, project.name, completionCount or 0), 1, 1, 1)
-			end
+				completionCount = self:GetArtifactCompletionCountByName(project.name)
+				Archy:Pour(L["You have solved |cFFFFFF00%s|r Artifact - |cFFFFFF00%s|r (Times completed: %d)"]:format(self.name, project.name, completionCount or 0),
+                    1, 1, 1, nil, nil, nil, nil, nil, project.icon)
+            end
 		else
-			_, _, completionCount = self:GetArtifactCompletionDataByName(artifactName)
+			completionCount = self:GetArtifactCompletionCountByName(artifactName)
 		end
 	end
 	project = artifact
@@ -223,9 +232,9 @@ function Race:UpdateCurrentProject()
 	project.sockets = numSockets
 	project.tooltip = spellDescription
 
-	self.keystone.inventory = _G.GetItemCount(self.keystone.ID) or 0
+	self.keystonesInInventory = _G.GetItemCount(self.keystone.ID) or 0
 
-	local keystoneInventory = self.keystone.inventory
+	local keystoneInventory = self.keystonesInInventory
 	local prevAdded = math.min(project.keystones_added, keystoneInventory, numSockets)
 	local artifactSettings = private.ProfileSettings.artifact
 
@@ -244,7 +253,7 @@ function Race:UpdateCurrentProject()
 			end
 
 			if index == prevAdded then
-				_, adjustedFragments = _G.GetArtifactProgress()
+				local _, adjustedFragments = _G.GetArtifactProgress()
 				project.keystone_adjustment = adjustedFragments
 				project.canSolveStone = _G.CanSolveArtifact()
 			end
@@ -252,7 +261,7 @@ function Race:UpdateCurrentProject()
 		project.canSolveInventory = _G.CanSolveArtifact()
 
 		if prevAdded > 0 and project.keystone_adjustment <= 0 then
-			_, adjustedFragments = _G.GetArtifactProgress()
+			local _, adjustedFragments = _G.GetArtifactProgress()
 			project.keystone_adjustment = adjustedFragments
 			project.canSolveStone = _G.CanSolveArtifact()
 		end
@@ -268,7 +277,8 @@ function Race:UpdateCurrentProject()
 		if currencyOwned > 0 and currencyRequired > 0 then
 			if not project.hasAnnounced and ((artifactSettings.announce and project.canSolve) or (artifactSettings.keystoneAnnounce and project.canSolveInventory)) then
 				project.hasAnnounced = true
-				Archy:Pour(L["You can solve %s Artifact - %s (Fragments: %d of %d)"]:format("|cFFFFFF00" .. self.name .. "|r", "|cFFFFFF00" .. project.name .. "|r", currencyOwned, currencyRequired), 1, 1, 1)
+				Archy:Pour(L["You can solve %s Artifact - %s (Fragments: %d of %d)"]:format("|cFFFFFF00" .. self.name .. "|r", "|cFFFFFF00" .. project.name .. "|r", currencyOwned, currencyRequired),
+                    1, 1, 1, nil, nil, nil, nil, nil, project.icon)
 			end
 
 			if not project.hasPinged and ((artifactSettings.ping and project.canSolve) or (artifactSettings.keystonePing and project.canSolveInventory)) then
